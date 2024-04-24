@@ -1,0 +1,12 @@
+import MainLayout from '@/components/shared/layouts/MainLayout';
+// import { getValueFromLocalStorage } from '@/utils/helper';
+import { Navigate } from 'react-router-dom';
+
+function PrivateRouter() {
+  // const accessToken: string = getValueFromLocalStorage('accessToken') || '';
+  const accessToken = true;
+
+  return accessToken ? <MainLayout /> : <Navigate to='/auth/login' />;
+}
+
+export default PrivateRouter;
