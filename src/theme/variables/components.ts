@@ -3,8 +3,21 @@ import { Components } from '@mui/material/styles';
 const components: Components = {
   MuiButton: {
     styleOverrides: {
-      root: ({ theme }: any) => ({
+      root: () => ({
         textTransform: "none",
+      }),
+      contained: () => ({
+        color: 'white'
+      }),
+      sizeSmall: ({ theme }: any) => ({
+        fontSize: theme.typography.h6,
+        height: 35,
+      }),
+      sizeMedium: ({ theme }: any) => ({
+        fontSize: theme.typography.h5,
+      }),
+      sizeLarge: ({ theme }: any) => ({
+        fontSize: theme.typography.h3,
       })
     }
   },

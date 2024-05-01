@@ -2,38 +2,59 @@ export const APP_ROUTES = {
   DASHBOARD: '/',
   // term
   TERM: {
+
     ALL: '/terms/all',
+
     ADD_NEW: '/terms/new',
+
     term_DETAIL: '/terms/:termId',
+
     EDIT: '/terms/edit',
+
   },
   LECTURER: {
+
     ALL: '/lecturer/all',
+
   },
   STUDENT: {
+
     ALL: '/student/all',
   },
   GROUP_STUDENT: {
+
     ALL: '/group-student/all',
+
     DETAIL: '/group-student/detail/:student_id',
+
   },
   GROUP_LECTURER: {
-    ALL: '/group-lecturer/all',
+
+    ALL: '/group-lecturer',
+
     DETAIL: '/group-lecturer/detail/:lecturer_id',
+
+    SUPPORT: '/group-lecturer/group-support',
+
+    ASSEMBLY: '/group-lecturer/group-assembly',
+
   },
   TOPIC: {
-    ALL: "'/topic/all",
+
+    ALL: "/topic/all",
   },
 
   REVIEW: {
+
     ALL: '/review/all',
   },
   GROUP_SUPPORT: {
+
     ALL: '/group-support/all',
+
   },
   //file upload
   FILE_UPLOADED: '/files',
-
   USER: {
     ALL: '/users/all',
     DETAIL: '/users/:userId',
@@ -136,6 +157,13 @@ export const APP_SIDEBAR = [
     roles: ['admin', 'owner', 'mod'],
     link: APP_ROUTES.REVIEW,
     key: '/review',
+    children: [
+      {
+        text: 'Danh sách',
+        link: APP_ROUTES.REVIEW.ALL,
+        key: '/all',
+      },
+    ],
   },
   {
     icon: 'twemoji:family',
@@ -170,10 +198,10 @@ export const APP_SIDEBAR = [
     link: [APP_ROUTES.GROUP_LECTURER.ALL],
     children: [
       {
-        text: 'Danh sách',
-        link: APP_ROUTES.GROUP_LECTURER.ALL,
-        key: '/all',
-      },
+        text: 'Nhóm chấm Hội đồng',
+        link: APP_ROUTES.GROUP_LECTURER.ASSEMBLY,
+        key: APP_ROUTES.GROUP_LECTURER.ASSEMBLY,
+      }
     ],
   },
 ];
@@ -187,7 +215,7 @@ export const APP_PROFILE_MENU = [
   {
     text: 'Log out',
     icon: 'ri:logout-box-r-line',
-    link: '#',
+    link: '/auth/login',
   },
 ];
 

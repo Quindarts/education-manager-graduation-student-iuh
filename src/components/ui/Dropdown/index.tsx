@@ -1,4 +1,4 @@
-import { Box, FormHelperText, InputLabel, MenuItem, SelectProps } from '@mui/material';
+import { BaseSelectProps, Box, FormHelperText, InputLabel, MenuItem } from '@mui/material';
 import React from 'react';
 import { Select } from '@mui/material';
 
@@ -6,10 +6,11 @@ interface SelectOption {
   name: string;
   _id: string;
 }
-interface SelectPropsType extends SelectProps {
+interface SelectPropsType extends BaseSelectProps {
   error?: boolean;
   helperText?: string;
   id?: string;
+  label?: string;
   placeholder?: string;
   required?: boolean;
   options: SelectOption[] | undefined;
@@ -18,9 +19,12 @@ interface SelectPropsType extends SelectProps {
 const DropDown: React.FC<SelectPropsType> = (props: SelectPropsType) => {
   const { options, placeholder, id, label, required, error, helperText, ...restProps } = props;
   return (
-    <Box sx={{ mb: 8 }}>
+    <Box>
       {label && (
-        <InputLabel htmlFor={id} sx={{ mb: 4, color: 'grey.900', fontSize: '13px' }}>
+        <InputLabel
+          htmlFor={id}
+          sx={{ mb: 4, color: 'grey.900', fontWeight: '500', fontSize: '13px' }}
+        >
           {label}
         </InputLabel>
       )}

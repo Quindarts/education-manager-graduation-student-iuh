@@ -11,7 +11,7 @@ function TermPage() {
         Danh sách học kì
       </TitleManager>
       <HeaderTerm />
-      <Box width={'full'}>
+      <Box width={'full'} my={10}>
         <TableManagamentTerm />
       </Box>
     </Box>

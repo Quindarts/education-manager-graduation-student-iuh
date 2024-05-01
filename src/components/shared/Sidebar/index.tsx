@@ -11,7 +11,6 @@ import { APP_SIDEBAR } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
 
-
 interface AdminSidebarProps {
   isOpenSideBar: boolean;
   handleOpenSideBar: () => void;
@@ -78,18 +77,20 @@ export default function AdminSidebar(props: AdminSidebarProps) {
   return (
     <Box
       sx={{
-        width: isOpenSideBar ? drawerWidth : hidedDrawerWidth,
-        transition: '0.3s all',
-        transform: 'scaleX(1)',
+        maxWidth: isOpenSideBar ? drawerWidth : hidedDrawerWidth,
+        width: '100%',
+        translateX: isOpenSideBar ? 0 : 1,
+        transition: '0.2s all',
         maxHeight: '100vh',
         height: '100%',
         position: 'sticky',
         top: 0,
-        bgcolor: 'gray.400',
-        display:{
-          xs:'none',
-          md: 'block'
+        bgcolor: 'white',
+        display: {
+          xs: 'none',
+          md: 'block',
         },
+        boxShadow: '5px 0 5px -3px #90bceb',
       }}
     >
       <Link
@@ -100,30 +101,18 @@ export default function AdminSidebar(props: AdminSidebarProps) {
         justifyContent='center'
         alignSelf='center'
         sx={{
-          transition: '0.3s all',
+          transition: '0.2s all',
         }}
       >
         {!isOpenSideBar && !isMobile ? (
-          <img
-            width={22}
-            height={22}
-            src='/images/log-sm.jpg'
-            alt='logo_app'
-          />
+          <img width={22} height={22} src='/images/log-sm.jpg' alt='logo_app' />
         ) : (
-          <Box display='flex' alignItems='center'  height={35}>
-            <img
-              width={150}
-              height={60}
-              src='/images/logo-light.png'
-              alt='logo_app'
-            />
-          
+          <Box display='flex' alignItems='center' height={35}>
+            <img width={150} height={60} src='/images/logo-light.png' alt='logo_app' />
           </Box>
         )}
       </Link>
       <Drawer
-        
         variant={isMobile ? 'temporary' : 'permanent'}
         open={isOpenSideBar}
         onClose={handleOpenSideBar}
@@ -141,38 +130,36 @@ export default function AdminSidebar(props: AdminSidebarProps) {
             position: 'revert',
             flexDirection: 'column',
             bgcolor: 'gray.400',
+            transition: 'all 0.3s',
             '&::-webkit-scrollbar': {
               width: 4,
-         
             },
             '.MuiPaper-root': {
-              pl:8,
-              pr:8,
-              py:0
+              pl: 8,
+              pr: 8,
+              pb: 4,
             },
             '&::-webkit-scrollbar-thumb': {
               borderRadius: 10,
-              width:20,
-              bgcolor: "primary.dark",
-              color:'primary.dark'
+              width: 20,
+              bgcolor: 'primary.dark',
+              color: 'primary.dark',
             },
             '.Mui-expanded ': {
-              margin:0,
+              margin: 0,
             },
             '& .MuiTypography-root': {
-              borderRadius: 8,
               overFlow: 'hidden',
               '&.active': {
-                color: 'background.main',
                 fontWeight: 500,
                 '& svg': {
-                  color: 'primary.main',
+                  color: 'white',
                 },
                 '&:hover': {
-                  color: 'primary.main',
+                  fontSize: 'body2',
                 },
               },
-              '&:hover': {
+              '&:hover': {  
                 color: 'primary.main',
                 '& svg': {
                   color: 'primary.main',
@@ -183,40 +170,40 @@ export default function AdminSidebar(props: AdminSidebarProps) {
         }}
       >
         {(isOpenSideBar || isMobile) && (
-          <Box px={4}  display={'flex'}
-          alignItems={'center'}
-          justifyContent={'center'}
-          textTransform={'uppercase'}
-          flexDirection={'column'} >
-            <Typography
-            variant='h6'
-            fontWeight={600}
-            pt={{
-              xs: 10,
-              md: 20,
-            }}
-            pb={{
-              xs:0 ,
-              md: 8,
-            }}
-          
-            sx={{
-              color: 'primary.dark',
-              opacity: 0.7,
-              '&:hover': {
-                color: 'unset',
-              },
-              cursor: "pointer",
-            }}
+          <Box
+            px={4}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            textTransform={'uppercase'}
+            flexDirection={'column'}
           >
-            Danh mục quản lý
-          </Typography>
-          <Box sx={{width:170}}>
-          <DropDown  defaultValue={1} options={[{_id:'1', name:'HK1 2024-2025'}]} />
+            <Typography
+              variant='h6'
+              fontWeight={600}
+              pt={{
+                xs: 10,
+                md: 20,
+              }}
+              pb={{
+                xs: 0,
+                md: 8,
+              }}
+              sx={{
+                color: 'primary.dark',
+                opacity: 0.7,
+                '&:hover': {
+                  color: 'unset',
+                },
+                cursor: 'pointer',
+              }}
+            >
+              Danh mục quản lý
+            </Typography>
+            <Box sx={{ width: 170 }}>
+              <DropDown defaultValue={1} options={[{ _id: '1', name: 'HK1 2024-2025' }]} />
+            </Box>
           </Box>
-
-          </Box>
-      
         )}
         {APP_SIDEBAR.map((item: any, itemIndex: number) => (
           <>
@@ -250,14 +237,15 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                 sx={{
                   overflow: 'hidden',
                   height: 50,
-                  px:4,
-                  my:2,
+                  px: 4,
+                  my: 2,
+                  borderRadius: 2,
                   '&.Mui-expanded': {
                     minHeight: 0,
                   },
                   '&:hover': {
-                    color: 'primary.main',
-                    
+                    bgcolor: 'text.disabled',
+                    transition: '0.2s all',
                     '& .MuiAccordionSummary-content': {
                       '& svg': {
                         color: 'primary.main',
@@ -277,14 +265,10 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                     color: 'primary.main',
                   },
                   '&.active': {
-                    color: 'red',
-                    bgcolor: "text.disabled",
-                    borderRadius: 10,
+                    color: 'white',
+                    bgcolor: 'primary.dark',
                     '& svg': {
-                      color: 'primary.main',
-                    },
-                    '&:hover': {
-                      color: 'red',
+                      color: 'white',
                     },
                   },
                 }}
@@ -305,9 +289,8 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   <Typography
                     variant='body1'
                     fontWeight={600}
-                    
                     sx={{
-                      textTransform:'uppercase',
+                      textTransform: 'uppercase',
                       flex: 1,
                       textWrap: 'nowrap',
                     }}

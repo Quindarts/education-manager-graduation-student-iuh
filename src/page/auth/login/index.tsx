@@ -7,20 +7,19 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
-// import Visibility from '@mui/icons-material/Visibility';
-// import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { FormikHelpers, useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginValidationSchema } from '@/utils/validations/auth.validation';
 import { IAuth } from '@/types/auth.type';
 import { APP_ROUTES } from '@/utils/app-config';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { Icon } from '@iconify/react';
+import { setValueInLocalStorage } from '@/utils/localStorage';
 
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
-
+  const navigate = useNavigate();
   const formik = useFormik<IAuth>({
     initialValues: {
       username: '',
@@ -29,7 +28,9 @@ export default function Login() {
     validationSchema: LoginValidationSchema,
     onSubmit: (values: IAuth, { resetForm }: FormikHelpers<IAuth>) => {
       // alert(JSON.stringify(values, null, 2));
+      setValueInLocalStorage('accessToken', 'demoToken');
       resetForm();
+      navigate('/');
       console.log(values);
       // resetForm();
     },
@@ -41,30 +42,31 @@ export default function Login() {
     <Grid container spacing={2} pb={8}>
       <Grid item xs={12}>
         <Card>
-          <CardContent > 
-          <Box sx={{display:'flex',flexDirection:'column', alignItems:'center', justifyItems: "center"}}>
-          <img
-              width={150}
-              height={60}
-              src='/images/logo-light.png'
-              alt='logo_app'
-            />
-            <Typography
-              variant='h5'
-              component='h5'
-              align='center'
-              fontWeight={800}
-              color='error.dark'
+          <CardContent>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyItems: 'center',
+              }}
             >
-              
-              TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH
-            </Typography>
-            <Typography variant='body1' component='h6' mt={4} fontWeight={600} align='center' color={'primary.main'} mb={6}>
-              Đăng nhập vào trang quản lý khóa luận
-            </Typography>
+              <img width={150} height={60} src='/images/logo-light.png' alt='logo_app' />
+              <Typography mt={10} variant='h3' align='center' lineHeight={1.6} fontWeight={700} color='error.dark'>
+                TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH
+              </Typography>
+              <Typography
+                variant='h5'
+                mt={4}
+                fontWeight={600}
+                align='center'
+                color={'primary.main'}
+                mb={6}
+              >
+                Đăng nhập vào trang quản lý khóa luận
+              </Typography>
+            </Box>
 
-          </Box>
-        
             <Box component='form' onSubmit={handleSubmit} mt={8} p={4} method='POST'>
               <CustomTextField
                 label='Tên đăng nhập'
@@ -89,7 +91,7 @@ export default function Login() {
                     }}
                   >
                     Mật khẩu
-                    <Typography variant='body1' color='gray'>
+                    <Typography variant='h5' color='gray'>
                       <Link
                         style={{
                           color: 'inherit',
@@ -112,22 +114,22 @@ export default function Login() {
                 type={showPassword ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position='end' >
+                    <InputAdornment position='end'>
                       <IconButton
                         aria-label='toggle password visibility'
                         onClick={handleClickShowPassword}
                         edge='end'
                         size='small'
                         sx={{
-                          '& svg':{
-                            color:'text.primary'
-                          }
+                          '& svg': {
+                            color: 'text.primary',
+                          },
                         }}
                       >
                         {showPassword ? (
-                          <Icon icon="mdi:eye-outline" />
+                          <Icon icon='mdi:eye-outline' />
                         ) : (
-                          <Icon icon="mdi:eye-off-outline" />
+                          <Icon icon='mdi:eye-off-outline' />
                         )}
                       </IconButton>
                     </InputAdornment>
@@ -135,18 +137,7 @@ export default function Login() {
                 }}
               />
 
-              <Button
-                variant='contained'
-                type='submit'
-                fullWidth
-                sx={{
-                  bgcolor: 'error.main',
-                  mt: 12,
-                  '&:hover': {
-                    bgcolor: 'error.dark',
-                  },
-                }}
-              >
+              <Button variant='contained' type='submit' fullWidth color='primary'>
                 Đăng nhập
               </Button>
             </Box>

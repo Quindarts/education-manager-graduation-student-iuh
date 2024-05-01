@@ -18,28 +18,28 @@ const theme = createTheme({
     fontFamily: ['Poppins', 'sans-serif'].join(','),
     fontSize: 14,
     h1: {
-      fontSize: 44,
+      fontSize: 34,
     },
     h2: {
-      fontSize: 36,
+      fontSize: 26,
     },
     h3: {
-      fontSize: 28,
-    },
-    h4: {
-      fontSize: 22,
-    },
-    h5: {
-      fontSize: 20,
-    },
-    h6: {
       fontSize: 18,
     },
-    body1: {
+    h4: {
       fontSize: 16,
     },
-    body2: {
+    h5: {
       fontSize: 14,
+    },
+    h6: {
+      fontSize: 13,
+    },
+    body1: {
+      fontSize: 12,
+    },
+    body2: {
+      fontSize: 11,
     },
   },
 

@@ -1,7 +1,8 @@
 import { Icon } from '@iconify/react';
-import Box from '@mui/material/Box'
+import Box from '@mui/material/Box';
 import ProfileMenu from './ProfileMenu';
 import Notification from './Notification';
+import { IconButton } from '@mui/material';
 
 interface NavbarProps {
   handleOpenSideBar: () => void;
@@ -32,7 +33,6 @@ function Navbar(props: NavbarProps) {
       >
         <Icon
           width={24}
-          color='text.secondary'
           fontWeight={600}
           icon={isOpenSideBar ? 'ph:arrow-right-bold' : 'fluent:list-16-regular'}
         />

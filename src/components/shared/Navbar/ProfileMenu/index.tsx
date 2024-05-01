@@ -16,10 +16,6 @@ function ProfileMenu() {
     <Box
       display='flex'
       sx={{
-        backgroundColor:{
-          xs: 'background.paper',
-          md:  'grey.100',
-        },
         cursor: 'pointer',
         gap: {
           xs: 0,
@@ -86,7 +82,7 @@ function ProfileMenu() {
           >
             Chào mừng trở lại!
           </Typography>
-          <MenuList sx={{ p:0 }}>
+          <MenuList sx={{ p: 0 }}>
             {APP_PROFILE_MENU.map((menuItem) => (
               <MenuItem
                 sx={{ '.MuiListItemIcon-root ': { minWidth: 24 } }}

@@ -19,7 +19,7 @@ interface Props extends DataGridProps {
 
 export default function Table(props: Props) {
   const {
-    minHeight = 400,
+    minHeight = 500,
     sx,
     page,
     totalPages,
@@ -40,31 +40,45 @@ export default function Table(props: Props) {
         hideFooter
         slots={{
           noRowsOverlay: () => (
-            <Box mx={'auto'} display={'flex'} flexDirection={'column'}  alignContent={'center'} justifyContent={'center'} textAlign={'center'} my={20} width={'full'}>
-             <Box>
-             <Icon width={100} icon="flat-color-icons:file" /><Icon   width={100}  icon="flat-color-icons:data-backup" />
-             </Box>
-                <Typography variant='h6' sx={{ mt: 2 }}>
-                    Không có dữ liệu ( Data not found)
-                  </Typography>
+            <Box
+              mx={'auto'}
+              display={'flex'}
+              flexDirection={'column'}
+              alignContent={'center'}
+              justifyContent={'center'}
+              textAlign={'center'}
+              my={20}
+              width={'100%'}
+            >
+              <Box>
+                <Icon width={100} icon='flat-color-icons:file' />
+                <Icon width={100} icon='flat-color-icons:data-backup' />
+              </Box>
+              <Typography variant='h6' sx={{ mt: 2 }}>
+                Không có dữ liệu ( Data not found)
+              </Typography>
             </Box>
-         
           ),
           loadingOverlay: () => <LinearProgress />,
         }}
         sx={{
-          fontSize: 16,
+          fontSize: 12,
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
-            // outline: 'none !important',
+            outline: 'none !important',
           },
           '& .MuiDataGrid-virtualScrollerContent': {
             minHeight,
             width: '100%',
           },
-          borderColor: 'divider',
+          borderColor: 'primary.dark',
           '& .MuiDataGrid-columnHeaders': {
-            borderColor: 'divider',
+            borderColor: 'text.disabled',
+            bgcolor: 'primary.dark',
+            color: 'white',
+            maxHeight: '30px !important',
+            minHeight: '30px !important',
           },
+
           '& .MuiDataGrid-virtualScroller': {
             minHeight,
             overflowX: 'auto',
@@ -92,7 +106,7 @@ export default function Table(props: Props) {
       <Box display='flex' alignItems='center' justifyContent='space-between' mr={2} mt={4}>
         <Box display='flex' alignItems='center'>
           <Typography variant='body1' sx={{ mx: 2 }} display='flex'>
-            Tổng số:
+            Tổng số trang:{'  '}
             <Typography variant='body1' fontWeight={600}>
               {totalItems}
             </Typography>
