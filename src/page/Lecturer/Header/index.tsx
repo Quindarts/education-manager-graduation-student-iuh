@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import AddModal from '../Modal/AddModal';
+import EditInfoModal from '../Modal/EditInfoModal';
 
 function HeaderLecturer() {
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -12,6 +13,9 @@ function HeaderLecturer() {
   const handleOpenModal = () => {
     setOpenAddModal(true);
   };
+
+
+
   return (
     <>
       <Box mb={14} display={'flex'} flexWrap={'wrap'} gap={8}>
