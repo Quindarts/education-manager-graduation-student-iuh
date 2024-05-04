@@ -27,6 +27,7 @@ function Calendar(props: CalendarPropsType) {
             '.MuiInputBase-root input': {
               padding: 5,
             },
+            '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' },
           }}
         />
       </Box>
