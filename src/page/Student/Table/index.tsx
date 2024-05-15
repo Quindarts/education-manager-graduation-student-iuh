@@ -95,6 +95,7 @@ function TableManagamentStudent(props: any) {
       flex: 1,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params: any) => <Typography>{params.row.major.name}</Typography>,
     },
     {
       headerName: 'Trạng thái',
@@ -152,7 +153,7 @@ function TableManagamentStudent(props: any) {
     <>
       <Box>
         <Table
-          rows={dummyStudentData}
+          rows={rows}
           sx={{
             bgcolor: 'white',
           }}

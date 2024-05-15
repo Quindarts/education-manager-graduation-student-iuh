@@ -1,20 +1,30 @@
-import { Box } from '@mui/material';
-import React from 'react';
+import { Box, LinearProgress, Skeleton } from '@mui/material';
+import React, { useState } from 'react';
 import TableManagamentTerm from './Table';
 import HeaderTerm from './Header';
 import TitleManager from '@/components/ui/Title';
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import SekeletonUI from '@/components/ui/Sekeleton';
 
 function TermPage() {
+  const { handleGetAllTerm } = useTerm();
+  const { data, isLoading } = handleGetAllTerm();
   return (
-    <Box>
-      <TitleManager mb={14} mt={2}>
-        Danh sách học kì
-      </TitleManager>
-      <HeaderTerm />
-      <Box width={'full'} my={10}>
-        <TableManagamentTerm />
+    <>
+      <Box>
+        <TitleManager mb={14} mt={2}>
+          Danh sách học kì
+        </TitleManager>
+        <HeaderTerm />
+        {isLoading ? (
+          <SekeletonUI />
+        ) : (
+          <Box width={'full'} my={10}>
+            <TableManagamentTerm rows={data?.terms} />
+          </Box>
+        )}
       </Box>
-    </Box>
+    </>
   );
 }
 

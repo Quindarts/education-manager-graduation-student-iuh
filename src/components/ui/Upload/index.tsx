@@ -4,7 +4,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Icon } from '@iconify/react';
 import { Button, Typography } from '@mui/material';
 import styled from '@emotion/styled';
-import useUploadExcel from '@/hooks/useUploadExcel';
+import useUploadExcel from '@/hooks/ui/useUploadExcel';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',

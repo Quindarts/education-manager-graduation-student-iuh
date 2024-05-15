@@ -6,6 +6,7 @@ import React from 'react';
 
 function TableManagerReviewScore(props: any) {
   const { rows } = props;
+  console.log("🚀 ~ TableManagerReviewScore ~ rows:", rows)
   const basicColumns: GridColDef[] = [
     {
       headerName: 'STT',

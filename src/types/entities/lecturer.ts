@@ -1,7 +1,6 @@
 import { EnumRole, EnumGender } from '../enum';
 
-interface Teacher {
-  lecturer: any;
+interface Lecturer {
   id: any;
   username: string;
   avatar: string;
@@ -16,5 +15,4 @@ interface Teacher {
   degree: string;
   isAdmin: boolean;
 }
-
-export default Teacher;
+export default Lecturer;

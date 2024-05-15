@@ -1,4 +1,4 @@
-import Teacher from './teacher';
+import Teacher from './lecturer';
 
 interface Topic {
   id: number;

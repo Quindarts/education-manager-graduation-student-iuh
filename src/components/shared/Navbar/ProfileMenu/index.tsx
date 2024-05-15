@@ -1,4 +1,4 @@
-import usePopup from '@/hooks/usePopup';
+import usePopup from '@/hooks/ui/usePopup';
 import { APP_PROFILE_MENU } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import Avatar from '@mui/material/Avatar';

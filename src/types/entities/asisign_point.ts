@@ -1,4 +1,3 @@
-import Teacher from 'pages/teacher/Teacher';
 import { TypeEvalution } from './assign';
 import Student from './student';
 

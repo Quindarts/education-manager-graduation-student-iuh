@@ -1,7 +1,7 @@
 export default interface Major {
   id: string;
   name: string;
-  headLecturer: {
+  headLecturer?: {
     id: number;
     majors: Object;
     degree: string;

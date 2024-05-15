@@ -7,6 +7,8 @@ import './main.css';
 import { SnackbarProvider } from 'notistack';
 import { themeSnackbar } from './theme/ThemeSnackbar.js';
 import { Zoom } from '@mui/material';
+import ReactQueryClientProvider from './providers/ReactQueryClientProvider.jsx';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -19,7 +21,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           autoHideDuration={2000}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <App />
+          <ReactQueryClientProvider>
+            <App />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </ReactQueryClientProvider>
         </SnackbarProvider>
       </BrowserRouter>
     </MUIThemeProvider>

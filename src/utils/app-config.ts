@@ -1,6 +1,6 @@
+
 export const APP_ROUTES = {
   DASHBOARD: '/',
-  // term
   TERM: {
 
     ALL: '/terms/all',

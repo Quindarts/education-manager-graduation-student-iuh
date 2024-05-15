@@ -70,7 +70,6 @@ export default function Table(props: Props) {
             minHeight,
             width: '100%',
           },
-          borderColor: 'primary.dark',
           '& .MuiDataGrid-columnHeaders': {
             borderColor: 'text.disabled',
             bgcolor: 'primary.dark',

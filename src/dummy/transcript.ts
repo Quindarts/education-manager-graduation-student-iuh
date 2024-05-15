@@ -1,5 +1,5 @@
 import Student from 'types/entities/student';
-import Teacher from 'types/entities/teacher';
+import Teacher from '@/types/entities/lecturer';
 
 export default interface TranscriptSumMary {
   student: Student;

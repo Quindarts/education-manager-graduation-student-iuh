@@ -1,4 +1,4 @@
-import usePopup from '@/hooks/usePopup';
+import usePopup from '@/hooks/ui/usePopup';
 import { Icon } from '@iconify/react';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -8,36 +8,40 @@ import Box from '@mui/material/Box';
 function Notification() {
   const { handleActive, active, menuRef } = usePopup();
   return (
-    <Box position='relative' ref={menuRef}   height={70} sx={{
-      display: 'flex',
-      alignItems: 'center',
-    }}>
+    <Box
+      position='relative'
+      ref={menuRef}
+      height={70}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
       <IconButton
         onClick={handleActive}
         className={`${active && 'active'}`}
         sx={{
-          padding: 2, 
-         
+          padding: 2,
+
           '& svg': {
             color: 'text.secondary',
           },
         }}
         size='small'
         color='info'
-        
       >
         <Badge
           badgeContent={4}
           color='error'
           sx={{
-            height:'100%',
+            height: '100%',
             '& .MuiBadge-colorError': {
               backgroundColor: 'error.light',
             },
           }}
         >
           <Box display='flex' alignItems='center' padding={2}>
-            <Icon  icon='tdesign:notification' />
+            <Icon icon='tdesign:notification' />
           </Box>
         </Badge>
       </IconButton>
@@ -54,7 +58,7 @@ function Notification() {
               xs: '100vw',
               sm: 320,
             },
-            height:320,
+            height: 320,
             position: {
               xs: 'fixed',
               sm: 'absolute',
@@ -74,8 +78,8 @@ function Notification() {
             <Typography fontWeight={600} variant='h6' color={'white'}>
               Notifications
             </Typography>
-            <Box borderRadius={1} alignSelf={'center'} px={4} py={2} >
-              <Typography fontWeight={600} variant='body2' color="white">
+            <Box borderRadius={1} alignSelf={'center'} px={4} py={2}>
+              <Typography fontWeight={600} variant='body2' color='white'>
                 4 New
               </Typography>
             </Box>

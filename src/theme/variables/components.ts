@@ -24,7 +24,7 @@ const components: Components = {
   MuiInputBase: {
     styleOverrides: {
       root: ({ theme }: any) => ({
-        backgroundColor: theme.palette.common.white,
+        // backgroundColor: theme.palette.common.white,
         borderRadius: 8,
         // minHeight: textFieldHeight,
         outline: 'none',
@@ -60,9 +60,9 @@ const components: Components = {
             borderColor: theme.palette.error.main,
           },
         },
-        '&.Mui-disabled': {
-          color: theme.palette.text.primary,
-
+        '&.Mui-disabled input': {
+          '-webkit-text-fill-color': theme.palette.text.primary,
+          backgroundColor: theme.palette.text.disabled,
           fontWeight: 600,
           '& .MuiInputBase-input:not(.MuiSelect-select)': {
             // minHeight: textFieldHeight,

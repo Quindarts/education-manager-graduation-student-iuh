@@ -5,8 +5,8 @@ enum EnumRole {
 }
 
 enum EnumGender {
-  FEMALE = 'Nữ',
-  MALE = 'Nam',
+  FEMALE = 'FEMALE',
+  MALE = 'MALE',
 }
 
 enum RoleCheck {

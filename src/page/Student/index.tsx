@@ -3,15 +3,19 @@ import React from 'react';
 import TableManagamentStudent from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderStudent from './Header';
+import { useStudent } from '@/hooks/api/useQueryStudent';
+import SekeletonUI from '@/components/ui/Sekeleton';
 
 function StudentPage() {
+  const { handleGetAllStudent } = useStudent();
+  const { data, isLoading } = handleGetAllStudent();
   return (
     <Box>
       <TitleManager mb={14} mt={2}>
-        Danh sách giảng viên
+        Danh sách sinh viên
       </TitleManager>
       <HeaderStudent />
-      <TableManagamentStudent />
+      {isLoading ? <SekeletonUI /> : <TableManagamentStudent rows={data?.students} />}
     </Box>
   );
 }

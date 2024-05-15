@@ -64,6 +64,9 @@ function EditInfoModal(props: any) {
             <Calendar sx={{ width: '100%', mb: 8 }} label='Ngày sinh' />
           </Box>
           <CustomTextField label='Email' placeholder='Nhập vào email' />
+          <Box sx={{ mb: 8 }}>
+            <DropDown label='Chuyên ngành' placeholder='Chuyên ngành' options={[]} />
+          </Box>
           <DropDown label='Loại đào tạo' placeholder='Loại đào tạo' options={[]} />
 
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>

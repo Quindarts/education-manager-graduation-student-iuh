@@ -1,5 +1,5 @@
 import Student from './student';
-import Teacher from './teacher';
+import Teacher from './lecturer';
 
 export default interface TranscriptSumMary {
   student: Student;

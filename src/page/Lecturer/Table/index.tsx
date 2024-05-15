@@ -11,13 +11,13 @@ import DeleteModal from '../Modal/DeleteModal';
 
 function TableManagamentLecturer(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
-  const [openEditInfoModal, setOpenEditInfoModal] = useState(false);
+  const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturer_id: '', isOpen: false });
 
   const handleCloseEditInfoModal = () => {
-    setOpenEditInfoModal(false);
+    setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
   };
-  const handleOpenInfoModal = () => {
-    setOpenEditInfoModal(true);
+  const handleOpenInfoModal = (lecturer_id: string) => {
+    setOpenEditInfoModal({ lecturer_id, isOpen: true });
   };
 
   const [openEditStatusLecturerModal, setOpenEditStatusLecturerModal] = useState({
@@ -83,7 +83,7 @@ function TableManagamentLecturer(props: any) {
     },
     {
       headerName: 'SĐT',
-      field: 'phoneNumber',
+      field: 'phone',
       flex: 1,
       headerAlign: 'center',
       align: 'center',
@@ -97,10 +97,11 @@ function TableManagamentLecturer(props: any) {
     },
     {
       headerName: 'Chuyên ngành',
-      field: 'majors',
+      field: 'none2',
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (params: any) => <Typography>{params.row.major.name}</Typography>,
     },
     {
       headerName: 'Trạng thái',
@@ -133,7 +134,7 @@ function TableManagamentLecturer(props: any) {
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
           <Tooltip title='Cập nhật thông tin'>
-            <IconButton size='small' onClick={handleOpenInfoModal}>
+            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
               <Icon icon='emojione:pencil' />
             </IconButton>
           </Tooltip>
@@ -161,7 +162,7 @@ function TableManagamentLecturer(props: any) {
     <>
       <Box>
         <Table
-          rows={dummyTeacherData}
+          rows={rows}
           sx={{
             bgcolor: 'white',
           }}
@@ -175,7 +176,11 @@ function TableManagamentLecturer(props: any) {
           disableColumnSelector
         />
       </Box>
-      <EditInfoModal open={openEditInfoModal} onClose={handleCloseEditInfoModal} />
+      <EditInfoModal
+        lecturer_id={openEditInfoModal.lecturer_id}
+        open={openEditInfoModal.isOpen}
+        onClose={handleCloseEditInfoModal}
+      />
       <EditStatus
         open={openEditStatusLecturerModal.isOpen}
         onClose={handleCloseEditStatusLecturerModal}

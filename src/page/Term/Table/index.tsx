@@ -87,28 +87,21 @@ function TableManagamentTerm(props: any) {
     {
       headerName: 'Tên Học Kỳ',
       field: 'name',
-      flex: 0.75,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      headerName: 'Niên khóa',
-      field: 'schoolYear',
-      flex: 0.75,
+      flex: 1.4,
       headerAlign: 'center',
       align: 'center',
     },
     {
       headerName: 'Ngày Bắt đầu',
       field: 'startDate',
-      flex: 0.75,
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
     },
     {
       headerName: 'Ngày Kết thúc ',
       field: 'endDate',
-      flex: 0.75,
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
     },
@@ -236,7 +229,7 @@ function TableManagamentTerm(props: any) {
     <Box {...rest}>
       {' '}
       <Table
-        rows={dummyTerms}
+        rows={rows}
         sx={{
           bgcolor: 'white',
         }}
