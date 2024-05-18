@@ -1,8 +1,8 @@
-const API_ROUTER = {
+export const API_ROUTER = {
     //CORE
     INDEX: '/',
     ID: '/:id',
-    LOGIN: '/login',
+    LOGIN: '/api/v1/lecturers/login',
     REGISTER: '/register',
     LOGOUT: '/logout',
     REFRESH_TOKEN: '/refresh-token',
@@ -91,4 +91,4 @@ const API_ROUTER = {
     ACHIEVEMENT: '/api/v1/achievements',
 };
 
-module.exports = { API_ROUTER };
+

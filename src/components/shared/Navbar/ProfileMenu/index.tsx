@@ -1,5 +1,6 @@
 import usePopup from '@/hooks/ui/usePopup';
 import { APP_PROFILE_MENU } from '@/utils/app-config';
+import { removeValueInLocalStorage } from '@/utils/localStorage';
 import { Icon } from '@iconify/react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -7,11 +8,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Typography from '@mui/material/Typography';
+import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 
 function ProfileMenu() {
   const navigate = useNavigate();
   const { handleActive, active, menuRef } = usePopup();
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <Box
       display='flex'
@@ -86,7 +89,13 @@ function ProfileMenu() {
             {APP_PROFILE_MENU.map((menuItem) => (
               <MenuItem
                 sx={{ '.MuiListItemIcon-root ': { minWidth: 24 } }}
-                onClick={() => navigate(menuItem.link)}
+                onClick={() => {
+                  if (menuItem.link === '/auth/login') {
+                    removeValueInLocalStorage('accessToken');
+                    enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
+                    navigate('/auth/login');
+                  } else navigate(menuItem.link);
+                }}
               >
                 <ListItemIcon sx={{ color: 'text.secondary' }}>
                   <Icon width={18} height={22} icon={menuItem.icon} />

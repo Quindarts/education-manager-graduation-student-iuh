@@ -34,7 +34,7 @@ function MainLayout() {
       <AdminSidebar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
       <Box
         height='100%'
-        bgcolor={'text.disabled'}
+        bgcolor={'background.paper'}
         sx={{ maxWidth: `calc(100vw - ${currentMaxWidth}px)`, width: '100%', minHeight: '100vh' }}
       >
         <Navbar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />

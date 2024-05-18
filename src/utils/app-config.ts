@@ -13,19 +13,19 @@ export const APP_ROUTES = {
 
   },
   LECTURER: {
-
-    ALL: '/lecturer/all',
+    ALL: '/lecturer',
+    MANAGEMENT: "/lecturer/all",
+    DETAILS: "/lecturer/details",
 
   },
   STUDENT: {
-
     ALL: '/student/all',
   },
   GROUP_STUDENT: {
 
-    ALL: '/group-student/all',
-
-    DETAIL: '/group-student/detail/:student_id',
+    ALL: '/group-student',
+    MANAGEMENT: "/group-student/all",
+    DETAIL: '/group-student/detail',
 
   },
   GROUP_LECTURER: {
@@ -66,6 +66,7 @@ export const APP_ROUTES = {
   FORGOT_PASSWORD: '/auth/forgot-password',
   SUCCESS_MESSAGE: '/auth/success',
   NOT_FOUND: '/404',
+
 };
 
 export const APP_SIDEBAR = [
@@ -120,8 +121,8 @@ export const APP_SIDEBAR = [
     children: [
       {
         text: 'Danh sách giảng viên',
-        link: APP_ROUTES.LECTURER.ALL,
-        key: '/all',
+        link: APP_ROUTES.LECTURER.MANAGEMENT,
+        key: APP_ROUTES.LECTURER.MANAGEMENT,
       },
     ],
   },
@@ -173,7 +174,7 @@ export const APP_SIDEBAR = [
     children: [
       {
         text: 'Danh sách nhóm quản lý',
-        link: APP_ROUTES.GROUP_STUDENT.ALL,
+        link: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
         key: '/all',
       },
     ],

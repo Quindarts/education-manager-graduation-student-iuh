@@ -8,11 +8,13 @@ import { dummyTeacherData } from '@/dummy';
 import EditInfoModal from '../Modal/EditInfoModal';
 import EditStatus from '../Modal/EditStatus';
 import DeleteModal from '../Modal/DeleteModal';
+import { useNavigate } from 'react-router-dom';
+import { APP_ROUTES } from '@/utils/app-config';
 
 function TableManagamentLecturer(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturer_id: '', isOpen: false });
-
+  const navigate = useNavigate();
   const handleCloseEditInfoModal = () => {
     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
   };
@@ -112,7 +114,7 @@ function TableManagamentLecturer(props: any) {
       renderCell: (params: any) => (
         <Box>
           <Button
-            variant='contained'
+            variant='outlined'
             sx={{ py: 0, fontSize: 12 }}
             onClick={() => {
               handleOpenStatusLecturerModal(params.row.username);
@@ -139,12 +141,16 @@ function TableManagamentLecturer(props: any) {
             </IconButton>
           </Tooltip>
           <Box></Box>
-          <Tooltip title='Cấp lại mật khẩu'>
-            <IconButton color='primary' size='small'>
-              <Icon width={20} icon='wpf:password1' />
+          <Tooltip title='Xem Chi tiết'>
+            <IconButton
+              color='primary'
+              size='small'
+              onClick={() => navigate(APP_ROUTES.LECTURER.DETAILS)}
+            >
+              <Icon width={20} icon='fluent:apps-list-detail-20-filled' />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xóa giảng viên'>
+          {/* <Tooltip title='Xóa giảng viên'>
             <IconButton
               color='error'
               size='small'
@@ -152,7 +158,7 @@ function TableManagamentLecturer(props: any) {
             >
               <Icon icon='mdi:trash' />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       ),
     },

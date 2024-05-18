@@ -39,7 +39,7 @@ const palette: PaletteOptions = {
   mode: 'light',
   primary: {
     main: color.indigo,
-    light: color.indigo,
+    light: color.light_blue,
     dark: color.dark_indigo,
   },
   grey: {

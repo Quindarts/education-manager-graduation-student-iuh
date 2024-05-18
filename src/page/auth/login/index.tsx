@@ -15,24 +15,46 @@ import { APP_ROUTES } from '@/utils/app-config';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { Icon } from '@iconify/react';
 import { setValueInLocalStorage } from '@/utils/localStorage';
+import { login } from '@/services/apiAuth';
+import { EnumGender, RoleCheck } from '@/types/enum';
+import { useSnackbar } from 'notistack';
 
+interface IAuthResponseData {
+  accessToken: string;
+  lecturer: {
+    avatar?: string;
+    degree: string;
+    email: string;
+    fullName: string;
+    gender?: EnumGender;
+    id?: string;
+    isAdmin: false;
+    major_id: 1;
+    phone: string;
+    role: RoleCheck;
+    username: string;
+  };
+}
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const formik = useFormik<IAuth>({
     initialValues: {
-      username: '',
-      password: '',
+      username: '21089141',
+      password: '21089141',
     },
-    validationSchema: LoginValidationSchema,
+    // validationSchema: LoginValidationSchema,
     onSubmit: (values: IAuth, { resetForm }: FormikHelpers<IAuth>) => {
-      // alert(JSON.stringify(values, null, 2));
-      setValueInLocalStorage('accessToken', 'demoToken');
-      resetForm();
-      navigate('/');
-      console.log(values);
-      // resetForm();
+      login({ username: '21089141', password: '21089141' }).then((result: any) => {
+        if (result?.success) {
+          navigate('/');
+          setValueInLocalStorage('accessToken', result?.accessToken);
+          enqueueSnackbar('Đăng nhập thành công', { variant: 'success' });
+          // localStorage.setItem('refreshToken', data.refreshToken);
+        }
+      });
     },
   });
 
@@ -52,7 +74,14 @@ export default function Login() {
               }}
             >
               <img width={150} height={60} src='/images/logo-light.png' alt='logo_app' />
-              <Typography mt={10} variant='h3' align='center' lineHeight={1.6} fontWeight={700} color='error.dark'>
+              <Typography
+                mt={10}
+                variant='h3'
+                align='center'
+                lineHeight={1.6}
+                fontWeight={700}
+                color='error.dark'
+              >
                 TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH
               </Typography>
               <Typography

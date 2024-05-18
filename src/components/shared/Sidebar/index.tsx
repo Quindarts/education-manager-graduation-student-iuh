@@ -90,7 +90,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
           xs: 'none',
           md: 'block',
         },
-        boxShadow: '5px 0 5px -3px #90bceb',
+        boxShadow: '3px 0 3px -3px #90bceb',
       }}
     >
       <Link
@@ -132,7 +132,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
             bgcolor: 'gray.400',
             transition: 'all 0.3s',
             '&::-webkit-scrollbar': {
-              width: 4,
+              width: 8,
             },
             '.MuiPaper-root': {
               pl: 8,
@@ -142,8 +142,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
             '&::-webkit-scrollbar-thumb': {
               borderRadius: 10,
               width: 20,
-              bgcolor: 'primary.dark',
-              color: 'primary.dark',
+              bgcolor: 'grey.300',
             },
             '.Mui-expanded ': {
               margin: 0,
@@ -159,7 +158,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   fontSize: 'body2',
                 },
               },
-              '&:hover': {  
+              '&:hover': {
                 color: 'primary.main',
                 '& svg': {
                   color: 'primary.main',
@@ -177,6 +176,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
             justifyContent={'center'}
             textTransform={'uppercase'}
             flexDirection={'column'}
+            mb={8}
           >
             <Typography
               variant='h6'
@@ -190,7 +190,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                 md: 8,
               }}
               sx={{
-                color: 'primary.dark',
+                color: 'text.primary',
                 opacity: 0.7,
                 '&:hover': {
                   color: 'unset',
@@ -214,7 +214,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
               title={item.text}
               sx={{
                 bgcolor: 'gray.400',
-                color: 'primary.main',
+                color: 'text.primary',
                 boxShadow: 'none',
                 paddingLeft: isOpenSideBar ? 0 : 16,
                 '&::before': {
@@ -238,7 +238,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   overflow: 'hidden',
                   height: 50,
                   px: 4,
-                  my: 2,
                   borderRadius: 2,
                   '&.Mui-expanded': {
                     minHeight: 0,
@@ -265,8 +264,8 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                     color: 'primary.main',
                   },
                   '&.active': {
-                    color: 'white',
-                    bgcolor: 'primary.dark',
+                    color: 'primary.dark',
+                    bgcolor: 'grey.200',
                     '& svg': {
                       color: 'white',
                     },
@@ -290,7 +289,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                     variant='body1'
                     fontWeight={600}
                     sx={{
-                      textTransform: 'uppercase',
                       flex: 1,
                       textWrap: 'nowrap',
                     }}

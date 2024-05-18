@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse, ResponseType } from 'axios';
 
 // `${process.env.REACT_APP_API_URL}` ||
 const axiosConfig = axios.create({
@@ -24,7 +24,7 @@ axiosConfig.interceptors.request.use(
 );
 
 axiosConfig.interceptors.response.use(
-  (response) => {
+  (response : AxiosResponse) => {
     return response.data;
   },
   async (error) => {

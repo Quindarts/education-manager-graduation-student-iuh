@@ -29,6 +29,8 @@ export default function Dashboard({}: Props) {
         justifyContent={'center'}
         alignItems={'center'}
         mx={'auto'}
+        my={'auto'}
+        boxShadow={'#919eab33 0px 4px 6px -2px'}
       >
         <ProfileDashBoard />
         <ListApplication sx={{ mt: 10 }} />
