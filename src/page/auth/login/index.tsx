@@ -18,6 +18,8 @@ import { setValueInLocalStorage } from '@/utils/localStorage';
 import { login } from '@/services/apiAuth';
 import { EnumGender, RoleCheck } from '@/types/enum';
 import { useSnackbar } from 'notistack';
+import Cookies from 'js-cookie';
+import { useAuth } from '@/hooks/api/useAuth';
 
 interface IAuthResponseData {
   accessToken: string;
@@ -40,21 +42,20 @@ export default function Login() {
   const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+
+  const { handleLogin } = useAuth();
+
+  const { mutate: mutateLogin } = handleLogin();
+
   const formik = useFormik<IAuth>({
     initialValues: {
       username: '21089141',
       password: '21089141',
     },
     // validationSchema: LoginValidationSchema,
+
     onSubmit: (values: IAuth, { resetForm }: FormikHelpers<IAuth>) => {
-      login({ username: '21089141', password: '21089141' }).then((result: any) => {
-        if (result?.success) {
-          navigate('/');
-          setValueInLocalStorage('accessToken', result?.accessToken);
-          enqueueSnackbar('Đăng nhập thành công', { variant: 'success' });
-          // localStorage.setItem('refreshToken', data.refreshToken);
-        }
-      });
+      mutateLogin(values);
     },
   });
 

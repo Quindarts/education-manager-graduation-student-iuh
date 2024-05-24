@@ -9,7 +9,7 @@ export const useMajor = () => {
     }
     const handleCreateMajor = (data: Major) => {
         return useMutation(
-            ['create-major'],
+            ['create-major', data],
             {
                 mutationFn: (data: Major) =>
                     createMajor(data),

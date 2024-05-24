@@ -39,7 +39,7 @@ const theme = createTheme({
       fontSize: 14,
     },
     body2: {
-      fontSize: 12,
+      fontSize: 14,
     },
   },
 

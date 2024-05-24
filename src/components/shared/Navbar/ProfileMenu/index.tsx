@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/api/useAuth';
 import usePopup from '@/hooks/ui/usePopup';
 import { APP_PROFILE_MENU } from '@/utils/app-config';
 import { removeValueInLocalStorage } from '@/utils/localStorage';
@@ -12,9 +13,11 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 
 function ProfileMenu() {
+  
   const navigate = useNavigate();
   const { handleActive, active, menuRef } = usePopup();
-  const { enqueueSnackbar } = useSnackbar();
+  const { lecturerStore, handleLogout } = useAuth();
+
   return (
     <Box
       display='flex'
@@ -49,10 +52,10 @@ function ProfileMenu() {
         }}
       >
         <Typography color='grey.700' variant='body2' fontWeight={500}>
-          Lê Minh Quang
+          {lecturerStore['me'].fullName}
         </Typography>
         <Typography color='success.main' variant='body2' fontWeight={600}>
-          Giảng viên
+          {lecturerStore['me'].role}
         </Typography>
       </Box>
       {active && (
@@ -88,12 +91,10 @@ function ProfileMenu() {
           <MenuList sx={{ p: 0 }}>
             {APP_PROFILE_MENU.map((menuItem) => (
               <MenuItem
-                sx={{ '.MuiListItemIcon-root ': { minWidth: 24 } }}
+                sx={{ '.MuiListItemIcon-root ': { minWidth: 24 }, my: 2 }}
                 onClick={() => {
                   if (menuItem.link === '/auth/login') {
-                    removeValueInLocalStorage('accessToken');
-                    enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
-                    navigate('/auth/login');
+                    handleLogout();
                   } else navigate(menuItem.link);
                 }}
               >

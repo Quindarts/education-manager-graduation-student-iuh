@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from '../Sidebar';
 import Navbar from '../Navbar';
@@ -7,6 +7,8 @@ import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import { getCurrentTerm } from '@/services/apiTerm';
 const actions = [
   { icon: <FileCopyIcon />, name: 'Copy' },
   { icon: <SaveIcon />, name: 'Save' },
@@ -19,7 +21,13 @@ function MainLayout() {
   const handleOpenSideBar = () => {
     setIsOpenSideBar(!isOpenSideBar);
   };
+  const { handleGetCurrentTerm } = useTerm();
   const [currentMaxWidth, setCurrentMaxWidth] = useState('272');
+
+  // getCurrentTerm().then((data: any) => {
+  //   console.log(data);
+  // });
+  handleGetCurrentTerm();
   useLayoutEffect(() => {
     if (isOpenSideBar == true) setCurrentMaxWidth('272');
     else setCurrentMaxWidth('100');

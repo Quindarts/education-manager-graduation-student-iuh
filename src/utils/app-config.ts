@@ -209,12 +209,12 @@ export const APP_SIDEBAR = [
 
 export const APP_PROFILE_MENU = [
   {
-    text: 'Profile',
+    text: 'Thông tin cá nhân',
     icon: 'mdi:account-circle',
     link: '#',
   },
   {
-    text: 'Log out',
+    text: 'Đăng xuất',
     icon: 'ri:logout-box-r-line',
     link: '/auth/login',
   },

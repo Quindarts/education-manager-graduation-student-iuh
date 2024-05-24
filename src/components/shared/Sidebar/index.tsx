@@ -10,6 +10,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { APP_SIDEBAR } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import { convertTermDropdown } from '@/utils/convertData';
+import Term from '@/types/entities/term';
 
 interface AdminSidebarProps {
   isOpenSideBar: boolean;
@@ -74,6 +77,17 @@ export default function AdminSidebar(props: AdminSidebarProps) {
       setActiveItemIndexes([...activeItemIndexes, indexNumber]);
     }
   };
+  const { handleGetAllTerm } = useTerm();
+  const { data, isLoading, isFetched } = handleGetAllTerm();
+  const [valueDropTerm, setValueDropTerm] = useState<any[]>([]);
+  console.log('🚀 ~ AdminSidebar ~ isFetched:', isFetched);
+  useEffect(() => {
+    console.log('refresh');
+    if (data) {
+      convertTermDropdown(data.terms);
+      setValueDropTerm(convertTermDropdown(data.terms));
+    }
+  }, [data, isLoading, isFetched]);
   return (
     <Box
       sx={{
@@ -201,7 +215,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
               Danh mục quản lý
             </Typography>
             <Box sx={{ width: 170 }}>
-              <DropDown defaultValue={1} options={[{ _id: '1', name: 'HK1 2024-2025' }]} />
+              <DropDown defaultValue={1} options={valueDropTerm} />
             </Box>
           </Box>
         )}

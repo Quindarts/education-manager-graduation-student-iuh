@@ -1,5 +1,5 @@
 export default interface Major {
-  id: string;
+  id?: string;
   name: string;
   headLecturer?: {
     id: number;

@@ -1,22 +1,25 @@
 import Table from '@/components/ui/Table/Table';
+import { APP_ROUTES } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function TableManagamentGroupStudent(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
+  const navigate = useNavigate();
   const basicColumns: GridColDef[] = [
     {
       headerName: 'STT',
-      field: 'name',
+      field: 'ddd',
       flex: 0.5,
       align: 'center',
       headerAlign: 'center',
     },
     {
       headerName: 'Tên nhóm',
-      field: 'name2',
+      field: 'name',
       flex: 1,
       align: 'center',
       headerAlign: 'center',
@@ -24,9 +27,14 @@ function TableManagamentGroupStudent(props: any) {
     {
       headerName: 'Tên Đề tài',
       field: 'name6',
-      flex: 1,
+      flex: 2,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params: any) => {
+        return (
+          <Typography>{params.row.topic_id ? params.row.topic_id : 'Chưa có đề tài'}</Typography>
+        );
+      },
     },
     {
       headerName: 'GV hướng dẫn',
@@ -34,6 +42,13 @@ function TableManagamentGroupStudent(props: any) {
       flex: 1,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params: any) => {
+        return (
+          <Typography>
+            {params.row.lecturer_id ? params.row.lecturer_id : 'Chưa có giảng viên HD'}
+          </Typography>
+        );
+      },
     },
     {
       headerName: 'Số lượng thành viên',
@@ -41,25 +56,31 @@ function TableManagamentGroupStudent(props: any) {
       flex: 1,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params: any) => {
+        return <Typography>0/2</Typography>;
+      },
     },
     {
       headerName: 'Trạng thái nhóm',
-      field: 'name5',
+      field: 'status',
       flex: 1,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params: any) => {
+        return <Chip color='success' sx={{ color: 'white' }} label={params.row.status} />;
+      },
     },
     {
       headerName: '',
       field: 'name8',
-      flex: 1,
+      flex: 0.5,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={6}>
-          <Tooltip title='Cập nhật mật khẩu'>
-            <IconButton color='primary'>
-              <Icon icon='emojione:pencil' />
+          <Tooltip title='Chi tiết'>
+            <IconButton color='primary' onClick={() => navigate(APP_ROUTES.GROUP_STUDENT.DETAIL)}>
+              <Icon icon='majesticons:checkbox-list-detail' />
             </IconButton>
           </Tooltip>
         </Box>
@@ -69,19 +90,7 @@ function TableManagamentGroupStudent(props: any) {
   return (
     <Box>
       <Table
-        rows={[
-          {
-            id: 1,
-            name: 'a',
-            name2: 'a',
-            name3: 'a',
-            name4: 'as',
-            name5: '5',
-            name6: '6',
-            name7: '7',
-            name8: '6',
-          },
-        ]}
+        rows={rows}
         sx={{
           bgcolor: 'white',
         }}

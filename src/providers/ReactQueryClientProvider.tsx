@@ -4,7 +4,14 @@ interface ReactQueryClientProviderProps {
   children: React.ReactNode;
 }
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      retry: 1,
+    },
+  },
+});
 
 function ReactQueryClientProvider({ children }: ReactQueryClientProviderProps) {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;

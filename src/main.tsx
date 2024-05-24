@@ -9,11 +9,13 @@ import { themeSnackbar } from './theme/ThemeSnackbar.js';
 import { Zoom } from '@mui/material';
 import ReactQueryClientProvider from './providers/ReactQueryClientProvider.jsx';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { Provider } from 'react-redux';
+import store from './store/index.js';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <MUIThemeProvider>
-      <BrowserRouter>
+  <MUIThemeProvider>
+    <BrowserRouter>
+      <Provider store={store}>
         <SnackbarProvider
           maxSnack={5}
           TransitionComponent={Zoom}
@@ -26,7 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <ReactQueryDevtools initialIsOpen={false} />
           </ReactQueryClientProvider>
         </SnackbarProvider>
-      </BrowserRouter>
-    </MUIThemeProvider>
-  </React.StrictMode>,
+      </Provider>
+    </BrowserRouter>
+  </MUIThemeProvider>,
 );
