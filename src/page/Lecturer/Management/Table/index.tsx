@@ -3,13 +3,13 @@ import { Icon } from '@iconify/react';
 import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
-import AddModal from '../Modal/AddModal';
-import { dummyTeacherData } from '@/dummy';
 import EditInfoModal from '../Modal/EditInfoModal';
 import EditStatus from '../Modal/EditStatus';
 import DeleteModal from '../Modal/DeleteModal';
 import { useNavigate } from 'react-router-dom';
 import { APP_ROUTES } from '@/utils/app-config';
+import { checkGender } from '@/utils/validations/person.validation';
+import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 
 function TableManagamentLecturer(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
@@ -50,7 +50,7 @@ function TableManagamentLecturer(props: any) {
     {
       headerName: 'Thông tin giảng viên',
       field: 'none',
-      flex: 2,
+      flex: 1.2,
       headerAlign: 'center',
       renderCell: (params: any) => {
         return (
@@ -72,9 +72,12 @@ function TableManagamentLecturer(props: any) {
     {
       headerName: 'Giới tính',
       field: 'gender',
-      flex: 1,
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (params: any) => {
+        return <Typography>{checkGender(params.row.gender)}</Typography>;
+      },
     },
     {
       headerName: 'Cấp bậc',
@@ -82,6 +85,9 @@ function TableManagamentLecturer(props: any) {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (params: any) => {
+        return <Typography>{checkRoleLecturer(params.row.role)}</Typography>;
+      },
     },
     {
       headerName: 'SĐT',
@@ -93,7 +99,7 @@ function TableManagamentLecturer(props: any) {
     {
       headerName: 'Email',
       field: 'email',
-      flex: 1,
+      flex: 1.2,
       headerAlign: 'center',
       align: 'center',
     },
@@ -122,7 +128,7 @@ function TableManagamentLecturer(props: any) {
             color={params.row.isActive ? 'success' : 'error'}
           >
             {' '}
-            {params.row.isActive ? 'còn làm' : 'nghỉ làm'}
+            {params.row.isActive ? 'Hoạt động' : 'Khóa tài khoản'}
           </Button>
         </Box>
       ),
@@ -145,7 +151,7 @@ function TableManagamentLecturer(props: any) {
             <IconButton
               color='primary'
               size='small'
-              onClick={() => navigate(APP_ROUTES.LECTURER.DETAILS)}
+              onClick={() => navigate(`/lecturer/details/${params.row.id}`)}
             >
               <Icon width={20} icon='fluent:apps-list-detail-20-filled' />
             </IconButton>
@@ -171,6 +177,7 @@ function TableManagamentLecturer(props: any) {
           rows={rows}
           sx={{
             bgcolor: 'white',
+            width: "100%",
           }}
           columns={basicColumns}
           totalItems={1}

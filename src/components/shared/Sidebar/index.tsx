@@ -7,24 +7,24 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { APP_SIDEBAR } from '@/utils/app-config';
+import { AppSiderBarType } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import { convertTermDropdown } from '@/utils/convertData';
-import Term from '@/types/entities/term';
+import { convertTermDropdown } from '@/utils/convertDataTable';
 
 interface AdminSidebarProps {
   isOpenSideBar: boolean;
   handleOpenSideBar: () => void;
+  currentSidebar: AppSiderBarType[];
 }
 const homePageIndex = 0;
-const drawerWidth = 250;
-const hidedDrawerWidth = 76;
+const drawerWidth = '250px';
+const hidedDrawerWidth = '76px';
 const screen_mobile = 900;
 
 export default function AdminSidebar(props: AdminSidebarProps) {
-  const { isOpenSideBar, handleOpenSideBar } = props;
+  const { isOpenSideBar, currentSidebar, handleOpenSideBar } = props;
   const location = useLocation();
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
@@ -48,7 +48,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
       setCurrentSidebarItemIndex(homePageIndex);
       return;
     }
-    APP_SIDEBAR.forEach((item: any, itemIndex: number) => {
+    currentSidebar.forEach((item: any, itemIndex: number) => {
       if (item.children) {
         item.children.forEach((subItem: any) => {
           if (location.pathname.includes(subItem.link)) {
@@ -80,31 +80,30 @@ export default function AdminSidebar(props: AdminSidebarProps) {
   const { handleGetAllTerm } = useTerm();
   const { data, isLoading, isFetched } = handleGetAllTerm();
   const [valueDropTerm, setValueDropTerm] = useState<any[]>([]);
-  console.log('🚀 ~ AdminSidebar ~ isFetched:', isFetched);
+
   useEffect(() => {
-    console.log('refresh');
     if (data) {
-      convertTermDropdown(data.terms);
-      setValueDropTerm(convertTermDropdown(data.terms));
+      convertTermDropdown(data.termList);
+      setValueDropTerm(convertTermDropdown(data.termList));
     }
   }, [data, isLoading, isFetched]);
+
   return (
     <Box
       sx={{
-        maxWidth: isOpenSideBar ? drawerWidth : hidedDrawerWidth,
-        width: '100%',
-        translateX: isOpenSideBar ? 0 : 1,
-        transition: '0.2s all',
+        width: isOpenSideBar ? drawerWidth : hidedDrawerWidth,
+        transition: '0.1s all ease',
+        transform: 'scaleX(1)',
         maxHeight: '100vh',
         height: '100%',
-        position: 'sticky',
+        position: 'fixed',
+        zIndex: 1000,
         top: 0,
-        bgcolor: 'white',
+        borderRight: '1px solid #cddef8',
         display: {
           xs: 'none',
           md: 'block',
         },
-        boxShadow: '3px 0 3px -3px #90bceb',
       }}
     >
       <Link
@@ -139,24 +138,23 @@ export default function AdminSidebar(props: AdminSidebarProps) {
             height: '100%',
             boxSizing: 'border-box',
             overflowX: 'hidden',
-            overflowY: 'auto',
+            overflowY: 'hidden',
             display: 'flex',
             position: 'revert',
             flexDirection: 'column',
             bgcolor: 'gray.400',
             transition: 'all 0.3s',
+            '&:hover': {
+              overflowY: 'auto',
+            },
             '&::-webkit-scrollbar': {
-              width: 8,
+              width: 4,
             },
             '.MuiPaper-root': {
-              pl: 8,
-              pr: 8,
-              pb: 4,
+              pb: 2,
             },
             '&::-webkit-scrollbar-thumb': {
-              borderRadius: 10,
-              width: 20,
-              bgcolor: 'grey.300',
+              bgcolor: 'grey.400',
             },
             '.Mui-expanded ': {
               margin: 0,
@@ -164,62 +162,61 @@ export default function AdminSidebar(props: AdminSidebarProps) {
             '& .MuiTypography-root': {
               overFlow: 'hidden',
               '&.active': {
-                fontWeight: 500,
+                fontWeight: 600,
+                color: 'primary.main',
+
                 '& svg': {
-                  color: 'white',
+                  color: 'primary',
                 },
                 '&:hover': {
                   fontSize: 'body2',
                 },
               },
               '&:hover': {
-                color: 'primary.main',
+                color: 'primary.dark',
                 '& svg': {
-                  color: 'primary.main',
+                  color: 'primary.dark',
                 },
               },
             },
           },
         }}
       >
-        {(isOpenSideBar || isMobile) && (
-          <Box
-            px={4}
-            display={'flex'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            textTransform={'uppercase'}
-            flexDirection={'column'}
-            mb={8}
-          >
-            <Typography
-              variant='h6'
-              fontWeight={600}
-              pt={{
-                xs: 10,
-                md: 20,
-              }}
-              pb={{
-                xs: 0,
-                md: 8,
-              }}
-              sx={{
-                color: 'text.primary',
-                opacity: 0.7,
-                '&:hover': {
-                  color: 'unset',
-                },
-                cursor: 'pointer',
-              }}
+        {isMobile ||
+          (isOpenSideBar && (
+            <Box
+              px={4}
+              display={'flex'}
+              alignItems={'center'}
+              justifyContent={'center'}
+              textTransform={'uppercase'}
+              flexDirection={'column'}
             >
-              Danh mục quản lý
-            </Typography>
-            <Box sx={{ width: 170 }}>
-              <DropDown defaultValue={1} options={valueDropTerm} />
+              <Typography
+                variant='h6'
+                fontWeight={500}
+                pt={{
+                  xs: 10,
+                  md: 20,
+                }}
+                pb={{
+                  xs: 0,
+                  md: 8,
+                }}
+                sx={{
+                  color: 'primary',
+                  opacity: 0.7,
+                  cursor: 'pointer',
+                }}
+              >
+                Danh mục quản lý
+              </Typography>
+              <Box sx={{ width: 170, mb:10 }}>
+                <DropDown defaultValue={1} options={valueDropTerm} />
+              </Box>
             </Box>
-          </Box>
-        )}
-        {APP_SIDEBAR.map((item: any, itemIndex: number) => (
+          ))}
+        {currentSidebar.map((item: any, itemIndex: number) => (
           <>
             <Accordion
               expanded={activeItemIndexes.includes(itemIndex)}
@@ -228,14 +225,10 @@ export default function AdminSidebar(props: AdminSidebarProps) {
               title={item.text}
               sx={{
                 bgcolor: 'gray.400',
-                color: 'text.primary',
                 boxShadow: 'none',
-                paddingLeft: isOpenSideBar ? 0 : 16,
+                mx: !isOpenSideBar ? 'auto!important' : '',
                 '&::before': {
                   display: 'none',
-                },
-                '&.Mui-expanded': {
-                  my: 4,
                 },
               }}
             >
@@ -253,6 +246,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   height: 50,
                   px: 4,
                   borderRadius: 2,
+
                   '&.Mui-expanded': {
                     minHeight: 0,
                   },
@@ -281,7 +275,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                     color: 'primary.dark',
                     bgcolor: 'grey.200',
                     '& svg': {
-                      color: 'white',
+                      color: 'primary.dark',
                     },
                   },
                 }}
@@ -301,7 +295,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   <Icon onClick={handleOpenSideBar} icon={item.icon} width={20} height={20} />
                   <Typography
                     variant='body1'
-                    fontWeight={600}
+                    fontWeight={500}
                     sx={{
                       flex: 1,
                       textWrap: 'nowrap',
@@ -334,7 +328,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                             position: 'absolute',
                             width: 4,
                             height: 2,
-                            bgcolor: 'primary.main',
                             left: 0,
                             top: '50%',
                             transform: 'translateY(-50%)',

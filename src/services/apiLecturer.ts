@@ -12,11 +12,9 @@ export const getLecturerById: any = (lecturer_id: number | string) => {
     return axiosConfig.get(`/api/v1/lecturers/${lecturer_id}`);
 }
 
-
 export const getNewAccessToken: any = (data: { refreshToken: string }) => {
     return axiosConfig.post("/api/v1/lecturers/refresh-token", data)
 }
-
 
 //Role header lecturer
 export const createLecturer: any = (data: any) => {
@@ -30,3 +28,5 @@ export const updateLecturerById: any = (lecturer_id: number | string, data: any)
 export const deleteLecturerById: any = (lecturer_id: number | string) => {
     return axiosConfig.delete(`/api/v1/lecturers/${lecturer_id}`)
 }
+
+

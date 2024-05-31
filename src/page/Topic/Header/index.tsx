@@ -5,6 +5,20 @@ import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import AddModal from '../Modal/AddModal';
 
+const SEARCH_DROP_VALUE = [
+  {
+    name: 'Không được duyệt',
+    _id: 'REFUSE',
+  },
+  {
+    name: 'Đang chờ',
+    _id: 'PENDING',
+  },
+  {
+    name: 'Đã duyệt',
+    _id: 'ACCEPT',
+  },
+];
 function HeaderTopic() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
@@ -17,10 +31,10 @@ function HeaderTopic() {
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={4}>
         <Box flex={1} display={'flex'} gap={4} width={'full'}>
-          <TextField fullWidth size='small' placeholder='Tim kiếm học kì..' />
           <Box width={200}>
-            <DropDown placeholder='Tìm kiếm theo' options={[]} />
+            <DropDown placeholder='Tìm kiếm đề tài' options={SEARCH_DROP_VALUE} />
           </Box>
+          <TextField fullWidth size='small' placeholder='Tim kiếm đề tài..' />
         </Box>
         <Button
           onClick={handleOpenModal}

@@ -1,10 +1,9 @@
+import { RoleCheck } from "@/types/enum";
 
 export const APP_ROUTES = {
   DASHBOARD: '/',
   TERM: {
-
     ALL: '/terms/all',
-
     ADD_NEW: '/terms/new',
 
     term_DETAIL: '/terms/:termId',
@@ -15,8 +14,11 @@ export const APP_ROUTES = {
   LECTURER: {
     ALL: '/lecturer',
     MANAGEMENT: "/lecturer/all",
-    DETAILS: "/lecturer/details",
-
+    DETAILS: "/lecturer/details/:lecturer_id",
+  },
+  SCORE_STUDENT: {
+    ALL: '/score',
+    MANAGEMENT: "/score/all"
   },
   STUDENT: {
     ALL: '/student/all',
@@ -25,7 +27,7 @@ export const APP_ROUTES = {
 
     ALL: '/group-student',
     MANAGEMENT: "/group-student/all",
-    DETAIL: '/group-student/detail',
+    DETAIL: '/group-student/detail/:group_id',
 
   },
   GROUP_LECTURER: {
@@ -69,18 +71,33 @@ export const APP_ROUTES = {
 
 };
 
+export interface ItemAppSiderbarType {
+  text: string,
+  icon: string,
+  link: string,
+  roles?: [],
+  key: string,
+}
+export interface AppSiderBarType {
+  text: string,
+  icon?: string,
+  link: string,
+  roles: [],
+  key: string,
+  children?: ItemAppSiderbarType[]
+}
 export const APP_SIDEBAR = [
   {
     text: 'Trang chính',
-    icon: 'flat-color-icons:home',
+    icon: 'ic:baseline-home',
     link: APP_ROUTES.DASHBOARD,
-    roles: ['admin', 'owner', 'mod', 'warehouse'],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
     key: '/',
   },
   {
-    icon: 'emojione:blue-book',
+    icon: 'mage:book-fill',
     text: 'Học kì',
-    roles: ['admin', 'owner', 'mod'],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
     link: [APP_ROUTES.TERM.ALL],
     children: [
       {
@@ -91,9 +108,9 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'ri:account-circle-line',
+    icon: 'fa-solid:user-cog',
     text: 'Phân quyền',
-    roles: ['owner', 'admin'],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.USER.ALL, APP_ROUTES.USER.DETAIL],
     children: [
       {
@@ -114,9 +131,9 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'noto:teacher',
+    icon: 'mdi:teach-poll',
     text: 'Giảng viên',
-    roles: ['admin', 'owner', 'mod'],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
     link: [APP_ROUTES.LECTURER.ALL],
     children: [
       {
@@ -127,10 +144,10 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'fluent-emoji:woman-student',
+    icon: 'mdi:account-student',
     text: 'Sinh viên',
-    roles: ['admin', 'owner', 'mod'],
-    link: [APP_ROUTES.STUDENT.ALL],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
+    link: [APP_ROUTES.STUDENT],
     children: [
       {
         text: 'Danh sách sinh viên',
@@ -140,9 +157,9 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'flat-color-icons:folder',
+    icon: 'material-symbols:topic',
     text: 'Đề tài',
-    roles: ['admin', 'owner', 'mod'],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
     link: [APP_ROUTES.TOPIC],
     children: [
       {
@@ -153,9 +170,9 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'flat-color-icons:rating',
+    icon: 'fluent-mdl2:review-solid',
     text: 'Đánh giá',
-    roles: ['admin', 'owner', 'mod'],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
     link: APP_ROUTES.REVIEW,
     key: '/review',
     children: [
@@ -167,9 +184,22 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'twemoji:family',
+    icon: 'healthicons:i-exam-multiple-choice',
+    text: 'Chấm điểm',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
+    link: [APP_ROUTES.SCORE_STUDENT.ALL],
+    children: [
+      {
+        text: 'Danh sách Chấm điểm',
+        link: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
+        key: '/all',
+      },
+    ],
+  },
+  {
+    icon: 'material-symbols:group',
     text: 'Nhóm sinh viên',
-    roles: ['admin', 'owner', 'mod'],
+    roles: [RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.GROUP_STUDENT.ALL],
     children: [
       {
@@ -180,9 +210,9 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'noto-v1:man-teacher-medium-light-skin-tone',
+    icon: 'fa6-solid:hand-holding-hand',
     text: 'Nhóm hướng dẫn',
-    roles: ['admin', 'owner', 'mod'],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
     link: [APP_ROUTES.GROUP_SUPPORT.ALL],
     children: [
       {
@@ -193,9 +223,9 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'emojione:family-man-woman-girl-girl',
+    icon: 'typcn:group',
     text: 'Nhóm giảng viên',
-    roles: ['admin', 'owner', 'mod'],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
     link: [APP_ROUTES.GROUP_LECTURER.ALL],
     children: [
       {

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
@@ -38,3 +38,23 @@ fieldset {
   border: none;
   outline: none;
 }
+
+::-webkit-scrollbar {
+  width: 6px; /* Chiều rộng của scrollbar */
+  height: 4px; /* Chiều cao của scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Màu nền của track scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0052b1; /* Màu của thumb scrollbar */
+  border-radius: 20px; /* Độ cong của thumb scrollbar */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2986f0; /* Màu của thumb scrollbar khi hover */
+}
+
+/* Áp dụng cho tất cả các scrollbars */

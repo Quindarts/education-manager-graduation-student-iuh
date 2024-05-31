@@ -8,7 +8,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import { getCurrentTerm } from '@/services/apiTerm';
+import { useAuth } from '@/hooks/api/useAuth';
+import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
+import Loading from '@/components/ui/Loading';
 const actions = [
   { icon: <FileCopyIcon />, name: 'Copy' },
   { icon: <SaveIcon />, name: 'Save' },
@@ -21,52 +23,79 @@ function MainLayout() {
   const handleOpenSideBar = () => {
     setIsOpenSideBar(!isOpenSideBar);
   };
-  const { handleGetCurrentTerm } = useTerm();
-  const [currentMaxWidth, setCurrentMaxWidth] = useState('272');
 
-  // getCurrentTerm().then((data: any) => {
-  //   console.log(data);
-  // });
+  const { handleGetCurrentTerm } = useTerm();
+
   handleGetCurrentTerm();
+
+  const { handleGetMe, lecturerStore } = useAuth();
+  const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
+  const { isLoading } = handleGetMe();
+
   useLayoutEffect(() => {
-    if (isOpenSideBar == true) setCurrentMaxWidth('272');
-    else setCurrentMaxWidth('100');
-  }, [isOpenSideBar]);
+    APP_SIDEBAR.map((item: any) => {
+      item.roles.forEach((role: string) => {
+        if (role === lecturerStore.me.role) {
+          currentSidebarRole.push(item);
+          setCurrentSidebarRole(currentSidebarRole);
+        }
+      });
+    });
+  }, [lecturerStore]);
+
   return (
-    <Box
-      display='flex'
-      sx={{
-        height: '100%',
-      }}
-    >
-      <AdminSidebar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
-      <Box
-        height='100%'
-        bgcolor={'background.paper'}
-        sx={{ maxWidth: `calc(100vw - ${currentMaxWidth}px)`, width: '100%', minHeight: '100vh' }}
-      >
-        <Navbar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
         <Box
-          pt={12}
-          pb={6}
-          px={8}
+          display='flex'
           sx={{
             height: '100%',
+            overflowX: 'hidden',
           }}
         >
-          <Outlet />
+          <AdminSidebar
+            isOpenSideBar={isOpenSideBar}
+            currentSidebar={currentSidebarRole}
+            handleOpenSideBar={handleOpenSideBar}
+          />
+          <Box
+            height='100%'
+            bgcolor={'background.paper'}
+            component='section'
+            sx={{
+              maxWidth: isOpenSideBar ? `calc(100vw - 250px)` : `calc(100vw - 76px)`,
+              width: '100%',
+              minHeight: '100vh',
+              marginLeft: isOpenSideBar ? '250px' : '76px',
+              transition: 'all 0.1s ease',
+            }}
+          >
+            <Navbar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
+            <Box
+              pt={12}
+              pb={6}
+              mx={8}
+              sx={{
+                height: '100%',
+              }}
+            >
+              <Outlet />
+            </Box>
+          </Box>
+          {/* <SpeedDial
+            ariaLabel='SpeedDial basic example'
+            sx={{ position: 'fixed', bottom: 30, right: 16 }}
+            icon={<SpeedDialIcon />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} />
+            ))}
+          </SpeedDial> */}
         </Box>
-      </Box>
-      <SpeedDial
-        ariaLabel='SpeedDial basic example'
-        sx={{ position: 'fixed', bottom: 30, right: 16 }}
-        icon={<SpeedDialIcon />}
-      >
-        {actions.map((action) => (
-          <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} />
-        ))}
-      </SpeedDial>
-    </Box>
+      )}
+    </>
   );
 }
 

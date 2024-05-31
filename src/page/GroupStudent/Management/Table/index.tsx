@@ -79,7 +79,10 @@ function TableManagamentGroupStudent(props: any) {
       renderCell: (params: any) => (
         <Box display={'flex'} gap={6}>
           <Tooltip title='Chi tiết'>
-            <IconButton color='primary' onClick={() => navigate(APP_ROUTES.GROUP_STUDENT.DETAIL)}>
+            <IconButton
+              color='primary'
+              onClick={() => navigate(`/group-student/detail/${params.row.id}`)}
+            >
               <Icon icon='majesticons:checkbox-list-detail' />
             </IconButton>
           </Tooltip>

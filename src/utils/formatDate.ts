@@ -6,7 +6,7 @@ export const formatDates = (date: string, option?: string) => {
     );
   }
   if (option === 'date') {
-    return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(data);
+    return new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(data);
   }
   return new Intl.DateTimeFormat('en-US').format(data);
 };

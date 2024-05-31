@@ -59,7 +59,7 @@ function TableManagamentStudent(props: any) {
                 {params.row.name}
               </Typography>
               <Typography>
-                Mã GV: {'  '}
+                Mã SV: {'  '}
                 <Typography component={'span'}>{params.row.username}</Typography>
               </Typography>
             </Box>

@@ -8,20 +8,7 @@ import Loading from '@/components/ui/Loading';
 type Props = {};
 
 export default function Dashboard({}: Props) {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
-  return isLoading ? (
-    <Loading />
-  ) : (
+  return (
     <Box height='100vh'>
       <Box
         display={'flex'}

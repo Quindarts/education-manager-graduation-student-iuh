@@ -21,6 +21,8 @@ import DetailsLecturerPage from '@/page/Lecturer/Details';
 import GroupStudentPage from '@/page/GroupStudent';
 import GroupStudentManagement from '@/page/GroupStudent/Management';
 import GroupStudentDetailPage from '@/page/GroupStudent/Detail';
+import ScoreManagerPage from '@/page/DetailGroupStudent/ScoreManager';
+import ScoreStudentPage from '@/page/ScoreStudent';
 
 function Routing() {
   return (
@@ -51,6 +53,9 @@ function Routing() {
           <Route path={APP_ROUTES.GROUP_LECTURER.ALL} element={<GroupLecturerPage />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.ASSEMBLY} element={<GroupGradingAssemblyPage />} />
           <Route path={'/componentpage'} element={<ComponentPage />} />
+
+          <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />
+
           {/* <Route path={APP_ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
           <Route path={APP_ROUTES.SUCCESS_MESSAGE} element={<SuccessMessagePage />} /> */}
         </Route>

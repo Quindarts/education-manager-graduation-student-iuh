@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 // active
 function LecturerPage() {
   return (
-    <Box>
+    <Box width={'100%'}>
       <Outlet />
     </Box>
   );

@@ -35,6 +35,11 @@ const RoleLecturerDrop = [
   },
 ];
 
+const DEGREE_DROP_VALUE = [
+  { name: 'Tiến sĩ', _id: 'MASTER' },
+  { name: 'Thạc sĩ', _id: 'DOCTOR' },
+];
+
 function EditInfoModal(props: any) {
   const { onClose, open, lecturer_id } = props;
   const { handleGetLecturerById } = useLecturer();
@@ -52,11 +57,12 @@ function EditInfoModal(props: any) {
     },
   });
   const { values, handleSubmit } = formik;
+  console.log("🚀 ~ EditInfoModal ~ values:", values)
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+      <Box py={10} px={10}>
+        <TitleManager mb={2} variant='h5' textTransform={'uppercase'}>
           Cập nhật thông tin Giảng viên
         </TitleManager>
         {isLoading ? (
@@ -141,7 +147,11 @@ function EditInfoModal(props: any) {
               />
             </Box>
             <Box mt={8} width={'full'}>
-              <DropDown label='Trình độ' placeholder='Trình độ' options={[]} />
+              <DropDown
+                label='Trình độ'
+                defaultValue={data.lecturer?.degree}
+                options={DEGREE_DROP_VALUE}
+              />
             </Box>{' '}
             <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
               <Button variant='contained' color='primary' onClick={onClose}>

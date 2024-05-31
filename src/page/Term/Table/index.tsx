@@ -9,6 +9,7 @@ import EditTopicRegister from '../Modal/EditTopicRegister';
 import EditPublicResult from '../Modal/EditPublicResult';
 import DeleteModal from '../Modal/DeleteModal';
 import TermDetail from '../Modal/TermDetail';
+import { formatDates } from '@/utils/formatDate';
 
 function TableManagamentTerm(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
@@ -97,6 +98,9 @@ function TableManagamentTerm(props: any) {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (params) => {
+        return <Typography>{formatDates(params.row.startDate)}</Typography>;
+      },
     },
     {
       headerName: 'Ngày Kết thúc ',
@@ -104,6 +108,9 @@ function TableManagamentTerm(props: any) {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (params) => {
+        return <Typography>{formatDates(params.row.startDate)}</Typography>;
+      },
     },
     {
       headerName: 'Đăng ký nhóm',

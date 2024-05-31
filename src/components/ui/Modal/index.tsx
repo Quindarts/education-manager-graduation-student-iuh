@@ -5,7 +5,7 @@ import React from 'react';
 import CustomModal from './style';
 import { Icon } from '@iconify/react';
 
-interface ModalTypeProps extends DialogProps {
+export interface ModalTypeProps extends DialogProps {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;

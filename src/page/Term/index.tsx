@@ -20,7 +20,7 @@ function TermPage() {
           <SekeletonUI />
         ) : (
           <Box width={'full'} my={10}>
-            <TableManagamentTerm rows={data?.terms} />
+            <TableManagamentTerm rows={data?.termList} />
           </Box>
         )}
       </Box>

@@ -12,7 +12,7 @@ function Navbar(props: NavbarProps) {
   const { handleOpenSideBar, isOpenSideBar } = props;
   return (
     <Box
-      sx={{ backgroundColor: 'background.paper' }}
+      sx={{ backgroundColor: 'rgba(243, 244, 249, 0.8)', zIndex: 1001 }}
       px={12}
       display='flex'
       position='sticky'
@@ -30,12 +30,9 @@ function Navbar(props: NavbarProps) {
         display='flex'
         alignItems='center'
         onClick={handleOpenSideBar}
+        color={'grey.600'}
       >
-        <Icon
-          width={24}
-          fontWeight={600}
-          icon={isOpenSideBar ? 'ph:arrow-right-bold' : 'fluent:list-16-regular'}
-        />
+        <Icon width={20} icon={isOpenSideBar ? 'ooui:next-ltr' : 'fluent:list-16-regular'} />
       </Box>
       <Box display='flex' alignItems='center' gap={6}>
         <Notification />

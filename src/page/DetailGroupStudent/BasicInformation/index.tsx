@@ -1,3 +1,4 @@
+import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import {
   Accordion,
   AccordionDetails,
@@ -10,7 +11,12 @@ import {
 import { GridExpandMoreIcon } from '@mui/x-data-grid';
 import React from 'react';
 
-function BasicInformationGrStudentPage() {
+function BasicInformationGrStudentPage(props: any) {
+  const { groupStudentId } = props;
+  const { handleGetGroupStudentById } = useGroupStudent();
+  // const { data: resGroupStudent, isLoading: loadingGroupStudent } = handleGetGroupStudentById(
+  //   `${groupStudentId}`,
+  // );
   return (
     <>
       <Box display='flex' gap={10}>

@@ -9,10 +9,14 @@ interface TopicBodySend {
     target?: string;
 }
 
+export const getTopicById: any = async (topic_id: string | number) => {
+    return axiosConfig.get(`/api/v1/topics/${topic_id}`)
+}
+
 export const getTopicsByTermByMajor: any = async (termId: string | number, majorId: string | number) => {
     return axiosConfig.get(`/api/v1/topics?termId=${termId}&majorId=${majorId}`)
-
 }
+
 
 export const getTopicsByLecturerByTerm: any = async (lecturerId: string | number, termId: string | number) => {
     return axiosConfig.get(`/api/v1/topics?lecturerId=${lecturerId}&termId=${termId}`)
@@ -26,6 +30,11 @@ export const createTopicByToken: any = async (topic: TopicBodySend) => {
 //PUT
 export const updateTopicById: any = async (topicId: string | number, topic: TopicBodySend) => {
     return axiosConfig.put(`/api/v1/topics/${topicId}`, topic)
+}
+
+//PUT
+export const updateStatusTopicById: any = async (topicId: string | number, data: { status: string }) => {
+    return axiosConfig.put(`/api/v1/topics/${topicId}/status`, data)
 }
 
 //DELETE

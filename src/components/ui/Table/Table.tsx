@@ -31,7 +31,9 @@ export default function Table(props: Props) {
   } = props;
   return (
     <Box
+      style={{ minWidth: 0 }}
       sx={{
+        width: "100%",  
         minHeight,
       }}
     >
@@ -63,6 +65,7 @@ export default function Table(props: Props) {
         }}
         sx={{
           fontSize: 12,
+          cursor: 'pointer',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
             outline: 'none !important',
           },
@@ -74,8 +77,6 @@ export default function Table(props: Props) {
             borderColor: 'text.disabled',
             bgcolor: 'primary.dark',
             color: 'white',
-            maxHeight: '30px !important',
-            minHeight: '30px !important',
           },
 
           '& .MuiDataGrid-virtualScroller': {

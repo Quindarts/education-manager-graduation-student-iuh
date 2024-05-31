@@ -16,10 +16,10 @@ function HeaderStudent() {
     <>
       <Box mb={14} display={'flex'} flexWrap={'wrap'} gap={8}>
         <Box flex={1} display={'flex'} gap={4} width={'full'}>
-          <TextField fullWidth size='small' placeholder='Tim kiếm sinh viên theo..' />
           <Box width={200}>
             <DropDown placeholder='Tìm kiếm theo' options={[]} />
           </Box>
+          <TextField fullWidth size='small' placeholder='Tim kiếm sinh viên theo..' />
         </Box>
         <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
           <Icon icon='lets-icons:add-round' width={20} />

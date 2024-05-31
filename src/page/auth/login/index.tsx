@@ -121,7 +121,7 @@ export default function Login() {
                     }}
                   >
                     Mật khẩu
-                    <Typography variant='h5' color='gray'>
+                    <Typography variant='body2' color='gray'>
                       <Link
                         style={{
                           color: 'inherit',

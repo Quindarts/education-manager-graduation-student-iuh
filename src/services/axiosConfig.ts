@@ -14,7 +14,7 @@ const axiosConfig = axios.create({
 axiosConfig.interceptors.request.use(
   (config) => {
     const accessToken = getValueFromLocalStorage("accessToken");
-    console.log(accessToken)
+
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -27,38 +27,28 @@ axiosConfig.interceptors.request.use(
 
 axiosConfig.interceptors.response.use(
   (response: any) => {
-    console.log("🚀 ~ response:", response)
     return response.data;
   },
-  // async (error) => {
-  //   const userToken = JSON.parse(localStorage.getItem('user') || '{}');
-  //   const originalRequest = error.config;
+  async (error) => {
+    const originalRequest = error.config;
+    // const accessToken = getValueFromLocalStorage("accessToken");
+    if (error.response.data.status === 401 && error.response.data.success === false) {
+      originalRequest._retry = true;
+      try {
+        const refreshToken = getValueFromLocalStorage("refreshToken");
+        const result: any = await axiosConfig.post('/api/v1/lecturers/refresh-token', {
+          refreshToken,
+        });
+        localStorage.setItem('accessToken', JSON.stringify(result.accessToken));
+        originalRequest.headers.Authorization = `Bearer ${result.accessToken}`;
+        return axiosConfig(originalRequest);
 
-  //   if (error.response.status === 403 && !originalRequest._retry) {
-  //     originalRequest._retry = true;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
 
-  //     try {
-  //       const refreshToken = userToken.tokenList?.refreshToken;
-  //       const response = await axiosConfig.post('auth/accessToken-generate', {
-  //         refreshToken,
-  //       });
-
-  //       const { accessToken } = response.data;
-  //       userToken.tokenList = {
-  //         accessToken,
-  //         refreshToken,
-  //       };
-
-  //       localStorage.setItem('user', JSON.stringify(userToken));
-  //       originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-
-  //       return axiosConfig(originalRequest);
-  //     } catch (error) {
-  //       return Promise.reject(error);
-  //     }
-  //   }
-
-  //   return Promise.reject(error.response.data);
-  // },
+    return Promise.reject(error.response.data);
+  },
 );
 export default axiosConfig;
