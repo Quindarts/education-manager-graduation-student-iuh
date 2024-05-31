@@ -7,7 +7,7 @@ import { TabPanel } from '@mui/lab';
 import BasicInformationGrStudentPage from '@/page/DetailGroupStudent/BasicInformation';
 import TopicInGroupStudent from '@/page/DetailGroupStudent/TopicGroup';
 import StudentInGroupPage from '@/page/DetailGroupStudent/StudentInGroup';
-import ScoreManagerPage from '@/page/DetailGroupStudent/ScoreManager';
+import ScoreManagerPage from '@/page/GroupSupport/ScoreManager';
 import { useParams } from 'react-router-dom';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
@@ -15,7 +15,6 @@ function TabPanelUI(props: any) {
   const [value, setValue] = React.useState('1');
 
   const { group_id } = useParams();
-
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);

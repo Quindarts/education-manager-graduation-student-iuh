@@ -1,23 +1,14 @@
-import MenuButton from '@/components/ui/MenuButton';
 import ScoreInput from '@/components/ui/ScoreInput';
-import Search from '@/components/ui/Search';
-import SekeletonUI from '@/components/ui/Sekeleton';
 import Table from '@/components/ui/Table/Table';
 import TitleManager from '@/components/ui/Title';
 import { dummyStudentData } from '@/dummy';
 import { Icon } from '@iconify/react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Avatar,
   Box,
   Button,
-  CircularProgress,
   LinearProgress,
   Paper,
-  Skeleton,
-  Stack,
   Typography,
 } from '@mui/material';
 import { GridColDef, GridExpandMoreIcon } from '@mui/x-data-grid';

@@ -51,9 +51,10 @@ export const APP_ROUTES = {
     ALL: '/review/all',
   },
   GROUP_SUPPORT: {
-
-    ALL: '/group-support/all',
-
+    ALL: '/group-support',
+    MANAGEMENT: "/group-support/all",
+    SCORE: '/group-support/score',
+    DETAIL_SCORE_GROUP: '/group-support/score/group_student_id'
   },
   //file upload
   FILE_UPLOADED: '/files',
@@ -216,9 +217,14 @@ export const APP_SIDEBAR = [
     link: [APP_ROUTES.GROUP_SUPPORT.ALL],
     children: [
       {
-        text: 'Danh sách',
-        link: APP_ROUTES.GROUP_SUPPORT.ALL,
+        text: 'Danh sách nhóm sinh viên',
+        link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
         key: '/all',
+      },
+      {
+        text: 'Chấm điểm hướng dẫn',
+        link: APP_ROUTES.GROUP_SUPPORT.SCORE,
+        key: '/score',
       },
     ],
   },

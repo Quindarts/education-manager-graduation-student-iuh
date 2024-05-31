@@ -25,7 +25,6 @@ export default function Table(props: Props) {
     totalPages,
     totalItems,
     needReset,
-    handelChangePage,
     onReset,
     ...rest
   } = props;
@@ -33,7 +32,7 @@ export default function Table(props: Props) {
     <Box
       style={{ minWidth: 0 }}
       sx={{
-        width: "100%",  
+        width: '100%',
         minHeight,
       }}
     >

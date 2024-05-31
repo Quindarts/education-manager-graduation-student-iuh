@@ -1,7 +1,7 @@
 import { Box, Checkbox, Paper, PaperProps, TextField, Typography } from '@mui/material';
 
 interface ScoreInputPropsType extends PaperProps {
-  name: string;
+  name?: string;
   scoreMax: number | string;
 }
 function ScoreInput(props: ScoreInputPropsType) {

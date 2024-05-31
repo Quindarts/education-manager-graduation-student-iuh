@@ -14,7 +14,7 @@ import {
 
 function CardGroupStudent() {
   return (
-    <Card sx={{ width: 'calc(25% - 18px)', cursor: 'pointer' }}>
+    <Card>
       <CardMedia
         component='img'
         alt='green iguana'

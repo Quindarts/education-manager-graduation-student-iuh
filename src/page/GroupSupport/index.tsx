@@ -1,7 +1,13 @@
+import { Paper } from '@mui/material';
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 function GroupSupportPage() {
-  return <div>GroupSupportPage</div>;
+  return (
+    <Paper>
+      <Outlet />
+    </Paper>
+  );
 }
 
 export default GroupSupportPage;
