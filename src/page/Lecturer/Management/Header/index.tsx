@@ -2,10 +2,14 @@ import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import AddModal from '../Modal/AddModal';
-import EditInfoModal from '../Modal/EditInfoModal';
+import AddLecturerModal from '../Modal/AddModal';
+import ModalUpload from '@/components/ui/Upload';
+import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { useTerm } from '@/hooks/api/useQueryTerm';
 
-function HeaderLecturer() {
+function HeaderLecturer(props: any) {
+  const { listMajor } = props;
+
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
@@ -13,6 +17,8 @@ function HeaderLecturer() {
   const handleOpenModal = () => {
     setOpenAddModal(true);
   };
+  const { termStore } = useTerm();
+  const { currentTerm } = termStore;
   return (
     <>
       <Box mb={14} display={'flex'} flexWrap={'wrap'} gap={8}>
@@ -26,15 +32,12 @@ function HeaderLecturer() {
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo giảng viên
         </Button>
-        <Button color='success' sx={{ color: 'white' }} type='button' variant='contained'>
-          <Icon icon='ic:baseline-upload' width={20} />
-          Upload Excel
-        </Button>
+        <ModalUpload entityUpload={TypeEntityUpload.LECTURER} termId={currentTerm.id} />
         <Button color='warning' type='button' sx={{ color: 'white' }} variant='contained'>
           <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
         </Button>
       </Box>
-      <AddModal open={openAddModal} onClose={handleCloseAddModal} />
+      <AddLecturerModal listMajor={listMajor} open={openAddModal} onClose={handleCloseAddModal} />
     </>
   );
 }

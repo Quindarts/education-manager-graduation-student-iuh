@@ -5,9 +5,9 @@ interface TittleManagerPropsType extends TypographyProps {
   icon?: string;
 }
 function TitleManager(props: TittleManagerPropsType) {
-  const { icon, children, ...rest } = props;
+  const { icon, children, fontWeight = 600, color = 'primary.main', ...rest } = props;
   return (
-    <Typography fontWeight={600} variant='h3' color='primary.main' {...rest}>
+    <Typography fontWeight={fontWeight} variant='h3' color={`${color}`} {...rest}>
       {children}
     </Typography>
   );

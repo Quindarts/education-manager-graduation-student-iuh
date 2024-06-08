@@ -12,15 +12,18 @@ function Navbar(props: NavbarProps) {
   const { handleOpenSideBar, isOpenSideBar } = props;
   return (
     <Box
-      sx={{ backgroundColor: 'rgba(243, 244, 249, 0.8)', zIndex: 1001 }}
+      sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 1001 }}
       px={12}
       display='flex'
-      position='sticky'
+      position='fixed'
       zIndex={20}
       top={0}
+      bottom={0}
       width='100%'
       height={70}
+      maxWidth={isOpenSideBar ? `calc(100vw - 250px)` : `calc(100vw - 76px)`}
       alignItems='center'
+      left={isOpenSideBar ? '250px' : '76px'}
       justifyContent='space-between'
     >
       <Box

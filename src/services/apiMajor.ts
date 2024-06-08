@@ -1,7 +1,7 @@
 import Major from "@/types/entities/major"
 import axiosConfig from "./axiosConfig"
 //[GET]
-export const getAllMajor = () => {
+export const getAllMajor = (): any => {
     return axiosConfig.get("/api/v1/majors")
 }
 //[GET]

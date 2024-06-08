@@ -17,3 +17,7 @@ export const updateLecturerTermById: any = async (lecturerTermId: number | strin
 export const deleteLecturerTermById: any = async (lecturerTermId: number | string) => {
     return axiosConfig.delete(`/api/v1/lecturer-terms/${lecturerTermId}`);
 }
+
+export const importLecturerTerm: any = async (termId: number | string) => {
+    return axiosConfig.post(`/api/v1/lecturer-terms/import`, { termId: termId })
+}

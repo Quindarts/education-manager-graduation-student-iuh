@@ -10,12 +10,28 @@ import EditPublicResult from '../Modal/EditPublicResult';
 import DeleteModal from '../Modal/DeleteModal';
 import TermDetail from '../Modal/TermDetail';
 import { formatDates } from '@/utils/formatDate';
+import dayjs from 'dayjs';
+
+const checkStatusGroup = (startDate: any, endDate: any) => {
+  let data: {
+    mess: string;
+    color: string;
+  };
+  if (dayjs(endDate) < dayjs()) data = { mess: 'Đã đóng', color: 'error' };
+  else if (dayjs(startDate) > dayjs()) data = { mess: 'Sắp diễn ra', color: 'primary' };
+  else data = { mess: 'Đang mở', color: 'success.main' };
+  return (
+    <Typography variant='body1' color={data.color}>
+      {data.mess}
+    </Typography>
+  );
+};
 
 function TableManagamentTerm(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
   const [openModalEditGroupRegister, setOpenModalEditGroupRegister] = useState({
     isOpen: false,
-    term_id: 0,
+    termId: 0,
   });
   const handleCloseEditGroupRegister = () => {
     setOpenModalEditGroupRegister({
@@ -23,14 +39,14 @@ function TableManagamentTerm(props: any) {
       isOpen: false,
     });
   };
-  const handleOpenEditGroupRegister = (term_id: any) => {
-    setOpenModalEditGroupRegister({ term_id: term_id, isOpen: true });
+  const handleOpenEditGroupRegister = (termId: any) => {
+    setOpenModalEditGroupRegister({ termId: termId, isOpen: true });
   };
 
   //Hanlde
   const [openModalEditTopicRegister, setOpenModalEditTopicRegister] = useState({
     isOpen: false,
-    term_id: 0,
+    termId: 0,
   });
   const handleCloseEditTopicRegister = () => {
     setOpenModalEditTopicRegister({
@@ -38,14 +54,14 @@ function TableManagamentTerm(props: any) {
       isOpen: false,
     });
   };
-  const handleOpenEditTopicRegister = (term_id: any) => {
-    setOpenModalEditTopicRegister({ term_id: term_id, isOpen: true });
+  const handleOpenEditTopicRegister = (termId: any) => {
+    setOpenModalEditTopicRegister({ termId: termId, isOpen: true });
   };
 
   //Handle
   const [openModalPublicResult, setOpenModalPublicResult] = useState({
     isOpen: false,
-    term_id: 0,
+    termId: 0,
   });
 
   const handleClosePublicResult = () => {
@@ -54,26 +70,12 @@ function TableManagamentTerm(props: any) {
       isOpen: false,
     });
   };
-  const handleOpenPublicResult = (term_id: any) => {
-    setOpenModalPublicResult({ term_id: term_id, isOpen: true });
+  const handleOpenPublicResult = (termId: any) => {
+    setOpenModalPublicResult({ termId: termId, isOpen: true });
   };
-  //
-  const [openDeleteTermModal, setOpenDeleteTermModal] = useState({
-    term_id: 0,
-    isOpen: false,
-  });
-
-  const handleCloseDeleteTermModal = () => {
-    setOpenDeleteTermModal({ ...openDeleteTermModal, isOpen: false });
-  };
-  const handleOpenDeleteTermModal = (term_id: number) => {
-    setOpenDeleteTermModal({ term_id, isOpen: true });
-  };
-
-  //
   const [openModalTermDetail, setOpenModalTermDetail] = useState({
     isOpen: false,
-    term_id: 0,
+    termId: 0,
   });
   const handleCloseTermDetail = () => {
     setOpenModalTermDetail({
@@ -81,8 +83,8 @@ function TableManagamentTerm(props: any) {
       isOpen: false,
     });
   };
-  const handleOpenTermDetail = (term_id: number) => {
-    setOpenModalTermDetail({ term_id, isOpen: true });
+  const handleOpenTermDetail = (termId: number) => {
+    setOpenModalTermDetail({ termId, isOpen: true });
   };
   const basicColumns: GridColDef[] = [
     {
@@ -99,7 +101,7 @@ function TableManagamentTerm(props: any) {
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
-        return <Typography>{formatDates(params.row.startDate)}</Typography>;
+        return <Typography>{dayjs(params.row.startDate).format('DD/MM/YYYY')}</Typography>;
       },
     },
     {
@@ -109,28 +111,25 @@ function TableManagamentTerm(props: any) {
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
-        return <Typography>{formatDates(params.row.startDate)}</Typography>;
+        return <Typography>{dayjs(params.row.startDate).format('DD/MM/YYYY')}</Typography>;
       },
     },
     {
       headerName: 'Đăng ký nhóm',
       field: 'name5',
-      flex: 2,
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
-            <Typography
-              width={60}
-              color={params.row.isGroupRegister ? 'success.main' : 'error.main'}
-              fontWeight={'600'}
-            >
-              {params.row.isGroupRegister ? 'Đang mở' : 'Đóng'}
-            </Typography>
+            {checkStatusGroup(
+              formatDates(params.row.startChooseGroupDate),
+              formatDates(params.row.endChooseGroupDate),
+            )}
             <Tooltip title='Cập nhật đăng ký nhóm'>
               <IconButton
-                onClick={() => handleOpenEditGroupRegister(params.row.term_id)}
+                onClick={() => handleOpenEditGroupRegister(params.row.id)}
                 color='primary'
                 size='small'
               >
@@ -143,23 +142,72 @@ function TableManagamentTerm(props: any) {
     },
     {
       headerName: 'Đăng ký đề tài',
-      field: 'name6',
+      field: 'startChooseTopicDate',
       flex: 1,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
-            <Typography
-              width={60}
-              color={params.row.isTopicRegister ? 'success.main' : 'error.main'}
-              fontWeight={'600'}
-            >
-              {params.row.isTopicRegister ? 'Đang mở' : 'Đóng'}
-            </Typography>
+            {checkStatusGroup(
+              formatDates(params.row.startChooseTopicDate),
+              formatDates(params.row.endChooseTopicDate),
+            )}
             <Tooltip title='Cập nhật đăng ký Đề tài'>
               <IconButton
-                onClick={() => handleOpenEditTopicRegister(params.row.term_id)}
+                onClick={() => handleOpenEditTopicRegister(params.row.id)}
+                color='primary'
+                size='small'
+              >
+                <Icon icon='flat-color-icons:info' />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+    {
+      headerName: 'Phản biện',
+      field: 'startDiscussionDate',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          <Box display={'flex'} gap={4} alignItems={'center'}>
+            {checkStatusGroup(
+              formatDates(params.row.startDiscussionDate),
+              formatDates(params.row.endDiscussionDate),
+            )}
+            <Tooltip title='Cập nhật Phản biện'>
+              <IconButton
+                onClick={() => handleOpenEditTopicRegister(params.row.id)}
+                color='primary'
+                size='small'
+              >
+                <Icon icon='flat-color-icons:info' />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+    {
+      headerName: 'Báo cáo Đề tài',
+      field: 'startPublicResultDate',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          <Box display={'flex'} gap={4} alignItems={'center'}>
+            {checkStatusGroup(
+              formatDates(params.row.startPublicResultDate),
+              formatDates(params.row.endPublicResultDate),
+            )}
+            <Tooltip title='Cập nhật báo cáo đề tài'>
+              <IconButton
+                onClick={() => handleOpenPublicResult(params.row.id)}
                 color='primary'
                 size='small'
               >
@@ -179,16 +227,13 @@ function TableManagamentTerm(props: any) {
       renderCell: (params) => {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
-            <Typography
-              width={60}
-              color={params.row.isPublicResult ? 'success.main' : 'error.main'}
-              fontWeight={'600'}
-            >
-              {params.row.isPublicResult ? 'Đang mở' : 'Đóng'}
-            </Typography>
+            {checkStatusGroup(
+              formatDates(params.row.startPublicResultDate),
+              formatDates(params.row.endPublicResultDate),
+            )}
             <Tooltip title='Cập nhật công bố kết quả'>
               <IconButton
-                onClick={() => handleOpenPublicResult(params.row.term_id)}
+                onClick={() => handleOpenPublicResult(params.row.id)}
                 color='primary'
                 size='small'
               >
@@ -210,24 +255,24 @@ function TableManagamentTerm(props: any) {
           <Tooltip title='Xem thông tin học kì'>
             <IconButton
               onClick={() => {
-                handleOpenTermDetail(params.row.term_id);
+                handleOpenTermDetail(params.row.id);
               }}
               size='small'
             >
               <Icon icon='noto-v1:eye-in-speech-bubble' />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xóa học kì'>
+          {/* <Tooltip title='Xóa học kì'>
             <IconButton
               onClick={() => {
-                handleOpenDeleteTermModal(params.row.term_id);
+                handleOpenDeleteTermModal(params.row.id);
               }}
               size='small'
               color='error'
             >
               <Icon icon='mdi:trash' />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       ),
     },
@@ -250,16 +295,22 @@ function TableManagamentTerm(props: any) {
         disableColumnSelector
       />
       <EditGroupRegister
+        id={openModalEditGroupRegister.termId}
         open={openModalEditGroupRegister.isOpen}
         onClose={handleCloseEditGroupRegister}
+        termId={openModalEditGroupRegister.termId}
       />
       <EditTopicRegister
         open={openModalEditTopicRegister.isOpen}
         onClose={handleCloseEditTopicRegister}
       />
       <EditPublicResult open={openModalPublicResult.isOpen} onClose={handleClosePublicResult} />
-      <DeleteModal onClose={handleCloseDeleteTermModal} open={openDeleteTermModal.isOpen} />
-      <TermDetail onClose={handleCloseTermDetail} open={openModalTermDetail.isOpen} />
+      {/* <DeleteModal onClose={handleCloseDeleteTermModal} open={openDeleteTermModal.isOpen} /> */}
+      <TermDetail
+        termId={openModalTermDetail.termId}
+        onClose={handleCloseTermDetail}
+        open={openModalTermDetail.isOpen}
+      />
     </Box>
   );
 }

@@ -31,15 +31,11 @@ export const APP_ROUTES = {
 
   },
   GROUP_LECTURER: {
-
     ALL: '/group-lecturer',
-
     DETAIL: '/group-lecturer/detail/:lecturer_id',
-
     SUPPORT: '/group-lecturer/group-support',
-
-    ASSEMBLY: '/group-lecturer/group-assembly',
-
+    REPORT: '/group-lecturer/group-report',
+    CREATE: '/group-lecturer/create',
   },
   TOPIC: {
 
@@ -235,9 +231,14 @@ export const APP_SIDEBAR = [
     link: [APP_ROUTES.GROUP_LECTURER.ALL],
     children: [
       {
-        text: 'Nhóm chấm Hội đồng',
-        link: APP_ROUTES.GROUP_LECTURER.ASSEMBLY,
-        key: APP_ROUTES.GROUP_LECTURER.ASSEMBLY,
+        text: 'Chấm điểm báo cáo',
+        link: APP_ROUTES.GROUP_LECTURER.REPORT,
+        key: APP_ROUTES.GROUP_LECTURER.REPORT,
+      },
+      {
+        text: 'Phân công chấm điểm',
+        link: APP_ROUTES.GROUP_LECTURER.CREATE,
+        key: APP_ROUTES.GROUP_LECTURER.CREATE,
       }
     ],
   },

@@ -10,12 +10,14 @@ import { useAuth } from '@/hooks/api/useAuth';
 import SekeletonUI from '@/components/ui/Sekeleton';
 
 function TopicPage() {
-  const { handleTopicsByLecturerByTerm } = useTopic();
+  const { handleTopicsByTermByMajor } = useTopic();
   const { lecturerStore } = useAuth();
   const { termStore } = useTerm();
-  const { data, isLoading } = handleTopicsByLecturerByTerm(lecturerStore?.me.id, 1);
-  console.log("🚀 ~ TopicPage ~ data:", data)
-
+  console.log('🚀 ~ TopicPage ~ termStore:', termStore);
+  const { data, isLoading } = handleTopicsByTermByMajor(
+    termStore.currentTerm.id,
+    lecturerStore?.me.majorId,
+  );
   return (
     <Box>
       <TitleManager mb={14} mt={2}>
@@ -26,7 +28,7 @@ function TopicPage() {
         <SekeletonUI />
       ) : (
         <Box width={'full'} my={10}>
-          <TableManagamentTopic rows={data.topics} />
+          <TableManagamentTopic rows={data?.topics ? data.topics : []} />
         </Box>
       )}
     </Box>

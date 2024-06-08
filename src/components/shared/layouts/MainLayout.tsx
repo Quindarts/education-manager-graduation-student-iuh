@@ -62,7 +62,6 @@ function MainLayout() {
           />
           <Box
             height='100%'
-            bgcolor={'background.paper'}
             component='section'
             sx={{
               maxWidth: isOpenSideBar ? `calc(100vw - 250px)` : `calc(100vw - 76px)`,
@@ -70,6 +69,7 @@ function MainLayout() {
               minHeight: '100vh',
               marginLeft: isOpenSideBar ? '250px' : '76px',
               transition: 'all 0.1s ease',
+              backgroundColor: 'grey.100',
             }}
           >
             <Navbar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
@@ -77,6 +77,7 @@ function MainLayout() {
               pt={12}
               pb={6}
               mx={8}
+              mt={30}
               sx={{
                 height: '100%',
               }}

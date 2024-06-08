@@ -1,5 +1,6 @@
 import Modal from '@/components/ui/Modal';
 import { useAuth } from '@/hooks/api/useAuth';
+import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
@@ -8,7 +9,12 @@ function RefuseTopicModal(props: any) {
   const { onClose, open, topic_id } = props;
   const { onUpdateStatusTopic } = useTopic();
   const { lecturerStore } = useAuth();
-  const { mutate: updateAcceptTopic } = onUpdateStatusTopic(topic_id, lecturerStore.me.id, 1);
+  const { termStore } = useTerm();
+  const { mutate: updateAcceptTopic } = onUpdateStatusTopic(
+    topic_id,
+    lecturerStore.me.id,
+    termStore.currentTerm.id,
+  );
 
   const handleSubmit = () => {
     updateAcceptTopic({ status: 'REJECTED' });

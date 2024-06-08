@@ -40,8 +40,8 @@ function ScoreGroupSupport() {
   const demo = ['1', '2', '3', '4'];
 
   return (
-    <Box minHeight={'100vh'} display={'flex'}>
-      <Paper sx={{ px: 8, py: 10, flex: 1, height: 300 }}>
+    <Box minHeight={'80vh'} display={'flex'} gap={4}>
+      <Paper sx={{ px: 8, py: 10, flex: 1 }}>
         <TitleManager>Chấm điểm nhóm sinh viên hướng dẫn</TitleManager>
 
         <Box width={'full'} display={'flex'} flexDirection={'column'} mt={6}></Box>

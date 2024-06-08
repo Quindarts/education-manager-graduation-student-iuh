@@ -95,7 +95,7 @@ function TableManagamentStudent(props: any) {
       flex: 1,
       align: 'center',
       headerAlign: 'center',
-      renderCell: (params: any) => <Typography>{params.row.major.name}</Typography>,
+      renderCell: (params: any) => <Typography>{params.row.majorName}</Typography>,
     },
     {
       headerName: 'Trạng thái',

@@ -1,8 +1,8 @@
 import axiosConfig from "./axiosConfig"
 
 //[GET]
-export const getAllStudent: any = async () => {
-    return axiosConfig.get("/api/v1/students");
+export const getAllStudent: any = async (termId: string | number, limit: number, page: number) => {
+    return axiosConfig.get(`/api/v1/students?limit=${limit}&page=${page}&termId=${termId}`);
 }
 
 //[GET BY ID]

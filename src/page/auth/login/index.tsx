@@ -20,6 +20,7 @@ import { EnumGender, RoleCheck } from '@/types/enum';
 import { useSnackbar } from 'notistack';
 import Cookies from 'js-cookie';
 import { useAuth } from '@/hooks/api/useAuth';
+import { CircularProgress } from '@mui/material';
 
 interface IAuthResponseData {
   accessToken: string;
@@ -45,12 +46,12 @@ export default function Login() {
 
   const { handleLogin } = useAuth();
 
-  const { mutate: mutateLogin } = handleLogin();
+  const { mutate: mutateLogin, isLoading } = handleLogin();
 
   const formik = useFormik<IAuth>({
     initialValues: {
-      username: '21089141',
-      password: '21089141',
+      username: '',
+      password: '',
     },
     // validationSchema: LoginValidationSchema,
 
@@ -169,6 +170,12 @@ export default function Login() {
 
               <Button variant='contained' type='submit' fullWidth color='primary'>
                 Đăng nhập
+                {isLoading && (
+                  <CircularProgress
+                    size={'small'}
+                    sx={{ mx: 4, color: 'white', width: 20, height: 20 }}
+                  />
+                )}
               </Button>
             </Box>
           </CardContent>

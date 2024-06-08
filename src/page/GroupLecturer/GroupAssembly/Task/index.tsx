@@ -6,6 +6,8 @@ import { ENUM_STATUS_LECTURER } from '..';
 function Task(props: any) {
   const { tasks, team } = props;
   const [task, setTask] = React.useState(tasks);
+
+
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
     element.classList.add('dragged');
@@ -38,7 +40,6 @@ function Task(props: any) {
     evt.preventDefault();
     evt.currentTarget.classList.remove('dragged-over');
     let data = evt.dataTransfer.getData('text/plain');
-    console.log('data', data, status);
     let updated = tasks.map((task: any) => {
       if (task.id.toString() === data.toString()) {
         task.status = status;

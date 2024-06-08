@@ -50,9 +50,11 @@ function AddModal(props: any) {
           <CustomTextField multiline maxRows={4} label='Chuẩn đầu ra' placeholder='Chuẩn đầu ra' />
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={onClose}>
+            <Icon icon='mdi:close-outline' />
               Hủy
             </Button>
             <Button variant='contained' color='success' type='submit'>
+            <Icon icon='material-symbols:save-outline' />
               Lưu thông tin
             </Button>
           </Box>

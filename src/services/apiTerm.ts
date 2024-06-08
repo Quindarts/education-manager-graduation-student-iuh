@@ -1,6 +1,6 @@
 import axiosConfig from "./axiosConfig"
 
-enum TypeTermStatus {
+export enum TypeTermStatus {
     CHOOSE_GROUP = 'choose-group',
     CHOOSE_TOPIC = 'choose-topic',
     DISCUSSION = 'discussion',
@@ -8,7 +8,7 @@ enum TypeTermStatus {
     PUBLIC_RESULT = 'public-result'
 }
 
-interface TermDataRequest {
+export interface TermDataRequest {
     name: string;
     startDate: string;
     endDate: string;
@@ -18,7 +18,7 @@ export const getAllTerm: any = () => {
     return axiosConfig.get("/api/v1/terms");
 }
 export const getTermById: any = (id: number) => {
-    return axiosConfig.get(`terms/${id}`)
+    return axiosConfig.get(`/api/v1/terms/${id}`)
 }
 
 export const getCurrentTerm: any = () => {
@@ -26,11 +26,11 @@ export const getCurrentTerm: any = () => {
 }
 
 
-export const getTermDetailWithType: any = (id: number, type: TypeTermStatus) => {
+export const getTermDetailWithType: any = (id: number | string, type: TypeTermStatus) => {
     return axiosConfig.get(`/api/v1/terms/${id}/${type}`)
 }
 
-export const updateTermWithType: any = (id: number, type: TypeTermStatus, data: { startDate: string, endDate: string }) => {
+export const updateTermWithType: any = (id: number | string, type: TypeTermStatus, data: { startDate: string, endDate: string }) => {
     return axiosConfig.put(`/api/v1/terms/${id}/${type}`, data)
 }
 

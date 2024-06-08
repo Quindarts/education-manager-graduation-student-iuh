@@ -62,7 +62,7 @@ const components: Components = {
         },
         '&.Mui-disabled input': {
           '-webkit-text-fill-color': theme.palette.text.primary,
-          backgroundColor: theme.palette.text.disabled,
+          backgroundColor: theme.palette.background.defaults,
           fontWeight: 600,
           '& .MuiInputBase-input:not(.MuiSelect-select)': {
             // minHeight: textFieldHeight,

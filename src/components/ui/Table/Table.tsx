@@ -4,9 +4,7 @@ import { DataGrid, DataGridProps } from '@mui/x-data-grid';
 import React from 'react';
 import Pagination from '@mui/material/Pagination';
 import LinearProgress from '@mui/material/LinearProgress';
-// import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import IconButton from '@mui/material/IconButton';
-import { Icon } from '@iconify/react';
 interface Props extends DataGridProps {
   minHeight?: number;
   page: number;
@@ -15,6 +13,7 @@ interface Props extends DataGridProps {
   handelChangePage: (page: number) => void;
   needReset?: boolean;
   onReset?: () => void;
+  noData?: React.ReactNode;
 }
 
 export default function Table(props: Props) {
@@ -25,7 +24,9 @@ export default function Table(props: Props) {
     totalPages,
     totalItems,
     needReset,
+    handelChangePage,
     onReset,
+    noData,
     ...rest
   } = props;
   return (
@@ -52,12 +53,18 @@ export default function Table(props: Props) {
               width={'100%'}
             >
               <Box>
-                <Icon width={100} icon='flat-color-icons:file' />
-                <Icon width={100} icon='flat-color-icons:data-backup' />
+                <img
+                  style={{ opacity: 0.7 }}
+                  width={200}
+                  height={200}
+                  src='/images/nodata.png'
+                  alt='nodata'
+                />
               </Box>
-              <Typography variant='h6' sx={{ mt: 2 }}>
+              <Typography variant='h3' sx={{ mt: 2 }}>
                 Không có dữ liệu ( Data not found)
               </Typography>
+              <Box>{noData}</Box>
             </Box>
           ),
           loadingOverlay: () => <LinearProgress />,
@@ -82,7 +89,7 @@ export default function Table(props: Props) {
             minHeight,
             overflowX: 'auto',
             '::-webkit-scrollbar': {
-              height: 6,
+              height: 2,
             },
             '::-webkit-scrollbar-track': {
               background: 'transparent',
@@ -117,9 +124,7 @@ export default function Table(props: Props) {
               onClick={onReset}
               size='small'
               color='info'
-            >
-              {/* <RestartAltIcon /> */}
-            </IconButton>
+            ></IconButton>
           )}
         </Box>
         <Pagination

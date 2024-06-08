@@ -8,7 +8,7 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 
 function TermPage() {
   const { handleGetAllTerm } = useTerm();
-  const { data, isLoading } = handleGetAllTerm();
+  const { data, isLoading, isFetched } = handleGetAllTerm();
   return (
     <>
       <Box>
@@ -16,11 +16,11 @@ function TermPage() {
           Danh sách học kì
         </TitleManager>
         <HeaderTerm />
-        {isLoading ? (
+        {isLoading || !isFetched ? (
           <SekeletonUI />
         ) : (
           <Box width={'full'} my={10}>
-            <TableManagamentTerm rows={data?.termList} />
+            <TableManagamentTerm rows={data?.terms} />
           </Box>
         )}
       </Box>

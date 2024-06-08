@@ -24,6 +24,7 @@ import GroupStudentDetailPage from '@/page/GroupStudent/Detail';
 import ScoreStudentPage from '@/page/ScoreStudent';
 import GroupSupportManagement from '@/page/GroupSupport/Management';
 import ScoreGroupSupport from '@/page/GroupSupport/ScoreManager';
+import CreateGroupLecturer from '@/page/GroupLecturer/Create';
 
 function Routing() {
   return (
@@ -63,7 +64,8 @@ function Routing() {
           <Route path={APP_ROUTES.USER.ROLE} element={<h1>ROLE</h1>} />
           //ROUTE GR_LECTURER
           <Route path={APP_ROUTES.GROUP_LECTURER.ALL} element={<GroupLecturerPage />} />
-          <Route path={APP_ROUTES.GROUP_LECTURER.ASSEMBLY} element={<GroupGradingAssemblyPage />} />
+          <Route path={APP_ROUTES.GROUP_LECTURER.REPORT} element={<GroupGradingAssemblyPage />} />
+          <Route path={APP_ROUTES.GROUP_LECTURER.CREATE} element={<CreateGroupLecturer />} />
           <Route path={'/componentpage'} element={<ComponentPage />} />
           //ROUTE SCORE_STUDENT
           <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />

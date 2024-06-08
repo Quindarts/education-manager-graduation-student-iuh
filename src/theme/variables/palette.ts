@@ -56,7 +56,7 @@ const palette: PaletteOptions = {
   text: {
     primary: color.gray_700,
     secondary: color.gray_600,
-    disabled: color.gray_100,
+    disabled: color.gray_700,
   },
   warning: {
     main: color.yellow,

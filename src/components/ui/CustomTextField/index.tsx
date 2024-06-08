@@ -3,7 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import TextField, { StandardTextFieldProps } from '@mui/material/TextField';
 
 interface CustomTextFieldProps extends StandardTextFieldProps {
-  label: string | React.ReactNode;
+  label?: string | React.ReactNode;
 }
 export default function CustomTextField(props: CustomTextFieldProps) {
   const { id, label, size = 'small', ...rest } = props;

@@ -5,6 +5,7 @@ import Modal, { ModalTypeProps } from '@/components/ui/Modal';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import TitleManager from '@/components/ui/Title';
 import { useTopic } from '@/hooks/api/useQueryTopic';
+import { Icon } from '@iconify/react';
 import { Box, Button, DialogProps } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
@@ -103,6 +104,7 @@ function InfoModal(props: any) {
 
             <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
               <Button variant='contained' color='primary' onClick={onClose}>
+              <Icon icon='mdi:close-outline' />
                 Thoát
               </Button>
             </Box>

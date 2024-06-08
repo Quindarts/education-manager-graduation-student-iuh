@@ -8,7 +8,7 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 
 function StudentPage() {
   const { handleGetAllStudent } = useStudent();
-  const { data, isLoading } = handleGetAllStudent();
+  const { data, isLoading } = handleGetAllStudent(1, 10, 1);
   return (
     <Box>
       <TitleManager mb={14} mt={2}>

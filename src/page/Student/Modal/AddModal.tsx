@@ -68,10 +68,12 @@ function AddModal(props: any) {
 
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={onClose}>
+            <Icon icon='mdi:close-outline' />
               Hủy
             </Button>
             <Button variant='contained' color='success' type='submit'>
-              Lưu thông tin
+            <Icon icon='material-symbols:save-outline' />
+             Lưu thông tin
             </Button>
           </Box>
         </form>

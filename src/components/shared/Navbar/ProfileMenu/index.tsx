@@ -2,6 +2,7 @@ import { useAuth } from '@/hooks/api/useAuth';
 import usePopup from '@/hooks/ui/usePopup';
 import { APP_PROFILE_MENU } from '@/utils/app-config';
 import { removeValueInLocalStorage } from '@/utils/localStorage';
+import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -13,7 +14,6 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 
 function ProfileMenu() {
-  
   const navigate = useNavigate();
   const { handleActive, active, menuRef } = usePopup();
   const { lecturerStore, handleLogout } = useAuth();
@@ -51,11 +51,11 @@ function ProfileMenu() {
           },
         }}
       >
-        <Typography color='grey.700' variant='body2' fontWeight={500}>
+        <Typography color='grey.700' variant='h6'  fontWeight={600}>
           {lecturerStore['me'].fullName}
         </Typography>
-        <Typography color='success.main' variant='body2' fontWeight={600}>
-          {lecturerStore['me'].role}
+        <Typography color='grey.600' variant='body2' fontWeight={600}>
+          {checkRoleLecturer(lecturerStore['me'].role)}
         </Typography>
       </Box>
       {active && (

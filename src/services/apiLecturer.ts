@@ -4,8 +4,8 @@ export const getLecturerByMajorId = (majorId: number) => {
     return axiosConfig.get(`/api/v1/lecturers?majorId=${majorId}`)
 }
 
-export const getAllLecturer: any = () => {
-    return axiosConfig.get("/api/v1/lecturers");
+export const getAllLecturer: any = (termId: string | number, limit: number, page: number) => {
+    return axiosConfig.get(`/api/v1/lecturers?limit=${limit}&page=${page}&termId=${termId}`);
 }
 
 export const getLecturerById: any = (lecturer_id: number | string) => {
@@ -18,7 +18,7 @@ export const getNewAccessToken: any = (data: { refreshToken: string }) => {
 
 //Role header lecturer
 export const createLecturer: any = (data: any) => {
-    return axiosConfig.post("/api/v1/lecturers", { data })
+    return axiosConfig.post("/api/v1/lecturers", data)
 }
 
 export const updateLecturerById: any = (lecturer_id: number | string, data: any) => {

@@ -12,6 +12,8 @@ import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { convertTermDropdown } from '@/utils/convertDataTable';
+import { useDispatch } from 'react-redux';
+import { setCurrentTerm } from '@/store/slice/term.slice';
 
 interface AdminSidebarProps {
   isOpenSideBar: boolean;
@@ -26,6 +28,8 @@ const screen_mobile = 900;
 export default function AdminSidebar(props: AdminSidebarProps) {
   const { isOpenSideBar, currentSidebar, handleOpenSideBar } = props;
   const location = useLocation();
+  const { termStore } = useTerm();
+
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
   const navigate = useNavigate();
@@ -83,11 +87,19 @@ export default function AdminSidebar(props: AdminSidebarProps) {
 
   useEffect(() => {
     if (data) {
-      convertTermDropdown(data.termList);
-      setValueDropTerm(convertTermDropdown(data.termList));
+      convertTermDropdown(data.terms);
+      setValueDropTerm(convertTermDropdown(data.terms));
     }
   }, [data, isLoading, isFetched]);
 
+  const dispatch = useDispatch();
+  const handleSelectTerm = (termId: number) => {
+    data.terms.map((term: any) => {
+      if (term.id === termId) {
+        dispatch(setCurrentTerm(term));
+      }
+    });
+  };
   return (
     <Box
       sx={{
@@ -211,8 +223,14 @@ export default function AdminSidebar(props: AdminSidebarProps) {
               >
                 Danh mục quản lý
               </Typography>
-              <Box sx={{ width: 170, mb:10 }}>
-                <DropDown defaultValue={1} options={valueDropTerm} />
+              <Box sx={{ width: 170, mb: 10 }}>
+                <DropDown
+                  onChange={(e: any) => {
+                    handleSelectTerm(e.target.value);
+                  }}
+                  defaultValue={termStore.currentTerm.id}
+                  options={valueDropTerm}
+                />
               </Box>
             </Box>
           ))}
@@ -251,7 +269,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                     minHeight: 0,
                   },
                   '&:hover': {
-                    bgcolor: 'text.disabled',
+                    bgcolor: 'grey.100',
                     transition: '0.2s all',
                     '& .MuiAccordionSummary-content': {
                       '& svg': {

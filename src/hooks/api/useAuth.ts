@@ -12,10 +12,9 @@ export const useAuth = () => {
     const { enqueueSnackbar } = useSnackbar();
     const lecturerStore = useSelector((state: RootState) => state.lecturerSlice);
     const dispatch = useDispatch();
-
     const handleLogin = () => {
         return useMutation(
-            (data: any) => login(data), {
+            (data: any) => login(data), {   
             onSuccess(data: any) {
                 enqueueSnackbar('Đăng nhập thành công', { variant: 'success' });
                 console.log(data.accessToken);
@@ -24,6 +23,7 @@ export const useAuth = () => {
                 dispatch(setMe(data.user));
                 navigate("/");
             },
+            
             onError(error: any) {
                 console.log("🚀 ~ onError ~ error:", error)
                 enqueueSnackbar(error.response.data.message, { variant: 'error' });
