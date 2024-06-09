@@ -31,7 +31,7 @@ export const useTerm = () => {
     }
     const onCreateTerm = () => {
         return useMutation((data: TermDataRequest) => createTerm(data), {
-            onSuccess(data) {
+            onSuccess() {
                 enqueueSnackbar("Tạo học kì mới thành công", { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTerm] });
 
@@ -42,8 +42,9 @@ export const useTerm = () => {
         return useMutation((data) => updateTermWithType(termId, type, data), {
             onSuccess(data) {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' })
-
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTerm] });
+                queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
+
             },
             onError(error) {
                 enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' })
@@ -51,7 +52,7 @@ export const useTerm = () => {
             }
         })
     }
-    
+
     const handelGetTermById = (termId: string | number) => {
         return useQuery([TermQueryKey.getTermDetailById, termId], () => getTermById(termId), {
             enabled: !!termId

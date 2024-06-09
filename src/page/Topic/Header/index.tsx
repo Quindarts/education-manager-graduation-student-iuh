@@ -4,6 +4,9 @@ import { Icon } from '@iconify/react';
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import AddModal from '../Modal/AddModal';
+import ModalUpload from '@/components/ui/Upload';
+import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { useTerm } from '@/hooks/api/useQueryTerm';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -27,6 +30,8 @@ function HeaderTopic() {
   const handleOpenModal = () => {
     setOpenAddModal(true);
   };
+  const { termStore } = useTerm();
+  const { currentTerm } = termStore;
   return (
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={4}>
@@ -46,7 +51,7 @@ function HeaderTopic() {
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo mới đề tài
         </Button>
-        <UploadFileExcel />
+        <ModalUpload entityUpload={TypeEntityUpload.TOPIC} termId={currentTerm.id} />
         <Button color='warning' type='button' size='small' variant='contained'>
           <Icon icon='carbon:clean' color='white' width={20} /> Làm mới
         </Button>

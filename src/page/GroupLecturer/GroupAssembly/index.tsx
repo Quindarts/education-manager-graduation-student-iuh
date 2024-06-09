@@ -121,7 +121,7 @@ function GroupReportPage() {
     },
   ];
   return (
-    <Box>
+    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
       <Box sx={{ maxWidth: 'full' }}>
         <Stepper activeStep={activeStep} orientation='vertical'>
           {steps.map((step, index) => (
@@ -156,7 +156,7 @@ function GroupReportPage() {
           </Paper>
         )}
       </Box>
-    </Box>
+    </Paper>
   );
 }
 

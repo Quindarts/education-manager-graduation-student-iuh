@@ -128,7 +128,9 @@ const useUploadExcel = (entityUpload: TypeEntityUpload, termId: string | number)
         }
       })
       .catch(function (error) {
-        console.log(error);
+        enqueueSnackbar(error.message, {
+          variant: 'error',
+        });
       })
   }
   return { importExcel, setFileName, setTotalSize, setCurrentFile, setValueLoading, savedFileToDatabase, currentFile, success, loading, fileName, valueLoading, totalSize };

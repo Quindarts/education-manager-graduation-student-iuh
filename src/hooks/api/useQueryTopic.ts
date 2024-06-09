@@ -14,11 +14,13 @@ export const useTopic = () => {
     }
 
     const handleTopicsByTermByMajor = (termId: string | number, majorId: string | number) => {
-        return useQuery(['get-all-topic-term-major', termId, majorId], () => getTopicsByTermByMajor(termId, majorId))
+        return useQuery(['get-all-topic-term-major', termId, majorId], () => getTopicsByTermByMajor(termId, majorId), {
+            staleTime: 10000,
+        })
     }
     const handleTopicsByLecturerByTerm = (lecturerId: string | number, termId: string | number) => {
         return useQuery(['get-all-topic-lecturer-term', lecturerId, termId], () => getTopicsByLecturerByTerm(lecturerId, termId), {
-
+            staleTime: 10000,
         })
     }
     const onCreateTopicByToken = () => {
@@ -28,30 +30,30 @@ export const useTopic = () => {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
             },
             onError(error) {
-                console.log("🚀 ~ onError ~ error:", error)
                 enqueueSnackbar("Tạo đề tài thất bại", { variant: 'error' })
             }
         },
         );
     }
-    const onUpdateTopicById = (topicId: string | number, lecturerId?: number, termId?: number) => {
+    const onUpdateTopicById = (topicId: string | number, majorId?: number, termId?: number) => {
 
         return useMutation((updateTopic: any) => updateTopicById(topicId, updateTopic), {
-            onSuccess(data, variables, context) {
+            onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: ['topics', lecturerId, termId] });
+
             },
             onError(error) {
                 enqueueSnackbar("Cập nhật tài thất bại vui lòng thử lại sau", { variant: 'error' })
             }
         })
     }
-    const onUpdateStatusTopic = (topicId: string | number, lecturerId?: number, termId?: number) => {
+    const onUpdateStatusTopic = (topicId: string | number, majorId?: number, termId?: number) => {
         return useMutation((status: any) => updateStatusTopicById(topicId, status),
             {
-                onSuccess(data, variables, context) {
+                onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: ['get-all-topic-lecturer-term', lecturerId, termId] });
+                    queryClient.invalidateQueries({ queryKey: ['get-all-topic-term-major', termId, majorId] });
+                    queryClient.invalidateQueries({ queryKey: ['get-topic-by-id', topicId] });
                 },
                 onError(error) {
                     enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })

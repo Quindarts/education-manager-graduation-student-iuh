@@ -11,14 +11,16 @@ export const convertTermDropdown = (terms: Term[]
     return newTerms
 }
 
-export const convertMajorDropDown = (majors: any[]) => {
+export function convertMajorDropDown(majors: any[]) {
     let newMajors: any = []
-    majors.map((major: Major) => {
-        newMajors.push({
-            _id: major.id,
-            name: major.name
+    if (majors) {
+        majors.map((major: Major) => {
+            newMajors.push({
+                _id: major.id,
+                name: major.name
+            })
         })
-    })
+    }
     return newMajors;
 }
 
@@ -28,4 +30,18 @@ export const convertLecturer = (lecturers: any[]
         return []
     else
         return lecturers
+}
+
+
+export const convertTopicTable = (topic: any[]
+) => {
+    if (topic === undefined)
+        return []
+    else {
+        let newTopics: any[] = []
+        topic.map((topic: any, index: number) => {
+            newTopics.push({ id: index, topicId: topic.id, ...topic })
+        })
+        return newTopics
+    }
 }

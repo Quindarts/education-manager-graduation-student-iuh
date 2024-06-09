@@ -7,41 +7,47 @@ import React, { useState } from 'react';
 import EditInfoModal from '../Modal/EditInfoModal';
 import EditStatus from '../Modal/EditStatus';
 import DeleteModal from '../Modal/DeleteModal';
+import { checkGender } from '@/utils/validations/person.validation';
+import ModalUpload from '@/components/ui/Upload';
+import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { useTerm } from '@/hooks/api/useQueryTerm';
 
 function TableManagamentStudent(props: any) {
-  const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
+  const { rows, totalItems, totalPages, page, handelChangePage } = props;
 
-  const [openEditInfoModal, setOpenEditInfoModal] = useState(false);
+  const [openEditInfoModal, setOpenEditInfoModal] = useState({ studentId: '', isOpen: false });
+
+  const { termStore } = useTerm();
 
   const handleCloseEditInfoModal = () => {
-    setOpenEditInfoModal(false);
+    setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
   };
-  const handleOpenInfoModal = () => {
-    setOpenEditInfoModal(true);
+  const handleOpenInfoModal = (studentId: string) => {
+    setOpenEditInfoModal({ studentId, isOpen: true });
   };
 
   const [openEditStatusStudentModal, setOpenEditStatusStudentModal] = useState({
-    student_id: '',
+    studentId: '',
     isOpen: false,
   });
 
   const handleCloseEditStatusStudentModal = () => {
     setOpenEditStatusStudentModal({ ...openEditStatusStudentModal, isOpen: false });
   };
-  const handleOpenStatusStudentModal = (student_id: string) => {
-    setOpenEditStatusStudentModal({ student_id, isOpen: true });
+  const handleOpenStatusStudentModal = (studentId: string) => {
+    setOpenEditStatusStudentModal({ studentId, isOpen: true });
   };
 
   const [openDeleteStudentModal, setOpenDeleteStudentModal] = useState({
-    student_id: '',
+    studentId: '',
     isOpen: false,
   });
 
   const handleCloseDeleteStudentModal = () => {
     setOpenDeleteStudentModal({ ...openDeleteStudentModal, isOpen: false });
   };
-  const handleOpenDeleteStudentModal = (student_id: string) => {
-    setOpenDeleteStudentModal({ student_id, isOpen: true });
+  const handleOpenDeleteStudentModal = (studentId: string) => {
+    setOpenDeleteStudentModal({ studentId, isOpen: true });
   };
 
   const basicColumns: GridColDef[] = [
@@ -55,8 +61,8 @@ function TableManagamentStudent(props: any) {
           <Box gap={4} display={'flex'} alignItems={'center'}>
             <Avatar sizes='small' src={params.row.avatar} />
             <Box>
-              <Typography fontWeight={600} variant='h6'>
-                {params.row.name}
+              <Typography fontWeight={600} variant='body1'>
+                {params.row.fullName}
               </Typography>
               <Typography>
                 Mã SV: {'  '}
@@ -80,6 +86,9 @@ function TableManagamentStudent(props: any) {
       flex: 1,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params: any) => {
+        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
+      },
     },
     {
       headerName: 'Loại đào tạo',
@@ -126,7 +135,7 @@ function TableManagamentStudent(props: any) {
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
           <Tooltip title='Cập nhật thông tin'>
-            <IconButton size='small' onClick={handleOpenInfoModal}>
+            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
               <Icon icon='emojione:pencil' />
             </IconButton>
           </Tooltip>
@@ -165,18 +174,28 @@ function TableManagamentStudent(props: any) {
           disableColumnMenu
           disableColumnFilter
           disableColumnSelector
+          noData={
+            <ModalUpload
+              entityUpload={TypeEntityUpload.STUDENT}
+              termId={termStore.currentTerm.id}
+            />
+          }
         />
       </Box>
-      <EditInfoModal open={openEditInfoModal} onClose={handleCloseEditInfoModal} />
+      <EditInfoModal
+        studentId={openEditInfoModal.studentId}
+        open={openEditInfoModal.isOpen}
+        onClose={handleCloseEditInfoModal}
+      />
       <EditStatus
         open={openEditStatusStudentModal.isOpen}
         onClose={handleCloseEditStatusStudentModal}
-        student_id={openEditStatusStudentModal.student_id}
+        studentId={openEditStatusStudentModal.studentId}
       />
       <DeleteModal
         open={openDeleteStudentModal.isOpen}
         onClose={handleCloseDeleteStudentModal}
-        student_id={openDeleteStudentModal.student_id}
+        studentId={openDeleteStudentModal.studentId}
       />
     </>
   );

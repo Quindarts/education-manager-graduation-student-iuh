@@ -1,4 +1,4 @@
-import { Box, LinearProgress, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, LinearProgress, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React from 'react';
 import TableManagamentGroupStudent from './Table';
 import TitleManager from '@/components/ui/Title';
@@ -20,7 +20,7 @@ function GroupStudentManagement() {
   const { data, isFetched, isLoading } = handleGetGroupStudentByTerm(1);
   console.log('🚀 ~ GroupStudentManagement ~ data:', data);
   return (
-    <Box>
+    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
       <Box display={'flex'} justifyContent={'space-between'}>
         <TitleManager mb={14} mt={2}>
           Danh sách nhóm sinh viên
@@ -53,7 +53,7 @@ function GroupStudentManagement() {
           )}
         </>
       )}
-    </Box>
+    </Paper>
   );
 }
 

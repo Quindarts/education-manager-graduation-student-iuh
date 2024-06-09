@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Skeleton, Typography } from '@mui/material';
+import { Avatar, Box, Button, Paper, Skeleton, Typography } from '@mui/material';
 import TableManagerReviewScore from './Table';
 import { useEffect, useState } from 'react';
 import UploadFileExcel from '@/components/ui/Upload';
@@ -41,9 +41,9 @@ function ReviewManagerPage() {
     }
   }, [currentData]);
   return (
-    <Box>
+    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
       <Box my={4} display={'flex'} gap={6}>
-        <UploadFileExcel setCurrentData={setCurrentData} />
+        <UploadFileExcel />
         <Button variant='contained' color='warning'>
           Xuất phiếu chấm
         </Button>
@@ -73,7 +73,7 @@ function ReviewManagerPage() {
           <TableManagerReviewScore rows={rows} />
         </Box>
       )}
-    </Box>
+    </Paper>
   );
 }
 

@@ -1,13 +1,11 @@
 import Table from '@/components/ui/Table/Table';
-import { dummyTerms } from '@/dummy/term';
 import { Icon } from '@iconify/react';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import EditGroupRegister from '../Modal/EditGroupRegister';
 import EditTopicRegister from '../Modal/EditTopicRegister';
 import EditPublicResult from '../Modal/EditPublicResult';
-import DeleteModal from '../Modal/DeleteModal';
 import TermDetail from '../Modal/TermDetail';
 import { formatDates } from '@/utils/formatDate';
 import dayjs from 'dayjs';
@@ -17,9 +15,14 @@ const checkStatusGroup = (startDate: any, endDate: any) => {
     mess: string;
     color: string;
   };
-  if (dayjs(endDate) < dayjs()) data = { mess: 'Đã đóng', color: 'error' };
-  else if (dayjs(startDate) > dayjs()) data = { mess: 'Sắp diễn ra', color: 'primary' };
-  else data = { mess: 'Đang mở', color: 'success.main' };
+  if (startDate !== null && endDate !== null) {
+    if (dayjs(endDate) < dayjs()) data = { mess: 'Đã đóng', color: 'error' };
+    else if (dayjs(startDate) > dayjs()) data = { mess: 'Sắp diễn ra', color: 'primary' };
+    else data = { mess: 'Đang mở', color: 'success.main' };
+  } else {
+    data = { mess: 'Chưa cập nhật', color: '' };
+  }
+
   return (
     <Typography variant='body1' color={data.color}>
       {data.mess}
@@ -123,10 +126,7 @@ function TableManagamentTerm(props: any) {
       renderCell: (params) => {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
-            {checkStatusGroup(
-              formatDates(params.row.startChooseGroupDate),
-              formatDates(params.row.endChooseGroupDate),
-            )}
+            {checkStatusGroup(params.row.startChooseGroupDate, params.row.endChooseGroupDate)}
             <Tooltip title='Cập nhật đăng ký nhóm'>
               <IconButton
                 onClick={() => handleOpenEditGroupRegister(params.row.id)}

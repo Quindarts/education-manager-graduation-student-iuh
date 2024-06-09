@@ -11,6 +11,7 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useAuth } from '@/hooks/api/useAuth';
 import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
 import Loading from '@/components/ui/Loading';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 const actions = [
   { icon: <FileCopyIcon />, name: 'Copy' },
   { icon: <SaveIcon />, name: 'Save' },
@@ -25,8 +26,9 @@ function MainLayout() {
   };
 
   const { handleGetCurrentTerm } = useTerm();
-
+  const { handleGetAllMajor } = useMajor();
   handleGetCurrentTerm();
+  handleGetAllMajor();
 
   const { handleGetMe, lecturerStore } = useAuth();
   const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);

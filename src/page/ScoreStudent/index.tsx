@@ -3,14 +3,7 @@ import Table from '@/components/ui/Table/Table';
 import TitleManager from '@/components/ui/Title';
 import { dummyStudentData } from '@/dummy';
 import { Icon } from '@iconify/react';
-import {
-  Avatar,
-  Box,
-  Button,
-  LinearProgress,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, Button, LinearProgress, Paper, Typography } from '@mui/material';
 import { GridColDef, GridExpandMoreIcon } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 function ScoreStudentPage() {
@@ -56,7 +49,7 @@ function ScoreStudentPage() {
     setCurrentRowSelectId(params.id);
   };
   return (
-    <Box>
+    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
       {/* <Accordion sx={{ px: 10 }} defaultExpanded>
         <AccordionSummary
           expandIcon={<GridExpandMoreIcon color='primary' />}
@@ -105,7 +98,7 @@ function ScoreStudentPage() {
         </Box>
         <Paper sx={{ px: 4, flex: 1, pt: 10, height: 540 }}>
           {!currentDataRow ? (
-            <Box display={'flex'} sx={{cursor:'progress'}} flexDirection={'column'} height={500}>
+            <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
               <LinearProgress />
               <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
                 <Typography color='primary.main' variant='h6' mt={20} fontWeight={600}>
@@ -249,7 +242,7 @@ function ScoreStudentPage() {
           </Box>
         </AccordionDetails>
       </Accordion> */}
-    </Box>
+    </Paper>
   );
 }
 

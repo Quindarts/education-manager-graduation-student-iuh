@@ -12,7 +12,7 @@ function RefuseTopicModal(props: any) {
   const { termStore } = useTerm();
   const { mutate: updateAcceptTopic } = onUpdateStatusTopic(
     topic_id,
-    lecturerStore.me.id,
+    lecturerStore.me.majorId,
     termStore.currentTerm.id,
   );
 

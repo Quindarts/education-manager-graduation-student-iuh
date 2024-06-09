@@ -10,7 +10,7 @@ import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
 
 function TableManagamentLecturer(props: any) {
-  const { rows, totalItems, currentTermId, listMajor, totalPages, page, handelChangePage } = props;
+  const { rows, totalItems, currentTermId, totalPages, page, handelChangePage } = props;
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
   const navigate = useNavigate();
   const { onImportLecturerTerm } = useLecturer();
@@ -129,7 +129,7 @@ function TableManagamentLecturer(props: any) {
   return (
     <>
       <Box>
-         <Table
+        <Table
           rows={rows}
           sx={{
             bgcolor: 'white',
@@ -155,7 +155,6 @@ function TableManagamentLecturer(props: any) {
         lecturerId={openEditInfoModal.lecturerId}
         open={openEditInfoModal.isOpen}
         onClose={handleCloseEditInfoModal}
-        listMajor={listMajor}
         currentTermId={currentTermId}
       />
     </>

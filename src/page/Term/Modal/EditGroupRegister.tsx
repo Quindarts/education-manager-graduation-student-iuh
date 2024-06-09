@@ -9,6 +9,7 @@ import { validationTermGroupSchema } from '../context';
 import dayjs from 'dayjs';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { TypeTermStatus } from '@/services/apiTerm';
+import DateTimeCalendar from '@/components/ui/Calendar/DateTimeCalendar';
 
 function EditGroupRegister(props: any) {
   const { onClose, open, termId } = props;
@@ -18,35 +19,24 @@ function EditGroupRegister(props: any) {
     isLoading: loadingUpdate,
     isSuccess,
   } = onUpdateTermWithType(termId, TypeTermStatus.CHOOSE_GROUP);
+
   const { data, isLoading: loadingDetail } = handleGetTermDetailWithType(
     termId,
     TypeTermStatus.CHOOSE_GROUP,
   );
 
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
-  const [endDate, setEndDate] = useState<any | null>(null);
-  const [startDate, setStartDate] = useState<any | null>(null);
 
   const handleChangeStatusGroupRegister = () => {
     setCheckedOpenGroup(!isCheckedOpenGroup);
   };
-  useLayoutEffect(() => {
-    setStartDate(dayjs(data?.termDetail.startDate));
-    setEndDate(dayjs(data?.termDetail.endDate));
-  }, [loadingDetail, termId]);
-
-  useEffect(() => {
-    if (isCheckedOpenGroup === false && endDate !== null && endDate >= new Date()) {
-      setEndDate(dayjs());
-    }
-  }, [isCheckedOpenGroup, endDate]);
 
   const handleSubmit = (data: any) => {
     updateTerm(data);
-    if (isSuccess) {
-      onClose();
-    }
   };
+  useEffect(() => {
+    onClose();
+  }, [isSuccess]);
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
@@ -69,51 +59,52 @@ function EditGroupRegister(props: any) {
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={validationTermGroupSchema}
             initialValues={{
-              startDate: startDate,
-              endDate: endDate,
+              startDate: data?.termDetail.startDate ? dayjs(data?.termDetail.startDate) : null,
+              endDate: data?.termDetail.endDate ? dayjs(data?.termDetail.endDate) : null,
             }}
           >
-            {({ values, handleSubmit, touched, errors, setFieldValue }) => (
+            {({ touched, values, handleSubmit, errors, setFieldValue }) => (
               <form onSubmit={handleSubmit}>
                 <Box gap={10} display={'flex'} mt={6}>
                   <Box flex={1}>
-                    <Calendar
+                    <DateTimeCalendar
                       onChange={(value) => {
-                        setStartDate(value);
                         setFieldValue('startDate', value);
                       }}
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
                       label='Ngày bắt đầu'
                       name='startDate'
-                      format='DD/MM/YYYY'
+                      format='DD/MM/YYYY  hh:mm:ss A'
                       value={values.startDate}
                       disabled={!isCheckedOpenGroup}
-                      error={ errors.startDate ? true : false}
+                      error={touched.startDate && errors.startDate ? true : false}
                     />
                   </Box>
                   <Box flex={1}>
-                    <Calendar
+                    <DateTimeCalendar
                       onChange={(value) => {
                         setFieldValue('endDate', value);
-                        setEndDate(value);
                       }}
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
                       label='Ngày kết thúc'
                       name='endDate'
-                      format='DD/MM/YYYY'
+                      format='DD/MM/YYYY hh:mm:ss A'
                       value={values.endDate}
                       disabled={!isCheckedOpenGroup}
-                      error={errors.endDate ? true : false}
+                      error={touched.endDate && errors.endDate ? true : false}
                     />
                   </Box>
                 </Box>
-                {startDate <= dayjs() ? (
+                {dayjs(values.startDate) <= dayjs() ? (
                   <Box mt={6}>
                     <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
                       Trạng thái đăng kí nhóm
                     </Typography>
                     <Switch
-                      onChange={handleChangeStatusGroupRegister}
+                      onChange={() => {
+                        handleChangeStatusGroupRegister();
+                        setFieldValue('endDate', dayjs());
+                      }}
                       checked={isCheckedOpenGroup}
                       color='success'
                     />
@@ -132,7 +123,7 @@ function EditGroupRegister(props: any) {
                     </Typography>
                     <Typography variant='body1'>
                       Chưa đến ngày mở đăng kí nhóm, bắt đầu mở từ ngày:{' '}
-                      {startDate.locale('vi').format('DD/MM/YYYY')}
+                      {dayjs(values.startDate).format('DD/MM/YYYY hh:mm:ss A')}
                     </Typography>
                   </Box>
                 )}

@@ -14,7 +14,6 @@ function InfoModal(props: any) {
   const { onClose, open, topic_id } = props;
   const { handleTopicById } = useTopic();
   const { data, isLoading } = handleTopicById(topic_id);
-  console.log('🚀 ~ InfoModal ~ data:', data);
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values: any) => {
@@ -24,21 +23,19 @@ function InfoModal(props: any) {
   return (
     <Modal maxWidth={'md'} open={open} onClose={onClose}>
       <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+        <TitleManager mb={10} variant='h6' textTransform={'uppercase'}>
           Thông tin chi tiết Đề tài
         </TitleManager>
         {isLoading ? (
           <SekeletonUI />
         ) : (
           <form onSubmit={formik.handleSubmit}>
-            <Box display={'flex'} gap={8}>
-              <Box flex={1}>
-                <CustomTextField
-                  label='Tên đề tài'
-                  value={data?.topic?.name}
-                  placeholder='Tên đề tài'
-                />
-              </Box>
+            <CustomTextField
+              label='Tên đề tài'
+              value={data?.topic?.name}
+              placeholder='Tên đề tài'
+            />
+            <Box display={'flex'} width={'100%'} gap={8}>
               <Box flex={1}>
                 <CustomTextField
                   type='number'
@@ -47,9 +44,7 @@ function InfoModal(props: any) {
                   placeholder='Số lượng đề tài'
                 />
               </Box>
-            </Box>
 
-            <Box display={'flex'} width={'100%'} gap={8}>
               <Box flex={1}>
                 <CustomTextField
                   sx={{ flex: 1 }}
@@ -70,41 +65,41 @@ function InfoModal(props: any) {
               label='Mô tả đề tài'
               multiline
               value={data?.topic?.description}
-              maxRows={4}
+              maxRows={8}
               placeholder='Nhập vào Mô tả đề tài'
             />
             <CustomTextField
               multiline
               value={data?.topic?.note}
-              maxRows={4}
+              maxRows={8}
               label='Ghi chú đề tài'
               placeholder='Ghi chú đề tài'
             />
             <CustomTextField
               multiline
               value={data?.topic?.target}
-              maxRows={4}
+              maxRows={8}
               label='Mục tiêu đề tài'
               placeholder='Mục tiêu đề tài'
             />
             <CustomTextField
               multiline
-              maxRows={4}
+              maxRows={8}
               label='Yêu cầu đầu vào'
               value={data?.topic?.requireInput}
               placeholder='Yêu cầu đầu vào'
             />
             <CustomTextField
               multiline
-              maxRows={4}
+              maxRows={10}
               label='Chuẩn đầu ra'
               value={data?.topic?.standardOutput}
               placeholder='Chuẩn đầu ra'
             />
 
-            <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
+            <Box mt={10} justifyContent={'end'} gap={8} display={'flex'}>
               <Button variant='contained' color='primary' onClick={onClose}>
-              <Icon icon='mdi:close-outline' />
+                <Icon icon='mdi:close-outline' />
                 Thoát
               </Button>
             </Box>

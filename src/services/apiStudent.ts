@@ -15,11 +15,13 @@ export const updatePasswordStudent: any = async (data: { password: string, newPa
     return axiosConfig.post("/api/v1/students/update-password", data)
 }
 //[CREATE STUNDENT]
-export const createStudent = async (data: any) => {
+export const createStudent: any = async (data: any) => {
     return axiosConfig.post("/api/v1/students", data)
 }
 //[UPDATE STUDENT]
-
+export const updateStudent: any = async (id: string | number, data: any) => {
+    return axiosConfig.put(`/api/v1/students/${id}`, data)
+}
 //[DELETE STUDENT]
 
 //[CHANGE ACTIVE STUDENT]

@@ -21,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           TransitionComponent={Zoom}
           Components={themeSnackbar}
           autoHideDuration={2000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         >
           <ReactQueryClientProvider>
             <App />

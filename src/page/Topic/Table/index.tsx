@@ -1,15 +1,28 @@
 import Table from '@/components/ui/Table/Table';
 import { dummyTopics } from '@/dummy/topic';
 import { getColorLecturer } from '@/utils/validations/lecturer.validation';
-import { getColorStatusTopic, getNameStatus } from '@/utils/validations/topic.validation';
+import {
+  getCardTopicStatus,
+  getColorStatusTopic,
+  getNameStatus,
+  getbgColorStatusTopic,
+} from '@/utils/validations/topic.validation';
 import { Icon } from '@iconify/react';
-import { Box, Button, ButtonPropsColorOverrides, Chip, IconButton, Tooltip } from '@mui/material';
+import {
+  Box,
+  Button,
+  ButtonPropsColorOverrides,
+  Chip,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import InfoModal from '../Modal/InfoModal';
 import AcceptTopicModal from '../Modal/AcceptTopicModal';
-import { PanoramaSharp } from '@mui/icons-material';
 import RefuseTopicModal from '../Modal/RefuseTopicModal';
+import { convertTopicTable } from '@/utils/convertDataTable';
 interface EnumStatusTopicType {
   value: string;
   color: string;
@@ -58,13 +71,6 @@ function TableManagamentTopic(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    // {
-    //   headerName: 'Mô tả',
-    //   field: 'description',
-    //   flex: 1.5,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    // },
     {
       headerName: 'Mục tiêu',
       field: 'target',
@@ -72,20 +78,6 @@ function TableManagamentTopic(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    // {
-    //   headerName: 'Yêu cầu đầu vào',
-    //   field: 'requireInput',
-    //   flex: 1,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    // },
-    // {
-    //   headerName: 'Chuẩn đầu ra',
-    //   field: 'standradOutput',
-    //   flex: 1,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    // },
     {
       headerName: '',
       field: 'none',
@@ -104,11 +96,6 @@ function TableManagamentTopic(props: any) {
               <Icon icon='noto-v1:eye-in-speech-bubble' />
             </IconButton>
           </Tooltip>
-          {/* <Tooltip title='Xóa đề tài'>
-            <IconButton size='small'>
-              <Icon color='#cc563d' icon='ri:delete-bin-2-fill' />
-            </IconButton>
-          </Tooltip> */}
         </Box>
       ),
     },
@@ -119,14 +106,7 @@ function TableManagamentTopic(props: any) {
       headerAlign: 'center',
       align: 'center',
       renderCell: (param) => {
-        return (
-          <>
-            <Chip
-              sx={{ color: `${getColorStatusTopic(param.row.status)}`, fontWeight: 500,fontSize:14 }}
-              label={getNameStatus(param.row.status)}
-            />
-          </>
-        );
+        return <Box>{getCardTopicStatus(param.row.status)}</Box>;
       },
     },
     {

@@ -1,4 +1,3 @@
-import { createContext } from 'react';
 import * as Yup from 'yup';
 
 export const validateSchemaLecturer = Yup.object().shape({
@@ -16,5 +15,3 @@ export const validateSchemaLecturer = Yup.object().shape({
     .required('Số điện thoại không được để trống'),
   email: Yup.string().email('Email phải hợp lệ').required('Email không được để trống'),
 });
-
-export const LecturerContext = createContext<null | any>(null);

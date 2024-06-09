@@ -1,4 +1,4 @@
-import { Box, LinearProgress, Skeleton } from '@mui/material';
+import { Box, LinearProgress, Paper, Skeleton } from '@mui/material';
 import React, { useState } from 'react';
 import TableManagamentTerm from './Table';
 import HeaderTerm from './Header';
@@ -11,7 +11,7 @@ function TermPage() {
   const { data, isLoading, isFetched } = handleGetAllTerm();
   return (
     <>
-      <Box>
+      <Paper sx={{ py: 20, px: 10 }} elevation={1}>
         <TitleManager mb={14} mt={2}>
           Danh sách học kì
         </TitleManager>
@@ -23,7 +23,7 @@ function TermPage() {
             <TableManagamentTerm rows={data?.terms} />
           </Box>
         )}
-      </Box>
+      </Paper>
     </>
   );
 }

@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { validateSchemaLecturer } from '../../context';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
 import { useTerm } from '@/hooks/api/useQueryTerm';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 
 const GenderLecturer = [
   {
@@ -43,8 +44,9 @@ const DEGREE_DROP_VALUE = [
 ];
 
 function AddLecturerModal(props: any) {
-  const { onClose, open, listMajor } = props;
+  const { onClose, open } = props;
   const { termStore } = useTerm();
+  const { majorStore } = useMajor();
   const { currentTerm } = termStore;
 
   const { onCreateLecturer } = useLecturer();
@@ -87,7 +89,7 @@ function AddLecturerModal(props: any) {
             gender: EnumGender.MALE,
             role: '',
             degree: DEGREE_DROP_VALUE[0]?._id,
-            majorId: `${listMajor && listMajor[0]?.id}`,
+            majorId: ``,
           }}
         >
           {({ values, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
@@ -186,7 +188,7 @@ function AddLecturerModal(props: any) {
                   onChange={(e) => {
                     setFieldValue('majorId', e.target.value);
                   }}
-                  options={convertMajorDropDown(listMajor)}
+                  options={convertMajorDropDown(majorStore.allMajor)}
                 />
               </Box>{' '}
               <Box mt={8} width={'full'}>

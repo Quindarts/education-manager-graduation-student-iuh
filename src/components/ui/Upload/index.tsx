@@ -13,7 +13,7 @@ import {
 import { Icon } from '@iconify/react';
 import TitleManager from '../Title';
 import styled from '@emotion/styled';
-import useUploadExcel from '@/hooks/ui/useUploadExcel';
+import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -41,8 +41,12 @@ const VisuallyHiddenInput = styled('input')({
   width: '100%',
   backgroundColor: 'red',
 });
+interface ModalUploadPropsType {
+  entityUpload: TypeEntityUpload;
+  termId: string | number;
+}
 
-function ModalUpload(props: any) {
+function ModalUpload(props: ModalUploadPropsType) {
   const { entityUpload, termId } = props;
   const [isOpen, setIsOpen] = useState(false);
   const {

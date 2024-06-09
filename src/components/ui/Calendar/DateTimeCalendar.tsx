@@ -1,23 +1,23 @@
 import styled from '@emotion/styled';
 import { Box, InputLabel } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DateTimePicker, DateTimePickerProps, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker, DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import { ErrorMessage } from 'formik';
 import React from 'react';
 
-interface CalendarPropsType extends DatePickerProps<any> {
+interface CalendarPropsType extends DateTimePickerProps<any> {
   className?: string;
   id?: string;
   label?: string;
   error?: boolean;
+  name?: string;
 }
 const ErrorStyled = styled(ErrorMessage)`
   div {
     color: 'red!important';
   }
 `;
-function Calendar(props: CalendarPropsType) {
+function DateTimeCalendar(props: CalendarPropsType) {
   const { className, label, id, name, error, sx, ...rest } = props;
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -30,7 +30,7 @@ function Calendar(props: CalendarPropsType) {
             {label}
           </InputLabel>
         )}
-        <DatePicker
+        <DateTimePicker
           {...rest}
           sx={{
             fieldset: {
@@ -59,4 +59,4 @@ function Calendar(props: CalendarPropsType) {
   );
 }
 
-export default Calendar;
+export default DateTimeCalendar;

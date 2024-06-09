@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { validateSchemaLecturer } from '../../context';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
 import { useTerm } from '@/hooks/api/useQueryTerm';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 
 const GenderLecturer = [
   {
@@ -44,10 +45,11 @@ const DEGREE_DROP_VALUE = [
 ];
 
 function EditInfoModal(props: any) {
-  const { onClose, open, lecturerId, listMajor } = props;
+  const { onClose, open, lecturerId } = props;
 
   const { termStore } = useTerm();
   const { currentTerm } = termStore;
+  const { majorStore } = useMajor();
 
   const { handleGetLecturerById, onUpdateLecturer } = useLecturer();
   const { data, isLoading, isFetched } = handleGetLecturerById(lecturerId);
@@ -183,7 +185,7 @@ function EditInfoModal(props: any) {
                     onChange={(e) => {
                       setFieldValue('majorId', e.target.value);
                     }}
-                    options={convertMajorDropDown(listMajor)}
+                    options={convertMajorDropDown(majorStore.allMajor)}
                   />
                 </Box>{' '}
                 <Box mt={8} width={'full'}>

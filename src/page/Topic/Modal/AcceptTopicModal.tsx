@@ -13,10 +13,9 @@ function AcceptTopicModal(props: any) {
 
   const { mutate: updateAcceptTopic } = onUpdateStatusTopic(
     topic_id,
-    lecturerStore.me.id,
+    lecturerStore.me.majorId,
     termStore.currentTerm.id,
   );
-
   const handleSubmit = () => {
     updateAcceptTopic({ status: 'APPROVED' });
     onClose();
@@ -52,5 +51,4 @@ function AcceptTopicModal(props: any) {
     </Modal>
   );
 }
-
 export default AcceptTopicModal;

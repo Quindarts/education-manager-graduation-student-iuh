@@ -8,7 +8,6 @@ import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 
 function HeaderLecturer(props: any) {
-  const { listMajor } = props;
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
@@ -37,7 +36,7 @@ function HeaderLecturer(props: any) {
           <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
         </Button>
       </Box>
-      <AddLecturerModal listMajor={listMajor} open={openAddModal} onClose={handleCloseAddModal} />
+      <AddLecturerModal open={openAddModal} onClose={handleCloseAddModal} />
     </>
   );
 }
