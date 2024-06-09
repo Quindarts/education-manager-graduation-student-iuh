@@ -2,7 +2,6 @@ import { Icon } from '@iconify/react';
 import Box from '@mui/material/Box';
 import ProfileMenu from './ProfileMenu';
 import Notification from './Notification';
-import { IconButton } from '@mui/material';
 
 interface NavbarProps {
   handleOpenSideBar: () => void;

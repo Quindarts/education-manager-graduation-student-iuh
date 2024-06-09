@@ -1,10 +1,7 @@
-import Calendar from '@/components/ui/Calendar';
 import CustomTextField from '@/components/ui/CustomTextField';
-import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
-import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, TextareaAutosize } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 

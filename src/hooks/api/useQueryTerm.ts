@@ -1,7 +1,7 @@
 import { TypeTermStatus, getTermDetailWithType, getTermById } from './../../services/apiTerm';
 import { RootState } from '@/store';
 import { TermDataRequest, createTerm, getAllTerm, getCurrentTerm, updateTermWithType } from "@/services/apiTerm"
-import { InfiniteQueryObserver, useMutation, useQuery } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setCurrentTerm } from '@/store/slice/term.slice';
@@ -15,13 +15,18 @@ export enum TermQueryKey {
     getTermDetailById = 'getTermDetailById'
 }
 export const useTerm = () => {
+
     const termStore = useSelector((state: RootState) => state.termSlice);
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar()
 
+
+    //[GET ALL]
     const handleGetAllTerm = () => {
         return useQuery([TermQueryKey.allTerm], () => getAllTerm())
     }
+
+    //[GET CURRENT]
     const handleGetCurrentTerm = () => {
         return useQuery([TermQueryKey.currentTerm], () => getCurrentTerm(), {
             onSuccess: (data: any) => {
@@ -29,6 +34,22 @@ export const useTerm = () => {
             }
         })
     }
+
+    //[GET BY ID]
+    const handelGetTermById = (termId: string | number) => {
+        return useQuery([TermQueryKey.getTermDetailById, termId], () => getTermById(termId), {
+            enabled: !!termId
+        })
+    }
+
+    //[GET DETAIL WITH TYPE]
+    const handleGetTermDetailWithType = (termId: string | number, type: TypeTermStatus) => {
+        return useQuery([TermQueryKey.getTermDetailById, termId], () => getTermDetailWithType(termId, type), {
+            enabled: !!termId
+        })
+    }
+    
+    //[CREATE]
     const onCreateTerm = () => {
         return useMutation((data: TermDataRequest) => createTerm(data), {
             onSuccess() {
@@ -38,6 +59,8 @@ export const useTerm = () => {
             }
         })
     }
+
+    //[UPDATE WITH TYPE]
     const onUpdateTermWithType = (termId: number, type: TypeTermStatus) => {
         return useMutation((data) => updateTermWithType(termId, type, data), {
             onSuccess(data) {
@@ -53,16 +76,6 @@ export const useTerm = () => {
         })
     }
 
-    const handelGetTermById = (termId: string | number) => {
-        return useQuery([TermQueryKey.getTermDetailById, termId], () => getTermById(termId), {
-            enabled: !!termId
-        })
-    }
-    const handleGetTermDetailWithType = (termId: string | number, type: TypeTermStatus) => {
-        return useQuery([TermQueryKey.getTermDetailById, termId], () => getTermDetailWithType(termId, type), {
-            enabled: !!termId
-        })
-    }
     return {
         handelGetTermById,
         handleGetAllTerm,

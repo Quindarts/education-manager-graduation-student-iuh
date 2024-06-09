@@ -14,9 +14,6 @@ import React from 'react';
 function BasicInformationGrStudentPage(props: any) {
   const { groupStudentId } = props;
   const { handleGetGroupStudentById } = useGroupStudent();
-  // const { data: resGroupStudent, isLoading: loadingGroupStudent } = handleGetGroupStudentById(
-  //   `${groupStudentId}`,
-  // );
   return (
     <>
       <Box display='flex' gap={10}>

@@ -231,12 +231,12 @@ export const APP_SIDEBAR = [
     link: [APP_ROUTES.GROUP_LECTURER.ALL],
     children: [
       {
-        text: 'Chấm điểm báo cáo',
+        text: 'Phân công chấm điểm',
         link: APP_ROUTES.GROUP_LECTURER.REPORT,
         key: APP_ROUTES.GROUP_LECTURER.REPORT,
       },
       {
-        text: 'Phân công chấm điểm',
+        text: 'Tạo nhóm chấm',
         link: APP_ROUTES.GROUP_LECTURER.CREATE,
         key: APP_ROUTES.GROUP_LECTURER.CREATE,
       }

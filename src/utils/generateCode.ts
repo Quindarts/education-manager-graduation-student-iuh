@@ -3,7 +3,6 @@ export const createProductCode = (productName: string) => {
     letter
       .charAt(0)
       .toUpperCase()
-      // remove all special unicode characters in string
       .replace(/[^\w ]/g, '')
       .trim(),
   );

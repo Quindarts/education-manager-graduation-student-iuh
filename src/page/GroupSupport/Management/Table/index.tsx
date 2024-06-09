@@ -1,5 +1,4 @@
 import Table from '@/components/ui/Table/Table';
-import { APP_ROUTES } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';

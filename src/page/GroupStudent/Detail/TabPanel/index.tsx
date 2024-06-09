@@ -5,11 +5,9 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import { TabPanel } from '@mui/lab';
 import BasicInformationGrStudentPage from '@/page/DetailGroupStudent/BasicInformation';
-import TopicInGroupStudent from '@/page/DetailGroupStudent/TopicGroup';
 import StudentInGroupPage from '@/page/DetailGroupStudent/StudentInGroup';
 import ScoreManagerPage from '@/page/GroupSupport/ScoreManager';
 import { useParams } from 'react-router-dom';
-import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
 function TabPanelUI(props: any) {
   const [value, setValue] = React.useState('1');
@@ -26,7 +24,6 @@ function TabPanelUI(props: any) {
         <Box sx={{ borderBottom: 1, borderColor: 'primary.main' }}>
           <TabList onChange={handleChange} aria-label='lab API tabs example'>
             <Tab label='Thông tin chung' value='1' />
-            {/* <Tab label='Đề tài & tài liệu' value='2' /> */}
             <Tab label='Danh sách sinh viên' value='2' />
             <Tab label='Quản lý chấm điểm' value='3' />
           </TabList>
@@ -35,9 +32,6 @@ function TabPanelUI(props: any) {
         <TabPanel value={'1'}>
           <BasicInformationGrStudentPage groupStudentId={group_id} />
         </TabPanel>
-        {/* <TabPanel value={'2'}>
-          <TopicInGroupStudent />
-        </TabPanel> */}
         <TabPanel value={'2'}>
           <StudentInGroupPage />
         </TabPanel>

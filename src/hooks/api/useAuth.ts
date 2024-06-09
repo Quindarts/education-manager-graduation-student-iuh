@@ -8,29 +8,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => {
-    const navigate = useNavigate();
-    const { enqueueSnackbar } = useSnackbar();
     const lecturerStore = useSelector((state: RootState) => state.lecturerSlice);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
+
+    //[LOGIN]
     const handleLogin = () => {
         return useMutation(
-            (data: any) => login(data), {   
+            (data: any) => login(data), {
             onSuccess(data: any) {
                 enqueueSnackbar('Đăng nhập thành công', { variant: 'success' });
-                console.log(data.accessToken);
                 setValueInLocalStorage('accessToken', data.accessToken);
                 setValueInLocalStorage('refreshToken', data.refreshToken);
                 dispatch(setMe(data.user));
                 navigate("/");
             },
-            
+
             onError(error: any) {
-                console.log("🚀 ~ onError ~ error:", error)
                 enqueueSnackbar(error.response.data.message, { variant: 'error' });
             }
         }
         )
     }
+
+    //[GET ME]
     const handleGetMe = () => {
         return useQuery(['get-me'], () => getMe(), {
             onSuccess(data: any) {
@@ -38,12 +40,16 @@ export const useAuth = () => {
             }
         })
     }
+
+    //[LOG OUT]
     const handleLogout = () => {
         removeValueInLocalStorage('accessToken');
         enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
         dispatch(setMe({}));
         navigate('/auth/login');
     }
+
+
     return {
         handleLogin,
         handleGetMe,

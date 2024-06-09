@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -8,17 +8,12 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 import { FormikHelpers, useFormik } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
-import { LoginValidationSchema } from '@/utils/validations/auth.validation';
+import { Link } from 'react-router-dom';
 import { IAuth } from '@/types/auth.type';
 import { APP_ROUTES } from '@/utils/app-config';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { Icon } from '@iconify/react';
-import { setValueInLocalStorage } from '@/utils/localStorage';
-import { login } from '@/services/apiAuth';
 import { EnumGender, RoleCheck } from '@/types/enum';
-import { useSnackbar } from 'notistack';
-import Cookies from 'js-cookie';
 import { useAuth } from '@/hooks/api/useAuth';
 import { CircularProgress } from '@mui/material';
 
@@ -39,13 +34,9 @@ interface IAuthResponseData {
   };
 }
 export default function Login() {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
-  const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
-
   const { handleLogin } = useAuth();
-
   const { mutate: mutateLogin, isLoading } = handleLogin();
 
   const formik = useFormik<IAuth>({
@@ -53,13 +44,10 @@ export default function Login() {
       username: '',
       password: '',
     },
-    // validationSchema: LoginValidationSchema,
-
     onSubmit: (values: IAuth, { resetForm }: FormikHelpers<IAuth>) => {
       mutateLogin(values);
     },
   });
-
   const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
 
   return (
@@ -97,7 +85,6 @@ export default function Login() {
                 Đăng nhập vào trang quản lý khóa luận
               </Typography>
             </Box>
-
             <Box component='form' onSubmit={handleSubmit} mt={8} p={4} method='POST'>
               <CustomTextField
                 label='Tên đăng nhập'
@@ -167,7 +154,6 @@ export default function Login() {
                   ),
                 }}
               />
-
               <Button variant='contained' type='submit' fullWidth color='primary'>
                 Đăng nhập
                 {isLoading && (

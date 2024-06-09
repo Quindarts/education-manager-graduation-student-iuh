@@ -1,9 +1,6 @@
-import TitleManager from '@/components/ui/Title';
 import {
-  Badge,
   Box,
   Button,
-  Card,
   Paper,
   Step,
   StepContent,

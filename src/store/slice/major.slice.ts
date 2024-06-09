@@ -1,9 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initMajorSlice: any = {
-    currentMajor: {},
     allMajor: [],
-
 }
 
 export const useMajorSlice = createSlice({

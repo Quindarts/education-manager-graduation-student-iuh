@@ -27,6 +27,7 @@ const screen_mobile = 900;
 
 export default function AdminSidebar(props: AdminSidebarProps) {
   const { isOpenSideBar, currentSidebar, handleOpenSideBar } = props;
+
   const location = useLocation();
   const { termStore } = useTerm();
 
@@ -40,7 +41,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
       setIsMobile(window.innerWidth < screen_mobile);
     };
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -62,7 +62,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
         });
         return;
       }
-
       if (location.pathname.includes(item.link)) {
         setActiveItemIndexes([itemIndex]);
         setCurrentSidebarItemIndex(itemIndex);
@@ -81,6 +80,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
       setActiveItemIndexes([...activeItemIndexes, indexNumber]);
     }
   };
+
   const { handleGetAllTerm } = useTerm();
   const { data, isLoading, isFetched } = handleGetAllTerm();
   const [valueDropTerm, setValueDropTerm] = useState<any[]>([]);
@@ -92,6 +92,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
     }
   }, [data, isLoading, isFetched]);
 
+
   const dispatch = useDispatch();
   const handleSelectTerm = (termId: number) => {
     data.terms.map((term: any) => {
@@ -100,6 +101,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
       }
     });
   };
+  
   return (
     <Box
       sx={{

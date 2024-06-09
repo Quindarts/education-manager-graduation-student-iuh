@@ -16,7 +16,7 @@ const theme = createTheme({
   palette,
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
-    fontSize: 14,
+    fontSize: 12,
     h1: {
       fontSize: 26,
     },
@@ -39,7 +39,7 @@ const theme = createTheme({
       fontSize: 14,
     },
     body2: {
-      fontSize: 14,
+      fontSize: 12,
     },
   },
 

@@ -12,7 +12,7 @@ function GridGroupStudent() {
       width={'full'}
       spacing={{ xs: 4, sm: 8, md: 12 }}
     >
-      {test.map((testItem) => (
+      {test.map((testItem: any) => (
         <CardGroupStudent />
       ))}
     </Stack>

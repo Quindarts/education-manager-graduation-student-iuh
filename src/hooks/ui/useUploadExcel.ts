@@ -1,12 +1,9 @@
 import { bytesForHuman } from '@/components/ui/Upload/func';
-import { queryClient } from '@/providers/ReactQueryClientProvider';
 import axiosConfig from '@/services/axiosConfig';
 import { getValueFromLocalStorage } from '@/utils/localStorage';
 import axios, { AxiosProgressEvent } from 'axios';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
-import { QueryKeysLecturer } from '../api/useQueryLecturer';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -26,7 +23,6 @@ const axiosUpload = axios.create({
 axiosUpload.interceptors.request.use(
   (config) => {
     const accessToken = getValueFromLocalStorage("accessToken");
-
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -43,7 +39,6 @@ axiosUpload.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    // const accessToken = getValueFromLocalStorage("accessToken");
     if (error.response.data.status === 401 && error.response.data.success === false) {
       originalRequest._retry = true;
       try {
@@ -54,12 +49,10 @@ axiosUpload.interceptors.response.use(
         localStorage.setItem('accessToken', JSON.stringify(result.accessToken));
         originalRequest.headers.Authorization = `Bearer ${result.accessToken}`;
         return axiosConfig(originalRequest);
-
       } catch (error) {
         return Promise.reject(error);
       }
     }
-
     return Promise.reject(error.response.data);
   },
 );
@@ -71,6 +64,7 @@ const useUploadExcel = (entityUpload: TypeEntityUpload, termId: string | number)
   const [totalSize, setTotalSize] = useState<string>('');
   const [currentFile, setCurrentFile] = useState()
   const { enqueueSnackbar } = useSnackbar();
+
   //axios
   const [valueLoading, setValueLoading] = useState<any>(0)
   const [dataResult, setDataResult] = useState()
@@ -133,6 +127,19 @@ const useUploadExcel = (entityUpload: TypeEntityUpload, termId: string | number)
         });
       })
   }
-  return { importExcel, setFileName, setTotalSize, setCurrentFile, setValueLoading, savedFileToDatabase, currentFile, success, loading, fileName, valueLoading, totalSize };
+  return {
+    importExcel,
+    setFileName,
+    setTotalSize,
+    setCurrentFile,
+    setValueLoading,
+    savedFileToDatabase,
+    currentFile,
+    success,
+    loading,
+    fileName,
+    valueLoading,
+    totalSize
+  };
 };
 export default useUploadExcel;

@@ -4,8 +4,7 @@ import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/mater
 import { GridColDef } from '@mui/x-data-grid';
 
 function TableStudentInGroup(props: any) {
-  const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
-
+  const { rows, totalItems, totalPages, page, handelChangePage } = props;
   const basicColumns: GridColDef[] = [
     {
       headerName: 'Thông tin chung',

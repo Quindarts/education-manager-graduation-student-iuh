@@ -9,20 +9,26 @@ import { useMutation, useQuery } from "react-query"
 export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
 
+    //[GET BY ID]
     const handleTopicById = (topicId: string) => {
         return useQuery(['get-topic-by-id', topicId], () => getTopicById(topicId))
     }
 
+    //[GET BY TERM, MAJOR]
     const handleTopicsByTermByMajor = (termId: string | number, majorId: string | number) => {
         return useQuery(['get-all-topic-term-major', termId, majorId], () => getTopicsByTermByMajor(termId, majorId), {
             staleTime: 10000,
         })
     }
+
+    //[GET BY TERM, LECTURER]
     const handleTopicsByLecturerByTerm = (lecturerId: string | number, termId: string | number) => {
         return useQuery(['get-all-topic-lecturer-term', lecturerId, termId], () => getTopicsByLecturerByTerm(lecturerId, termId), {
             staleTime: 10000,
         })
     }
+
+    //[CREATE]
     const onCreateTopicByToken = () => {
         return useMutation((newTopic: any) => createTopicByToken(newTopic), {
 
@@ -35,6 +41,8 @@ export const useTopic = () => {
         },
         );
     }
+
+    //[UPDATE]
     const onUpdateTopicById = (topicId: string | number, majorId?: number, termId?: number) => {
 
         return useMutation((updateTopic: any) => updateTopicById(topicId, updateTopic), {
@@ -47,6 +55,8 @@ export const useTopic = () => {
             }
         })
     }
+
+    //[UPDATE STATUS]
     const onUpdateStatusTopic = (topicId: string | number, majorId?: number, termId?: number) => {
         return useMutation((status: any) => updateStatusTopicById(topicId, status),
             {
@@ -62,6 +72,7 @@ export const useTopic = () => {
         )
     }
 
+    //[DELETE]
     const onDeleteTopicById = () => {
         return useMutation((topicId: number | string) => deleteTopicById(topicId), {
             onSuccess(data, variables, context) {
@@ -72,12 +83,14 @@ export const useTopic = () => {
             }
         })
     }
+
     return {
         handleTopicsByTermByMajor,
         handleTopicsByLecturerByTerm,
+        handleTopicById,
         onCreateTopicByToken,
         onUpdateTopicById,
-        onDeleteTopicById, handleTopicById,
+        onDeleteTopicById,
         onUpdateStatusTopic
     }
 }

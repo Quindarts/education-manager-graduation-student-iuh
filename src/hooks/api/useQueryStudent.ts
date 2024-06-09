@@ -6,14 +6,21 @@ import { useMutation, useQuery } from 'react-query'
 
 export const useStudent = () => {
     const { enqueueSnackbar } = useSnackbar()
+
+
+    //[GET ALL]
     const handleGetAllStudent = (termId: string | number, limit: number, page: number) => {
         return useQuery(['get-all-student', termId, limit, page], () => getAllStudent(termId, limit, page))
     }
+
+    //[GET BY ID]
     const handleGetStudentById = (id: number) => {
         return useQuery([`get-student-by-id`, id], () => getStudentById(id), {
             enabled: !!id
         })
     }
+
+    //[UPDATE]
     const onUpdateStudent = (studentId: string | number, termId: string | number, limit: number, page: number) => {
         return useMutation((data) => updateStudent(studentId, data), {
             onSuccess(data: any) {
@@ -24,7 +31,6 @@ export const useStudent = () => {
             }
             ,
             onError(err) {
-                console.log("🚀 ~ onError ~ err:", err)
                 enqueueSnackbar('Cập nhật sinh viên thất bại, thử lại', { variant: 'error' })
 
             }
@@ -33,7 +39,8 @@ export const useStudent = () => {
     }
 
     return {
-        handleGetStudentById, onUpdateStudent,
+        handleGetStudentById,
+        onUpdateStudent,
         handleGetAllStudent
     }
 }

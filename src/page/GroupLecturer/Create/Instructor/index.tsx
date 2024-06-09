@@ -1,9 +1,8 @@
 import CustomTextField from '@/components/ui/CustomTextField';
-import { Box, Button, Card, Chip, LinearProgress, Paper, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Chip, LinearProgress, Paper, Typography } from '@mui/material';
 import React from 'react';
 import CardLecturer from '../Card/CardLecturer';
 import { Icon } from '@iconify/react';
-import SekeletonUI from '@/components/ui/Sekeleton';
 
 export const ENUM_STATUS_LECTURER = {
   NO_GROUP: 'NO_GROUP',
@@ -131,7 +130,7 @@ function CreateInstructorGroupPage() {
         </Typography>
         <CustomTextField placeholder='Tim kiem giang vien' />
         <Box>
-          {dataLecturerNoGroup.map((task: any, index: number) => (
+          {dataLecturerNoGroup.map((task: any) => (
             <CardLecturer
               key={task.id}
               id={task.id}

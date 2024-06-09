@@ -8,8 +8,9 @@ import { useDispatch } from "react-redux"
 
 export const useMajor = () => {
     const majorStore = useSelector((state: RootState) => state.majorSlice);
-
     const dispatch = useDispatch()
+
+    //[GET ALL]
     const handleGetAllMajor = () => {
         return useQuery(['get-all-major'], () => getAllMajor(), {
             onSuccess(data: any) {
@@ -17,6 +18,8 @@ export const useMajor = () => {
             }
         })
     }
+
+    //[CREATE]
     const handleCreateMajor = (data: Major) => {
         return useMutation(
             ['create-major', data],
@@ -28,6 +31,7 @@ export const useMajor = () => {
                 },
             })
     }
+    
     return {
         handleGetAllMajor, handleCreateMajor, majorStore
     }

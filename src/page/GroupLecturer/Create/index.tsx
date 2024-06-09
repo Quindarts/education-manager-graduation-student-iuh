@@ -6,7 +6,9 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import CreateInstructorGroupPage from './Instructor';
 import CreateReportGroupPage from './Report';
+
 function CreateGroupLecturer() {
+  
   const [value, setValue] = React.useState('1');
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);

@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ProfileDashBoard from './Profile';
 import ListApplication from './ListApplication';
 import TitleManager from '@/components/ui/Title';

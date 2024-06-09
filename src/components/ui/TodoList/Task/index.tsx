@@ -1,4 +1,4 @@
-import { ENUM_STATUS_LECTURER } from '@/page/ReviewManager';
+import { ENUM_STATUS_LECTURER } from '@/page/GroupLecturer/GroupAssembly';
 import { Icon } from '@iconify/react';
 import { Box, Button, Link, Tooltip, Typography } from '@mui/material';
 import React from 'react';
@@ -10,7 +10,6 @@ function Task(props: any) {
     let element = evt.currentTarget;
     element.classList.add('dragged');
     evt.dataTransfer.setData('text/plain', evt.currentTarget.id);
-    // alert( evt.currentTarget.id)
     evt.dataTransfer.effectAllowed = 'move';
   };
   const handleOnDrageEnd = (evt: any) => {
@@ -39,7 +38,6 @@ function Task(props: any) {
     evt.preventDefault();
     evt.currentTarget.classList.remove('dragged-over');
     let data = evt.dataTransfer.getData('text/plain');
-    console.log('data', data, status);
     let updated = tasks.map((task: any) => {
       if (task.id.toString() === data.toString()) {
         task.status = status;

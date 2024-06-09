@@ -1,11 +1,10 @@
-import { Box, LinearProgress, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React from 'react';
 import TableManagamentGroupStudent from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderGroupStudent from './Header';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 import GridGroupStudent from './Grid';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
@@ -17,8 +16,7 @@ function GroupStudentManagement() {
     setView(nextView);
   };
   const { handleGetGroupStudentByTerm } = useGroupStudent();
-  const { data, isFetched, isLoading } = handleGetGroupStudentByTerm(1);
-  console.log('🚀 ~ GroupStudentManagement ~ data:', data);
+  const { data, isLoading } = handleGetGroupStudentByTerm(1);
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
       <Box display={'flex'} justifyContent={'space-between'}>
