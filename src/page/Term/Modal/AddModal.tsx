@@ -67,7 +67,7 @@ function AddModal(props: any) {
                   error={errors.name ? true : false}
                   helperText={errors.name}
                   name='name'
-                  placeholder='Nhập vào tên học kì'
+                  placeholder='Ví dụ hợp lệ: HK1_2023-2024'
                 />
                 <Box gap={10} display={'flex'} mt={6}>
                   <Box flex={1}>

@@ -33,6 +33,7 @@ function DateTimeCalendar(props: CalendarPropsType) {
         <DateTimePicker
           {...rest}
           sx={{
+            color:'grey.700', 
             fieldset: {
               border: error ? '1px solid #ca4f36!important' : '',
             },

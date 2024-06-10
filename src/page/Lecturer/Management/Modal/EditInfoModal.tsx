@@ -62,7 +62,7 @@ function EditInfoModal(props: any) {
     onClose();
   }, [isSuccess]);
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box py={10} px={10}>
         <TitleManager mb={2} variant='h5' textTransform={'uppercase'}>
           Cập nhật thông tin Giảng viên
@@ -123,6 +123,7 @@ function EditInfoModal(props: any) {
                   </Box>
                 </Box>
                 <CustomTextField
+                  required
                   value={values.id}
                   name='id'
                   label='Mã giảng viên'
@@ -136,6 +137,7 @@ function EditInfoModal(props: any) {
                 <Box display={'flex'} gap={10} mt={8}>
                   <Box width={'100%'}>
                     <CustomTextField
+                      required
                       value={values.fullName}
                       name='fullName'
                       label='Họ và tên'
@@ -159,6 +161,7 @@ function EditInfoModal(props: any) {
                   </Box>
                 </Box>
                 <CustomTextField
+                  required
                   name='phone'
                   value={values.phone}
                   label='Số điện thoại'
@@ -169,6 +172,7 @@ function EditInfoModal(props: any) {
                   helperText={errors.phone}
                 />
                 <CustomTextField
+                  required
                   value={values.email}
                   name='email'
                   label='Email'

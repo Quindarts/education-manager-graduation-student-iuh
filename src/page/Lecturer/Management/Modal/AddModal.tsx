@@ -70,7 +70,7 @@ function AddLecturerModal(props: any) {
     onClose();
   }, [isSuccess]);
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box py={10} px={10}>
         <TitleManager mb={2} variant='h5' textTransform={'uppercase'}>
           Tạo thông tin Giảng viên
@@ -127,6 +127,7 @@ function AddLecturerModal(props: any) {
                 </Box>
               </Box>
               <CustomTextField
+                required
                 value={values.id}
                 name='id'
                 label='Mã giảng viên'
@@ -139,6 +140,7 @@ function AddLecturerModal(props: any) {
               <Box display={'flex'} gap={10} mt={8}>
                 <Box width={'100%'}>
                   <CustomTextField
+                    required
                     value={values.fullName}
                     name='fullName'
                     label='Họ và tên'
@@ -162,6 +164,7 @@ function AddLecturerModal(props: any) {
                 </Box>
               </Box>
               <CustomTextField
+                required
                 name='phone'
                 value={values.phone}
                 label='Số điện thoại'
@@ -172,6 +175,7 @@ function AddLecturerModal(props: any) {
                 helperText={errors.phone}
               />
               <CustomTextField
+                required
                 value={values.email}
                 name='email'
                 label='Email'

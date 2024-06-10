@@ -74,7 +74,7 @@ function EditGroupRegister(props: any) {
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
                       label='Ngày bắt đầu'
                       name='startDate'
-                      format='DD/MM/YYYY  hh:mm:ss A'
+                      format='DD/MM/YYYY hh:mm:ss A'
                       value={values.startDate}
                       disabled={!isCheckedOpenGroup}
                       error={touched.startDate && errors.startDate ? true : false}

@@ -93,39 +93,16 @@ export default function Login() {
                 value={values.username}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                required
                 placeholder='Nhập tên đăng nhập'
                 id='username'
                 name='username'
               />
               <CustomTextField
-                label={
-                  <Box
-                    component='span'
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    Mật khẩu
-                    <Typography variant='body2' color='gray'>
-                      <Link
-                        style={{
-                          color: 'inherit',
-                        }}
-                        to={APP_ROUTES.FORGOT_PASSWORD}
-                      >
-                        Quên mật khẩu?
-                      </Link>
-                    </Typography>
-                  </Box>
-                }
+              label='Mật khẩu'
                 error={Boolean(errors.password) && touched.password}
                 helperText={touched.password && errors.password}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                required
                 placeholder='Nhập mật khẩu'
                 id='password'
                 name='password'

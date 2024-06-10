@@ -9,15 +9,16 @@ import EditPublicResult from '../Modal/EditPublicResult';
 import TermDetail from '../Modal/TermDetail';
 import { formatDates } from '@/utils/formatDate';
 import dayjs from 'dayjs';
+import { statusOfDate } from '@/utils/validations/term.validation';
 
 const checkStatusGroup = (startDate: any, endDate: any) => {
   let data: {
     mess: string;
     color: string;
   };
-  if (startDate !== null && endDate !== null) {
-    if (dayjs(endDate) < dayjs()) data = { mess: 'Đã đóng', color: 'error' };
-    else if (dayjs(startDate) > dayjs()) data = { mess: 'Sắp diễn ra', color: 'primary' };
+  if (startDate && endDate) {
+    if (statusOfDate(startDate, endDate) === 'EXPIRED') data = { mess: 'Đã đóng', color: 'error' };
+    else if (statusOfDate(startDate, endDate) === 'INACTIVE') data = { mess: 'Sắp diễn ra', color: 'primary' };
     else data = { mess: 'Đang mở', color: 'success.main' };
   } else {
     data = { mess: 'Chưa cập nhật', color: '' };

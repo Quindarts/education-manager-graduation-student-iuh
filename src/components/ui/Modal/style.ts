@@ -5,7 +5,7 @@ const CustomModal = styled(Dialog)`
   .MuiDialog-container {
     .MuiDialog-paper {
       align-items: center;
-      width: 90%;
+      width: 96%;
       /* max-width: 500px; */
       margin: auto;
 

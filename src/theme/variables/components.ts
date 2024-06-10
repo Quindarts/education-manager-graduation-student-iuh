@@ -106,6 +106,7 @@ const components: Components = {
   MuiIconButton: {
     styleOverrides: {
       root: ({ theme }: any) => ({
+        color:theme.palette.grey[600],
         '&:focus': {
           backgroundColor: theme.palette.grey[300]
         }

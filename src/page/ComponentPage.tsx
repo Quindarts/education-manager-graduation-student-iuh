@@ -1,3 +1,4 @@
+import TextEditor from '@/components/ui/TextEditor';
 import ModalUpload from '@/components/ui/Upload';
 import ProgressUpload from '@/components/ui/Upload';
 import { useTopic } from '@/hooks/api/useQueryTopic';
@@ -7,7 +8,7 @@ import {
   getTopicsByTermByMajor,
 } from '@/services/apiTopic';
 import { Icon } from '@iconify/react';
-import { Box, Button, LinearProgress } from '@mui/material';
+import { Box, Button, InputLabel, LinearProgress, Paper } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useMutation, useQueries } from 'react-query';
@@ -44,11 +45,10 @@ function ComponentPage() {
   // };
 
   return (
-    <Box>
+    <Paper elevation={3}>
       {/* <ProgressUpload /> */}
       {/* <Button onClick={handleSubmit}>clickme</Button> */}
-      <ModalUpload />
-    </Box>
+    </Paper>
   );
 }
 
