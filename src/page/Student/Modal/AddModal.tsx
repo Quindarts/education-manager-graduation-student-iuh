@@ -21,7 +21,7 @@ function AddModal(props: any) {
     },
   });
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Tạo sinh viên mới
@@ -68,12 +68,12 @@ function AddModal(props: any) {
 
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={onClose}>
-            <Icon icon='mdi:close-outline' />
+              <Icon icon='mdi:close-outline' />
               Hủy
             </Button>
             <Button variant='contained' color='success' type='submit'>
-            <Icon icon='material-symbols:save-outline' />
-             Lưu thông tin
+              <Icon icon='material-symbols:save-outline' />
+              Lưu thông tin
             </Button>
           </Box>
         </form>

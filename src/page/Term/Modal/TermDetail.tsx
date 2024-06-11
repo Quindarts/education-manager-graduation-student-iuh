@@ -13,7 +13,7 @@ import React from 'react';
 function TermDetail(props: any) {
   const { onClose, open, termId } = props;
   const { handelGetTermById } = useTerm();
-  const { data, isLoading } = handelGetTermById(termId);
+  const { data, isLoading, isSuccess } = handelGetTermById(termId);
   console.log('🚀 ~ TermDetail ~ data:', data);
 
   return (
@@ -22,13 +22,13 @@ function TermDetail(props: any) {
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Thông tin chi tiết Học kì
         </TitleManager>
-        {isLoading ? (
+        {isLoading && !isSuccess ? (
           <SekeletonUI />
         ) : (
           <Formik
             onSubmit={() => {}}
             initialValues={{
-              name: `${data?.term[0]?.name}`,
+              name: `${data?.term ? data?.term[0]?.name : ''}`,
               startDate: data?.term[0]?.startDate,
               endDate: data?.term[0]?.endDate,
               startChooseGroupDate: data?.term[0]?.startChooseGroupDate,

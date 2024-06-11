@@ -174,12 +174,12 @@ function TableManagamentStudent(props: any) {
           disableColumnMenu
           disableColumnFilter
           disableColumnSelector
-          noData={
-            <ModalUpload
-              entityUpload={TypeEntityUpload.STUDENT}
-              termId={termStore.currentTerm.id}
-            />
-          }
+          // noData={
+          //   <ModalUpload
+          //     entityUpload={TypeEntityUpload.STUDENT}
+          //     termId={termStore.currentTerm.id}
+          //   />
+          // }
         />
       </Box>
       <EditInfoModal

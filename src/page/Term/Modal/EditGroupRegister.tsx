@@ -20,10 +20,11 @@ function EditGroupRegister(props: any) {
     isSuccess,
   } = onUpdateTermWithType(termId, TypeTermStatus.CHOOSE_GROUP);
 
-  const { data, isLoading: loadingDetail } = handleGetTermDetailWithType(
-    termId,
-    TypeTermStatus.CHOOSE_GROUP,
-  );
+  const {
+    data,
+    isLoading: loadingDetail,
+    isSuccess: successDetail,
+  } = handleGetTermDetailWithType(termId, TypeTermStatus.CHOOSE_GROUP);
 
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
@@ -43,7 +44,7 @@ function EditGroupRegister(props: any) {
         <TitleManager mb={10} mt={4}>
           Cập nhật thông tin đăng kí nhóm
         </TitleManager>
-        {loadingDetail ? (
+        {loadingDetail && !successDetail ? (
           <Box
             justifyContent={'center'}
             display={'flex'}

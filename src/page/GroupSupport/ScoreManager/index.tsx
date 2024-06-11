@@ -41,10 +41,11 @@ function ScoreGroupSupport() {
 
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      <Box minHeight={'80vh'} display={'flex'} gap={4}>
-        <Paper sx={{ px: 8, py: 10, flex: 1 }}>
-          <TitleManager>Chấm điểm nhóm sinh viên hướng dẫn</TitleManager>
+      <TitleManager>Chấm điểm nhóm sinh viên hướng dẫn</TitleManager>
 
+      <Box minHeight={'80vh'} display={'flex'} mt={10} gap={10}>
+        <Paper sx={{ px: 8, py: 10, flex: 1 }}>
+          <TitleManager color={'grey.900'} variant='body1'>Danh sách nhóm mà bạn đang hướng dẫn</TitleManager>
           <Box width={'full'} display={'flex'} flexDirection={'column'} mt={6}></Box>
           <Box component={'section'} mt={8} display={'flex'} flexDirection={'column'} gap={6}>
             {demo.map((group_id) => (
@@ -57,15 +58,14 @@ function ScoreGroupSupport() {
         </Paper>
         <Paper sx={{ px: 8, py: 10, flex: 2 }}>
           {currentGroupChecked.length < 1 ? (
-            <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
-              <LinearProgress />
-              <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
-                <Typography color='primary.main' variant='h6' mt={20} fontWeight={600}>
-                  Danh sách sinh viên chấm điểm trống...
-                </Typography>
-                <Icon color='#dfdfdf' width={200} icon='streamline:search-visual' />
-              </Box>
-            </Box>
+             <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
+             <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
+               <Typography color='primary.main' variant='h6' mt={20} fontWeight={600}>
+                 Vui lòng Chọn sinh viên trong danh sách sinh viên bên trái để chấm điểm ....
+               </Typography>
+               <Icon color='#dfdfdf' width={200} icon='icon-park-solid:hand-left' />
+             </Box>
+           </Box>
           ) : (
             <Box my={10}>
               {STUDENT_IN_GROUP.filter((student2) =>

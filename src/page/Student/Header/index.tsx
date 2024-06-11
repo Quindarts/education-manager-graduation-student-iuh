@@ -25,10 +25,10 @@ function HeaderStudent() {
           </Box>
           <TextField fullWidth size='small' placeholder='Tim kiếm sinh viên theo..' />
         </Box>
-        {/* <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
+        <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo sinh viên
-        </Button> */}
+        </Button>
         <ModalUpload entityUpload={TypeEntityUpload.STUDENT} termId={termStore.currentTerm.id} />
         <Button color='warning' type='button' sx={{ color: 'white' }} variant='contained'>
           <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới

@@ -160,13 +160,12 @@ function CreateInstructorGroupPage() {
           Tạo nhóm chấm phản biện
         </Typography>
         {dataLecturerGradingAssembly.length < 1 ? (
-          <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={400}>
-            <LinearProgress />
+          <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
             <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
-              <Typography color='primary.main' variant='h6' mt={20} fontWeight={600}>
-                Kéo thả giảng viên trống lịch, để tạo nhóm giảng viên
+              <Typography color='grey.500' variant='h6' mt={20}>
+                Vui lòng kéo thả giảng viên...
               </Typography>
-              <Icon color='#dfdfdf' width={200} icon='streamline:search-visual' />
+              <Icon color='#dfdfdf' width={200} icon='icon-park-solid:hand-left' />
             </Box>
           </Box>
         ) : (

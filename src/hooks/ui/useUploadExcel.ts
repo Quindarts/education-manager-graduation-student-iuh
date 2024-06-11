@@ -1,9 +1,11 @@
 import { bytesForHuman } from '@/components/ui/Upload/func';
+import { queryClient } from '@/providers/ReactQueryClientProvider';
 import axiosConfig from '@/services/axiosConfig';
 import { getValueFromLocalStorage } from '@/utils/localStorage';
 import axios, { AxiosProgressEvent } from 'axios';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { QueryKeysLecturer } from '../api/useQueryLecturer';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -119,6 +121,9 @@ const useUploadExcel = (entityUpload: TypeEntityUpload, termId: string | number)
             variant: 'success',
           });
           setDataResult(response.lecturer)
+          if (TypeEntityUpload.LECTURER) {
+            queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer, termId, 20, 1] })
+          }
         }
       })
       .catch(function (error) {

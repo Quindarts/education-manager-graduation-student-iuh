@@ -8,7 +8,7 @@ import { formatDates } from '@/utils/formatDate';
 import { Icon } from '@iconify/react';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { validationTermSchema } from '../context';
 
 function AddModal(props: any) {
@@ -24,10 +24,10 @@ function AddModal(props: any) {
       endDate: formatDates(values.endDate),
     };
     createTerm(data);
-    if (isSuccess) {
-      onClose();
-    }
   };
+  useEffect(() => {
+    onClose();
+  }, [isSuccess]);
   return (
     <Modal open={open} onClose={onClose}>
       <Box p={10}>
@@ -64,7 +64,7 @@ function AddModal(props: any) {
                   value={values.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.name ? true : false}
+                  error={touched.name && errors.name ? true : false}
                   helperText={errors.name}
                   name='name'
                   placeholder='Ví dụ hợp lệ: HK1_2023-2024'
@@ -78,7 +78,7 @@ function AddModal(props: any) {
                       name='startDate'
                       format='DD/MM/YYYY'
                       value={values.startDate}
-                      error={errors.startDate ? true : false}
+                      error={touched.startDate && errors.startDate ? true : false}
                     />
                   </Box>
                   <Box flex={1}>
@@ -90,7 +90,7 @@ function AddModal(props: any) {
                       label='Ngày kết thúc'
                       format='DD/MM/YYYY'
                       name='endDate'
-                      error={errors.endDate ? true : false}
+                      error={touched.endDate && errors.endDate ? true : false}
                       value={values.endDate}
                     />
                   </Box>

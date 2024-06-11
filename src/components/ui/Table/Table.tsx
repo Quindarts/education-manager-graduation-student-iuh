@@ -49,7 +49,7 @@ export default function Table(props: Props) {
               alignContent={'center'}
               justifyContent={'center'}
               textAlign={'center'}
-              my={20}
+              py={20}
               width={'100%'}
             >
               <Box>

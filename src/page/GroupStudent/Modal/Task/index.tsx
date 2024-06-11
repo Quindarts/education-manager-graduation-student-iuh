@@ -78,7 +78,7 @@ function TaskAddStudent(props: any) {
   let dataStudentNoGroup = taskAddStudent.filter((data: any) => data.group_id === 'NO_GROUP');
 
   return (
-    <Box position={'relative'} sx={{ bgcolor: 'white',py:4, px: 8, borderRadius: 4 }}>
+    <Box position={'relative'} sx={{ bgcolor: 'white', py: 4, px: 8, borderRadius: 4 }}>
       <Box className='container' width={'full'} display={'flex'} gap={10}>
         <Box flex={1}>
           <Box alignItems={'center'} gap={4} display={'flex'}>
@@ -121,60 +121,60 @@ function TaskAddStudent(props: any) {
                 <Box className='drag_column'>
                   <Box className='drag_row'>
                     {dataStudentNoGroup.map((item: any, index: number) => (
-                      <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
-                        <Box
-                          sx={{
-                            bgcolor: 'grey.100',
-                            borderRadius: 1,
-                            px: 6,
-                            py: 4,
-                            color: 'white',
-                            my: 4,
-                          }}
-                          key={item.mssv}
-                          id={item.mssv}
-                          draggable
-                          onDragStart={(e) => handleOnDrageStart(e)}
-                          onDragEnd={(e) => handleOnDrageStart(e)}
-                        >
-                          <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
-                            <Box
-                              bgcolor={'warning.main'}
-                              borderRadius={'50%'}
-                              width={30}
-                              height={30}
-                              justifyContent={'center'}
-                              alignItems={'center'}
-                              display={'flex'}
+                      // <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
+                      <Box
+                        sx={{
+                          bgcolor: 'grey.100',
+                          borderRadius: 1,
+                          px: 6,
+                          py: 4,
+                          color: 'white',
+                          my: 4,
+                        }}
+                        key={item.mssv}
+                        id={item.mssv}
+                        draggable
+                        onDragStart={(e) => handleOnDrageStart(e)}
+                        onDragEnd={(e) => handleOnDrageStart(e)}
+                      >
+                        <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
+                          <Box
+                            bgcolor={'warning.main'}
+                            borderRadius={'50%'}
+                            width={30}
+                            height={30}
+                            justifyContent={'center'}
+                            alignItems={'center'}
+                            display={'flex'}
+                          >
+                            <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
+                          </Box>
+                          <Box>
+                            <Typography
+                              position='absolute'
+                              right={10}
+                              top={2}
+                              bgcolor={'success.main'}
+                              px={4}
+                              py={2}
+                              borderRadius={1}
+                              variant='body2'
+                              color={'white'}
                             >
-                              <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
-                            </Box>
-                            <Box>
-                              <Typography
-                                position='absolute'
-                                right={10}
-                                top={2}
-                                bgcolor={'success.main'}
-                                px={4}
-                                py={2}
-                                borderRadius={1}
-                                variant='body2'
-                                color={'white'}
-                              >
-                                Chưa có nhóm
-                              </Typography>
-                              <Typography variant='h6' color={'primary.main'} fontWeight={'500'}>
-                                <span> Họ và tên: {'   '}</span>
-                                {item.fullName}
-                              </Typography>
-                              <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
-                                <span>Mã sinh vien: {'  '}</span> {item.mssv}
-                              </Typography>
-                              <Link textAlign={'end'}>Xem chi tiết</Link>
-                            </Box>
+                              Chưa có nhóm
+                            </Typography>
+                            <Typography variant='h6' color={'primary.main'} fontWeight={'500'}>
+                              <span> Họ và tên: {'   '}</span>
+                              {item.fullName}
+                            </Typography>
+                            <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
+                              <span>Mã sinh vien: {'  '}</span> {item.mssv}
+                            </Typography>
+                            <Link textAlign={'end'}>Xem chi tiết</Link>
                           </Box>
                         </Box>
-                      </Tooltip>
+                      </Box>
+                      // </Tooltip>
                     ))}
                   </Box>
                 </Box>
@@ -230,60 +230,60 @@ function TaskAddStudent(props: any) {
                 <Box className='drag_column'>
                   <Box className='drag_row'>
                     {dataStudenInGroup.map((item: any) => (
-                      <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
-                        <Box
-                          sx={{
-                            bgcolor: 'grey.100',
-                            borderRadius: 1,
-                            px: 6,
-                            py: 4,
-                            color: 'white',
-                            my: 4,
-                          }}
-                          key={item.mssv}
-                          id={item.mssv}
-                          draggable
-                          onDragStart={(e) => handleOnDrageStart(e)}
-                          onDragEnd={(e) => handleOnDrageStart(e)}
-                        >
-                          <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
-                            <Box
-                              bgcolor={'warning.main'}
-                              borderRadius={'50%'}
-                              width={30}
-                              height={30}
-                              justifyContent={'center'}
-                              alignItems={'center'}
-                              display={'flex'}
+                      //   <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
+                      <Box
+                        sx={{
+                          bgcolor: 'grey.100',
+                          borderRadius: 1,
+                          px: 6,
+                          py: 4,
+                          color: 'white',
+                          my: 4,
+                        }}
+                        key={item.mssv}
+                        id={item.mssv}
+                        draggable
+                        onDragStart={(e) => handleOnDrageStart(e)}
+                        onDragEnd={(e) => handleOnDrageStart(e)}
+                      >
+                        <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
+                          <Box
+                            bgcolor={'warning.main'}
+                            borderRadius={'50%'}
+                            width={30}
+                            height={30}
+                            justifyContent={'center'}
+                            alignItems={'center'}
+                            display={'flex'}
+                          >
+                            <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
+                          </Box>
+                          <Box>
+                            <Typography
+                              position='absolute'
+                              right={10}
+                              top={2}
+                              bgcolor={'error.main'}
+                              px={4}
+                              py={2}
+                              borderRadius={2}
+                              variant='body2'
+                              color={'white'}
                             >
-                              <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
-                            </Box>
-                            <Box>
-                              <Typography
-                                position='absolute'
-                                right={10}
-                                top={2}
-                                bgcolor={'error.main'}
-                                px={4}
-                                py={2}
-                                borderRadius={2}
-                                variant='body2'
-                                color={'white'}
-                              >
-                                Nhóm {currentGroup}
-                              </Typography>
-                              <Typography variant='h6' color={'error.main'} fontWeight={'500'}>
-                                <span> Họ và tên: {'   '}</span>
-                                {item.fullName}
-                              </Typography>
-                              <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
-                                <span>Mã sinh vien: {'  '}</span> {item.mssv}
-                              </Typography>
-                              <Link textAlign={'end'}>Xem chi tiết</Link>
-                            </Box>
+                              Nhóm {currentGroup}
+                            </Typography>
+                            <Typography variant='h6' color={'error.main'} fontWeight={'500'}>
+                              <span> Họ và tên: {'   '}</span>
+                              {item.fullName}
+                            </Typography>
+                            <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
+                              <span>Mã sinh vien: {'  '}</span> {item.mssv}
+                            </Typography>
+                            <Link textAlign={'end'}>Xem chi tiết</Link>
                           </Box>
                         </Box>
-                      </Tooltip>
+                      </Box>
+                      // </Tooltip>
                     ))}
                   </Box>
                 </Box>

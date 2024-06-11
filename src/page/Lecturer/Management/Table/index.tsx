@@ -143,6 +143,7 @@ function TableManagamentLecturer(props: any) {
           disableColumnMenu
           disableColumnFilter
           disableColumnSelector
+          minHeight={400}
           noData={
             <Button color='primary' variant='contained' onClick={handleImport}>
               <Icon icon='fe:import' />

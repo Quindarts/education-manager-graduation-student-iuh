@@ -17,14 +17,14 @@ function CardStudentGroup(props: any) {
         />
       </Box>
       <Box>
-        <Typography color='primary' variant='body2'>
+        <Typography color='primary' variant='body1'>
           Tên đề tài
-          <Typography ml={2} component={'span'} variant='body2' color='grey.700'>
+          <Typography ml={2} component={'span'} variant='body1' color='grey.700'>
             Hệ thống chấm điểm IUH Hệ thống chấm điểm IUH
           </Typography>
-          <Typography color='primary' variant='body2'>
+          <Typography color='primary' variant='body1'>
             Nhóm
-            <Typography ml={2} component={'span'} variant='body2' color='grey.700'>
+            <Typography ml={2} component={'span'} variant='body1' color='grey.700'>
               {group_id}
             </Typography>
           </Typography>

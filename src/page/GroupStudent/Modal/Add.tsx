@@ -4,7 +4,7 @@ import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
-import { Box, Button, Paper } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 import TaskAddStudent from './Task';
@@ -28,11 +28,15 @@ function AddGroupStudentModal(props: any) {
           Tạo Nhóm sinh viên mới
         </TitleManager>
         <form onSubmit={formik.handleSubmit}>
-          <CustomTextField label='Tên nhóm sinh viên' disabled placeholder='Tên nhóm sinh viên' />
-          <CustomTextField label='Số thành viên' placeholder='Số thành viên' />
-          <DropDown label='Giảng viên hướng dẫn' placeholder='Chọn giảng viên' options={[]} />
-          <Paper elevation={1} sx={{ my: 10 }}>
+          <Box>
+            <CustomTextField label='Số thành viên' placeholder='Số thành viên' />
+          </Box>
+          <Paper elevation={1} sx={{ mt: 10, p: 10 }}>
             <TaskAddStudent />
+            <Typography mt={4} variant='body1' color='error'>
+              **Chú thích: Kéo thả sinh viên trong danh sách sinh viên sang nhóm mới để thêm sinh
+              viên vào nhóm.
+            </Typography>
           </Paper>
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={onClose}>

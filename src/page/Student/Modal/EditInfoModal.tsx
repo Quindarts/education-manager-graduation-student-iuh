@@ -52,7 +52,7 @@ function EditInfoModal(props: any) {
   }, [isSuccess]);
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Cập nhật thông tin Sinh viên

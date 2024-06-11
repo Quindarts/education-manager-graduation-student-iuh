@@ -50,35 +50,13 @@ function ScoreStudentPage() {
   };
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      {/* <Accordion sx={{ px: 10 }} defaultExpanded>
-        <AccordionSummary
-          expandIcon={<GridExpandMoreIcon color='primary' />}
-          aria-controls='panel-topic-content'
-          id='panel-topic-header'
-        >
-          <Typography variant='h6' fontWeight={600}>
-            Chấm điểm hướng dẫn
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails> */}
       <TitleManager mb={14} mt={2}>
         Chấm điểm hội đồng
       </TitleManager>
 
       <Box display='flex' gap={10} pb={4}>
-        {/* <Stack spacing={1}>
-                  <LinearProgress />
-                  <Skeleton variant='text' sx={{ fontSize: '1rem' }} />
-                  <Skeleton variant='rectangular' height={60} />
-                  <Skeleton variant='rounded' height={60} />
-                </Stack> */}
         <Box width={400}>
-          <Box display={'flex'} justifyContent={'space-between'}>
-            {/* <Typography fontWeight={600} color='primary' variant='h5'>
-              Danh sách sinh viên chưa chấm điểm
-            </Typography> */}
-            {/* <MenuButton /> */}
-          </Box>
+          <Box display={'flex'} justifyContent={'space-between'}></Box>
           <Table
             rows={dummyStudentData}
             sx={{
@@ -99,12 +77,11 @@ function ScoreStudentPage() {
         <Paper sx={{ px: 4, flex: 1, pt: 10, height: 540 }}>
           {!currentDataRow ? (
             <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
-              <LinearProgress />
               <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
                 <Typography color='primary.main' variant='h6' mt={20} fontWeight={600}>
-                  Vui lòng Chọn sinh viên chấm điểm ....
+                  Vui lòng Chọn sinh viên trong danh sách sinh viên bên trái để chấm điểm ....
                 </Typography>
-                <Icon color='#dfdfdf' width={200} icon='streamline:search-visual' />
+                <Icon color='#dfdfdf' width={200} icon='icon-park-solid:hand-left' />
               </Box>
             </Box>
           ) : (
@@ -198,50 +175,6 @@ function ScoreStudentPage() {
           )}
         </Paper>
       </Box>
-      {/* </AccordionDetails>
-      </Accordion>
-      <Accordion sx={{ px: 10 }} defaultExpanded>
-        <AccordionSummary
-          expandIcon={<GridExpandMoreIcon color='primary' />}
-          aria-controls='panel-topic-content'
-          id='panel-topic-header'
-        >
-          <Typography variant='h6' fontWeight={600}>
-            Chấm phản biện
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box pb={8}>
-            <Stack spacing={1}>
-              <LinearProgress />
-              <Skeleton variant='text' sx={{ fontSize: '1rem' }} />
-              <Skeleton variant='rectangular' height={60} />
-              <Skeleton variant='rounded' height={60} />
-            </Stack>
-          </Box>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion sx={{ px: 10 }} defaultExpanded>
-        <AccordionSummary
-          expandIcon={<GridExpandMoreIcon color='primary' />}
-          aria-controls='panel-topic-content'
-          id='panel-topic-header'
-        >
-          <Typography variant='h6' fontWeight={600}>
-            Chấm hội đồng
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box pb={8}>
-            <Stack spacing={1}>
-              <LinearProgress />
-              <Skeleton variant='text' sx={{ fontSize: '1rem' }} />
-              <Skeleton variant='rectangular' height={60} />
-              <Skeleton variant='rounded' height={60} />
-            </Stack>
-          </Box>
-        </AccordionDetails>
-      </Accordion> */}
     </Paper>
   );
 }
