@@ -2,6 +2,7 @@ enum EnumRole {
   LECTURER = 'LECTURER',
   HEAD_LECTURER = 'HEAD_LECTURER',
   SUB_HEAD_LECTURER = 'SUB_HEAD_LECTURER',
+  ADMIN = 'ADMIN'
 }
 
 enum EnumGender {

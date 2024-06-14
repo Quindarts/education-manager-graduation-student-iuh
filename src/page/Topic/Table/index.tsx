@@ -23,14 +23,16 @@ import InfoModal from '../Modal/InfoModal';
 import AcceptTopicModal from '../Modal/AcceptTopicModal';
 import RefuseTopicModal from '../Modal/RefuseTopicModal';
 import { convertTopicTable } from '@/utils/convertDataTable';
+import EditModal from '../Modal/EditModal';
 interface EnumStatusTopicType {
   value: string;
   color: string;
 }
 function TableManagamentTopic(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
-  const [openInfoModal, setOpenEditInfoModal] = useState({ topic_id: '', isOpen: false });
 
+  //handle
+  const [openInfoModal, setOpenEditInfoModal] = useState({ topic_id: '', isOpen: false });
   const handleCloseInfoModal = () => {
     setOpenEditInfoModal({ ...openInfoModal, isOpen: false });
   };
@@ -38,8 +40,8 @@ function TableManagamentTopic(props: any) {
     setOpenEditInfoModal({ topic_id, isOpen: true });
   };
 
+  //handle
   const [openAcceptModal, setOpenEditAcceptModal] = useState({ topic_id: '', isOpen: false });
-
   const handleCloseAcceptModal = () => {
     setOpenEditAcceptModal({ ...openAcceptModal, isOpen: false });
   };
@@ -47,13 +49,23 @@ function TableManagamentTopic(props: any) {
     setOpenEditAcceptModal({ topic_id, isOpen: true });
   };
 
+  //handle
   const [openRefuseModal, setOpenEditRefuseModal] = useState({ topic_id: '', isOpen: false });
-
   const handleCloseRefuseModal = () => {
     setOpenEditRefuseModal({ ...openRefuseModal, isOpen: false });
   };
   const handleOpenRefuseModal = (topic_id: string) => {
     setOpenEditRefuseModal({ topic_id, isOpen: true });
+  };
+
+  //handle
+  const [openEditModal, setOpenEditModal] = useState({ topic_id: '', isOpen: false });
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal({ ...openEditModal, isOpen: false });
+  };
+  const handleOpenEditModal = (topic_id: string) => {
+    setOpenEditModal({ topic_id, isOpen: true });
   };
 
   const basicColumns: GridColDef[] = [
@@ -87,7 +99,11 @@ function TableManagamentTopic(props: any) {
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
           <Tooltip title='Chỉnh sửa thông tin đề tài'>
-            <IconButton size='small' color='primary'>
+            <IconButton
+              size='small'
+              color='primary'
+              onClick={() => handleOpenEditModal(params.row.id)}
+            >
               <Icon icon='emojione:pencil' />
             </IconButton>
           </Tooltip>
@@ -160,6 +176,11 @@ function TableManagamentTopic(props: any) {
           disableColumnMenu
           disableColumnFilter
           disableColumnSelector
+        />
+        <EditModal
+          open={openEditModal.isOpen}
+          onClose={handleCloseEditModal}
+          topic_id={openEditModal.topic_id}
         />
         <InfoModal
           open={openInfoModal.isOpen}

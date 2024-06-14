@@ -2,11 +2,36 @@ import Table from '@/components/ui/Table/Table';
 import { Icon } from '@iconify/react';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React from 'react';
+import React, { useState } from 'react';
+import EditEvaluationModal from '../Modal/Edit';
+import DeleteEvaluationModal from '../Modal/Delete';
 
 function TableManagerReviewScore(props: any) {
-  const { rows } = props;
-  console.log("🚀 ~ TableManagerReviewScore ~ rows:", rows)
+  const { rows, termId, type } = props;
+
+  const [openModalEditEvaluation, setOpenEditEvaluationModal] = useState({
+    isOpen: false,
+    evaluationId: '',
+  });
+
+  const handleOpenEditEvaluationModal = (evaluationId: string) => {
+    setOpenEditEvaluationModal({ evaluationId, isOpen: true });
+  };
+  const handleCloseEditEvaluationModal = () => {
+    setOpenEditEvaluationModal({ ...openModalEditEvaluation, isOpen: false });
+  };
+
+  const [openModalDeleteEvaluationModal, setOpenDeleteEvaluationModal] = useState({
+    isOpen: false,
+    evaluationId: '',
+  });
+
+  const handleOpenDeleteEvaluationModal = (evaluationId: string) => {
+    setOpenDeleteEvaluationModal({ evaluationId, isOpen: true });
+  };
+  const handleCloseDeleteEvaluationModal = () => {
+    setOpenDeleteEvaluationModal({ ...openModalDeleteEvaluationModal, isOpen: false });
+  };
   const basicColumns: GridColDef[] = [
     {
       headerName: 'STT',
@@ -29,7 +54,7 @@ function TableManagerReviewScore(props: any) {
     },
     {
       headerName: 'Điểm tối đa',
-      field: 'gradeMax',
+      field: 'scoreMax',
       flex: 1,
       headerAlign: 'center',
       align: 'center',
@@ -43,13 +68,17 @@ function TableManagerReviewScore(props: any) {
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
           <Tooltip title='Sửa tiêu chí'>
-            <IconButton size='small'>
+            <IconButton size='small' onClick={() => handleOpenEditEvaluationModal(params.row.id)}>
               <Icon icon='emojione:pencil' />
             </IconButton>
           </Tooltip>
           <Box></Box>
           <Tooltip title='Xóa tiêu chí'>
-            <IconButton color='error' size='small'>
+            <IconButton
+              color='error'
+              size='small'
+              onClick={() => handleOpenDeleteEvaluationModal(params.row.id)}
+            >
               <Icon icon='mdi:trash' />
             </IconButton>
           </Tooltip>
@@ -63,6 +92,7 @@ function TableManagerReviewScore(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
+          height: 450,
         }}
         columns={basicColumns}
         totalItems={1}
@@ -73,6 +103,20 @@ function TableManagerReviewScore(props: any) {
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector
+      />
+      <EditEvaluationModal
+        termId={termId}
+        type={type}
+        open={openModalEditEvaluation.isOpen}
+        onClose={handleCloseEditEvaluationModal}
+        evaluationId={openModalEditEvaluation.evaluationId}
+      />
+      <DeleteEvaluationModal
+        termId={termId}
+        type={type}
+        open={openModalDeleteEvaluationModal.isOpen}
+        onClose={handleCloseDeleteEvaluationModal}
+        evaluationId={openModalDeleteEvaluationModal.evaluationId}
       />
     </Box>
   );

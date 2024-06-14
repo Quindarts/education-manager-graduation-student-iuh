@@ -1,6 +1,6 @@
 import { getMe, login } from "@/services/apiAuth";
 import { RootState } from "@/store";
-import { setMe } from "@/store/slice/lecturer.slice";
+import { setCurrentRoleRender, setMe } from "@/store/slice/lecturer.slice";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
 import { useSnackbar } from "notistack";
 import { useMutation, useQuery } from "react-query";
@@ -44,8 +44,10 @@ export const useAuth = () => {
     //[LOG OUT]
     const handleLogout = () => {
         removeValueInLocalStorage('accessToken');
+        removeValueInLocalStorage('refreshToken');
         enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
         dispatch(setMe({}));
+        dispatch(setCurrentRoleRender(''))
         navigate('/auth/login');
     }
 

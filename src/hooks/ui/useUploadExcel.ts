@@ -1,3 +1,4 @@
+import { getAllStudent } from './../../services/apiStudent';
 import { bytesForHuman } from '@/components/ui/Upload/func';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import axiosConfig from '@/services/axiosConfig';
@@ -6,6 +7,9 @@ import axios, { AxiosProgressEvent } from 'axios';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { QueryKeysLecturer } from '../api/useQueryLecturer';
+import { QueryEvaluation } from '../api/useEvalutaion';
+import { QueryStudent } from '../api/useQueryStudent';
+import { QueryTopic } from '../api/useQueryTopic';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -59,7 +63,7 @@ axiosUpload.interceptors.response.use(
   },
 );
 
-const useUploadExcel = (entityUpload: TypeEntityUpload, termId: string | number) => {
+const useUploadExcel = (entityUpload: string, termId: string | number, typeEvalutaion?: string) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState<string>('');
@@ -103,11 +107,18 @@ const useUploadExcel = (entityUpload: TypeEntityUpload, termId: string | number)
 
   };
   const savedFileToDatabase = async (file: any) => {
-    return axiosUpload.post(`http://localhost:3000/api/v1/${entityUpload}/import`, {
+    const bodyRequestBasic =
+    {
       file: file,
       termId: termId,
-      majorId: 3,
-    }, {
+      majorId: "e4fe02cb-f2b0-4afa-885d-d1b93130d350",
+    }
+    const bodyRequestEval = {
+      termId: termId,
+      file: file,
+      type: typeEvalutaion
+    }
+    return axiosUpload.post(`http://localhost:3000/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -117,12 +128,31 @@ const useUploadExcel = (entityUpload: TypeEntityUpload, termId: string | number)
     })
       .then(async function (response: any) {
         if (response.success) {
-          enqueueSnackbar('Lưu danh sách giảng viên từ excel file thành công', {
-            variant: 'success',
-          });
+
           setDataResult(response.lecturer)
-          if (TypeEntityUpload.LECTURER) {
+          if (entityUpload === TypeEntityUpload.LECTURER) {
+            enqueueSnackbar('Lưu danh sách giảng viên từ excel file thành công', {
+              variant: 'success',
+            });
             queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer, termId, 20, 1] })
+          }
+          if (entityUpload === TypeEntityUpload.EVALUATION) {
+            enqueueSnackbar('Lưu danh sách tiêu chí từ excel file thành công', {
+              variant: 'success',
+            });
+            queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvalutaion] })
+          }
+          if (entityUpload === TypeEntityUpload.STUDENT) {
+            enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
+              variant: 'success',
+            });
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, 20, 1] })
+          }
+          if (entityUpload === TypeEntityUpload.TOPIC) {
+            enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
+              variant: 'success',
+            });
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, "e4fe02cb-f2b0-4afa-885d-d1b93130d350"] })
           }
         }
       })

@@ -23,8 +23,8 @@ export const getTopicsByLecturerByTerm: any = async (lecturerId: string | number
 }
 
 //POST
-export const createTopicByToken: any = async (topic: TopicBodySend) => {
-    return axiosConfig.post("/api/v1/topics", topic);
+export const createTopicByToken: any = async (topic: TopicBodySend, termId: string) => {
+    return axiosConfig.post(`/api/v1/topics?termId=${termId}`, topic);
 }
 
 //PUT

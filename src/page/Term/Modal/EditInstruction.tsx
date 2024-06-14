@@ -10,23 +10,23 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { TypeTermStatus } from '@/services/apiTerm';
 import DateTimeCalendar from '@/components/ui/Calendar/DateTimeCalendar';
 
-function EditTopicRegister(props: any) {
+function EditInstruction(props: any) {
   const { onClose, open, termId } = props;
   const { handleGetTermDetailWithType, onUpdateTermWithType } = useTerm();
   const {
     mutate: updateTerm,
     isLoading: loadingUpdate,
     isSuccess,
-  } = onUpdateTermWithType(termId, TypeTermStatus.CHOOSE_TOPIC);
+  } = onUpdateTermWithType(termId, TypeTermStatus.DISCUSSION);
 
   const {
     data,
     isLoading: loadingDetail,
     isSuccess: successDetail,
-  } = handleGetTermDetailWithType(termId, TypeTermStatus.CHOOSE_TOPIC);
+  } = handleGetTermDetailWithType(termId, TypeTermStatus.DISCUSSION);
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
-  const handleChangeStatusTopicRegister = () => {
+  const handleChangeStatusInstruction = () => {
     setCheckedOpenGroup(!isCheckedOpenGroup);
   };
 
@@ -40,7 +40,7 @@ function EditTopicRegister(props: any) {
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
         <TitleManager mb={10} mt={4}>
-          Cập nhật trạng thái đăng kí đề tài
+          Cập nhật trạng thái phản biện
         </TitleManager>
         {loadingDetail && !successDetail ? (
           <Box
@@ -97,11 +97,11 @@ function EditTopicRegister(props: any) {
                 {dayjs(values.startDate) <= dayjs() ? (
                   <Box mt={6}>
                     <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
-                      Trạng thái đăng kí đề tài
+                      Trạng thái phản biện
                     </Typography>
                     <Switch
                       onChange={() => {
-                        handleChangeStatusTopicRegister();
+                        handleChangeStatusInstruction();
                         setFieldValue('endDate', dayjs());
                       }}
                       checked={isCheckedOpenGroup}
@@ -112,16 +112,16 @@ function EditTopicRegister(props: any) {
                       variant='h6'
                       color={isCheckedOpenGroup ? 'primary' : 'error'}
                     >
-                      {isCheckedOpenGroup ? 'Đang mở đăng kí đề tài' : 'Đã đóng đăng kí đề tài'}
+                      {isCheckedOpenGroup ? 'Đang mở phản biện' : 'Đã đóng phản biện'}
                     </Typography>
                   </Box>
                 ) : (
                   <Box mt={10}>
                     <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
-                      Trạng thái đăng kí đề tài :
+                      Trạng thái phản biện :
                     </Typography>
                     <Typography variant='body1'>
-                      Chưa đến ngày mở đăng kí đề tài, bắt đầu mở từ ngày:{' '}
+                      Chưa đến ngày mở phản biện, bắt đầu mở từ ngày:{' '}
                       {dayjs(values.startDate).format('DD/MM/YYYY hh:mm:ss A')}
                     </Typography>
                   </Box>
@@ -151,4 +151,4 @@ function EditTopicRegister(props: any) {
   );
 }
 
-export default EditTopicRegister;
+export default EditInstruction;

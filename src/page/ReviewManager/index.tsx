@@ -1,78 +1,100 @@
-import { Avatar, Box, Button, Paper, Skeleton, Typography } from '@mui/material';
+import { Avatar, Box, Button, Paper } from '@mui/material';
 import TableManagerReviewScore from './Table';
-import { useEffect, useState } from 'react';
-import UploadFileExcel from '@/components/ui/Upload';
-import { Evaluate } from '@/types/entities/evaluate';
-import Table from '@/components/ui/Table/Table';
+import { useState } from 'react';
+
+import DropDown from '@/components/ui/Dropdown';
+import TitleManager from '@/components/ui/Title';
+import ModalUpload from '@/components/ui/Upload';
+import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import useEvaluation from '@/hooks/api/useEvalutaion';
+import SekeletonUI from '@/components/ui/Sekeleton';
+import { convertEvalutationTable } from '@/utils/convertDataTable';
+import { TypeEvaluation } from '@/services/apiEvaluation';
+import { Icon } from '@iconify/react';
+import AddEvaluationModal from './Modal/Add';
 
 function ReviewManagerPage() {
-  const [currentData, setCurrentData] = useState([]);
-  let colScore: number[] = [];
-  let colTitle: string[] = [];
-  let colSTT: number[] = [];
-  const listEvaluation: Evaluate[] = [];
-  const [rows, setRows] = useState<Evaluate[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  useEffect(() => {
-    setIsLoading(true);
-    currentData.slice(1).forEach((item: any) => {
-      if (typeof item[1] === 'string' && colTitle.length < 7) {
-        colTitle.push(item[1]);
-      } else if (typeof item[6] === 'number' && colScore.length < 7) {
-        colScore.push(item[6]);
-      } else if (typeof item[0] === 'number' && colSTT.length < 7) {
-        colSTT.push(item[0]);
-      }
-    });
-    if (colTitle.length > 0 && colScore.length > 0) {
-      for (let i = 0; i < 7; i++) {
-        var currentEval: Evaluate = {
-          name: colTitle[i],
-          id: i + 1,
-          description: 'Đang cập nhật sau...',
-          gradeMax: colScore[i],
-          termId: 0,
-          type: 'ADVISOR',
-        };
-        listEvaluation.push(currentEval);
-      }
-      setRows(listEvaluation);
-      setIsLoading(false);
-    }
-  }, [currentData]);
+  const [currentTypeReview, setCurrentTypeReview] = useState(TypeEvaluation.ADVISOR);
+  const { termStore } = useTerm();
+  const { handleGetEvalutationByType } = useEvaluation();
+
+  const { data, isLoading, isSuccess, isFetched } = handleGetEvalutationByType(
+    termStore.currentTerm.id,
+    currentTypeReview,
+  );
+  const [openModalCreateEvaluation, setOpenCreateEvaluationModal] = useState({
+    isOpen: false,
+  });
+
+  const handleOpenCreateEvaluationModal = () => {
+    setOpenCreateEvaluationModal({ isOpen: true });
+  };
+  const handleCloseCreateEvaluationModal = () => {
+    setOpenCreateEvaluationModal({ ...openModalCreateEvaluation, isOpen: false });
+  };
+
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      <Box my={4} display={'flex'} gap={6}>
-        <UploadFileExcel />
-        <Button variant='contained' color='warning'>
-          Xuất phiếu chấm
-        </Button>
-        <Button variant='contained' color='error'>
-          Xóa nhiều tiêu chí
-        </Button>
-        <Button variant='contained' color='success'>
-          Lưu
-        </Button>
+      <Box my={10} display={'flex'} justifyContent={'space-between'} gap={6}>
+        <TitleManager>Tiêu chí Đánh giá</TitleManager>
+
+        <Box display={'flex'} gap={10}>
+          <DropDown
+            value={currentTypeReview}
+            onChange={(e: any) => {
+              setCurrentTypeReview(e.target.value);
+            }}
+            options={[
+              {
+                name: 'Tiêu chí Đánh giá Phản biện',
+                _id: 'ADVISOR',
+              },
+              {
+                name: 'Tiêu chí Đánh giá Poster',
+                _id: 'REVIEWER',
+              },
+              {
+                name: 'Tiêu chí Đánh giá Hội đồng',
+                _id: 'SESSION_HOST',
+              },
+            ]}
+          />
+          <Button color='error' variant='contained' onClick={handleOpenCreateEvaluationModal}>
+            <Icon icon='ic:baseline-plus' />
+            Tạo tiêu chí mới
+          </Button>
+          <ModalUpload
+            disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0 }
+            entityUpload={TypeEntityUpload.EVALUATION}
+            termId={termStore.currentTerm.id}
+            typeEvaluation={currentTypeReview}
+          />
+        </Box>
       </Box>
-      {isLoading ? (
-        <Box>
-          <Skeleton animation='wave'>
-            <Box></Box>
-          </Skeleton>
-          <Skeleton animation='wave' />
-          <Skeleton animation='wave' />
-          <Skeleton animation='wave' />
-          <Skeleton animation='wave' />
-          <Skeleton animation='wave' />
-          <Typography color='primary.main' variant='h6'>
-            Chưa có dữ liệu, cần tải lên file Excel ...
-          </Typography>
-        </Box>
-      ) : (
-        <Box mt={8}>
-          <TableManagerReviewScore rows={rows} />
-        </Box>
-      )}
+
+      <Box mt={8}>
+        {isLoading || !isFetched ? (
+          <SekeletonUI />
+        ) : (
+          <>
+            <TableManagerReviewScore
+              termId={termStore.currentTerm.id}
+              type={currentTypeReview}
+              rows={convertEvalutationTable(data.evaluations)}
+            />
+            <Paper elevation={2} sx={{ px: 6, py: 10 }}>
+              <TitleManager>Tổng điểm: 100</TitleManager>
+            </Paper>
+          </>
+        )}
+      </Box>
+      <AddEvaluationModal
+        open={openModalCreateEvaluation.isOpen}
+        termId={termStore.currentTerm.id}
+        type={currentTypeReview}
+        onClose={handleCloseCreateEvaluationModal}
+      />
     </Paper>
   );
 }

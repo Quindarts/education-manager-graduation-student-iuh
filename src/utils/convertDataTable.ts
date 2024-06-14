@@ -45,3 +45,18 @@ export const convertTopicTable = (topic: any[]
         return newTopics
     }
 }
+
+
+
+export const convertEvalutationTable = (evalutation: any[]
+) => {
+    if (evalutation === undefined)
+        return []
+    else {
+        let newEvalutations: any[] = []
+        evalutation.map((Evalutation: any, index: number) => {
+            newEvalutations.push({ id: index, EvalutationId: Evalutation.id, ...Evalutation })
+        })
+        return newEvalutations
+    }
+}

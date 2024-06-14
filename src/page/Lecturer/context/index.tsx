@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 export const validateSchemaLecturer = Yup.object().shape({
-  id: Yup.string()
+  username: Yup.string()
     .matches(/^\d{6,}$/, 'Mã số giảng viên phải chỉ gồm chữ số và lớn hơn 6 ký tự')
     .required('Mã số giảng viên không được để trống'),
   fullName: Yup.string()

@@ -79,7 +79,7 @@ function EditInfoModal(props: any) {
             validationSchema={validateSchemaLecturer}
             initialValues={{
               fullName: `${data?.lecturer?.fullName}`,
-              id: `${data?.lecturer?.id}`,
+              username: `${data?.lecturer?.username}`,
               email: `${data?.lecturer?.email}`,
               phone: `${data?.lecturer?.phone}`,
               gender: `${data?.lecturer?.gender}`,
@@ -124,15 +124,15 @@ function EditInfoModal(props: any) {
                 </Box>
                 <CustomTextField
                   required
-                  value={values.id}
-                  name='id'
+                  value={values.username}
+                  name='username'
                   label='Mã giảng viên'
                   placeholder='Mã Giảng viên'
                   disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.id ? true : false}
-                  helperText={errors.id}
+                  error={errors.username ? true : false}
+                  helperText={errors.username}
                 />
                 <Box display={'flex'} gap={10} mt={8}>
                   <Box width={'100%'}>

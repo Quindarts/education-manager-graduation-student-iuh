@@ -54,16 +54,17 @@ function AddLecturerModal(props: any) {
 
   const handleSubmitCreateLecturer = (values: any) => {
     var dataSend = {
-      id: values.id,
+      username: values.username,
       fullName: values.fullName,
       gender: values.gender,
       email: values.email,
       phone: values.phone,
       degree: values.degree,
       role: 'LECTURER',
-      majorId: 2,
+      majorId: values.majorId,
       termId: currentTerm.id,
     };
+    alert('hi')
     createLecturer(dataSend);
   };
   useEffect(() => {
@@ -83,7 +84,7 @@ function AddLecturerModal(props: any) {
           validationSchema={validateSchemaLecturer}
           initialValues={{
             fullName: '',
-            id: '',
+            username: '',
             email: '',
             phone: '',
             gender: EnumGender.MALE,
@@ -128,14 +129,14 @@ function AddLecturerModal(props: any) {
               </Box>
               <CustomTextField
                 required
-                value={values.id}
-                name='id'
+                value={values.username}
+                name='username'
                 label='Mã giảng viên'
                 placeholder='Mã Giảng viên'
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.id ? true : false}
-                helperText={errors.id}
+                error={errors.username ? true : false}
+                helperText={errors.username}
               />
               <Box display={'flex'} gap={10} mt={8}>
                 <Box width={'100%'}>

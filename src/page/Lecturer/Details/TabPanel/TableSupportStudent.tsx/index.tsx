@@ -69,6 +69,7 @@ function TableSupportStudent() {
         ]}
         sx={{
           bgcolor: 'white',
+          height: 400,
         }}
         columns={basicColumns}
         totalItems={1}

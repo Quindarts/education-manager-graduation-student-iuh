@@ -116,7 +116,7 @@ function TableManagamentLecturer(props: any) {
             <IconButton
               color='primary'
               size='small'
-              onClick={() => navigate(`/lecturer/details/${params.row.id}`)}
+              onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
             >
               <Icon width={20} icon='fluent:apps-list-detail-20-filled' />
             </IconButton>

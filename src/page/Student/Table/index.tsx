@@ -11,6 +11,7 @@ import { checkGender } from '@/utils/validations/person.validation';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
+import ResetPassword from '../Modal/ResetPassword';
 
 function TableManagamentStudent(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage } = props;
@@ -38,6 +39,20 @@ function TableManagamentStudent(props: any) {
     setOpenEditStatusStudentModal({ studentId, isOpen: true });
   };
 
+  //
+  const [openResetPasswordStudentModal, setOpenResetPasswordStudentModal] = useState({
+    studentId: '',
+    isOpen: false,
+  });
+
+  const handleCloseResetPasswordStudentModal = () => {
+    setOpenResetPasswordStudentModal({ ...openResetPasswordStudentModal, isOpen: false });
+  };
+  const handleOpenResetPasswordStudentModal = (studentId: string) => {
+    setOpenResetPasswordStudentModal({ studentId, isOpen: true });
+  };
+
+  //
   const [openDeleteStudentModal, setOpenDeleteStudentModal] = useState({
     studentId: '',
     isOpen: false,
@@ -141,7 +156,11 @@ function TableManagamentStudent(props: any) {
           </Tooltip>
           <Box></Box>
           <Tooltip title='Cấp lại mật khẩu'>
-            <IconButton color='primary' size='small'>
+            <IconButton
+              color='primary'
+              size='small'
+              onClick={() => handleOpenResetPasswordStudentModal(params.row.id)}
+            >
               <Icon width={20} icon='wpf:password1' />
             </IconButton>
           </Tooltip>
@@ -182,6 +201,11 @@ function TableManagamentStudent(props: any) {
           // }
         />
       </Box>
+      <ResetPassword
+        studentId={openResetPasswordStudentModal.studentId}
+        open={openResetPasswordStudentModal.isOpen}
+        onClose={handleCloseResetPasswordStudentModal}
+      />
       <EditInfoModal
         studentId={openEditInfoModal.studentId}
         open={openEditInfoModal.isOpen}

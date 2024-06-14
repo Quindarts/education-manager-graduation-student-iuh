@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import AdminSidebar from '../Sidebar';
 import Navbar from '../Navbar';
 import { Box } from '@mui/material';
@@ -27,13 +27,13 @@ function MainLayout() {
   useLayoutEffect(() => {
     APP_SIDEBAR.map((item: any) => {
       item.roles.forEach((role: string) => {
-        if (role === lecturerStore.me.role) {
+        if (role === lecturerStore.currentRoleRender) {
           currentSidebarRole.push(item);
           setCurrentSidebarRole(currentSidebarRole);
         }
       });
     });
-  }, [lecturerStore]);
+  }, [lecturerStore.currentRoleRender]);
 
   return (
     <>
@@ -74,7 +74,11 @@ function MainLayout() {
                 height: '100%',
               }}
             >
-              <Outlet />
+              {lecturerStore.currentRoleRender.length > 0 ? (
+                <Outlet />
+              ) : (
+                <Navigate to='/auth/role' />
+              )}
             </Box>
           </Box>
         </Box>

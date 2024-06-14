@@ -7,26 +7,22 @@ import React, { useEffect, useState } from 'react';
 import { validationTermGroupSchema } from '../context';
 import dayjs from 'dayjs';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import { TypeTermStatus } from '@/services/apiTerm';
 import DateTimeCalendar from '@/components/ui/Calendar/DateTimeCalendar';
 
-function EditTopicRegister(props: any) {
+function EditTermDate(props: any) {
   const { onClose, open, termId } = props;
-  const { handleGetTermDetailWithType, onUpdateTermWithType } = useTerm();
+  const { handelGetTermById, onUpdateTermWithTermId } = useTerm();
   const {
     mutate: updateTerm,
     isLoading: loadingUpdate,
     isSuccess,
-  } = onUpdateTermWithType(termId, TypeTermStatus.CHOOSE_TOPIC);
+  } = onUpdateTermWithTermId(termId);
 
-  const {
-    data,
-    isLoading: loadingDetail,
-    isSuccess: successDetail,
-  } = handleGetTermDetailWithType(termId, TypeTermStatus.CHOOSE_TOPIC);
+  const { data, isLoading: loadingDetail, isSuccess: successDetail } = handelGetTermById(termId);
+
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
-  const handleChangeStatusTopicRegister = () => {
+  const handleChangeStatusTermDate = () => {
     setCheckedOpenGroup(!isCheckedOpenGroup);
   };
 
@@ -40,7 +36,7 @@ function EditTopicRegister(props: any) {
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
         <TitleManager mb={10} mt={4}>
-          Cập nhật trạng thái đăng kí đề tài
+          Cập nhật trạng thái học kì
         </TitleManager>
         {loadingDetail && !successDetail ? (
           <Box
@@ -58,8 +54,8 @@ function EditTopicRegister(props: any) {
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={validationTermGroupSchema}
             initialValues={{
-              startDate: data?.termDetail.startDate ? dayjs(data?.termDetail.startDate) : null,
-              endDate: data?.termDetail.endDate ? dayjs(data?.termDetail.endDate) : null,
+              startDate: data?.term.startDate ? dayjs(data?.term.startDate) : null,
+              endDate: data?.term.endDate ? dayjs(data?.term.endDate) : null,
             }}
           >
             {({ touched, values, handleSubmit, errors, setFieldValue }) => (
@@ -97,11 +93,11 @@ function EditTopicRegister(props: any) {
                 {dayjs(values.startDate) <= dayjs() ? (
                   <Box mt={6}>
                     <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
-                      Trạng thái đăng kí đề tài
+                      Trạng thái học kì
                     </Typography>
                     <Switch
                       onChange={() => {
-                        handleChangeStatusTopicRegister();
+                        handleChangeStatusTermDate();
                         setFieldValue('endDate', dayjs());
                       }}
                       checked={isCheckedOpenGroup}
@@ -112,16 +108,16 @@ function EditTopicRegister(props: any) {
                       variant='h6'
                       color={isCheckedOpenGroup ? 'primary' : 'error'}
                     >
-                      {isCheckedOpenGroup ? 'Đang mở đăng kí đề tài' : 'Đã đóng đăng kí đề tài'}
+                      {isCheckedOpenGroup ? 'Đang mở học kì' : 'Đã đóng học kì'}
                     </Typography>
                   </Box>
                 ) : (
                   <Box mt={10}>
                     <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
-                      Trạng thái đăng kí đề tài :
+                      Trạng thái học kì :
                     </Typography>
                     <Typography variant='body1'>
-                      Chưa đến ngày mở đăng kí đề tài, bắt đầu mở từ ngày:{' '}
+                      Chưa đến ngày mở học kì, bắt đầu mở từ ngày:{' '}
                       {dayjs(values.startDate).format('DD/MM/YYYY hh:mm:ss A')}
                     </Typography>
                   </Box>
@@ -151,4 +147,4 @@ function EditTopicRegister(props: any) {
   );
 }
 
-export default EditTopicRegister;
+export default EditTermDate;

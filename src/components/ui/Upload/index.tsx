@@ -8,6 +8,7 @@ import {
   LinearProgressProps,
   Paper,
   Skeleton,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
@@ -44,10 +45,12 @@ const VisuallyHiddenInput = styled('input')({
 interface ModalUploadPropsType {
   entityUpload: TypeEntityUpload;
   termId: string | number;
+  typeEvaluation?: string;
+  disabled?: boolean;
 }
 
 function ModalUpload(props: ModalUploadPropsType) {
-  const { entityUpload, termId } = props;
+  const { entityUpload, termId, typeEvaluation, disabled = false } = props;
   const [isOpen, setIsOpen] = useState(false);
   const {
     importExcel,
@@ -60,7 +63,7 @@ function ModalUpload(props: ModalUploadPropsType) {
     setCurrentFile,
     setValueLoading,
     fileName,
-  } = useUploadExcel(entityUpload, termId);
+  } = useUploadExcel(entityUpload, termId, typeEvaluation);
 
   const handleOpenUpload = () => {
     setIsOpen(true);
@@ -75,12 +78,15 @@ function ModalUpload(props: ModalUploadPropsType) {
     setValueLoading('');
     setCurrentFile(undefined);
   };
+  useEffect(() => {},[]) 
   return (
     <Box>
-      <Button onClick={handleOpenUpload} variant='contained' color='primary'>
-        <Icon icon='uiw:file-excel' style={{ marginRight: 2 }} width={20} />
-        Tải lên file excel mới
-      </Button>
+      <Tooltip arrow title={!disabled ? '' : 'Danh sách tiêu chí trống, tải lên ngay'}>
+        <Button disabled={disabled} onClick={handleOpenUpload} variant='contained' color='primary'>
+          <Icon icon='uiw:file-excel' style={{ marginRight: 2 }} width={20} />
+          Tải lên file excel mới
+        </Button>
+      </Tooltip>
       <Modal maxWidth={'sm'} open={isOpen} onClose={handleCloseUpload}>
         <Paper sx={{ px: 10, py: 6 }} elevation={3}>
           <Box display={'flex'} gap={4}>

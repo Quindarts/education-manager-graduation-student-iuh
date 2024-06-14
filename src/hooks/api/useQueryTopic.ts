@@ -4,36 +4,41 @@ import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 
-
+export enum QueryTopic {
+    getAllTopic = 'getAllTopic',
+    getTopicById = 'getTopicById',
+    getAllTopicByTermMajor = 'getAllTopicByTermMajor',
+    getAllTopicByLecturerTerm = 'getAllTopicByLecturerTerm'
+}
 
 export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
 
     //[GET BY ID]
     const handleTopicById = (topicId: string) => {
-        return useQuery(['get-topic-by-id', topicId], () => getTopicById(topicId))
+        return useQuery([QueryTopic.getTopicById, topicId], () => getTopicById(topicId))
     }
 
     //[GET BY TERM, MAJOR]
     const handleTopicsByTermByMajor = (termId: string | number, majorId: string | number) => {
-        return useQuery(['get-all-topic-term-major', termId, majorId], () => getTopicsByTermByMajor(termId, majorId), {
+        return useQuery([QueryTopic.getAllTopicByTermMajor, termId, majorId], () => getTopicsByTermByMajor(termId, majorId), {
             staleTime: 10000,
         })
     }
 
     //[GET BY TERM, LECTURER]
     const handleTopicsByLecturerByTerm = (lecturerId: string | number, termId: string | number) => {
-        return useQuery(['get-all-topic-lecturer-term', lecturerId, termId], () => getTopicsByLecturerByTerm(lecturerId, termId), {
+        return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerId, termId], () => getTopicsByLecturerByTerm(lecturerId, termId), {
             staleTime: 10000,
         })
     }
 
     //[CREATE]
-    const onCreateTopicByToken = () => {
-        return useMutation((newTopic: any) => createTopicByToken(newTopic), {
-
-            onSuccess(data, variables, context) {
+    const onCreateTopicByToken = (termId: string | number, majorId: string | number) => {
+        return useMutation((newTopic: any) => createTopicByToken(newTopic, termId), {
+            onSuccess(data, variables) {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, majorId] })
             },
             onError(error) {
                 enqueueSnackbar("Tạo đề tài thất bại", { variant: 'error' })
@@ -62,8 +67,8 @@ export const useTopic = () => {
             {
                 onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: ['get-all-topic-term-major', termId, majorId] });
-                    queryClient.invalidateQueries({ queryKey: ['get-topic-by-id', topicId] });
+                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, majorId] });
+                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] });
                 },
                 onError(error) {
                     enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })

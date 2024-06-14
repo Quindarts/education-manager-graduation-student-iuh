@@ -1,10 +1,9 @@
-import Calendar from '@/components/ui/Calendar';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
 import { Box, Button, CircularProgress, Switch, Typography } from '@mui/material';
 import { Formik } from 'formik';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { validationTermGroupSchema } from '../context';
 import dayjs from 'dayjs';
 import { useTerm } from '@/hooks/api/useQueryTerm';
@@ -25,7 +24,6 @@ function EditGroupRegister(props: any) {
     isLoading: loadingDetail,
     isSuccess: successDetail,
   } = handleGetTermDetailWithType(termId, TypeTermStatus.CHOOSE_GROUP);
-
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
   const handleChangeStatusGroupRegister = () => {
@@ -42,7 +40,7 @@ function EditGroupRegister(props: any) {
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
         <TitleManager mb={10} mt={4}>
-          Cập nhật thông tin đăng kí nhóm
+          Cập nhật trạng thái đăng kí nhóm
         </TitleManager>
         {loadingDetail && !successDetail ? (
           <Box
@@ -77,7 +75,7 @@ function EditGroupRegister(props: any) {
                       name='startDate'
                       format='DD/MM/YYYY hh:mm:ss A'
                       value={values.startDate}
-                      disabled={!isCheckedOpenGroup}
+                      disabled={isCheckedOpenGroup === false && dayjs(values.startDate) <= dayjs()}
                       error={touched.startDate && errors.startDate ? true : false}
                     />
                   </Box>
@@ -91,7 +89,7 @@ function EditGroupRegister(props: any) {
                       name='endDate'
                       format='DD/MM/YYYY hh:mm:ss A'
                       value={values.endDate}
-                      disabled={!isCheckedOpenGroup}
+                      disabled={isCheckedOpenGroup === false && dayjs(values.startDate) <= dayjs()}
                       error={touched.endDate && errors.endDate ? true : false}
                     />
                   </Box>

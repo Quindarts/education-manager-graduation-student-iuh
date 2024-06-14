@@ -65,7 +65,7 @@ function EditInfoModal(props: any) {
           <Formik
             validationSchema={validateSchemaStudent}
             initialValues={{
-              id: `${data?.student?.id}`,
+              username: `${data?.student?.username}`,
               fullName: `${data?.student?.fullName}`,
               email: `${data?.student?.email}`,
               phone: `${data?.student?.phone}`,
@@ -113,14 +113,14 @@ function EditInfoModal(props: any) {
                 </Box>
                 <CustomTextField
                   label='Mã sinh viên'
-                  name='id'
-                  value={values.id}
-                  placeholder='Mã sinh viên'
+                  name='username'
+                  value={values.username}
+                  placeholder='Ví dụ: 20189141'
                   disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.id ? true : false}
-                  helperText={errors.id}
+                  error={errors.username ? true : false}
+                  helperText={errors.username}
                 />
                 <CustomTextField
                   value={values.fullName}
@@ -161,7 +161,7 @@ function EditInfoModal(props: any) {
                   label='Lớp danh nghĩa'
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder='Lớp danh nghĩa'
+                  placeholder='Ví dụ: DHKTPM17C'
                   error={errors.clazzName ? true : false}
                   helperText={errors.clazzName}
                 />

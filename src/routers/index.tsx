@@ -25,6 +25,10 @@ import ScoreStudentPage from '@/page/ScoreStudent';
 import GroupSupportManagement from '@/page/GroupSupport/Management';
 import ScoreGroupSupport from '@/page/GroupSupport/ScoreManager';
 import CreateGroupLecturer from '@/page/GroupLecturer/Create';
+import RolePage from '@/page/auth/role';
+import ProfilePage from '@/page/auth/profile';
+import MyTopic from '@/page/MyTopic';
+import MyGroupLecturer from '@/page/MyGroupLecturer';
 
 function Routing() {
   return (
@@ -34,45 +38,44 @@ function Routing() {
           //ROUTE HOME
           <Route index path={APP_ROUTES.DASHBOARD} element={<Dashboard />} />
           //ROUTE TERM
-          <Route path={APP_ROUTES.TERM.ALL} element={<TermPage />} />
+          <Route path={APP_ROUTES.TERM.MANAGEMENT} element={<TermPage />} />
           //ROUTE LECTURER
-          <Route path={APP_ROUTES.LECTURER.ALL} element={<LecturerPage />} />
           <Route path={APP_ROUTES.LECTURER.MANAGEMENT} element={<LecturerManagementPage />} />
           <Route path={APP_ROUTES.LECTURER.DETAILS} element={<DetailsLecturerPage />} />
           //ROUTE STUDENT
-          <Route path={APP_ROUTES.STUDENT.ALL} element={<StudentPage />} />
+          <Route path={APP_ROUTES.STUDENT.MANAGEMENT} element={<StudentPage />} />
           //ROUTE USER
-          <Route path={APP_ROUTES.USER.ALL} element={<h1>user</h1>} />
+          <Route path={APP_ROUTES.USER.MANAGEMENT} element={<h1>user</h1>} />
           //ROUTE TOPIC
-          <Route path={APP_ROUTES.TOPIC.ALL} element={<TopicPage />} />
+          <Route path={APP_ROUTES.TOPIC.MANAGEMENT} element={<TopicPage />} />
+          <Route path={APP_ROUTES.TOPIC.LECTURER} element={<MyTopic />} />
           //ROUTE REVIEW
-          <Route path={APP_ROUTES.REVIEW.ALL} element={<ReviewManagerPage />} />
+          <Route path={APP_ROUTES.REVIEW.MANAGEMENT} element={<ReviewManagerPage />} />
           //ROUTE GR_STUDENT
-          <Route path={APP_ROUTES.GROUP_STUDENT.ALL} element={<GroupStudentPage />} />
+          {/* <Route path={APP_ROUTES.GROUP_STUDENT.MANAGEMENT} element={<GroupStudentPage />} /> */}
           <Route path={APP_ROUTES.GROUP_STUDENT.MANAGEMENT} element={<GroupStudentManagement />} />
           <Route path={APP_ROUTES.GROUP_STUDENT.DETAIL} element={<GroupStudentDetailPage />} />
           //ROUTE GR_SUPPORT
-          <Route path={APP_ROUTES.GROUP_SUPPORT.ALL} element={<GroupSupportPage />} />
           <Route path={APP_ROUTES.GROUP_SUPPORT.MANAGEMENT} element={<GroupSupportManagement />} />
           <Route path={APP_ROUTES.GROUP_SUPPORT.SCORE} element={<ScoreGroupSupport />} />
           {/* <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL_SCORE_GROUP} element={<GroupSupportManagement />} /> */}
-          
-          
           //ROUTE USER
           <Route path={APP_ROUTES.USER.REGISTER} element={<Register />} />
-          <Route path={APP_ROUTES.USER.PROFILE} element={<h1>Profile</h1>} />
-          <Route path={APP_ROUTES.USER.ROLE} element={<h1>ROLE</h1>} />
+          <Route path={APP_ROUTES.USER.PROFILE} element={<ProfilePage />} />
           //ROUTE GR_LECTURER
-          <Route path={APP_ROUTES.GROUP_LECTURER.ALL} element={<GroupLecturerPage />} />
+          <Route path={APP_ROUTES.GROUP_LECTURER.MANAGEMENT} element={<GroupLecturerPage />} />
+          <Route path={APP_ROUTES.GROUP_LECTURER.ME} element={<MyGroupLecturer />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.REPORT} element={<GroupGradingAssemblyPage />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.CREATE} element={<CreateGroupLecturer />} />
           <Route path={'/componentpage'} element={<ComponentPage />} />
           //ROUTE SCORE_STUDENT
           <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />
+          <Route path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
           {/* <Route path={APP_ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
           <Route path={APP_ROUTES.SUCCESS_MESSAGE} element={<SuccessMessagePage />} /> */}
         </Route>
         <Route path='/auth' element={<AuthLayout />}>
+          <Route index path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
           <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />
         </Route>
         <Route path='*' element={<h1>404</h1>} />

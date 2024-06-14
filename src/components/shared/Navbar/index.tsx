@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import Box from '@mui/material/Box';
 import ProfileMenu from './ProfileMenu';
 import Notification from './Notification';
+import BreadCrumbRouting from '@/components/ui/BreadCrumb';
 
 interface NavbarProps {
   handleOpenSideBar: () => void;
@@ -25,17 +26,23 @@ function Navbar(props: NavbarProps) {
       left={isOpenSideBar ? '250px' : '76px'}
       justifyContent='space-between'
     >
-      <Box
-        sx={{ cursor: 'pointer' }}
-        width={54}
-        height={70}
-        display='flex'
-        alignItems='center'
-        onClick={handleOpenSideBar}
-        color={'grey.600'}
-      >
-        <Icon width={20} icon={isOpenSideBar ? 'ooui:next-ltr' : 'fluent:list-16-regular'} />
+      <Box display={'flex'} alignItems={'center'}>
+        <Box
+          sx={{ cursor: 'pointer' }}
+          width={54}
+          height={70}
+          display='flex'
+          alignItems='center'
+          onClick={handleOpenSideBar}
+          color={'grey.600'}
+        >
+          <Icon width={20} icon={isOpenSideBar ? 'ooui:next-ltr' : 'fluent:list-16-regular'} />
+        </Box>
+        <Box>
+          <BreadCrumbRouting />
+        </Box>
       </Box>
+
       <Box display='flex' alignItems='center' gap={6}>
         <Notification />
         <ProfileMenu />

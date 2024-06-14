@@ -25,3 +25,9 @@ export const updateStudent: any = async (id: string | number, data: any) => {
 //[DELETE STUDENT]
 
 //[CHANGE ACTIVE STUDENT]
+
+//
+export const resetPasswordStudent: any = async (data: any) => {
+    return axiosConfig.post(`api/v1/students/reset-password`, data)
+}
+

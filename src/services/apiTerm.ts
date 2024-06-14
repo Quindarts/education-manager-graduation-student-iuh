@@ -38,6 +38,10 @@ export const createTerm = (data: TermDataRequest) => {
     return axiosConfig.post(`/api/v1/terms`, data);
 }
 
+export const updateTermById: any = (id: number | string, data: { startDate: string, endDate: string }) =>{
+    return axiosConfig.put(`/api/v1/terms/${id}`, data);
+}
+
 //delete term BE
 export const deleteTerm = (id: number | string) => {
     return axiosConfig.post(`/api/v1/terms/${id}`);

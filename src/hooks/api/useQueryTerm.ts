@@ -1,4 +1,4 @@
-import { TypeTermStatus, getTermDetailWithType, getTermById } from './../../services/apiTerm';
+import { TypeTermStatus, getTermDetailWithType, getTermById, updateTermById } from './../../services/apiTerm';
 import { RootState } from '@/store';
 import { TermDataRequest, createTerm, getAllTerm, getCurrentTerm, updateTermWithType } from "@/services/apiTerm"
 import { useMutation, useQuery } from "react-query"
@@ -43,8 +43,9 @@ export function useTerm() {
     };
 
     //[GET DETAIL WITH TYPE]
-    const handleGetTermDetailWithType = (termId: string | number, type: TypeTermStatus) => {
-        return useQuery([TermQueryKey.getTermDetailById, termId], () => getTermDetailWithType(termId, type), {
+    const handleGetTermDetailWithType = (termId: string | number, type: string) => {
+        // alert(type)
+        return useQuery([TermQueryKey.getTermDetailById, type, termId], () => getTermDetailWithType(termId, type), {
             enabled: !!termId
         });
     };
@@ -67,6 +68,21 @@ export function useTerm() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTerm] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
+            },
+            onError(error) {
+                enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });
+
+            }
+        });
+    };
+
+    //[UPDATE WITH ID]
+    const onUpdateTermWithTermId = (termId: number) => {
+        return useMutation((data) => updateTermById(termId, data), {
+            onSuccess(data) {
+                enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
+                queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTerm] });
+                queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
 
             },
             onError(error) {
@@ -77,11 +93,13 @@ export function useTerm() {
     };
 
     return {
+        termStore,
         handelGetTermById,
         handleGetAllTerm,
         handleGetCurrentTerm,
         handleGetTermDetailWithType,
-        termStore,
-        onCreateTerm, onUpdateTermWithType
+        onUpdateTermWithTermId,
+        onCreateTerm,
+        onUpdateTermWithType
     };
 }

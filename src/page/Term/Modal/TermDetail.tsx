@@ -14,8 +14,6 @@ function TermDetail(props: any) {
   const { onClose, open, termId } = props;
   const { handelGetTermById } = useTerm();
   const { data, isLoading, isSuccess } = handelGetTermById(termId);
-  console.log('🚀 ~ TermDetail ~ data:', data);
-
   return (
     <Modal open={open} onClose={onClose}>
       <Box p={10}>
