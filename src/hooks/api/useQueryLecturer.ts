@@ -1,24 +1,64 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider';
-import { createLecturer, deleteLecturerById, getAllLecturer, getLecturerById, updateLecturerById } from "@/services/apiLecturer"
+import { createLecturer, deleteLecturerById, getAllLecturer, getLecturerById, searchLecturerAdmin, updateLecturerById } from "@/services/apiLecturer"
 import { importLecturerTerm } from '@/services/apiLecturerTerm';
+import { ENUM_RENDER_LECTURER, setParams, setTypeRender } from '@/store/slice/lecturer.slice';
 import { useSnackbar } from 'notistack';
 import { useMutation, useQuery } from "react-query"
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export enum QueryKeysLecturer {
     getAllLecturer = 'getAllLecturer',
     createLecturer = 'createLecturer',
     getLecturerById = "getLecturerById",
+    searchLecturerByField = 'searchLecturerByField',
+    managerActionLecturer = 'managerActionLecturer'
 }
 
 export const useLecturer = () => {
-    const {enqueueSnackbar} = useSnackbar()
+    const { enqueueSnackbar } = useSnackbar()
+    const lecturers = useSelector((state: any) => state.lecturerSlice)
+    const { params, me, currentRoleRender, renderUi } = lecturers
+    const dispatch = useDispatch()
 
-    //[GET ALL]
-    const handleGetAllLecturer = (termId: string | number, limit: number, page: number) => {
-        return useQuery([QueryKeysLecturer.getAllLecturer, termId, limit, page], () => getAllLecturer(termId, limit, page), {
+    const handleManagerRenderActionLecturer = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number, typeRender: ENUM_RENDER_LECTURER) => {
+        let key = [QueryKeysLecturer.getAllLecturer, ENUM_RENDER_LECTURER.ALL, termId, limit, page]
+        let callback = getAllLecturer(termId, limit, page)
+        if (typeRender === ENUM_RENDER_LECTURER.SEARCH) {
+            key = [QueryKeysLecturer.searchLecturerByField, termId, limit, page, searchField, keywords]
+            callback = searchLecturerAdmin(termId, limit, page, searchField, keywords)
+        }
+        return useQuery(key, () => callback, {
+            onSuccess(data: any) {
+                dispatch(setParams(data.params))
+                dispatch(setTypeRender(typeRender))
+            },
             staleTime: 10000,
         })
     }
+
+    //[GET ALL]
+    const handleGetAllLecturer = (termId: string | number, limit: number, page: number) => {
+        return useQuery([QueryKeysLecturer.getAllLecturer, ENUM_RENDER_LECTURER.ALL, termId, limit, page], () => getAllLecturer(termId, limit, page), {
+            onSuccess(data) {
+                dispatch(setParams(data.params))
+                dispatch(setTypeRender(ENUM_RENDER_LECTURER.ALL))
+            },
+            staleTime: 10000,
+        })
+    }
+    //[SEARCH ROLE ADMIN]
+    const handleSearchLecturerAdmin = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
+        return useQuery([QueryKeysLecturer.searchLecturerByField, termId, limit, page, searchField, keywords], () => searchLecturerAdmin(termId, limit, page, searchField, keywords), {
+            onSuccess(data) {
+                console.log(data.params);
+                dispatch(setParams(data.params))
+                dispatch(setTypeRender(ENUM_RENDER_LECTURER.SEARCH))
+            },
+            staleTime: 10000,
+        })
+    }
+
 
     //[GET BY ID]
     const handleGetLecturerById = (id: number | string) => {
@@ -83,14 +123,18 @@ export const useLecturer = () => {
             }
         })
     }
-    
+
     return {
+        params,
+        me,
+        currentRoleRender,
+        renderUi,
         onCreateLecturer,
         onDeleteLecturer,
         onUpdateLecturer,
         onImportLecturerTerm,
         handleGetAllLecturer,
-        handleGetLecturerById
+        handleGetLecturerById, handleManagerRenderActionLecturer
     }
 }
 

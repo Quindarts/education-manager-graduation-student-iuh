@@ -7,7 +7,12 @@ export const getLecturerByMajorId = (majorId: number) => {
 export const getAllLecturer: any = (termId: string | number, limit: number, page: number) => {
     return axiosConfig.get(`/api/v1/lecturers?limit=${limit}&page=${page}&termId=${termId}`);
 }
+// {{url}}/api/v1/lecturers?limit=5&page=1&termId=f40bd6b8-d2a2-4477-9a06-f63801df53aa&searchField=phone&keywords=09
 
+//[Admin role]
+export const searchLecturerAdmin: any = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
+    return axiosConfig.get(`/api/v1/lecturers/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}`);
+}
 export const getLecturerById: any = (lecturer_id: number | string) => {
     return axiosConfig.get(`/api/v1/lecturers/${lecturer_id}`);
 }

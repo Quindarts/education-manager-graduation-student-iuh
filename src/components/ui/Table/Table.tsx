@@ -5,12 +5,13 @@ import React from 'react';
 import Pagination from '@mui/material/Pagination';
 import LinearProgress from '@mui/material/LinearProgress';
 import IconButton from '@mui/material/IconButton';
+import DropDown from '../Dropdown';
 interface Props extends DataGridProps {
   minHeight?: number;
   page: number;
   totalPages: number;
   totalItems: number;
-  handelChangePage: (page: number) => void;
+  handleChangePage: (page: number) => void;
   needReset?: boolean;
   onReset?: () => void;
   noData?: React.ReactNode;
@@ -24,7 +25,7 @@ export default function Table(props: Props) {
     totalPages,
     totalItems,
     needReset,
-    handelChangePage,
+    handleChangePage,
     onReset,
     noData,
     ...rest
@@ -111,8 +112,19 @@ export default function Table(props: Props) {
       />
       <Box display='flex' alignItems='center' justifyContent='space-between' mr={2} mt={4}>
         <Box display='flex' alignItems='center'>
+          {/* <Box width={190}> */}
+            {/* <DropDown
+              value={5}
+              options={[
+                { _id: 5, name: 'Hiển thị 5 dòng' },
+                { _id: 10, name: 'Hiển thị 10 dòng' },
+                { _id: 15, name: 'Hiển thị 15 dòng' },  
+                { _id: 20, name: 'Hiển thị 20 dòng' },
+              ]}
+            /> */}
+          {/* </Box> */}
           <Typography variant='body1' sx={{ mx: 2 }} display='flex'>
-            Tổng số trang:{'  '}
+            Tổng số dòng:{'  '}
             <Typography variant='body1' fontWeight={600}>
               {totalItems}
             </Typography>
@@ -132,7 +144,9 @@ export default function Table(props: Props) {
           variant='outlined'
           color='primary'
           shape='rounded'
-          onChange={(_, page) => handelChangePage(page)}
+          onChange={(_, page: number) => {
+            handleChangePage(page);
+          }}
           page={page}
         />
       </Box>

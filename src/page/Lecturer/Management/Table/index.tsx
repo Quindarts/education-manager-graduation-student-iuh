@@ -10,7 +10,7 @@ import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
 
 function TableManagamentLecturer(props: any) {
-  const { rows, totalItems, currentTermId, totalPages, page, handelChangePage } = props;
+  const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
   const navigate = useNavigate();
   const { onImportLecturerTerm } = useLecturer();
@@ -136,10 +136,10 @@ function TableManagamentLecturer(props: any) {
             width: '100%',
           }}
           columns={basicColumns}
-          totalItems={1}
-          totalPages={1}
-          page={1}
-          handelChangePage={() => {}}
+          totalItems={totalItems}
+          totalPages={totalPage}
+          page={page}
+          handleChangePage={handleChangePage}
           disableColumnMenu
           disableColumnFilter
           disableColumnSelector
