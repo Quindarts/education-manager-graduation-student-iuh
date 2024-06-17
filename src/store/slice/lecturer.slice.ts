@@ -1,14 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export enum ENUM_RENDER_LECTURER {
-    SEARCH = "SEARCH",
-    FILTER = 'FILTER',
-    ALL = 'ALL'
+    SEARCH_FULLNAME = "full_name",
+    SEARCH_EMAIL = 'email',
+    SEARCH_PHONE = 'phone',
+    SEARCH_USERNAME = 'username',
+    ALL = 'all'
 }
+
 const initLecturerSlice: any = {
     me: {},
     currentRoleRender: '',
     renderUi: ENUM_RENDER_LECTURER.ALL,
+    keywords: '',
     params: {
         page: 1,
         limit: 10,
@@ -27,14 +31,16 @@ export const useLecturerSlice = createSlice({
             state.currentRoleRender = payload
         },
         setParams: (state: any, { payload }: PayloadAction<any>) => {
-            console.log("🚀 ~ payload:", payload)
             state.params = payload
         },
         setTypeRender: (state: any, { payload }: PayloadAction<any>) => {
             state.renderUi = payload
-        }
+        },
+        setKeywords: (state: any, { payload }: PayloadAction<any>) => {
+            state.keywords = payload
+        },
     }
 })
-export const { setMe, setCurrentRoleRender, setTypeRender, setParams } = useLecturerSlice.actions;
+export const { setMe, setCurrentRoleRender, setTypeRender, setParams, setKeywords } = useLecturerSlice.actions;
 
 export default useLecturerSlice.reducer;

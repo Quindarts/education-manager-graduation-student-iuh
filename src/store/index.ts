@@ -2,12 +2,19 @@ import { configureStore } from "@reduxjs/toolkit";
 import useLecturerReducer from "./slice/lecturer.slice";
 import useTermSliceReducer from "./slice/term.slice";
 import useMajorSliceReducer from "./slice/major.slice";
+import useGroupStudentSlice from "./slice/groupStudent.slice";
+import useStudentSlice from "./slice/student.slice";
+import useTopicSlice from "./slice/topic.slice";
 
 export const store = configureStore({
     reducer: {
         lecturerSlice: useLecturerReducer,
         majorSlice: useMajorSliceReducer,
-        termSlice: useTermSliceReducer
+        termSlice: useTermSliceReducer,
+
+        groupStudentSlice: useGroupStudentSlice,
+        studentSlice: useStudentSlice,
+        topicSlice: useTopicSlice
     },
 });
 

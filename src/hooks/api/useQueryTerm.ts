@@ -62,12 +62,17 @@ export function useTerm() {
     };
 
     //[UPDATE WITH TYPE]
-    const onUpdateTermWithType = (termId: number, type: TypeTermStatus) => {
+    const onUpdateTermWithType = (termId: string, type: TypeTermStatus) => {
         return useMutation((data) => updateTermWithType(termId, type, data), {
             onSuccess(data) {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTerm] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
+                
+                if (termStore.currentTerm.id === termId) {
+                    queryClient.invalidateQueries({ queryKey: [TermQueryKey.currentTerm] });
+
+                }
             },
             onError(error) {
                 enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });

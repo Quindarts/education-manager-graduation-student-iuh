@@ -1,12 +1,14 @@
 import Table from '@/components/ui/Table/Table';
+import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
+import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
-import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Chip, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function TableManagamentGroupStudent(props: any) {
-  const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
+  const { rows, totalItems, totalPage, page, handleChangePage } = props;
   const navigate = useNavigate();
   const basicColumns: GridColDef[] = [
     {
@@ -31,7 +33,7 @@ function TableManagamentGroupStudent(props: any) {
       headerAlign: 'center',
       renderCell: (params: any) => {
         return (
-          <Typography>{params.row.topic_id ? params.row.topic_id : 'Chưa có đề tài'}</Typography>
+          <Typography>{params.row.topicId ? params.row.topicId : 'Chưa có đề tài'}</Typography>
         );
       },
     },
@@ -44,7 +46,7 @@ function TableManagamentGroupStudent(props: any) {
       renderCell: (params: any) => {
         return (
           <Typography>
-            {params.row.lecturer_id ? params.row.lecturer_id : 'Chưa có giảng viên HD'}
+            {params.row.lecturerId ? params.row.lecturerId : 'Chưa có giảng viên HD'}
           </Typography>
         );
       },
@@ -56,17 +58,22 @@ function TableManagamentGroupStudent(props: any) {
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => {
-        return <Typography>0/2</Typography>;
+        return (
+          <Typography>
+            {params.row.numOfMembers}
+            /2
+          </Typography>
+        );
       },
     },
     {
       headerName: 'Trạng thái nhóm',
-      field: 'status',
+      field: 'typeReport',
       flex: 1,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => {
-        return <Chip color='success' sx={{ color: 'white' }} label={params.row.status} />;
+        return <Chip color='success' sx={{ color: 'white' }} label={params.row.typeReport} />;
       },
     },
     {
@@ -80,7 +87,7 @@ function TableManagamentGroupStudent(props: any) {
           <Tooltip title='Chi tiết'>
             <IconButton
               color='primary'
-              onClick={() => navigate(`/group-student/detail/${params.row.id}`)}
+              onClick={() => navigate(`/group-students/detail/${params.row.id}`)}
             >
               <Icon icon='majesticons:checkbox-list-detail' />
             </IconButton>
@@ -89,6 +96,13 @@ function TableManagamentGroupStudent(props: any) {
       ),
     },
   ];
+  const { onImportGroupStudent } = useGroupStudent();
+  const { termStore } = useTerm();
+
+  const { mutate: importGr, isLoading } = onImportGroupStudent(termStore.currentTerm.id);
+  const hanldeImport = () => {
+    importGr(termStore.currentTerm.id);
+  };
   return (
     <Box>
       <Table
@@ -97,10 +111,15 @@ function TableManagamentGroupStudent(props: any) {
           bgcolor: 'white',
         }}
         columns={basicColumns}
-        totalItems={1}
-        totalPages={1}
-        page={1}
-        handelChangePage={() => {}}
+        totalItems={totalItems}
+        totalPages={totalPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        noData={
+          <Button variant='contained' onClick={hanldeImport}>
+            Tạo danh sách nhóm sinh viên{' '}
+          </Button>
+        }
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector

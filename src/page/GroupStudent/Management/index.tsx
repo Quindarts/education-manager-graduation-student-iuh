@@ -1,5 +1,5 @@
 import { Box, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import TableManagamentGroupStudent from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderGroupStudent from './Header';
@@ -8,15 +8,42 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import GridGroupStudent from './Grid';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import { ENUM_RENDER_GROUP_STUDENT } from '@/store/slice/groupStudent.slice';
 
 function GroupStudentManagement() {
   const [view, setView] = React.useState('table');
-
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
     setView(nextView);
   };
-  const { handleGetGroupStudentByTerm } = useGroupStudent();
-  const { data, isLoading } = handleGetGroupStudentByTerm(1);
+  const { handleManagerRenderActionGroupStudent, params } = useGroupStudent();
+  const [currentLimit, setCurrentLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(params.page);
+
+  const [keywords, setKeywords] = useState('');
+  const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_GROUP_STUDENT>(
+    ENUM_RENDER_GROUP_STUDENT.ALL,
+  );
+  const { data, isLoading, isFetched } = handleManagerRenderActionGroupStudent(
+    currentLimit,
+    currentPage,
+    typeSearch,
+    keywords,
+  );
+
+  const handleChangePage = (value: string | Number) => {
+    setCurrentPage(value);
+  };
+  const handleChangeDropSearch = (value: ENUM_RENDER_GROUP_STUDENT) => {
+    setTypeSearch(value);
+  };
+  const handleChangeKeywords = (value: string) => {
+    setKeywords(value);
+  };
+  const onClearSearch = () => {
+    setKeywords('');
+    setCurrentPage(1);
+    setTypeSearch(ENUM_RENDER_GROUP_STUDENT.ALL);
+  };
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
       <Box display={'flex'} justifyContent={'space-between'}>
@@ -40,12 +67,18 @@ function GroupStudentManagement() {
       </Box>
 
       <HeaderGroupStudent />
-      {isLoading ? (
+      {isLoading && !isFetched ? (
         <SekeletonUI />
       ) : (
         <>
           {view === 'table' ? (
-            <TableManagamentGroupStudent rows={data ? data.groupStudents : []} />
+            <TableManagamentGroupStudent
+              totalPage={params.totalPage}
+              totalItems={data?.groupStudents.length}
+              handleChangePage={handleChangePage}
+              page={currentPage}
+              rows={data ? data.groupStudents : []}
+            />
           ) : (
             <GridGroupStudent />
           )}

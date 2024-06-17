@@ -12,7 +12,7 @@ function ListTeamStudent(props: any) {
   return (
     <Box my={10} borderRadius={4} bgcolor={'white'} py={16} px={8}>
       <Box>
-        <TitleManager sx={{ mb: 4 }}>Danh sách nhóm đề tài chấm điểm hội đồng </TitleManager>
+        <TitleManager sx={{ mb: 4 }}>Danh sách nhóm giảng viên điểm hội đồng </TitleManager>
       </Box>
 
       <Box display={'flex'} flexWrap={'wrap'} p={4} gap={10}>
@@ -31,20 +31,9 @@ function ListTeamStudent(props: any) {
             <Typography fontWeight={'bold'} variant='h6' color='primary.dark'>
               Nhóm {team}
             </Typography>
-            <Typography variant='body1'>GV hội đồng: Nguyễn Minh</Typography>
-            <Typography variant='body1'>Tên đề tài: Phát triển ứng dụng</Typography>
+            <Typography variant='body1'>GV 1: Nguyễn Minh</Typography>
+            <Typography variant='body1'>GV 1: Nguyễn Long</Typography>
             <Typography>
-              <Box
-                bottom={10}
-                left={10}
-                color={'grey.600'}
-                position={'absolute'}
-                fontSize={12}
-                fontWeight={'bold'}
-                borderRadius={'10px'}
-              >
-                Không có nhóm
-              </Box>
               <Link bottom={10} right={10} color={'grey.600'} position={'absolute'}>
                 Xem chi tiết
               </Link>

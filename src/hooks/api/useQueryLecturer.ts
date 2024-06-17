@@ -1,11 +1,12 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { createLecturer, deleteLecturerById, getAllLecturer, getLecturerById, searchLecturerAdmin, updateLecturerById } from "@/services/apiLecturer"
 import { importLecturerTerm } from '@/services/apiLecturerTerm';
-import { ENUM_RENDER_LECTURER, setParams, setTypeRender } from '@/store/slice/lecturer.slice';
+import { ENUM_RENDER_LECTURER, setKeywords, setParams, setTypeRender } from '@/store/slice/lecturer.slice';
 import { useSnackbar } from 'notistack';
 import { useMutation, useQuery } from "react-query"
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { useTerm } from './useQueryTerm';
 
 export enum QueryKeysLecturer {
     getAllLecturer = 'getAllLecturer',
@@ -18,26 +19,28 @@ export enum QueryKeysLecturer {
 export const useLecturer = () => {
     const { enqueueSnackbar } = useSnackbar()
     const lecturers = useSelector((state: any) => state.lecturerSlice)
-    const { params, me, currentRoleRender, renderUi } = lecturers
+    const { params, me, currentRoleRender, renderUi, keywords } = lecturers
     const dispatch = useDispatch()
+    const { termStore } = useTerm()
 
-    const handleManagerRenderActionLecturer = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number, typeRender: ENUM_RENDER_LECTURER) => {
-        let key = [QueryKeysLecturer.getAllLecturer, ENUM_RENDER_LECTURER.ALL, termId, limit, page]
-        let callback = getAllLecturer(termId, limit, page)
-        if (typeRender === ENUM_RENDER_LECTURER.SEARCH) {
-            key = [QueryKeysLecturer.searchLecturerByField, termId, limit, page, searchField, keywords]
-            callback = searchLecturerAdmin(termId, limit, page, searchField, keywords)
-        }
-        return useQuery(key, () => callback, {
+    const handleManagerRenderActionLecturer = (limit: number, page: number, searchField: string,
+        keywords: string | number) => {
+        return useQuery([QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, limit, page, renderUi, keywords], () => {
+            if (searchField !== 'all' && keywords != '')
+                return searchLecturerAdmin(termStore.currentTerm.id, limit, page, searchField, keywords)
+            else
+                return getAllLecturer(termStore.currentTerm.id, limit, page)
+        }, {
             onSuccess(data: any) {
                 dispatch(setParams(data.params))
-                dispatch(setTypeRender(typeRender))
+                dispatch(setTypeRender(searchField))
+                dispatch(setKeywords(keywords))
             },
             staleTime: 10000,
         })
     }
 
-    //[GET ALL]
+    // [GET ALL]
     const handleGetAllLecturer = (termId: string | number, limit: number, page: number) => {
         return useQuery([QueryKeysLecturer.getAllLecturer, ENUM_RENDER_LECTURER.ALL, termId, limit, page], () => getAllLecturer(termId, limit, page), {
             onSuccess(data) {
@@ -47,13 +50,13 @@ export const useLecturer = () => {
             staleTime: 10000,
         })
     }
-    //[SEARCH ROLE ADMIN]
+    // [SEARCH ROLE ADMIN]
     const handleSearchLecturerAdmin = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
         return useQuery([QueryKeysLecturer.searchLecturerByField, termId, limit, page, searchField, keywords], () => searchLecturerAdmin(termId, limit, page, searchField, keywords), {
             onSuccess(data) {
                 console.log(data.params);
                 dispatch(setParams(data.params))
-                dispatch(setTypeRender(ENUM_RENDER_LECTURER.SEARCH))
+                dispatch(setTypeRender(ENUM_RENDER_LECTURER.SEARCH_FULLNAME))
             },
             staleTime: 10000,
         })
@@ -86,7 +89,9 @@ export const useLecturer = () => {
         return useMutation((lecturer: any) => updateLecturerById(id, lecturer), {
             onSuccess() {
                 enqueueSnackbar("Cập nhật giảng viên thành công", { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer, termId, limit, page] });
+                queryClient.invalidateQueries(
+                    [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, params.limit, params.page, renderUi, keywords ? keywords : '']
+                );
                 queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getLecturerById, id] });
             },
             onError(error) {
@@ -101,7 +106,9 @@ export const useLecturer = () => {
         return useMutation((id: number | string) => deleteLecturerById(id), {
             onSuccess() {
                 enqueueSnackbar("Xóa giảng viên thành công", { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer] });
+                queryClient.invalidateQueries(
+                    [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, params.limit, params.page, 'full_name', '']
+                );
             },
             onError(error) {
                 enqueueSnackbar("Xóa giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
@@ -111,11 +118,14 @@ export const useLecturer = () => {
 
     //[IMPORT]
     const onImportLecturerTerm = (termId: string | number) => {
-        return useMutation((termId: number) => importLecturerTerm(termId), {
+        // let myTerm = termId ? termId : termStore.currentTerm.id
+        return useMutation((termId: number) => importLecturerTerm(termStore.currentTerm.id), {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar("Cập nhật danh sách giảng viên thành công", { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer, termId, 20, 1] });
+                    queryClient.invalidateQueries(
+                        [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, params.limit, params.page, renderUi, '']
+                    );
                 };
             },
             onError(error) {
@@ -133,7 +143,7 @@ export const useLecturer = () => {
         onDeleteLecturer,
         onUpdateLecturer,
         onImportLecturerTerm,
-        handleGetAllLecturer,
+        // handleGetAllLecturer,
         handleGetLecturerById, handleManagerRenderActionLecturer
     }
 }

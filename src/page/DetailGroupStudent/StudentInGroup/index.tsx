@@ -5,7 +5,7 @@ import TableStudentInGroup from './Table';
 function StudentInGroupPage() {
   return (
     <Box>
-      <TableStudentInGroup rows={[]} />
+      <TableStudentInGroup />
     </Box>
   );
 }

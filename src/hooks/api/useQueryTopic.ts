@@ -1,8 +1,12 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
+import { setParams, setTypeRender } from "@/store/slice/lecturer.slice"
+import { ENUM_RENDER_TOPIC } from "@/store/slice/topic.slice"
 import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 
 export enum QueryTopic {
     getAllTopic = 'getAllTopic',
@@ -13,6 +17,9 @@ export enum QueryTopic {
 
 export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
+    const topicStore = useSelector((state: any) => state.topicSlice)
+    // const { params, renderUi } = topicStore
+    const dispatch = useDispatch()
 
     //[GET BY ID]
     const handleTopicById = (topicId: string) => {
@@ -20,16 +27,23 @@ export const useTopic = () => {
     }
 
     //[GET BY TERM, MAJOR]
-    const handleTopicsByTermByMajor = (termId: string | number, majorId: string | number) => {
+    const handleTopicsByTermByMajor = (termId: string | number, majorId: string | number, typeRender: ENUM_RENDER_TOPIC, limit: number, page: number) => {
         return useQuery([QueryTopic.getAllTopicByTermMajor, termId, majorId], () => getTopicsByTermByMajor(termId, majorId), {
             staleTime: 10000,
+            onSuccess(data) {
+                // dispatch(setParams(data.params))
+                // dispatch(setTypeRender(typeRender))
+            }
         })
     }
 
     //[GET BY TERM, LECTURER]
-    const handleTopicsByLecturerByTerm = (lecturerId: string | number, termId: string | number) => {
+    const handleTopicsByLecturerByTerm = (lecturerId: string | number, termId: string | number, typeRender: ENUM_RENDER_TOPIC) => {
         return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerId, termId], () => getTopicsByLecturerByTerm(lecturerId, termId), {
-            staleTime: 10000,
+            staleTime: 10000, onSuccess(data) {
+                dispatch(setParams(data.params))
+                dispatch(setTypeRender(typeRender))
+            }
         })
     }
 

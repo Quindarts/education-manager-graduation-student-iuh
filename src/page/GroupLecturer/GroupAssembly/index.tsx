@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import Task from './Task';
-import ListTeamStudent from './ListTeamStudent';
+import ListLecturerGroup from './ListLecturerGroup';
 
 export const ENUM_STATUS_LECTURER = {
   NO_GROUP: 'NO_GROUP',
@@ -82,9 +82,7 @@ const TASKS = [
 ];
 
 function GroupReportPage() {
-  const listGroupStudent = [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  ];
+  const listGroupStudent = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const [currentTeam, setCurrentTeam] = useState(0);
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -103,13 +101,13 @@ function GroupReportPage() {
 
   const steps = [
     {
-      label: 'Chọn nhóm sinh viên chấm Hội đồng',
+      label: 'Chọn nhóm Giảng viên Chấm Hội đồng',
       description: (
-        <ListTeamStudent setCurrentTeam={setCurrentTeam} listGroupStudent={listGroupStudent} />
+        <ListLecturerGroup setCurrentTeam={setCurrentTeam} listGroupStudent={listGroupStudent} />
       ),
     },
     {
-      label: 'Tạo nhóm giảng viên chấm điểm nhóm sinh viên',
+      label: 'Phân công nhóm giảng viên vừa chọn để chấm đề tài',
       description: <Task tasks={TASKS} team={currentTeam} />,
     },
     {

@@ -1,25 +1,72 @@
 import { Box, Paper } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TableManagamentStudent from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderStudent from './Header';
 import { useStudent } from '@/hooks/api/useQueryStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import { useMajor } from '@/hooks/api/useQueryMajor';
+import { ENUM_RENDER_STUDENT } from '@/store/slice/student.slice';
 
 function StudentPage() {
-  const { handleGetAllStudent } = useStudent();
+  const { handleGetAllStudent, handleManagerRenderActionStudent, params } = useStudent();
+  const [typeRender, setTypeRender] = useState(ENUM_RENDER_STUDENT.ALL);
+
   const { termStore } = useTerm();
-  const { data, isLoading, isFetched } = handleGetAllStudent(termStore.currentTerm.id, 20, 1);
-  const { handleGetAllMajor } = useMajor();
+
+  const [currentLimit, setCurrentLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(params.page);
+
+  const [keywords, setKeywords] = useState('');
+  const [typeSearch, setTypeSearch] = useState<'full_name' | 'username' | 'phone' | 'email'>(
+    'full_name',
+  );
+  const { data, isLoading, isFetched } = handleManagerRenderActionStudent(
+    termStore.currentTerm.id,
+    currentLimit,
+    currentPage,
+    typeSearch,
+    keywords,
+    typeRender,
+  );
+  useEffect(() => {
+    if (keywords !== '') setTypeRender(ENUM_RENDER_STUDENT.SEARCH);
+  }, [keywords]);
+  const handleChangePage = (value: string | Number) => {
+    setCurrentPage(value);
+  };
+  const handleChangeDropSearch = (value: 'full_name' | 'username' | 'phone' | 'email') => {
+    setTypeSearch(value);
+  };
+  const handleChangeKeywords = (value: string) => {
+    setKeywords(value);
+  };
+  const onClearSearch = () => {
+    setCurrentPage(1);
+    setTypeRender(ENUM_RENDER_STUDENT.ALL);
+  };
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
       <TitleManager mb={14} mt={2}>
         Danh sách sinh viên
       </TitleManager>
-      <HeaderStudent />
-      {isLoading && !isFetched ? <SekeletonUI /> : <TableManagamentStudent rows={data?.students} />}
+      <HeaderStudent
+        typeSearch={typeSearch}
+        handleChangeKeywords={handleChangeKeywords}
+        handleChangeDropSearch={handleChangeDropSearch}
+        onClearSearch={onClearSearch}
+      />
+      {isLoading && !isFetched ? (
+        <SekeletonUI />
+      ) : (
+        <TableManagamentStudent
+          totalPage={params.totalPage}
+          totalItems={data?.students.length}
+          rows={data?.students}
+          handleChangePage={handleChangePage}
+          page={currentPage}
+        />
+      )}
     </Paper>
   );
 }

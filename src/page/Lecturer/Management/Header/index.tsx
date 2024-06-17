@@ -8,22 +8,27 @@ import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import Search from '@/components/ui/Search';
 import useDebounce from '@/hooks/ui/useDebounce';
+import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 
 const DROP_SEARCH_VALUE = [
   {
-    _id: 'full_name',
+    _id: ENUM_RENDER_LECTURER.ALL,
+    name: 'Tất cả',
+  },
+  {
+    _id: ENUM_RENDER_LECTURER.SEARCH_FULLNAME,
     name: 'Tên giảng viên',
   },
   {
-    _id: 'username',
+    _id: ENUM_RENDER_LECTURER.SEARCH_USERNAME,
     name: 'Mã giảng viên',
   },
   {
-    _id: 'phone',
+    _id: ENUM_RENDER_LECTURER.SEARCH_PHONE,
     name: 'Số điện thoại',
   },
   {
-    _id: 'email',
+    _id: ENUM_RENDER_LECTURER.SEARCH_EMAIL,
     name: 'Email',
   },
 ];
@@ -58,7 +63,6 @@ function HeaderLecturer(props: any) {
         <Box flex={1} display={'flex'} gap={4} width={'full'}>
           <Box width={200}>
             <DropDown
-              placeholder='Tìm kiếm theo'
               value={typeSearch}
               onChange={(e) => handleChangeDropSearch(e.target.value)}
               options={DROP_SEARCH_VALUE}

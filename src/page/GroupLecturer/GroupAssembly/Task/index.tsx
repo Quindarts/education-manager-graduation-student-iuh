@@ -7,7 +7,6 @@ function Task(props: any) {
   const { tasks, team } = props;
   const [task, setTask] = React.useState(tasks);
 
-
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
     element.classList.add('dragged');
@@ -61,7 +60,7 @@ function Task(props: any) {
         <Box flex={1}>
           <Box alignItems={'center'} gap={6} display={'flex'}>
             <Typography variant='h5' fontWeight={'bold'} color='primary.main'>
-              Danh sách giảng viên trống lịch
+              Danh sách nhóm sinh viên chưa được phân
             </Typography>
             <Button color='success'>
               <Icon width={20} icon='fluent:filter-12-filled' />
@@ -140,20 +139,18 @@ function Task(props: any) {
                               >
                                 {task.status}
                               </Typography>
-                              <Typography variant='h6' color={'primary.main'} fontWeight={'bold'}>
-                                <span> Họ và tên: {'   '}</span>
+                              <Typography variant='body1' color={'primary.main'} fontWeight={'bold'}>
+                                <span> Tên nhóm: {'   '}</span>
                                 {task.name}
                               </Typography>
                               <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
-                                <span>Trình độ : {'  '}</span>
+                                <span>Tên Đề tài : {'  '}</span>
                                 Thạc sĩ
                               </Typography>
                               <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
-                                <span>Giới tính : {'  '}</span> Nam
+                                <span>Giảng viên hướng dẫn : {'  '}</span> Nam
                               </Typography>
-                              <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
-                                <span>Mã GV: {'  '}</span> 21071112
-                              </Typography>
+
                               <Link textAlign={'end'}>Xem chi tiết</Link>
                             </Box>
                           </Box>
@@ -165,7 +162,7 @@ function Task(props: any) {
               </Box>
             </Box>
             <Box mb={6} mt={14} pt={10} borderTop={'1px solid #56bae8'}>
-              <Typography variant='h6' color='primary.main' fontWeight={'500'}>
+              <Typography variant='body1' color='primary.main' fontWeight={'500'}>
                 Số lượng : {'      '}
                 <span style={{ color: 'black' }}> {dataLecturerNoGroup.length}</span>
               </Typography>
@@ -182,7 +179,10 @@ function Task(props: any) {
                 Nhóm chấm : Nhóm số {team}
               </Typography>
               <Typography variant='body2' fontWeight={'500'} color='primary.main'>
-                GV hướng dẫn: Lê Minh Quang
+                GV1: Lê Minh Quang
+              </Typography>
+              <Typography variant='body2' fontWeight={'500'} color='primary.main'>
+                GV2: Lê Minh Quang
               </Typography>
             </Box>
           </Box>
@@ -257,19 +257,16 @@ function Task(props: any) {
                               >
                                 {task.status}
                               </Typography>
-                              <Typography variant='h6' color={'error.main'} fontWeight={'bold'}>
-                                <span> Họ và tên: {'   '}</span>
+                              <Typography variant='body1' color={'error.main'} fontWeight={'bold'}>
+                                <span> Tên nhóm: {'   '}</span>
                                 {task.name}
                               </Typography>
                               <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
-                                <span>Trình độ : {'  '}</span>
+                                <span>Tên Đề tài : {'  '}</span>
                                 Thạc sĩ
                               </Typography>
                               <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
-                                <span>Giới tính : {'  '}</span> Nam
-                              </Typography>
-                              <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
-                                <span>Mã GV: {'  '}</span> 21071112
+                                <span>Giảng viên hướng dẫn</span>
                               </Typography>
                               <Link textAlign={'end'}>Xem chi tiết</Link>
                             </Box>
@@ -291,7 +288,7 @@ function Task(props: any) {
             display={'flex'}
             borderTop={'1px solid #56bae8'}
           >
-            <Typography flex={1} variant='h6' color='primary.main' fontWeight={'500'}>
+            <Typography flex={1} variant='body1' color='primary.main' fontWeight={'500'}>
               Số lượng : {'      '}
               <span style={{ color: 'black' }}> {dataLecturerGradingAssembly.length} / 3</span>
             </Typography>

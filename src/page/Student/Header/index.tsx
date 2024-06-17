@@ -6,8 +6,28 @@ import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-
-function HeaderStudent() {
+import useDebounce from '@/hooks/ui/useDebounce';
+const DROP_SEARCH_VALUE = [
+  {
+    _id: 'full_name',
+    name: 'Tên Sinh viên',
+  },
+  {
+    _id: 'username',
+    name: 'Mã Sinh viên',
+  },
+  {
+    _id: 'phone',
+    name: 'Số điện thoại',
+  },
+  {
+    _id: 'email',
+    name: 'Email',
+  },
+];
+function HeaderStudent(props: any) {
+  const { handleChangeDropSearch, typeSearch, isApiLoading, handleChangeKeywords, onClearSearch } =
+    props;
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
@@ -16,14 +36,34 @@ function HeaderStudent() {
     setOpenAddModal(true);
   };
   const { termStore } = useTerm();
+
+  const [isLoading, setIsLoading] = useState(isApiLoading);
+  const [searchValue, setSearchValue] = useState('');
+  const debouncedSearchValue = useDebounce(searchValue, 500);
   return (
     <>
       <Box mb={14} display={'flex'} flexWrap={'wrap'} gap={8}>
         <Box flex={1} display={'flex'} gap={4} width={'full'}>
           <Box width={200}>
-            <DropDown placeholder='Tìm kiếm theo' options={[]} />
+            <DropDown
+              placeholder='Tìm kiếm theo'
+              value={typeSearch}
+              onChange={(e) => handleChangeDropSearch(e.target.value)}
+              options={DROP_SEARCH_VALUE}
+            />
           </Box>
-          <TextField fullWidth size='small' placeholder='Tim kiếm sinh viên theo..' />
+          <TextField
+            fullWidth
+            size='small'
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+            onBlur={(e) => {
+              setSearchValue(e.target.value);
+            }}
+            placeholder='Tim kiếm sinh viên theo..'
+          />
         </Box>
         <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
           <Icon icon='lets-icons:add-round' width={20} />

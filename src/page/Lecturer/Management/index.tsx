@@ -5,39 +5,27 @@ import TitleManager from '@/components/ui/Title';
 import HeaderLecturer from './Header';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import SekeletonUI from '@/components/ui/Sekeleton';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { convertLecturer } from '@/utils/convertDataTable';
 import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 
 function LecturerManagementPage() {
-  const { handleGetAllLecturer, handleManagerRenderActionLecturer, params } = useLecturer();
-  const [typeRender, setTypeRender] = useState(ENUM_RENDER_LECTURER.ALL);
-
-  const { termStore } = useTerm();
-
+  const { handleManagerRenderActionLecturer, params } = useLecturer();
   const [currentLimit, setCurrentLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(params.page);
-
   const [keywords, setKeywords] = useState('');
-  const [typeSearch, setTypeSearch] = useState<'full_name' | 'username' | 'phone' | 'email'>(
-    'full_name',
-  );
+  const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_LECTURER>(ENUM_RENDER_LECTURER.ALL);
+
   const { data, isLoading, isFetched } = handleManagerRenderActionLecturer(
-    termStore.currentTerm.id,
     currentLimit,
     currentPage,
     typeSearch,
     keywords,
-    typeRender,
   );
-  useEffect(() => {
-    if (keywords !== '') setTypeRender(ENUM_RENDER_LECTURER.SEARCH);
-  }, [keywords]);
 
   const handleChangePage = (value: string | Number) => {
     setCurrentPage(value);
   };
-  const handleChangeDropSearch = (value: 'full_name' | 'username' | 'phone' | 'email') => {
+  const handleChangeDropSearch = (value: ENUM_RENDER_LECTURER) => {
     setTypeSearch(value);
   };
   const handleChangeKeywords = (value: string) => {
@@ -45,7 +33,8 @@ function LecturerManagementPage() {
   };
   const onClearSearch = () => {
     setCurrentPage(1);
-    setTypeRender(ENUM_RENDER_LECTURER.ALL);
+    setKeywords('');
+    setTypeSearch(ENUM_RENDER_LECTURER.ALL);
   };
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
@@ -63,7 +52,6 @@ function LecturerManagementPage() {
           <SekeletonUI />
         ) : (
           <TableManagamentLecturer
-            currentTermId={termStore.currentTerm.id}
             rows={convertLecturer(data?.lecturers)}
             totalPage={params.totalPage}
             totalItems={data?.lecturers.length}

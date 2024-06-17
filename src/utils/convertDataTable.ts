@@ -32,7 +32,6 @@ export const convertLecturer = (lecturers: any[]
         return lecturers
 }
 
-
 export const convertTopicTable = (topic: any[]
 ) => {
     if (topic === undefined)
@@ -58,5 +57,17 @@ export const convertEvalutationTable = (evalutation: any[]
             newEvalutations.push({ id: index, EvalutationId: Evalutation.id, ...Evalutation })
         })
         return newEvalutations
+    }
+}
+
+export const convertGroupMembersTable = (groupMember: any[]) => {
+    if (groupMember === undefined)
+        return []
+    else {
+        let newArr: any[] = []
+        groupMember.map((mem: any) => {
+            newArr.push({ id: mem.student.id, ...mem.student })
+        })
+        return newArr
     }
 }

@@ -214,7 +214,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'fa6-solid:hand-holding-hand',
     text: 'Nhóm hướng dẫn',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
+    roles: [RoleCheck.LECTURER],
     link: [APP_ROUTES.GROUP_SUPPORT.MANAGEMENT],
     children: [
       {
@@ -249,7 +249,7 @@ export const APP_SIDEBAR = [
   },
   {
     icon: 'typcn:group',
-    text: 'Nhóm giảng viên của tôi',
+    text: 'Nhóm chấm điểm',
     roles: [RoleCheck.LECTURER],
     link: [APP_ROUTES.GROUP_LECTURER.ME],
     children: [
