@@ -39,10 +39,6 @@ export const importGroupStudent: any = (termId: string) => {
     return axiosConfig.post(`/api/v1/group-students/import`, { termId: termId })
 }
 
-//[GET MEMBER]
-export const getMemberInGroupStudent: any = (id: string) => {
-    return axiosConfig.get(`/api/v1/group-students/${id}/member`)
-}
 
 
 //[PUT ASSIGN TOPIC TO GROUP STUDENT]
@@ -58,4 +54,22 @@ export const createGroupStudent: any = (data: any) => {
 
 export const deleteGroupStudent: any = (id: number | string) => {
     return axiosConfig.delete(`/api/v1/group-students/${id}`)
+}
+
+
+//[GET MEMBER]
+export const getMemberInGroupStudent: any = (id: string) => {
+    return axiosConfig.get(`/api/v1/group-students/${id}/member`)
+}
+
+
+//[ADD MEMBER]
+export const addMemberInGroup: any = (id: string) => {
+    return axiosConfig.put(`/api/v1/group-students/${id}/add-member`)
+}
+
+
+//[LEAVE MEMBER]
+export const deleteMemberInGroup: any = (id: string, data: { studentId: string, termId: string }) => {
+    return axiosConfig.put(`/api/v1/group-students/${id}/delete-member`, data)
 }

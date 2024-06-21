@@ -66,7 +66,7 @@ export const convertGroupMembersTable = (groupMember: any[]) => {
     else {
         let newArr: any[] = []
         groupMember.map((mem: any) => {
-            newArr.push({ id: mem.student.id, ...mem.student })
+            newArr.push({ id: mem.student.id, studentId: mem.student.id, isAdmin: mem.isAdmin, status: mem.status, transcripts: mem.transcripts, ...mem.student })
         })
         return newArr
     }

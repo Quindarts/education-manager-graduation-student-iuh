@@ -269,10 +269,16 @@ export const APP_PROFILE_MENU = [
     link: '/profile',
   },
   {
+    text: 'Thay đổi vai trò',
+    icon: 'hugeicons:user-switch',
+    link: '/auth/role',
+  },
+  {
     text: 'Đăng xuất',
     icon: 'ri:logout-box-r-line',
     link: '/auth/login',
   },
+
 ];
 
 export const renderType = {

@@ -35,6 +35,12 @@ export const createStudent: any = async (data: any) => {
 export const updateStudent: any = async (id: string | number, data: any) => {
     return axiosConfig.put(`/api/v1/students/${id}`, data)
 }
+//[UPDATE STUDENT]
+export const updateStatusStudent: any = async (id: string, data: { status: string, termId: string }) => {
+    return axiosConfig.put(`/api/v1/students/${id}/status`, data)
+}
+
+
 //[DELETE STUDENT]
 
 //[CHANGE ACTIVE STUDENT]

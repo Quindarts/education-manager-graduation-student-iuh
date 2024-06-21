@@ -47,7 +47,7 @@ function ReviewManagerPage() {
             }}
             options={[
               {
-                name: 'Tiêu chí Đánh giá Phản biện',
+                name: 'Tiêu chí Đánh giá Hướng dẫn',
                 _id: 'ADVISOR',
               },
               {
@@ -65,7 +65,7 @@ function ReviewManagerPage() {
             Tạo tiêu chí mới
           </Button>
           <ModalUpload
-            disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0 }
+            disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0}
             entityUpload={TypeEntityUpload.EVALUATION}
             termId={termStore.currentTerm.id}
             typeEvaluation={currentTypeReview}

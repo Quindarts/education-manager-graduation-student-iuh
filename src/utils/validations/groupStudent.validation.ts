@@ -1,7 +1,8 @@
+
 export const getStatusGroup = (status: string) => {
     switch (status) {
         case 'OPEN':
-            return 'Nhóm mới tạo';
+            return 'Đang học';
         case 'FAIL_ADVISOR':
             return 'Rớt hướng dẫn';
         case 'FAIL_REVIEWER':

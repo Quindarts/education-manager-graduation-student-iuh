@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { Box, IconButton, Paper, Typography } from '@mui/material';
+import { Avatar, Box, IconButton, Paper, Typography } from '@mui/material';
 import React from 'react';
 
 function CardLecturer(props: any) {
@@ -14,10 +14,13 @@ function CardLecturer(props: any) {
       sx={{
         my: 6,
         py: 2,
+        px: 10,
         display: 'flex',
         cursor: 'pointer',
+        gap: 20,
         justifyContent: 'space-around',
         borderRadius: 2,
+        boxSizing: 'border-box',
         ':hover': {
           border: '2px solid #0052b1',
           boxShadow: '1px 1px 1px 1px #E6E6E6',
@@ -27,19 +30,22 @@ function CardLecturer(props: any) {
       }}
     >
       <Box>
+        <Avatar sizes='small' src={``} />
+      </Box>
+      <Box flex={1}>
         <Typography variant='body1' fontWeight={500} color='grey.700'>
           Tên giảng viên
           <Typography mx={4} component='span'>
-            {lecturer.name}
-          </Typography> 
+            {lecturer.fullName}
+          </Typography>
           <Typography ml={10} component='span' textAlign={'end'}>
-            Trình độ: {lecturer.degree}
+            {/* Trình độ: {lecturer.degree} */}
           </Typography>
         </Typography>
         <Typography variant='body1' fontWeight={500} color='grey.700'>
           Mã giảng viên
           <Typography mx={4} component='span'>
-            {lecturer.mssv}
+            {lecturer.username}
           </Typography>
         </Typography>
       </Box>

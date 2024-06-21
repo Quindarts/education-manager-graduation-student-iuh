@@ -11,10 +11,11 @@ import { useLecturer } from '@/hooks/api/useQueryLecturer';
 
 function TableManagamentLecturer(props: any) {
   const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
-  const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
   const navigate = useNavigate();
   const { onImportLecturerTerm } = useLecturer();
   const { mutate: importLecturer } = onImportLecturerTerm(currentTermId);
+
+  const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
 
   const handleCloseEditInfoModal = () => {
     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });

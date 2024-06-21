@@ -1,5 +1,5 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider'
-import { createStudent, getAllStudent, getStudentById, lockOnlyStudent, searchStudentAdmin, updateStudent } from '@/services/apiStudent'
+import { createStudent, getAllStudent, getStudentById, lockOnlyStudent, searchStudentAdmin, updateStatusStudent, updateStudent } from '@/services/apiStudent'
 import { ENUM_RENDER_STUDENT, setParams, setTypeRender } from '@/store/slice/student.slice'
 import { useSnackbar } from 'notistack'
 import { useMutation, useQuery } from 'react-query'
@@ -49,8 +49,7 @@ export const useStudent = () => {
             enabled: !!id
         })
     }
-    //[UPDATE]
-    // const onUpdate
+
     //[UPDATE]
     const onUpdateStudent = (studentId: string) => {
         return useMutation((data) => updateStudent(studentId, data), {

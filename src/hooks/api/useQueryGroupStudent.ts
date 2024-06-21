@@ -48,21 +48,8 @@ const useGroupStudent = () => {
     const handleGetGroupStudentById = (id: number | string) => {
         return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id))
     }
-    //[GET MEMBER]
-    const handleGetMemberInGroupStudent = (id: string) => {
-        return useQuery([QueryKeysGroupStudent.getMemberInGroupStudent, id], () => getMemberInGroupStudent(id))
-    }
-    //[PUT]
-    const onAssignTopic = (id: string) => {
-        return useMutation((topicId: string) => assignTopic(id, topicId), {
-            onSuccess(data: any) {
-                if (data.success) {
-                    enqueueSnackbar('Phân công Đề tài cho Nhóm sinh viên thành công', { variant: 'success' })
-                }
-            }
-        })
 
-    }
+
 
     const onImportGroupStudent = (termId: string) => {
         return useMutation((termId: string) => importGroupStudent(termId), {
@@ -80,8 +67,7 @@ const useGroupStudent = () => {
         onImportGroupStudent,
         handleGetGroupStudentByTerm,
         handleGetGroupStudentById,
-        onAssignTopic,
-        handleGetMemberInGroupStudent
+
     }
 }
 export default useGroupStudent

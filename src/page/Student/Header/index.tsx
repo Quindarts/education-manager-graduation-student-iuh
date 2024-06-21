@@ -65,6 +65,7 @@ function HeaderStudent(props: any) {
             placeholder='Tim kiếm sinh viên theo..'
           />
         </Box>
+
         <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo sinh viên
@@ -72,6 +73,10 @@ function HeaderStudent(props: any) {
         <ModalUpload entityUpload={TypeEntityUpload.STUDENT} termId={termStore.currentTerm.id} />
         <Button color='warning' type='button' sx={{ color: 'white' }} variant='contained'>
           <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
+        </Button>
+        <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
+          <Icon icon='lets-icons:add-round' />
+          Khóa tài khoản
         </Button>
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
