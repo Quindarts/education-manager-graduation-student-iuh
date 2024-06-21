@@ -10,15 +10,12 @@ import Dashboard from '@/page/Dashboard/Dashboard';
 import TermPage from '@/page/Term';
 import GroupLecturerPage from '@/page/GroupLecturer';
 import StudentPage from '@/page/Student';
-import GroupSupportPage from '@/page/GroupSupport';
 import TopicPage from '@/page/Topic';
 import ReviewManagerPage from '@/page/ReviewManager';
 import GroupGradingAssemblyPage from '@/page/GroupLecturer/GroupAssembly';
 import ComponentPage from '@/page/ComponentPage';
 import LecturerManagementPage from '@/page/Lecturer/Management';
-import LecturerPage from '@/page/Lecturer';
 import DetailsLecturerPage from '@/page/Lecturer/Details';
-import GroupStudentPage from '@/page/GroupStudent';
 import GroupStudentManagement from '@/page/GroupStudent/Management';
 import GroupStudentDetailPage from '@/page/GroupStudent/Detail';
 import ScoreStudentPage from '@/page/ScoreStudent';
@@ -29,6 +26,8 @@ import RolePage from '@/page/auth/role';
 import ProfilePage from '@/page/auth/profile';
 import MyTopic from '@/page/MyTopic';
 import MyGroupLecturer from '@/page/MyGroupLecturer';
+import GroupLecturerManagementPage from '@/page/GroupLecturer/Management';
+import DetailGroupLecturerPage from '@/page/DetailGroupLecturer';
 
 function Routing() {
   return (
@@ -63,10 +62,14 @@ function Routing() {
           <Route path={APP_ROUTES.USER.REGISTER} element={<Register />} />
           <Route path={APP_ROUTES.USER.PROFILE} element={<ProfilePage />} />
           //ROUTE GR_LECTURER
-          <Route path={APP_ROUTES.GROUP_LECTURER.MANAGEMENT} element={<GroupLecturerPage />} />
+          <Route
+            path={APP_ROUTES.GROUP_LECTURER.MANAGEMENT}
+            element={<GroupLecturerManagementPage />}
+          />
           <Route path={APP_ROUTES.GROUP_LECTURER.ME} element={<MyGroupLecturer />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.REPORT} element={<GroupGradingAssemblyPage />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.CREATE} element={<CreateGroupLecturer />} />
+          <Route path={APP_ROUTES.GROUP_LECTURER.DETAIL} element={<DetailGroupLecturerPage />} />
           <Route path={'/componentpage'} element={<ComponentPage />} />
           //ROUTE SCORE_STUDENT
           <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />

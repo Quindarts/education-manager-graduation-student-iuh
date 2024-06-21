@@ -27,7 +27,7 @@ export const APP_ROUTES = {
   },
   GROUP_LECTURER: {
     MANAGEMENT: '/group-lecturers',
-    DETAIL: '/group-lecturers/detail/:lecturer_id',
+    DETAIL: '/group-lecturers/details/:id',
     SUPPORT: '/group-lecturers/group-support',
     REPORT: '/group-lecturers/group-report',
     CREATE: '/group-lecturers/create',
@@ -235,6 +235,11 @@ export const APP_SIDEBAR = [
     roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
     link: [APP_ROUTES.GROUP_LECTURER.MANAGEMENT],
     children: [
+      {
+        text: 'Danh sách nhóm',
+        link: APP_ROUTES.GROUP_LECTURER.MANAGEMENT,
+        key: APP_ROUTES.GROUP_LECTURER.MANAGEMENT,
+      },
       {
         text: 'Phân công chấm điểm',
         link: APP_ROUTES.GROUP_LECTURER.REPORT,

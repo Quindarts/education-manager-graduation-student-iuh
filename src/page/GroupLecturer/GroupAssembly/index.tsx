@@ -8,9 +8,10 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Task from './Task';
 import ListLecturerGroup from './ListLecturerGroup';
+import DropDown from '@/components/ui/Dropdown';
 
 export const ENUM_STATUS_LECTURER = {
   NO_GROUP: 'NO_GROUP',
@@ -80,10 +81,24 @@ const TASKS = [
     newOrder: true,
   },
 ];
+const DROP_VALUE = [
+  {
+    name: 'Nhóm chấm Phản biện',
+    _id: 'reviewer',
+  },
+  {
+    name: 'Nhóm chấm Poster',
+    _id: 'poster',
+  },
+  {
+    name: 'Nhóm chấm Hội đồng',
+    _id: 'conference',
+  },
+];
 
 function GroupReportPage() {
   const listGroupStudent = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  const [currentTeam, setCurrentTeam] = useState(0);
+  const [currentTeam, setCurrentTeam] = useState<any>({ id: '', team: {} });
 
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -98,17 +113,31 @@ function GroupReportPage() {
   const handleReset = () => {
     setActiveStep(0);
   };
+  const [checkedTyper, setCheckedTyper] = useState<any>(DROP_VALUE[0]?._id);
 
   const steps = [
     {
-      label: 'Chọn nhóm Giảng viên Chấm Hội đồng',
+      label: (
+        <DropDown
+          label='Chọn loại nhóm phân công chấm điểm'
+          value={checkedTyper}
+          options={DROP_VALUE}
+          onChange={(e: any) => {
+            setCheckedTyper(e.target.value);
+          }}
+        />
+      ),
       description: (
-        <ListLecturerGroup setCurrentTeam={setCurrentTeam} listGroupStudent={listGroupStudent} />
+        <ListLecturerGroup
+          checkedTyper={checkedTyper}
+          setCurrentTeam={setCurrentTeam}
+          listGroupStudent={listGroupStudent}
+        />
       ),
     },
     {
       label: 'Phân công nhóm giảng viên vừa chọn để chấm đề tài',
-      description: <Task tasks={TASKS} team={currentTeam} />,
+      description: <Task tasks={TASKS} team={currentTeam.team} />,
     },
     {
       label: 'Kết quả',
@@ -120,7 +149,7 @@ function GroupReportPage() {
       <Box sx={{ maxWidth: 'full' }}>
         <Stepper activeStep={activeStep} orientation='vertical'>
           {steps.map((step, index) => (
-            <Step key={step.label}>
+            <Step key={index}>
               <StepLabel
                 optional={index === 2 ? <Typography variant='caption'></Typography> : null}
               >

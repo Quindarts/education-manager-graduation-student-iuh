@@ -19,13 +19,19 @@ function HeaderGroupStudent() {
         <Box width={200}>
           <DropDown placeholder='Tìm kiếm theo' options={[]} />
         </Box>
-        <TextField fullWidth size='small' placeholder='Tim kiếm sinh viên theo..' />
+        <TextField fullWidth size='small' placeholder='Tim kiếm  nhom sinh viên theo..' />
       </Box>
-      <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
+      <Button
+        size='small'
+        onClick={handleOpenModal}
+        color='error'
+        type='button'
+        variant='contained'
+      >
         <Icon icon='lets-icons:add-round' width={20} />
         Tạo nhóm sinh viên
       </Button>
-      <MenuButton />
+      {/* <MenuButton /> */}
       <AddGroupStudentModal open={openAddModal} onClose={handleCloseAddModal} />
     </Box>
   );

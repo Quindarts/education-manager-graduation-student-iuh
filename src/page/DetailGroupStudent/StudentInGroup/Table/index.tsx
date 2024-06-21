@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import EditStatusStudentTerm from '../Modal/EditStatus';
 import StudentLeaveGroup from '../Modal/LeaveGroup';
 import useMemberGroupStudent from '@/hooks/api/useMemberGroupStudent';
+import AddStudentModal from '../Modal/AddStudent';
 
 function TableStudentInGroup(props: any) {
   const { pathname } = useLocation();
@@ -19,6 +20,15 @@ function TableStudentInGroup(props: any) {
 
   const { handleGetMemberInGroupStudent } = useMemberGroupStudent();
   const { data, isLoading } = handleGetMemberInGroupStudent(grStudentId);
+
+  const [openAddStudentModal, setOpenModalAddStudent] = useState(false);
+
+  const handleOpenModalAddStudent = () => {
+    setOpenModalAddStudent(true);
+  };
+  const handleCloseModalAddStudent = () => {
+    setOpenModalAddStudent(false);
+  };
 
   const [openStatusStudentModal, setOpenModalStatusStudent] = useState({
     isOpen: false,
@@ -197,6 +207,7 @@ function TableStudentInGroup(props: any) {
                 size='small'
                 color='error'
                 variant='contained'
+                onClick={handleOpenModalAddStudent}
               >
                 <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
                 Thêm Sinh viên
@@ -232,6 +243,11 @@ function TableStudentInGroup(props: any) {
         studentId={openStudentLeaveGroup.studentId}
         open={openStudentLeaveGroup.isOpen}
         onClose={handleCloseStudentLeaveGroup}
+      />
+      <AddStudentModal
+        groupStudentId={grStudentId}
+        onClose={handleCloseModalAddStudent}
+        open={openAddStudentModal}
       />
     </>
   );

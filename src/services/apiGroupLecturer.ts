@@ -1,12 +1,12 @@
 import axiosConfig from "./axiosConfig"
 
 enum TypeGroupLecturer {
-    SESSION_HOST = "SESSION_HOST",
-    REVIEWER = 'REVIEWER'
+    SESSION_HOST = "session_host",
+    REVIEWER = 'reviewer'
 }
 //[GET]
-export const getGroupLecturerByType: any = async (term_id: string | number, type: TypeGroupLecturer) => {
-    return axiosConfig.get(`/api/v1/group-lecturers?${term_id}&${type}`)
+export const getGroupLecturerByType: any = async (term_id: string, type: TypeGroupLecturer) => {
+    return axiosConfig.get(`/api/v1/group-lecturers?termId=${term_id}&type=${type}`)
 }
 
 //[GET]

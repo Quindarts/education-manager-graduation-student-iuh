@@ -1,11 +1,11 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { createGroupLecturer, getLecturerNoGroupByTypeGroup } from "@/services/apiGroupLecturer"
+import { createGroupLecturer, getGroupLecturerByType, getLecturerNoGroupByTypeGroup } from "@/services/apiGroupLecturer"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
 
 export enum QueryKeysGroupLecturer {
-    getAllGroupLecturer = 'getAllGroupLecturer',
+    getAllGroupLecturerByTypeGroup = 'getAllGroupLecturerByTypeGroup',
     getLecturerNoGroupByTypeGroup = 'getLecturerNoGroupByTypeGroup',
     createGroupLecturer = 'createGroupLecturer',
     getGroupLecturerById = "getGroupLecturerById",
@@ -16,6 +16,11 @@ export enum QueryKeysGroupLecturer {
 export const useGroupLecturer = () => {
     const { enqueueSnackbar } = useSnackbar()
     const { termStore } = useTerm()
+
+    const handleGetAllGroupLecturerByTypeGroup = (type: string) => {
+        const termId = termStore.currentTerm.id
+        return useQuery([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId], () => getGroupLecturerByType(termId, type))
+    }
     const handleGetLecturerNoGroupByTypeGroup = (type: string) => {
         const termId = termStore.currentTerm.id
         return useQuery([QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termId], () => getLecturerNoGroupByTypeGroup(type, termId))
@@ -35,7 +40,7 @@ export const useGroupLecturer = () => {
     }
 
     return {
-        handleGetLecturerNoGroupByTypeGroup, onCreateGroupLecturer
+        handleGetLecturerNoGroupByTypeGroup, onCreateGroupLecturer, handleGetAllGroupLecturerByTypeGroup
 
     }
 }

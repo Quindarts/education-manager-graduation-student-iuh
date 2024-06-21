@@ -59,7 +59,7 @@ function Task(props: any) {
       <Box className='container' width={'full'} display={'flex'} gap={20}>
         <Box flex={1}>
           <Box alignItems={'center'} gap={6} display={'flex'}>
-            <Typography variant='h5' fontWeight={'bold'} color='primary.main'>
+            <Typography variant='h5' fontWeight={'500'} color='primary.main'>
               Danh sách nhóm sinh viên chưa được phân
             </Typography>
             <Button color='success'>
@@ -128,18 +128,10 @@ function Task(props: any) {
                             </Box>
                             <Box>
                               <Typography
-                                position='absolute'
-                                right={10}
-                                top={2}
-                                bgcolor={'success.main'}
-                                p={4}
-                                borderRadius={2}
-                                variant='body2'
-                                color={'white'}
+                                variant='body1'
+                                color={'primary.main'}
+                                fontWeight={'500'}
                               >
-                                {task.status}
-                              </Typography>
-                              <Typography variant='body1' color={'primary.main'} fontWeight={'bold'}>
                                 <span> Tên nhóm: {'   '}</span>
                                 {task.name}
                               </Typography>
@@ -171,12 +163,12 @@ function Task(props: any) {
         </Box>
         <Box flex={1}>
           <Box justifyContent={'space-between'} display={'flex'} mb={10}>
-            <Typography variant='h4' fontWeight={'bold'} color='error.main'>
-              Nhóm giảng viên chấm hội đồng
+            <Typography variant='h4' fontWeight={'500'} color='error.main'>
+              Nhóm giảng viên
             </Typography>
             <Box>
               <Typography variant='body1' fontWeight={'600'} color='primary.main'>
-                Nhóm chấm : Nhóm số {team}
+                Nhóm chấm : {team.name}
               </Typography>
               <Typography variant='body2' fontWeight={'500'} color='primary.main'>
                 GV1: Lê Minh Quang
@@ -257,7 +249,7 @@ function Task(props: any) {
                               >
                                 {task.status}
                               </Typography>
-                              <Typography variant='body1' color={'error.main'} fontWeight={'bold'}>
+                              <Typography variant='body1' color={'error.main'} fontWeight={'500'}>
                                 <span> Tên nhóm: {'   '}</span>
                                 {task.name}
                               </Typography>

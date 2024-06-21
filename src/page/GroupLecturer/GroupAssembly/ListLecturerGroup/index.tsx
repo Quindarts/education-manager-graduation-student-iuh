@@ -1,48 +1,67 @@
+import SekeletonUI from '@/components/ui/Sekeleton';
 import TitleManager from '@/components/ui/Title';
+import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { Box, Link, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-function ListTeamStudent(props: any) {
-  const { setCurrentTeam, listGroupStudent } = props;
-  const [isSelectedGrading, setIsSelectedGrading] = useState(0);
+const checkedTyperLecturer = (key: string) => {
+  switch (key) {
+    case 'poster':
+      return 'Chấm Poster';
+    case 'reviewer':
+      return 'Chấm Phản biện';
+    case 'conference':
+      return 'Chấm Hội đồng';
+  }
+  return;
+};
+function ListLecturerStudent(props: any) {
+  const { setCurrentTeam, checkedTyper } = props;
+  const [isSelectedGrading, setIsSelectedGrading] = useState();
   const handleChoiceTeam = (index: any, team: any) => {
     setIsSelectedGrading(index);
-    setCurrentTeam(team);
+    setCurrentTeam({ id: team.id, team: team });
   };
+  const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
+  const { data, isLoading, isSuccess } = handleGetAllGroupLecturerByTypeGroup(checkedTyper);
   return (
     <Box my={10} borderRadius={4} bgcolor={'white'} py={16} px={8}>
       <Box>
-        <TitleManager sx={{ mb: 4 }}>Danh sách nhóm giảng viên điểm hội đồng </TitleManager>
+        <TitleManager variant='body1' sx={{ mb: 4 }}>
+          Danh sách nhóm giảng viên {checkedTyperLecturer(checkedTyper)}{' '}
+        </TitleManager>
       </Box>
 
-      <Box display={'flex'} flexWrap={'wrap'} p={4} gap={10}>
-        {listGroupStudent.map((team: number, index: number) => (
-          <Box
-            p={4}
-            position={'relative'}
-            onClick={() => handleChoiceTeam(team, index)}
-            height={120}
-            sx={{ cursor: 'pointer' }}
-            border={`${index === isSelectedGrading && '2px solid #2acf8a'}`}
-            borderRadius={4}
-            bgcolor={index !== isSelectedGrading ? 'grey.200' : '#d0ffeb'}
-            width={'calc(25%  - 16px)'}
-          >
-            <Typography fontWeight={'bold'} variant='h6' color='primary.dark'>
-              Nhóm {team}
-            </Typography>
-            <Typography variant='body1'>GV 1: Nguyễn Minh</Typography>
-            <Typography variant='body1'>GV 1: Nguyễn Long</Typography>
-            <Typography>
-              <Link bottom={10} right={10} color={'grey.600'} position={'absolute'}>
-                Xem chi tiết
-              </Link>
-            </Typography>
-          </Box>
-        ))}
-      </Box>
+      {isLoading && !isSuccess ? (
+        <SekeletonUI />
+      ) : (
+        <Box display={'flex'} flexWrap={'wrap'} p={4} gap={10}>
+          {data?.groupLecturers.map((team: any, index: number) => (
+            <Box
+              p={4}
+              position={'relative'}
+              onClick={() => handleChoiceTeam(index, team)}
+              height={120}
+              sx={{ cursor: 'pointer' }}
+              border={`${index === isSelectedGrading && '2px solid #2acf8a'}`}
+              borderRadius={2}
+              bgcolor={index !== isSelectedGrading ? 'grey.200' : '#d0ffeb'}
+              width={'calc(25%  - 16px)'}
+            >
+              <Typography color='primary.dark'>{team.name}</Typography>
+              <Typography variant='body2'>GV 1: Nguyễn Minh</Typography>
+              <Typography variant='body2'>GV 1: Nguyễn Long</Typography>
+              <Typography>
+                <Link bottom={10} right={10} color={'grey.600'} position={'absolute'}>
+                  Xem chi tiết
+                </Link>
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 }
 
-export default ListTeamStudent;
+export default ListLecturerStudent;
