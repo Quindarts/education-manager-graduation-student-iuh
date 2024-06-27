@@ -6,11 +6,11 @@ import React, { useState } from 'react';
 
 const checkedTyperLecturer = (key: string) => {
   switch (key) {
-    case 'poster':
+    case 'report_poster':
       return 'Chấm Poster';
     case 'reviewer':
       return 'Chấm Phản biện';
-    case 'conference':
+    case 'report_council':
       return 'Chấm Hội đồng';
   }
   return;
@@ -20,7 +20,7 @@ function ListLecturerStudent(props: any) {
   const [isSelectedGrading, setIsSelectedGrading] = useState();
   const handleChoiceTeam = (index: any, team: any) => {
     setIsSelectedGrading(index);
-    setCurrentTeam({ id: team.id, team: team });
+    setCurrentTeam({ id: team.groupLecturerId, team: team });
   };
   const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
   const { data, isLoading, isSuccess } = handleGetAllGroupLecturerByTypeGroup(checkedTyper);
@@ -49,8 +49,14 @@ function ListLecturerStudent(props: any) {
               width={'calc(25%  - 16px)'}
             >
               <Typography color='primary.dark'>{team.name}</Typography>
-              <Typography variant='body2'>GV 1: Nguyễn Minh</Typography>
-              <Typography variant='body2'>GV 1: Nguyễn Long</Typography>
+              {team.members.map((member: any, index: number) => (
+                <>
+                  <Typography variant='body2'>
+                    GV {index + 1}: {member.fullName}
+                  </Typography>
+                </>
+              ))}
+
               <Typography>
                 <Link bottom={10} right={10} color={'grey.600'} position={'absolute'}>
                   Xem chi tiết

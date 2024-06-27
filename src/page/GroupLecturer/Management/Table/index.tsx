@@ -95,7 +95,7 @@ function TableManagamentGroupLecturer(props: any) {
             <IconButton
               color='primary'
               onClick={() =>
-                navigate('/group-lecturers/details/1c10f67f-3d42-48d2-930f-f88e742ed132')
+                navigate('/group-lecturers/details/2bcbc7b4-d1c4-416a-9d4e-d6ea9f77f2f2')
               }
             >
               <Icon icon='flat-color-icons:view-details' />

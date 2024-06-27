@@ -24,11 +24,11 @@ function HeaderGroupLecturer() {
             },
             {
               name: 'Nhóm giảng viên Poster',
-              _id: 'POSTER',
+              _id: 'REPORT_POSTER',
             },
             {
               name: 'Nhóm giảng viên Hội đồng',
-              _id: 'SESSION_HOST',
+              _id: 'REPORT_COUNCIL',
             },
           ]}
         />

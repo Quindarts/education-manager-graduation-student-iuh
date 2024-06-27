@@ -8,7 +8,6 @@ import Login from '@/page/auth/login';
 import Register from '@/page/auth/register';
 import Dashboard from '@/page/Dashboard/Dashboard';
 import TermPage from '@/page/Term';
-import GroupLecturerPage from '@/page/GroupLecturer';
 import StudentPage from '@/page/Student';
 import TopicPage from '@/page/Topic';
 import ReviewManagerPage from '@/page/ReviewManager';
@@ -27,7 +26,7 @@ import ProfilePage from '@/page/auth/profile';
 import MyTopic from '@/page/MyTopic';
 import MyGroupLecturer from '@/page/MyGroupLecturer';
 import GroupLecturerManagementPage from '@/page/GroupLecturer/Management';
-import DetailGroupLecturerPage from '@/page/DetailGroupLecturer';
+import GroupLecturerDetailPage from '@/page/GroupLecturer/Detail';
 
 function Routing() {
   return (
@@ -69,7 +68,7 @@ function Routing() {
           <Route path={APP_ROUTES.GROUP_LECTURER.ME} element={<MyGroupLecturer />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.REPORT} element={<GroupGradingAssemblyPage />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.CREATE} element={<CreateGroupLecturer />} />
-          <Route path={APP_ROUTES.GROUP_LECTURER.DETAIL} element={<DetailGroupLecturerPage />} />
+          <Route path={APP_ROUTES.GROUP_LECTURER.DETAIL} element={<GroupLecturerDetailPage />} />
           <Route path={'/componentpage'} element={<ComponentPage />} />
           //ROUTE SCORE_STUDENT
           <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />

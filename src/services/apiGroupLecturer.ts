@@ -6,7 +6,7 @@ enum TypeGroupLecturer {
 }
 //[GET]
 export const getGroupLecturerByType: any = async (term_id: string, type: TypeGroupLecturer) => {
-    return axiosConfig.get(`/api/v1/group-lecturers?termId=${term_id}&type=${type}`)
+    return axiosConfig.get(`/api/v1/group-lecturers?termId=${term_id}&type=${type}&limit=10&page=1`)
 }
 
 //[GET]

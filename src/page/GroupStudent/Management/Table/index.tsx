@@ -2,7 +2,7 @@ import Table from '@/components/ui/Table/Table';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
-import { Box, Button, Chip, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -64,16 +64,6 @@ function TableManagamentGroupStudent(props: any) {
             /2
           </Typography>
         );
-      },
-    },
-    {
-      headerName: 'Trạng thái nhóm',
-      field: 'typeReport',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return <Chip color='success' sx={{ color: 'white' }} label={params.row.typeReport} />;
       },
     },
     {

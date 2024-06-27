@@ -1,11 +1,24 @@
 import { Icon } from '@iconify/react';
-import { Box, Button, Link, Tooltip, Typography } from '@mui/material';
-import React from 'react';
-import { ENUM_STATUS_LECTURER } from '..';
+import { Box, Button, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 
+const convertGroupStudentNoGroupList = (groupStudent: any[]) => {
+  return !groupStudent ? [] : groupStudent.map((std) => ({ ...std, status: 'no_group' }));
+};
 function Task(props: any) {
-  const { tasks, team } = props;
-  const [task, setTask] = React.useState(tasks);
+  const { team, typeGroupLecturer, handleGroupStudentHavedAssign, groupStudents } = props;
+  const [tasks, setTask] = useState<any[]>([]);
+
+  useEffect(() => {
+    setTask(convertGroupStudentNoGroupList(groupStudents));
+  }, [groupStudents]);
+  let dataHaveGroup = tasks?.filter((data: any) => data.status === 'have_group');
+
+  let dataNoGroup = tasks?.filter((data: any) => data.status === 'no_group');
+
+  useEffect(() => {
+    handleGroupStudentHavedAssign(dataHaveGroup.map((groupStudent) => groupStudent));
+  }, [tasks]);
 
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
@@ -13,6 +26,7 @@ function Task(props: any) {
     evt.dataTransfer.setData('text/plain', evt.currentTarget.id);
     evt.dataTransfer.effectAllowed = 'move';
   };
+
   const handleOnDrageEnd = (evt: any) => {
     evt.currentTarget.classList.remove('dragged');
   };
@@ -23,6 +37,7 @@ function Task(props: any) {
     element.classList.add('dragged-over');
     evt.dataTransfer.dropEffect = 'move';
   };
+
   const handleOnDragLeave = (evt: any) => {
     let currentTarget = evt.currentTarget;
     let newTarget = evt.relatedTarget;
@@ -31,15 +46,17 @@ function Task(props: any) {
     let element = evt.currentTarget;
     element.classList.remove('dragged-over');
   };
+
   const handleOnDragOver = (evt: any) => {
     evt.preventDefault();
     evt.dataTransfer.dropEffect = 'move';
   };
+
   const handleOnDrop = (evt: any, value: any, status: any) => {
     evt.preventDefault();
     evt.currentTarget.classList.remove('dragged-over');
     let data = evt.dataTransfer.getData('text/plain');
-    let updated = tasks.map((task: any) => {
+    let updated = tasks?.map((task: any) => {
       if (task.id.toString() === data.toString()) {
         task.status = status;
       }
@@ -47,12 +64,6 @@ function Task(props: any) {
     });
     setTask(updated);
   };
-  let dataLecturerGradingAssembly = task.filter(
-    (data: any) => data.status === ENUM_STATUS_LECTURER.GRADING_ASSEMBLY,
-  );
-  let dataLecturerNoGroup = task.filter(
-    (data: any) => data.status === ENUM_STATUS_LECTURER.NO_GROUP,
-  );
 
   return (
     <Box position={'relative'} sx={{ bgcolor: 'white', minHeight: '80vh', p: 10, borderRadius: 4 }}>
@@ -72,7 +83,7 @@ function Task(props: any) {
             onDragEnter={(e) => handleOnDragEnter(e)}
             onDragEnd={(e) => handleOnDrageEnd(e)}
             onDragOver={(e) => handleOnDragOver(e)}
-            onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.NO_GROUP)}
+            onDrop={(e) => handleOnDrop(e, false, 'no_group')}
             pr={20}
             borderRight={'1px solid #0052b1 '}
             sx={{
@@ -94,69 +105,51 @@ function Task(props: any) {
             }}
             height={'80vh'}
           >
-            <Box className='drag_container'>
-              <Box className='container'>
-                <Box className='drag_column'>
-                  <Box className='drag_row'>
-                    {dataLecturerNoGroup.map((task: any, index: number) => (
-                      <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
-                        <Box
-                          sx={{
-                            bgcolor: 'grey.100',
-                            borderRadius: 4,
-                            p: 10,
-                            color: 'white',
-                            my: 4,
-                          }}
-                          key={task.id}
-                          id={task.id}
-                          draggable
-                          onDragStart={(e) => handleOnDrageStart(e)}
-                          onDragEnd={(e) => handleOnDrageStart(e)}
-                        >
-                          <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
-                            <Box
-                              bgcolor={'warning.main'}
-                              borderRadius={'50%'}
-                              width={30}
-                              height={30}
-                              justifyContent={'center'}
-                              alignItems={'center'}
-                              display={'flex'}
-                            >
-                              <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
-                            </Box>
-                            <Box>
-                              <Typography
-                                variant='body1'
-                                color={'primary.main'}
-                                fontWeight={'500'}
-                              >
-                                <span> Tên nhóm: {'   '}</span>
-                                {task.name}
-                              </Typography>
-                              <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
-                                <span>Tên Đề tài : {'  '}</span>
-                                Thạc sĩ
-                              </Typography>
-                              <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
-                                <span>Giảng viên hướng dẫn : {'  '}</span> Nam
-                              </Typography>
-
-                              <Link textAlign={'end'}>Xem chi tiết</Link>
-                            </Box>
-                          </Box>
-                        </Box>
-                      </Tooltip>
-                    ))}
+            <Box className=''>
+              {dataNoGroup.map((task: any, index: number) => (
+                <Box
+                  sx={{
+                    bgcolor: 'grey.100',
+                    borderRadius: 2,
+                    p: 4,
+                    color: 'white',
+                    my: 4,
+                    cursor: 'pointer',
+                    border: '2px solid #f2f2f2',
+                    '&:hover': {
+                      border: '2px solid #2acf8a',
+                      boxShadow:
+                        '0 10px 20px rgba(166, 165, 165, 0.3), 0 6px 6px rgba(235, 235, 235, 0.23)',
+                      bgcolor: '#e8fef5',
+                      transition: '0.2s ease-in',
+                    },
+                  }}
+                  key={task.id}
+                  id={task.id}
+                  draggable
+                  onDragStart={(e) => handleOnDrageStart(e)}
+                  onDragEnd={(e) => handleOnDrageStart(e)}
+                >
+                  <Box>
+                    <Typography variant='body1' color={'primary.main'} fontWeight={'500'}>
+                      {task?.name}
+                    </Typography>
+                    <Typography variant='body1' color={'primary.dark'} fontWeight={'500'}>
+                      <span>Tên Đề tài : {'  '}</span>
+                      {task?.topicName}
+                    </Typography>
+                    <Typography variant='body1' color={'primary.dark'} fontWeight={'500'}>
+                      <span>Giảng viên hướng dẫn : {'  '}</span>
+                      {task?.fullName}
+                    </Typography>
                   </Box>
                 </Box>
-              </Box>
+              ))}
             </Box>
             <Box mb={6} mt={14} pt={10} borderTop={'1px solid #56bae8'}>
               <Typography variant='body1' color='primary.main' fontWeight={'500'}>
                 Số lượng : {'      '}
-                <span style={{ color: 'black' }}> {dataLecturerNoGroup.length}</span>
+                <span style={{ color: 'black' }}> {dataNoGroup.length}</span>
               </Typography>
             </Box>
           </Box>
@@ -170,12 +163,11 @@ function Task(props: any) {
               <Typography variant='body1' fontWeight={'600'} color='primary.main'>
                 Nhóm chấm : {team.name}
               </Typography>
-              <Typography variant='body2' fontWeight={'500'} color='primary.main'>
-                GV1: Lê Minh Quang
-              </Typography>
-              <Typography variant='body2' fontWeight={'500'} color='primary.main'>
-                GV2: Lê Minh Quang
-              </Typography>
+              {team?.members?.map((member: any, index: number) => (
+                <Typography variant='body2' fontWeight={'500'} color='primary.main'>
+                  GV {index + 1}: {member.fullName}
+                </Typography>
+              ))}
             </Box>
           </Box>
           <Box
@@ -202,69 +194,52 @@ function Task(props: any) {
             onDragEnter={(e) => handleOnDragEnter(e)}
             onDragEnd={(e) => handleOnDrageEnd(e)}
             onDragOver={(e) => handleOnDragOver(e)}
-            onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.GRADING_ASSEMBLY)}
+            onDrop={(e) => handleOnDrop(e, false, 'have_group')}
           >
             <Box className='drag_container'>
               <Box className='container'>
                 <Box className='drag_column'>
                   <Box className='drag_row'>
-                    {dataLecturerGradingAssembly.map((task: any) => (
-                      <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
-                        <Box
-                          sx={{
-                            bgcolor: 'grey.100',
-                            borderRadius: 4,
-                            p: 10,
-                            color: 'white',
-                            my: 4,
-                          }}
-                          key={task.id}
-                          id={task.id}
-                          draggable
-                          onDragStart={(e) => handleOnDrageStart(e)}
-                          onDragEnd={(e) => handleOnDrageStart(e)}
-                        >
-                          <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
-                            <Box
-                              bgcolor={'warning.main'}
-                              borderRadius={'50%'}
-                              width={30}
-                              height={30}
-                              justifyContent={'center'}
-                              alignItems={'center'}
-                              display={'flex'}
-                            >
-                              <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
-                            </Box>
-                            <Box>
-                              <Typography
-                                position='absolute'
-                                right={10}
-                                top={2}
-                                bgcolor={'success.main'}
-                                p={4}
-                                borderRadius={2}
-                                variant='body2'
-                                color={'white'}
-                              >
-                                {task.status}
-                              </Typography>
-                              <Typography variant='body1' color={'error.main'} fontWeight={'500'}>
-                                <span> Tên nhóm: {'   '}</span>
-                                {task.name}
-                              </Typography>
-                              <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
-                                <span>Tên Đề tài : {'  '}</span>
-                                Thạc sĩ
-                              </Typography>
-                              <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
-                                <span>Giảng viên hướng dẫn</span>
-                              </Typography>
-                              <Link textAlign={'end'}>Xem chi tiết</Link>
-                            </Box>
+                    {dataHaveGroup?.map((task: any) => (
+                      <Box
+                        sx={{
+                          bgcolor: 'grey.100',
+                          borderRadius: 2,
+                          p: 4,
+                          color: 'white',
+                          my: 4,
+                          cursor: 'pointer',
+                          border: '2px solid #fefefe',
+                          '&:hover': {
+                            border: '2px solid #f97979',
+                            boxShadow:
+                              '0 10px 20px rgba(166, 165, 165, 0.3), 0 6px 6px rgba(235, 235, 235, 0.23)',
+                            bgcolor: '#fdf9f9',
+                            transition: '0.2s ease-in',
+                          },
+                        }}
+                        key={task.id}
+                        id={task.id}
+                        draggable
+                        onDragStart={(e) => handleOnDrageStart(e)}
+                        onDragEnd={(e) => handleOnDrageStart(e)}
+                      >
+                        <Box gap={20} position={'relative'} alignItems={'center'} display='flex'>
+                          <Box>
+                            <Typography variant='body1' color={'primary.main'} fontWeight={'500'}>
+                              {task?.name}
+                            </Typography>
+                            <Typography variant='body1' color={'primary.dark'} fontWeight={'500'}>
+                              <span>Tên Đề tài : {'  '}</span>
+                              {task?.topicName}
+                            </Typography>
+                            <Typography variant='body1' color={'primary.dark'} fontWeight={'500'}>
+                              <span>Giảng viên hướng dẫn : {'  '}</span>
+                              {task?.fullName}
+                            </Typography>
                           </Box>
                         </Box>
-                      </Tooltip>
+                      </Box>
                     ))}
                   </Box>
                 </Box>
@@ -282,14 +257,14 @@ function Task(props: any) {
           >
             <Typography flex={1} variant='body1' color='primary.main' fontWeight={'500'}>
               Số lượng : {'      '}
-              <span style={{ color: 'black' }}> {dataLecturerGradingAssembly.length} / 3</span>
+              <span style={{ color: 'black' }}> {dataHaveGroup.length} / 5</span>
             </Typography>
-            <Button color='warning' size='small'>
+            {/* <Button color='warning' size='small'>
               Làm mới
             </Button>
             <Button color='success' size='small'>
               Tạo ngẫu nhiên
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Box>

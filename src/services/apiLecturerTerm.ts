@@ -1,10 +1,10 @@
 import axiosConfig from './axiosConfig'; // Make sure to adjust the import according to your project structure
 
-//[GET]
-export const getLecturerTermByTermId = async (termId: number | string) => {
-    return axiosConfig.get(`/api/v1/lecturer-terms?termId=${termId}`);
-}
 
+//[GET LIST]
+export const getListLecturerTerm: any = async (termId: string) => {
+    return axiosConfig.get(`api/v1/lecturer-terms/list?termId=${termId}`);
+}
 //[CREATE]
 export const createLecturerTerm: any = async (data: any) => {
     return axiosConfig.post("/api/v1/lecturer-terms", data);

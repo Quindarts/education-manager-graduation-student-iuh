@@ -51,12 +51,12 @@ function ReviewManagerPage() {
                 _id: 'ADVISOR',
               },
               {
-                name: 'Tiêu chí Đánh giá Poster',
+                name: 'Tiêu chí Đánh giá Phản biện',
                 _id: 'REVIEWER',
               },
               {
-                name: 'Tiêu chí Đánh giá Hội đồng',
-                _id: 'SESSION_HOST',
+                name: 'Tiêu chí Đánh giá Báo cáo',
+                _id: 'REPORT',
               },
             ]}
           />

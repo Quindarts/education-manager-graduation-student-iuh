@@ -1,22 +1,20 @@
 import Modal from '@/components/ui/Modal';
-import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
-import { useTerm } from '@/hooks/api/useQueryTerm';
+import useMemberGroupLecturer from '@/hooks/api/useQueryMemberGroupLecturer';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-function StudentLeaveGroup(props: any) {
-  const { onClose, open, studentId } = props;
-  const { termStore } = useTerm();
+function LecturerLeaveGroupModal(props: any) {
+  const { onClose, open, lecturerId } = props;
   const { pathname } = useLocation();
   const current = pathname.split('/');
-  const grStudentId = `${current[current.length - 1]}`;
-  const { onDeleteStudentMember } = useMemberGroupStudent();
-  const { mutate: deleteMem, isSuccess } = onDeleteStudentMember(grStudentId);
+  const grLecturerId = `${current[current.length - 1]}`;
+  const { onRemoveMemberFromGroupLecturer } = useMemberGroupLecturer();
+  const { mutate: deleteMem, isSuccess } = onRemoveMemberFromGroupLecturer(grLecturerId);
 
-  const handleDeleteStudentMember = () => {
-    deleteMem({ studentId: studentId, termId: termStore.currentTerm.id });
+  const handleDeleteLecturerMember = () => {
+    deleteMem({ lecturerId });
   };
   useEffect(() => {
     onClose();
@@ -44,7 +42,7 @@ function StudentLeaveGroup(props: any) {
           <Icon color='#b31d1d82' width={70} icon='fluent-mdl2:leave' />{' '}
         </Box>
         <Typography variant='h3' mt={10} mb={14}>
-          Xóa sinh viên ra khỏi nhóm ?
+          Xóa giảng viên ra khỏi nhóm ?
         </Typography>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
           <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>
@@ -52,14 +50,14 @@ function StudentLeaveGroup(props: any) {
             Hủy
           </Button>
           <Button
-            onClick={handleDeleteStudentMember}
+            onClick={handleDeleteLecturerMember}
             type='submit'
             sx={{ width: '50%' }}
             color='error'
             variant='contained'
           >
             <Icon width={20} style={{ marginRight: 4 }} icon='fluent-mdl2:leave' />
-            Xóa Sinh viên
+            Xóa Giảng viên
           </Button>
         </Box>
       </Box>
@@ -67,4 +65,4 @@ function StudentLeaveGroup(props: any) {
   );
 }
 
-export default StudentLeaveGroup;
+export default LecturerLeaveGroupModal;

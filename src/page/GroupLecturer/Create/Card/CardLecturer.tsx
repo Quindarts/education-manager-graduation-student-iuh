@@ -4,6 +4,7 @@ import React from 'react';
 
 function CardLecturer(props: any) {
   const { key, id, draggable, onDragStart, onDragEnd, lecturer } = props;
+  console.log('🚀 ~ CardLecturer ~ lecturer:', lecturer);
   return (
     <Paper
       key={key}
@@ -21,11 +22,12 @@ function CardLecturer(props: any) {
         justifyContent: 'space-around',
         borderRadius: 2,
         boxSizing: 'border-box',
+        border: '2px solid #fefefe',
         ':hover': {
           border: '2px solid #0052b1',
-          boxShadow: '1px 1px 1px 1px #E6E6E6',
           transition: '0.1s ease-in',
           backgroundColor: '#D3E7FF',
+          boxShadow: '0 10px 20px rgba(166, 165, 165, 0.3), 0 6px 6px rgba(235, 235, 235, 0.23)',
         },
       }}
     >

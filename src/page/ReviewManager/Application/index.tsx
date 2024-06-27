@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 function Application() {
   const [currentData, setCurrentData] = useState([]);
-  console.log('🚀 ~ Application ~ currentData:', currentData);
   return (
     <Box my={4} display={'flex'} gap={6}>
       <UploadFileExcel setCurrentData={setCurrentData} />

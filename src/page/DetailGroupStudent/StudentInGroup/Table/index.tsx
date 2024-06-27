@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import EditStatusStudentTerm from '../Modal/EditStatus';
 import StudentLeaveGroup from '../Modal/LeaveGroup';
-import useMemberGroupStudent from '@/hooks/api/useMemberGroupStudent';
+import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import AddStudentModal from '../Modal/AddStudent';
 
 function TableStudentInGroup(props: any) {

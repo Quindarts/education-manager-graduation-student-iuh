@@ -92,14 +92,14 @@ function TableManagerReviewScore(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
-          height: 450,
+          height: 500,
         }}
         columns={basicColumns}
         totalItems={1}
         totalPages={1}
         page={1}
         checkboxSelection={true}
-        handelChangePage={() => {}}
+        handleChangePage={() => {}}
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector

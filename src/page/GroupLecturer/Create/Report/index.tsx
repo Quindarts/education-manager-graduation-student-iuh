@@ -1,74 +1,65 @@
 import CustomTextField from '@/components/ui/CustomTextField';
-import { Box, Button, Chip, LinearProgress, Paper, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, Chip, Paper, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import CardLecturer from '../Card/CardLecturer';
 import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
+import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
+import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import SekeletonUI from '@/components/ui/Sekeleton';
 
 export const ENUM_STATUS_LECTURER = {
   NO_GROUP: 'NO_GROUP',
-  GRADING_INSTRUCTION: 'GRADING_INSTRUCTION', // chấm hd
-  GRADING_ASSEMBLY: 'GRADING_ASSEMBLY', // chấm hđ
-  GRADING_POSTER: ' GRADING_POSTER', // chấm poster
+  HAVE_GROUP: 'HAVE_GROUP',
 };
-const TASKS = [
+export const ENUM_DROP_LECTURER = [
   {
-    id: 1,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    mssv: '21089141',
-    degree: 'MASTER',
+    _id: 'report_poster',
+    name: 'Nhóm chấm poster',
   },
   {
-    id: 2,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên B',
-    mssv: '21089141',
-    degree: 'MASTER',
-  },
-  {
-    id: 3,
-    status: 'Completed',
-    name: 'Giảng viên C',
-    mssv: '21089141',
-    degree: 'DOCTOR',
-  },
-  {
-    id: 4,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên D',
-    mssv: '21089141',
-    degree: 'DOCTOR',
-  },
-  {
-    id: 5,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên E',
-    mssv: '21089141',
-    degree: 'DOCTOR',
-  },
-  {
-    id: 6,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    mssv: '21089141',
-    degree: 'DOCTOR',
-  },
-  {
-    id: 7,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    mssv: '21089141',
-    degree: 'DOCTOR',
+    _id: 'report_council',
+    name: 'Nhóm chấm hội đồng',
   },
 ];
-function CreateReportGroupPage() {
-  const [task, setTask] = React.useState(TASKS);
-  const [currentGroup, setCurrentGroup] = React.useState(ENUM_STATUS_LECTURER.GRADING_POSTER);
+const convertLecturerGroup = (data: any[]) => {
+  if (!data) {
+    return [];
+  }
+  const newData: any = [];
+  data.map((lecturerTerm: any) => {
+    let lec = lecturerTerm.lecturer;
+    newData.push({ ...lec, lecturerTerm, status: ENUM_STATUS_LECTURER.NO_GROUP });
+  });
+  return newData;
+};
 
-  const handleDropGroup = (value: string) => {
-    setCurrentGroup(value);
+function CreateReportGroupPage() {
+  const [currentGroup, setCurrentGroup] = useState(ENUM_DROP_LECTURER[0]?._id);
+  const [task, setTask] = useState<any[]>();
+  const { onCreateGroupLecturer } = useGroupLecturer();
+  const { handleGetListLecturerTerms } = useLecturerTerm();
+  const { termStore } = useTerm();
+
+  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms(
+    termStore.currentTerm.id,
+  );
+
+  const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer(`${currentGroup}`);
+
+  const handleCreateGroup = () => {
+    let dataLecturerGradingAssembly = task?.filter(
+      (data: any) => data.status === ENUM_STATUS_LECTURER.HAVE_GROUP,
+    );
+    const lecturers = dataLecturerGradingAssembly?.map((lec) => lec.id);
+    create({ termId: termStore.currentTerm.id, lecturers: lecturers });
   };
+
+  useEffect(() => {
+    setTask(convertLecturerGroup(data?.lecturerTerms));
+  }, [successCreate, isFetched]);
+
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
     element.classList.add('dragged');
@@ -101,7 +92,8 @@ function CreateReportGroupPage() {
     evt.preventDefault();
     evt.currentTarget.classList.remove('dragged-over');
     let data = evt.dataTransfer.getData('text/plain');
-    let updated = TASKS.map((task: any) => {
+
+    let updated = task?.map((task: any) => {
       if (task.id.toString() === data.toString()) {
         task.status = status;
       }
@@ -109,10 +101,10 @@ function CreateReportGroupPage() {
     });
     setTask(updated);
   };
-  let dataLecturerGradingAssembly = task.filter(
-    (data: any) => data.status === ENUM_STATUS_LECTURER.GRADING_INSTRUCTION,
+  let dataLecturerGradingAssembly = task?.filter(
+    (data: any) => data.status === ENUM_STATUS_LECTURER.HAVE_GROUP,
   );
-  let dataLecturerNoGroup = task.filter(
+  let dataLecturerNoGroup = task?.filter(
     (data: any) => data.status === ENUM_STATUS_LECTURER.NO_GROUP,
   );
 
@@ -127,7 +119,6 @@ function CreateReportGroupPage() {
         sx={{
           flex: 1,
           px: 10,
-          minHeight: '80vh',
           py: 6,
         }}
         elevation={1}
@@ -136,50 +127,54 @@ function CreateReportGroupPage() {
           Danh sách giảng viên trống lịch
         </Typography>
         <CustomTextField placeholder='Tim kiem giang vien' />
-        <Box>
-          {dataLecturerNoGroup.map((task: any, index: number) => (
-            <CardLecturer
-              key={task.id}
-              id={task.id}
-              lecturer={task}
-              draggable
-              onDragStart={(e: any) => handleOnDrageStart(e)}
-              onDragEnd={(e: any) => handleOnDrageStart(e)}
-            />
-          ))}
+        <Box sx={{ overflowY: 'auto' }} height={450} pr={10}>
+          {isLoading || !isFetched ? (
+            <SekeletonUI />
+          ) : (
+            <Box>
+              {dataLecturerNoGroup?.map((task: any) => (
+                <CardLecturer
+                  key={task.id}
+                  id={task.id}
+                  lecturer={task}
+                  draggable
+                  onDragStart={(e: any) => handleOnDrageStart(e)}
+                  onDragEnd={(e: any) => handleOnDrageStart(e)}
+                />
+              ))}
+            </Box>
+          )}
         </Box>
       </Paper>
       <Paper
         sx={{
           flex: 1,
           px: 6,
-          height: 440,
+          height: 450,
           py: 10,
         }}
         onDragLeave={(e: any) => handleOnDragLeave(e)}
         onDragEnter={(e) => handleOnDragEnter(e)}
         onDragEnd={(e) => handleOnDrageEnd(e)}
         onDragOver={(e) => handleOnDragOver(e)}
-        onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.GRADING_INSTRUCTION)}
+        onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.HAVE_GROUP)}
         elevation={6}
       >
-        <Box display={'flex'} mb={10} justifyContent={'space-between'}>
+        <Box display={'flex'} justifyContent={'space-between'}>
           <Typography variant='h6' color='primary'>
-            Tạo nhóm chấm báo cáo cấp khoa
+            Tạo nhóm chấm báo cáo
           </Typography>
-          <DropDown
-            onSelect={(e: any) => {
-              handleDropGroup(e.target.value);
-            }}
-            defaultValue={`${ENUM_STATUS_LECTURER.GRADING_POSTER}`}
-            options={[
-              { _id: ENUM_STATUS_LECTURER.GRADING_POSTER, name: 'Chấm poster' },
-              { _id: ENUM_STATUS_LECTURER.GRADING_ASSEMBLY, name: 'Chấm Hội đồng' },
-            ]}
-          />
+          <Box>
+            <DropDown
+              value={currentGroup}
+              onChange={(e: any) => {
+                setCurrentGroup(e.target.value);
+              }}
+              options={ENUM_DROP_LECTURER}
+            />
+          </Box>
         </Box>
-
-        {dataLecturerGradingAssembly.length < 1 ? (
+        {dataLecturerGradingAssembly && dataLecturerGradingAssembly.length < 1 ? (
           <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
             <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
               <Typography color='grey.500' variant='h6' mt={20}>
@@ -189,8 +184,8 @@ function CreateReportGroupPage() {
             </Box>
           </Box>
         ) : (
-          <Box sx={{ minHeight: 130 }}>
-            {dataLecturerGradingAssembly.map((task: any) => (
+          <Box sx={{ minHeight: 200 }}>
+            {dataLecturerGradingAssembly?.map((task: any) => (
               <Paper
                 sx={{
                   display: 'flex',
@@ -199,8 +194,10 @@ function CreateReportGroupPage() {
                   my: 6,
                   px: 4,
                   py: 6,
-                  boxSizing: 'border-box',
                   cursor: 'pointer',
+                  boxSizing: 'border-box',
+                  border: '2px solid #fefefe',
+
                   ':hover': {
                     border: '2px solid #00B1A2',
                     boxShadow: '1px 1px 1px 1px #E6E6E6',
@@ -218,32 +215,38 @@ function CreateReportGroupPage() {
                   <Typography variant='body1' fontWeight={500} color='grey.700'>
                     Tên giảng viên
                     <Typography mx={4} component='span'>
-                      {task.name}
+                      {task.fullName}
                     </Typography>
                     <Typography ml={10} component='span' textAlign={'end'}>
-                      Trình độ: {task.degree}
+                      {/* Trình độ: {task.degree} */}
                     </Typography>
                   </Typography>
                   <Typography variant='body1' fontWeight={500} color='grey.700'>
                     Mã giảng viên
                     <Typography mx={4} component='span'>
-                      {task.mssv}
+                      {task.username}
                     </Typography>
                   </Typography>
                 </Box>
                 <Box>
-                  <Chip sx={{ color: 'white' }} color='success' label={`${currentGroup}`} />
+                  <Chip sx={{ color: 'white' }} color='success' label='Chọn để chấm' />
                 </Box>
               </Paper>
             ))}{' '}
+            {dataLecturerGradingAssembly?.length === 3 && (
+              <Typography component={'span'} variant='body1' mt={10} color='warning.main'>
+                <Icon icon='material-symbols-light:warning-outline' />
+                Đã đạt số lượng thành viên tối đa
+              </Typography>
+            )}
             <Typography variant='body1' mt={10} color='primary'>
               Số lượng thành viên:{' '}
               <Typography component={'span'} variant='body1' mt={10} color='initial'>
-                0 /3
+                {dataLecturerGradingAssembly?.length} /3
               </Typography>
             </Typography>
             <Box display={'flex'} justifyContent={'end'} mt={10}>
-              <Button color='error' variant='contained'>
+              <Button color='error' variant='contained' onClick={handleCreateGroup}>
                 <Icon icon='dashicons:saved' />
                 Tạo nhóm
               </Button>

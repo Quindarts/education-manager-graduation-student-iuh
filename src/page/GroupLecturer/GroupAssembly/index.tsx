@@ -8,79 +8,13 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Task from './Task';
 import ListLecturerGroup from './ListLecturerGroup';
 import DropDown from '@/components/ui/Dropdown';
+import useAssign from '@/hooks/api/useQueryAssign';
+import { Icon } from '@iconify/react';
 
-export const ENUM_STATUS_LECTURER = {
-  NO_GROUP: 'NO_GROUP',
-  GRADING_INSTRUCTION: 'GRADING_INSTRUCTION', // chấm hd
-  GRADING_ASSEMBLY: 'GRADING_ASSEMBLY', // chấm hđ
-  POSTER_SCORING: 'POSTER_SCORING', // chấm poster
-};
-
-const TASKS = [
-  {
-    id: 1,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    icon: 'noto:green-book',
-    time: '8 hrs',
-    days: '5 days left',
-  },
-  {
-    id: 2,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    icon: 'noto:green-book',
-    time: '6 hrs',
-    days: '6 days left',
-  },
-  {
-    id: 3,
-    status: 'Completed',
-    name: 'Giảng viên A',
-    icon: 'noto:green-book',
-    time: '13 hrs',
-    days: '4 days left',
-  },
-  {
-    id: 4,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    icon: 'noto:green-book',
-    time: '22 hrs',
-    days: '2 days left',
-  },
-  {
-    id: 5,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    icon: 'noto:green-book',
-    time: '2 hrs',
-    days: '1 day left',
-    newOrder: true,
-  },
-  {
-    id: 6,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    icon: 'noto:green-book',
-    time: '2 hrs',
-    days: '1 day left',
-    newOrder: true,
-  },
-  {
-    id: 7,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    name: 'Giảng viên A',
-    icon: 'noto:green-book',
-    time: '2 hrs',
-    days: '1 day left',
-    newOrder: true,
-  },
-];
 const DROP_VALUE = [
   {
     name: 'Nhóm chấm Phản biện',
@@ -88,19 +22,34 @@ const DROP_VALUE = [
   },
   {
     name: 'Nhóm chấm Poster',
-    _id: 'poster',
+    _id: 'report_poster',
   },
   {
     name: 'Nhóm chấm Hội đồng',
-    _id: 'conference',
+    _id: 'report_council',
   },
 ];
+const typeConvert = (type: string) => {
+  switch (type) {
+    case 'reviewer':
+      return 'Nhóm chấm Phản biện';
+    case 'report_poster':
+      return 'Nhóm chấm Poster';
+    case 'report_council':
+      return 'Nhóm chấm Hội đồng';
+  }
+  return;
+};
 
 function GroupReportPage() {
   const listGroupStudent = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const [currentTeam, setCurrentTeam] = useState<any>({ id: '', team: {} });
+  const [groupStudents, setGroupStudents] = useState<any[]>([]);
+  const [activeStep, setActiveStep] = useState(0);
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const handleGroupStudentHavedAssign = (gr: any) => {
+    setGroupStudents(gr);
+  };
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -111,9 +60,29 @@ function GroupReportPage() {
   };
 
   const handleReset = () => {
+    setCurrentTeam({ id: '', team: {} });
+    setGroupStudents([]);
     setActiveStep(0);
   };
+
   const [checkedTyper, setCheckedTyper] = useState<any>(DROP_VALUE[0]?._id);
+
+  const { onCreateAssignByType, handletGetGroupStudentNoAssignByType } = useAssign();
+
+  const { mutate: createAssign, isSuccess: successCreate } = onCreateAssignByType(checkedTyper);
+  const { data, isSuccess, isLoading, isFetched } =
+    handletGetGroupStudentNoAssignByType(checkedTyper);
+  console.log('🚀 ~ handleCreateAssign ~ groupStudents:', groupStudents);
+
+  const handleCreateAssign = () => {
+    createAssign({
+      groupLecturerId: currentTeam.id,
+      listGroupStudentId: groupStudents.map((grStudent) => grStudent.id),
+    });
+  };
+  useEffect(() => {
+    if (activeStep === 2 && successCreate === true) handleNext();
+  }, [successCreate]);
 
   const steps = [
     {
@@ -122,6 +91,7 @@ function GroupReportPage() {
           label='Chọn loại nhóm phân công chấm điểm'
           value={checkedTyper}
           options={DROP_VALUE}
+          disabled={activeStep !== 0}
           onChange={(e: any) => {
             setCheckedTyper(e.target.value);
           }}
@@ -137,11 +107,17 @@ function GroupReportPage() {
     },
     {
       label: 'Phân công nhóm giảng viên vừa chọn để chấm đề tài',
-      description: <Task tasks={TASKS} team={currentTeam.team} />,
+      description: (
+        <Task
+          groupStudents={data?.groupStudent}
+          typeGroupLecturer={checkedTyper}
+          handleGroupStudentHavedAssign={handleGroupStudentHavedAssign}
+          team={currentTeam.team}
+        />
+      ),
     },
     {
-      label: 'Kết quả',
-      description: `Tạo nhóm thành công.`,
+      label: `Thông tin phân công ${typeConvert(checkedTyper)}`,
     },
   ];
   return (
@@ -151,19 +127,54 @@ function GroupReportPage() {
           {steps.map((step, index) => (
             <Step key={index}>
               <StepLabel
-                optional={index === 2 ? <Typography variant='caption'></Typography> : null}
+                sx={{
+                  fontSize: 14,
+                  color: 'primay.dark',
+                }}
+                optional={
+                  index === 2 ? (
+                    <Box>
+                      <Typography my={4} variant='body2' color='primary'>
+                        Nhóm giảng viên: {currentTeam?.team?.name}
+                      </Typography>
+                      <Typography variant='body2' color='primary'>
+                        Danh sách nhóm sinh viên
+                      </Typography>
+                      <>
+                        {groupStudents?.map((gr) => (
+                          <Typography variant='body2' color='primary'>
+                            {gr.name}
+                          </Typography>
+                        ))}
+                      </>
+                    </Box>
+                  ) : null
+                }
               >
                 {step.label}
               </StepLabel>
               <StepContent>
                 <Box sx={{ mb: 2 }}>
                   <Box>
-                    <Button variant='contained' onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
-                      {index === steps.length - 1 ? 'Lưu thông tin' : 'Bước tiếp theo'}
-                    </Button>
                     <Button disabled={index === 0} onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
+                      <Icon icon='eva:arrow-ios-back-fill' width={16} />
                       Quay lại
                     </Button>
+                    {index === steps.length - 1 ? (
+                      <Button
+                        variant='contained'
+                        onClick={handleCreateAssign}
+                        sx={{ mt: 1, mr: 1 }}
+                      >
+                        <Icon icon='mingcute:save-line' width={16} />
+                        Lưu thông tin
+                      </Button>
+                    ) : (
+                      <Button variant='contained' onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
+                        Bước tiếp theo
+                        <Icon icon='ic:baseline-navigate-next' width={16} />
+                      </Button>
+                    )}
                   </Box>
                 </Box>
                 <Box>{step.description}</Box>
@@ -173,9 +184,10 @@ function GroupReportPage() {
         </Stepper>
         {activeStep === steps.length && (
           <Paper square elevation={0} sx={{ p: 3 }}>
-            <Typography>Tất cả các bước đã hoàn thành</Typography>
+            <Typography color={'success'}>Phân công nhóm thành công</Typography>
             <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-              Làm lại
+              <Icon icon='carbon:reset-alt' width={16} />
+              Phân công lại
             </Button>
           </Paper>
         )}

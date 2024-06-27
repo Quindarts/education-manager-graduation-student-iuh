@@ -71,3 +71,14 @@ export const convertGroupMembersTable = (groupMember: any[]) => {
         return newArr
     }
 }
+// export const convertGroupStudentNoGroupList = (groupStudent: any[]) => {
+//     if (groupStudent === undefined)
+//         return []
+//     else {
+//         let newArr: any[] = []
+//         groupStudent.map((mem: any) => {
+//             newArr.push({ id: mem.student.id, studentId: mem.student.id, isAdmin: mem.isAdmin, status: mem.status, transcripts: mem.transcripts, ...mem.student })
+//         })
+//         return newArr
+//     }
+// }

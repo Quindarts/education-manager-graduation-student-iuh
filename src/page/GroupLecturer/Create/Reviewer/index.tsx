@@ -6,80 +6,46 @@ import { Icon } from '@iconify/react';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
+import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 
 export const ENUM_STATUS_LECTURER = {
   NO_GROUP: 'NO_GROUP',
-  GRADING_INSTRUCTION: 'GRADING_INSTRUCTION', // chấm hd
+  HAVE_GROUP: 'HAVE_GROUP',
 };
-const TASKS = [
-  {
-    id: 1,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    fullName: 'Giảng viên A',
-    username: '21089141',
-    // degree: 'MASTER',
-  },
-  {
-    id: 2,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    fullName: 'Giảng viên B',
-    username: '21089141',
-    // degree: 'MASTER',
-  },
-  {
-    id: 3,
-    status: 'Completed',
-    fullName: 'Giảng viên C',
-    username: '21089141',
-    // degree: 'DOCTOR',
-  },
-  {
-    id: 4,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    fullName: 'Giảng viên D',
-    username: '21089141',
-    // degree: 'DOCTOR',
-  },
-  {
-    id: 5,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    fullName: 'Giảng viên E',
-    username: '21089141',
-    // degree: 'DOCTOR',
-  },
-  {
-    id: 6,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    fullName: 'Giảng viên A',
-    username: '21089141',
-    // degree: 'DOCTOR',
-  },
-  {
-    id: 7,
-    status: ENUM_STATUS_LECTURER.NO_GROUP,
-    fullName: 'Giảng viên A',
-    username: '21089141',
-    // degree: 'DOCTOR',
-  },
-];
 const convertLecturerGroup = (data: any[]) => {
   if (!data) {
     return [];
   }
   const newData: any = [];
-  data.map((lecturer: any) => {
-    newData.push({ ...lecturer, status: ENUM_STATUS_LECTURER.NO_GROUP });
+  data.map((lecturerTerm: any) => {
+    let lec = lecturerTerm.lecturer;
+    newData.push({ ...lec, lecturerTerm, status: ENUM_STATUS_LECTURER.NO_GROUP });
   });
   return newData;
 };
+
 function CreateInstructorGroupPage() {
   const [task, setTask] = React.useState<any[]>();
-  const { handleGetLecturerNoGroupByTypeGroup, onCreateGroupLecturer } = useGroupLecturer();
-  const { data, isLoading, isSuccess, isFetched } = handleGetLecturerNoGroupByTypeGroup('reviewer');
+  const { onCreateGroupLecturer } = useGroupLecturer();
+  const { handleGetListLecturerTerms } = useLecturerTerm();
+  const { termStore } = useTerm();
 
+  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms(
+    termStore.currentTerm.id,
+  );
+
+  const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer('reviewer');
+
+  const handleCreateGroup = () => {
+    let dataLecturerGradingAssembly = task?.filter(
+      (data: any) => data.status === ENUM_STATUS_LECTURER.HAVE_GROUP,
+    );
+    const lecturers = dataLecturerGradingAssembly?.map((lec) => lec.id);
+    create({ termId: termStore.currentTerm.id, lecturers: lecturers });
+  };
   useEffect(() => {
-    setTask(convertLecturerGroup(data?.lecturers));
-  }, [isSuccess, isFetched, data]);
+    setTask(convertLecturerGroup(data?.lecturerTerms));
+  }, [successCreate, isFetched]);
 
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
@@ -123,21 +89,11 @@ function CreateInstructorGroupPage() {
     setTask(updated);
   };
   let dataLecturerGradingAssembly = task?.filter(
-    (data: any) => data.status === ENUM_STATUS_LECTURER.GRADING_INSTRUCTION,
+    (data: any) => data.status === ENUM_STATUS_LECTURER.HAVE_GROUP,
   );
   let dataLecturerNoGroup = task?.filter(
     (data: any) => data.status === ENUM_STATUS_LECTURER.NO_GROUP,
   );
-  const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer('reviewer');
-  const { termStore } = useTerm();
-
-  const handleCreateGroup = () => {
-    let dataLecturerGradingAssembly = task?.filter(
-      (data: any) => data.status === ENUM_STATUS_LECTURER.GRADING_INSTRUCTION,
-    );
-    const lecturers = dataLecturerGradingAssembly?.map((lec) => lec.id);
-    create({ termId: termStore.currentTerm.id, lecturers: lecturers });
-  };
 
   return (
     <Box display={'flex'} py={10} px={0} gap={20} justifyContent={'space-between'}>
@@ -188,7 +144,7 @@ function CreateInstructorGroupPage() {
         onDragEnter={(e) => handleOnDragEnter(e)}
         onDragEnd={(e) => handleOnDrageEnd(e)}
         onDragOver={(e) => handleOnDragOver(e)}
-        onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.GRADING_INSTRUCTION)}
+        onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.HAVE_GROUP)}
         elevation={6}
       >
         <Typography variant='h6' color='primary'>
@@ -216,6 +172,7 @@ function CreateInstructorGroupPage() {
                   py: 6,
                   cursor: 'pointer',
                   boxSizing: 'border-box',
+                  border: '2px solid #fefefe',
                   ':hover': {
                     border: '2px solid #00B1A2',
                     boxShadow: '1px 1px 1px 1px #E6E6E6',

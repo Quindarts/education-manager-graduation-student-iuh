@@ -66,7 +66,7 @@ function ScoreStudentPage() {
             totalItems={1}
             totalPages={1}
             page={1}
-            handelChangePage={() => {}}
+            handleChangePage={() => {}}
             disableColumnMenu
             disableColumnFilter
             disableColumnSelector
