@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack"
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 
 
-export enum QuerKeysAssign {
+export enum QueryKeysAssign {
     getGroupStudentNoAssignByType = 'getGroupStudentNoAssignByType'
 
 }
@@ -14,13 +14,13 @@ const useAssign = () => {
     const { termStore } = useTerm();
 
     const handletGetGroupStudentNoAssignByType = (type: string) => {
-        return useQuery([QuerKeysAssign.getGroupStudentNoAssignByType, type], () => getGroupStudentNoAssign(type, termStore.currentTerm.id))
+        return useQuery([QueryKeysAssign.getGroupStudentNoAssignByType, type], () => getGroupStudentNoAssign(type, termStore.currentTerm.id))
     }
     const onCreateAssignByType = (type: string) => {
         return useMutation((data: { groupLecturerId: string, listGroupStudentId: string[] }) => createAssignByType(type, data), {
             onSuccess() {
                 enqueueSnackbar("Phân công chấm điểm thành công", { variant: "success" })
-                queryClient.invalidateQueries([QuerKeysAssign.getGroupStudentNoAssignByType, type])
+                queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type])
 
             },
             onError(err: any) {

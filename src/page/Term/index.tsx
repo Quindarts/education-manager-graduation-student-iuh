@@ -8,18 +8,18 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 
 function TermPage() {
   const { handleGetAllTerm } = useTerm();
-  const { data, isLoading, isFetched } = handleGetAllTerm();
+  const { data, isLoading, isFetching } = handleGetAllTerm();
   return (
     <>
-      <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-        <TitleManager mb={14} mt={2}>
+      <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+        <TitleManager mb={8} mt={2}>
           Danh sách học kì
         </TitleManager>
         <HeaderTerm />
-        {isLoading || !isFetched ? (
+        {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (
-          <Box width={'full'} my={10}>
+          <Box width={'full'} my={4}>
             <TableManagamentTerm rows={data?.terms} />
           </Box>
         )}

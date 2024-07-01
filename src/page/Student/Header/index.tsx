@@ -42,8 +42,8 @@ function HeaderStudent(props: any) {
   const debouncedSearchValue = useDebounce(searchValue, 500);
   return (
     <>
-      <Box mb={14} display={'flex'} flexWrap={'wrap'} gap={8}>
-        <Box flex={1} display={'flex'} gap={4} width={'full'}>
+      <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
+        <Box flex={1} display={'flex'} gap={2} width={'full'}>
           <Box width={200}>
             <DropDown
               placeholder='Tìm kiếm theo'
@@ -66,16 +66,34 @@ function HeaderStudent(props: any) {
           />
         </Box>
 
-        <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
+        <Button
+          size='small'
+          onClick={handleOpenModal}
+          color='error'
+          type='button'
+          variant='contained'
+        >
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo sinh viên
         </Button>
         <ModalUpload entityUpload={TypeEntityUpload.STUDENT} termId={termStore.currentTerm.id} />
-        <Button color='warning' type='button' sx={{ color: 'white' }} variant='contained'>
+        <Button
+          size='small'
+          color='warning'
+          type='button'
+          sx={{ color: 'white' }}
+          variant='contained'
+        >
           <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
         </Button>
-        <Button onClick={handleOpenModal} color='error' type='button' variant='contained'>
-          <Icon icon='lets-icons:add-round' />
+        <Button
+          size='small'
+          onClick={handleOpenModal}
+          color='primary'
+          type='button'
+          variant='contained'
+        >
+          {/* <Icon icon='lets-icons:add-round' /> */}
           Khóa tài khoản
         </Button>
       </Box>

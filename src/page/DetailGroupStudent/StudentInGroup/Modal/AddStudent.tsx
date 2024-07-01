@@ -5,7 +5,6 @@ import {
   Button,
   Chip,
   FormControl,
-  InputLabel,
   MenuItem,
   OutlinedInput,
   Select,

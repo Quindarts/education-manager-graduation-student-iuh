@@ -1,4 +1,5 @@
 import Table from '@/components/ui/Table/Table';
+import { typeConvertGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 import { Icon } from '@iconify/react';
 import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
@@ -15,11 +16,11 @@ function TableManagamentGroupLecturer(props: any) {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
-      renderCell: (cell: any) => {
+      renderCell: (params: any) => {
         return (
           <Box>
             <Typography variant='body1' fontWeight={'bold'} color='primary.main'>
-              Nhóm giảng viên phản biện 1
+              {params.row.name}
             </Typography>
           </Box>
         );
@@ -31,10 +32,10 @@ function TableManagamentGroupLecturer(props: any) {
       headerAlign: 'center',
       flex: 1,
       align: 'center',
-      renderCell: (cell: any) => {
+      renderCell: (params: any) => {
         return (
           <Box>
-            <Chip label='Phản biện' />
+            <Chip label={typeConvertGroupLecturer(params.row.type.toLowerCase())} />
           </Box>
         );
       },
@@ -44,41 +45,18 @@ function TableManagamentGroupLecturer(props: any) {
       field: 'name3',
       headerAlign: 'center',
       flex: 1,
-      align: 'center',
-      renderCell: (cell: any) => {
+      renderCell: (params: any) => {
         return (
           <Box>
-            <Typography variant='body1' color='initial'>
-              Giảng viên 1: Lê Minh Quang
-            </Typography>
-            <Typography variant='body1' mt={1} color='initial'>
-              Giảng viên 2: Nguyễn Huy Hoàng
-            </Typography>
-          </Box>
-        );
-      },
-    },
-    {
-      headerName: 'Danh sách nhóm sinh viên chấm điểm',
-      field: 'listGroupStudent',
-      headerAlign: 'center',
-      flex: 1.5,
-      align: 'center',
-      renderCell: (cell: any) => {
-        return (
-          <Box>
-            <Typography variant='body1' color='initial'>
-              Nhóm sinh viên 1
-            </Typography>
-            <Typography variant='body1' mt={1} color='initial'>
-              Nhóm sinh viên 2
-            </Typography>
-            <Typography variant='body1' color='initial'>
-              Nhóm sinh viên 3
-            </Typography>
-            <Typography variant='body1' mt={1} color='initial'>
-              Nhóm sinh viên 4
-            </Typography>
+            {params.row.members.map((mem: any, index: number) => (
+              <Box component={'div'} my={2}>
+                <Typography component={'span'}> {mem.username}</Typography>
+                {'--'}
+                <Typography component={'span'} width={100} color='initial'>
+                  GV{index + 1}: {mem.fullName}
+                </Typography>
+              </Box>
+            ))}
           </Box>
         );
       },
@@ -94,9 +72,7 @@ function TableManagamentGroupLecturer(props: any) {
           <Tooltip title='Chi tiết nhóm giảng viên'>
             <IconButton
               color='primary'
-              onClick={() =>
-                navigate('/group-lecturers/details/2bcbc7b4-d1c4-416a-9d4e-d6ea9f77f2f2')
-              }
+              onClick={() => navigate(`/group-lecturers/details/${params.row.id}`)}
             >
               <Icon icon='flat-color-icons:view-details' />
             </IconButton>
@@ -108,27 +84,15 @@ function TableManagamentGroupLecturer(props: any) {
   return (
     <Box>
       <Table
-        rows={[
-          {
-            id: 1,
-            name: 'a',
-            name2: 'a',
-            name3: 'a',
-            name4: 'as',
-            name5: '5',
-            name6: '6',
-            name7: '7',
-            name8: '6',
-          },
-        ]}
+        rows={rows}
         sx={{
           bgcolor: 'white',
         }}
-        minHeight={50}
-        rowHeight={150}
+        rowHeight={100}
         columns={basicColumns}
         totalItems={1}
         totalPages={1}
+        checkboxSelection
         page={1}
         handleChangePage={() => {}}
         disableColumnMenu

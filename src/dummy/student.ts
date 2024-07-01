@@ -30,7 +30,7 @@ export const dummyStudentData = [
     majors: {
       id: 123,
     },
-    name: 'Nguyễn Thị A',
+    fullName: 'Nguyễn Thị A',
     phoneNumber: '0123456789',
     schoolYear: '3',
     typeTraining: 'Đại học',

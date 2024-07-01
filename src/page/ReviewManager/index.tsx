@@ -13,6 +13,8 @@ import { convertEvalutationTable } from '@/utils/convertDataTable';
 import { TypeEvaluation } from '@/services/apiEvaluation';
 import { Icon } from '@iconify/react';
 import AddEvaluationModal from './Modal/Add';
+import { string } from 'yup';
+import ExportWordModal from './Modal/ExportWord';
 
 function ReviewManagerPage() {
   const [currentTypeReview, setCurrentTypeReview] = useState(TypeEvaluation.ADVISOR);
@@ -26,6 +28,16 @@ function ReviewManagerPage() {
   const [openModalCreateEvaluation, setOpenCreateEvaluationModal] = useState({
     isOpen: false,
   });
+  const [openModalExport, setOpenExportModal] = useState({
+    isOpen: false,
+  });
+
+  const handleOpenExportModal = () => {
+    setOpenExportModal({ isOpen: true });
+  };
+  const handleCloseExportModal = () => {
+    setOpenExportModal({ isOpen: false });
+  };
 
   const handleOpenCreateEvaluationModal = () => {
     setOpenCreateEvaluationModal({ isOpen: true });
@@ -35,11 +47,11 @@ function ReviewManagerPage() {
   };
 
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      <Box my={10} display={'flex'} justifyContent={'space-between'} gap={6}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <Box my={4} display={'flex'} justifyContent={'space-between'} gap={2}>
         <TitleManager>Tiêu chí Đánh giá</TitleManager>
 
-        <Box display={'flex'} gap={10}>
+        <Box display={'flex'} gap={2}>
           <DropDown
             value={currentTypeReview}
             onChange={(e: any) => {
@@ -60,9 +72,25 @@ function ReviewManagerPage() {
               },
             ]}
           />
-          <Button color='error' variant='contained' onClick={handleOpenCreateEvaluationModal}>
+          <Button
+            size='small'
+            color='error'
+            variant='contained'
+            onClick={handleOpenCreateEvaluationModal}
+          >
             <Icon icon='ic:baseline-plus' />
             Tạo tiêu chí mới
+          </Button>
+
+          <Button
+            disabled={data?.evaluations.length < 1}
+            size='small'
+            color='success'
+            variant='contained'
+            onClick={handleOpenExportModal}
+          >
+            <Icon width={20} icon='material-symbols:export-notes' />
+            Xuất phiếu chấm
           </Button>
           <ModalUpload
             disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0}
@@ -73,7 +101,7 @@ function ReviewManagerPage() {
         </Box>
       </Box>
 
-      <Box mt={8}>
+      <Box mt={4}>
         {isLoading || !isFetched ? (
           <SekeletonUI />
         ) : (
@@ -94,6 +122,13 @@ function ReviewManagerPage() {
         termId={termStore.currentTerm.id}
         type={currentTypeReview}
         onClose={handleCloseCreateEvaluationModal}
+      />
+      <ExportWordModal
+        onClose={handleCloseExportModal}
+        termId={termStore.currentTerm.id}
+        typeReport={currentTypeReview}
+        open={openModalExport.isOpen}
+        evaluations={data?.evaluations}
       />
     </Paper>
   );

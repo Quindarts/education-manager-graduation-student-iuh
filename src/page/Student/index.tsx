@@ -21,7 +21,7 @@ function StudentPage() {
   const [typeSearch, setTypeSearch] = useState<'full_name' | 'username' | 'phone' | 'email'>(
     'full_name',
   );
-  const { data, isLoading, isFetched } = handleManagerRenderActionStudent(
+  const { data, isLoading, isFetching } = handleManagerRenderActionStudent(
     termStore.currentTerm.id,
     currentLimit,
     currentPage,
@@ -46,8 +46,8 @@ function StudentPage() {
     setTypeRender(ENUM_RENDER_STUDENT.ALL);
   };
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      <TitleManager mb={14} mt={2}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <TitleManager mb={8} mt={2}>
         Danh sách sinh viên
       </TitleManager>
       <HeaderStudent
@@ -56,7 +56,7 @@ function StudentPage() {
         handleChangeDropSearch={handleChangeDropSearch}
         onClearSearch={onClearSearch}
       />
-      {isLoading && !isFetched ? (
+      {isLoading || isFetching ? (
         <SekeletonUI />
       ) : (
         <TableManagamentStudent

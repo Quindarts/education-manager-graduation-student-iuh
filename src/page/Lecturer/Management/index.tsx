@@ -15,7 +15,7 @@ function LecturerManagementPage() {
   const [keywords, setKeywords] = useState('');
   const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_LECTURER>(ENUM_RENDER_LECTURER.ALL);
 
-  const { data, isLoading, isFetched } = handleManagerRenderActionLecturer(
+  const { data, isLoading, isFetching } = handleManagerRenderActionLecturer(
     currentLimit,
     currentPage,
     typeSearch,
@@ -37,8 +37,8 @@ function LecturerManagementPage() {
     setTypeSearch(ENUM_RENDER_LECTURER.ALL);
   };
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      <TitleManager mb={14} mt={2}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <TitleManager mb={8} mt={2}>
         Danh sách giảng viên
       </TitleManager>
       <>
@@ -48,7 +48,7 @@ function LecturerManagementPage() {
           handleChangeDropSearch={handleChangeDropSearch}
           onClearSearch={onClearSearch}
         />
-        {isLoading && !isFetched ? (
+        {isLoading && !isFetching ? (
           <SekeletonUI />
         ) : (
           <TableManagamentLecturer

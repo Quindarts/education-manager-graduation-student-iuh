@@ -14,32 +14,10 @@ import ListLecturerGroup from './ListLecturerGroup';
 import DropDown from '@/components/ui/Dropdown';
 import useAssign from '@/hooks/api/useQueryAssign';
 import { Icon } from '@iconify/react';
-
-const DROP_VALUE = [
-  {
-    name: 'Nhóm chấm Phản biện',
-    _id: 'reviewer',
-  },
-  {
-    name: 'Nhóm chấm Poster',
-    _id: 'report_poster',
-  },
-  {
-    name: 'Nhóm chấm Hội đồng',
-    _id: 'report_council',
-  },
-];
-const typeConvert = (type: string) => {
-  switch (type) {
-    case 'reviewer':
-      return 'Nhóm chấm Phản biện';
-    case 'report_poster':
-      return 'Nhóm chấm Poster';
-    case 'report_council':
-      return 'Nhóm chấm Hội đồng';
-  }
-  return;
-};
+import {
+  ENUM_GROUP_LECTURER,
+  typeConvertGroupLecturer,
+} from '@/utils/validations/groupLecturer.validation';
 
 function GroupReportPage() {
   const listGroupStudent = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -65,14 +43,13 @@ function GroupReportPage() {
     setActiveStep(0);
   };
 
-  const [checkedTyper, setCheckedTyper] = useState<any>(DROP_VALUE[0]?._id);
+  const [checkedTyper, setCheckedTyper] = useState<any>(ENUM_GROUP_LECTURER[0]?._id);
 
   const { onCreateAssignByType, handletGetGroupStudentNoAssignByType } = useAssign();
 
   const { mutate: createAssign, isSuccess: successCreate } = onCreateAssignByType(checkedTyper);
   const { data, isSuccess, isLoading, isFetched } =
     handletGetGroupStudentNoAssignByType(checkedTyper);
-  console.log('🚀 ~ handleCreateAssign ~ groupStudents:', groupStudents);
 
   const handleCreateAssign = () => {
     createAssign({
@@ -90,7 +67,7 @@ function GroupReportPage() {
         <DropDown
           label='Chọn loại nhóm phân công chấm điểm'
           value={checkedTyper}
-          options={DROP_VALUE}
+          options={ENUM_GROUP_LECTURER}
           disabled={activeStep !== 0}
           onChange={(e: any) => {
             setCheckedTyper(e.target.value);
@@ -117,11 +94,11 @@ function GroupReportPage() {
       ),
     },
     {
-      label: `Thông tin phân công ${typeConvert(checkedTyper)}`,
+      label: `Thông tin phân công ${typeConvertGroupLecturer(checkedTyper)}`,
     },
   ];
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <Box sx={{ maxWidth: 'full' }}>
         <Stepper activeStep={activeStep} orientation='vertical'>
           {steps.map((step, index) => (

@@ -6,7 +6,8 @@ const CustomModal = styled(Dialog)`
     .MuiDialog-paper {
       align-items: center;
       width: 96%;
-      /* max-width: 500px; */
+      max-height:94vh;
+
       margin: auto;
 
       &::-webkit-scrollbar {

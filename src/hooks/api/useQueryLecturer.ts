@@ -7,6 +7,8 @@ import { useMutation, useQuery } from "react-query"
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useTerm } from './useQueryTerm';
+import { QueryKeysGroupLecturer } from './useQueryGroupLecturer';
+import { QueryKeysAssign } from './useQueryAssign';
 
 export enum QueryKeysLecturer {
     getAllLecturer = 'getAllLecturer',
@@ -76,6 +78,7 @@ export const useLecturer = () => {
             onSuccess() {
                 enqueueSnackbar("Tạo giang vien thành công", { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer, termId, limit, page] });
+
             },
             onError(error) {
                 enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
@@ -93,6 +96,9 @@ export const useLecturer = () => {
                     [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, params.limit, params.page, renderUi, keywords ? keywords : '']
                 );
                 queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getLecturerById, id] });
+                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, 'reviewer'] })
+
+
             },
             onError(error) {
                 enqueueSnackbar("Cập nhật giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })

@@ -19,7 +19,6 @@ export const useGroupStudentSlice = createSlice({
     initialState: initGroupStudentSlice,
     reducers: {
         setParams: (state: any, { payload }: PayloadAction<any>) => {
-            console.log("🚀 ~ payload:", payload)
             state.params = payload
         },
         setTypeRender: (state: any, { payload }: PayloadAction<any>) => {

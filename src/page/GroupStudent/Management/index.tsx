@@ -23,7 +23,7 @@ function GroupStudentManagement() {
   const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_GROUP_STUDENT>(
     ENUM_RENDER_GROUP_STUDENT.ALL,
   );
-  const { data, isLoading, isFetched } = handleManagerRenderActionGroupStudent(
+  const { data, isLoading, isFetching } = handleManagerRenderActionGroupStudent(
     currentLimit,
     currentPage,
     typeSearch,
@@ -45,9 +45,9 @@ function GroupStudentManagement() {
     setTypeSearch(ENUM_RENDER_GROUP_STUDENT.ALL);
   };
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <Box display={'flex'} justifyContent={'space-between'}>
-        <TitleManager mb={14} mt={2}>
+        <TitleManager mb={8} mt={2}>
           Danh sách nhóm sinh viên
         </TitleManager>
         <ToggleButtonGroup
@@ -67,7 +67,7 @@ function GroupStudentManagement() {
       </Box>
 
       <HeaderGroupStudent />
-      {isLoading && !isFetched ? (
+      {isLoading || isFetching ? (
         <SekeletonUI />
       ) : (
         <>

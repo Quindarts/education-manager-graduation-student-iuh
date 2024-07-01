@@ -59,17 +59,17 @@ function BreadCrumbRouting() {
 
   return (
     <Breadcrumbs aria-label='breadcrumb'>
-      <Link style={{ color: '#0052b1', fontWeight: '600', fontSize: 16 }} to='/'>
+      <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 12 }} to='/'>
         Trang chủ
       </Link>
       {validPaths.map((path, index) => {
         const breadcrumbName = findBreadcrumbName(path);
         return index === validPaths.length - 1 ? (
-          <Typography color='grey.500' fontWeight={600} variant='h6' key={path}>
+          <Typography color='grey.500' fontWeight={500} variant='body2' key={path}>
             {breadcrumbName}
           </Typography>
         ) : (
-          <Link style={{ color: '#0052b1', fontWeight: '600', fontSize: 16 }} to={path} key={path}>
+          <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 12 }} to={path} key={path}>
             {breadcrumbName}
           </Link>
         );

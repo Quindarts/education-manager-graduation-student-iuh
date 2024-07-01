@@ -1,4 +1,3 @@
-import Calendar from '@/components/ui/Calendar';
 import CustomTextField from '@/components/ui/CustomTextField';
 import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
@@ -6,9 +5,9 @@ import TitleManager from '@/components/ui/Title';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import { EnumGender, EnumRole } from '@/types/enum';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, CircularProgress } from '@mui/material';
-import { Formik, useFormik } from 'formik';
-import React, { useContext, useEffect, useState } from 'react';
+import { Box, Button, CircularProgress } from '@mui/material';
+import { Formik } from 'formik';
+import React, { useEffect } from 'react';
 import { validateSchemaLecturer } from '../../context';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
 import { useTerm } from '@/hooks/api/useQueryTerm';
@@ -64,7 +63,7 @@ function EditInfoModal(props: any) {
   return (
     <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box py={10} px={10}>
-        <TitleManager mb={2} variant='h5' textTransform={'uppercase'}>
+        <TitleManager mb={2} variant='body1' textTransform={'uppercase'}>
           Cập nhật thông tin Giảng viên
         </TitleManager>
         {isLoading && !isFetched ? (

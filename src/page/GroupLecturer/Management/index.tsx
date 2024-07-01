@@ -1,18 +1,31 @@
 import { Box, Paper } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import HeaderGroupLecturer from './Header';
 import TitleManager from '@/components/ui/Title';
 import TableManagamentGroupLecturer from './Table';
+import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
+import SekeletonUI from '@/components/ui/Sekeleton';
+import { convertGroupLecturerTable } from '@/utils/convertDataTable';
 function GroupLecturerManagementPage() {
+  const [checkType, setCheckType] = useState('');
+  const handleTypeGroupLecturer = (checkType: string) => {
+    setCheckType(checkType);
+  };
+  const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
+  const { data, isSuccess, isLoading, isFetched } = handleGetAllGroupLecturerByTypeGroup(checkType);
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      <TitleManager mb={4} mt={2}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <TitleManager mb={0} mt={2}>
         Danh sách nhóm giảng viên
       </TitleManager>
-      <HeaderGroupLecturer />
+      <HeaderGroupLecturer handleTypeGroupLecturer={handleTypeGroupLecturer} />
 
-      <Box width={'full'} my={10}>
-        <TableManagamentGroupLecturer rows={[]} />
+      <Box width={'full'} my={4}>
+        {isLoading && !isFetched ? (
+          <SekeletonUI />
+        ) : (
+          <TableManagamentGroupLecturer rows={convertGroupLecturerTable(data?.groupLecturers)} />
+        )}
       </Box>
     </Paper>
   );

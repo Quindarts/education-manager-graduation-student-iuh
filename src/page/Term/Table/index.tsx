@@ -355,12 +355,14 @@ function TableManagamentTerm(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
+          height: 600,
         }}
+        
         columns={basicColumns}
         totalItems={1}
         totalPages={1}
         page={1}
-        handelChangePage={() => {}}
+        handleChangePage={() => {}}
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector
@@ -392,10 +394,11 @@ function TableManagamentTerm(props: any) {
         open={openModalTopicReport.isOpen}
         termId={openModalTopicReport.termId}
       />
-      <EditPublicResult 
-      open={openModalPublicResult.isOpen}
-      termId={openModalPublicResult.termId}
-      onClose={handleClosePublicResult} />
+      <EditPublicResult
+        open={openModalPublicResult.isOpen}
+        termId={openModalPublicResult.termId}
+        onClose={handleClosePublicResult}
+      />
       {/* <DeleteModal onClose={handleCloseDeleteTermModal} open={openDeleteTermModal.isOpen} /> */}
       <TermDetail
         termId={openModalTermDetail.termId}

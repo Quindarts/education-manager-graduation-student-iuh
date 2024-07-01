@@ -23,7 +23,7 @@ function ListLecturerStudent(props: any) {
     setCurrentTeam({ id: team.groupLecturerId, team: team });
   };
   const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
-  const { data, isLoading, isSuccess } = handleGetAllGroupLecturerByTypeGroup(checkedTyper);
+  const { data, isLoading, isSuccess, isFetched } = handleGetAllGroupLecturerByTypeGroup(checkedTyper);
   return (
     <Box my={10} borderRadius={4} bgcolor={'white'} py={16} px={8}>
       <Box>
@@ -32,7 +32,7 @@ function ListLecturerStudent(props: any) {
         </TitleManager>
       </Box>
 
-      {isLoading && !isSuccess ? (
+      {isLoading && !isSuccess && !isFetched ? (
         <SekeletonUI />
       ) : (
         <Box display={'flex'} flexWrap={'wrap'} p={4} gap={10}>

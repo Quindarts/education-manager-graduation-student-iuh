@@ -59,7 +59,7 @@ function HeaderLecturer(props: any) {
   const { currentTerm } = termStore;
   return (
     <>
-      <Box mb={14} display={'flex'} flexWrap={'wrap'} gap={8}>
+      <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
         <Box flex={1} display={'flex'} gap={4} width={'full'}>
           <Box width={200}>
             <DropDown
@@ -81,12 +81,19 @@ function HeaderLecturer(props: any) {
             placeholder='Tim kiếm giảng viên theo..'
           />
         </Box>
-        <Button color='error' type='button' onClick={handleOpenModal} variant='contained'>
+        <Button
+          size='small'
+          color='error'
+          type='button'
+          onClick={handleOpenModal}
+          variant='contained'
+        >
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo giảng viên
         </Button>
         <ModalUpload entityUpload={TypeEntityUpload.LECTURER} termId={currentTerm.id} />
         <Button
+          size='small'
           color='warning'
           type='button'
           sx={{ color: 'white' }}

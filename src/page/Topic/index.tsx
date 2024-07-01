@@ -15,15 +15,15 @@ function TopicPage() {
     'e4fe02cb-f2b0-4afa-885d-d1b93130d350',
   );
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
-      <TitleManager mb={14} mt={2}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <TitleManager mb={8} mt={2}>
         Danh sách đề tài
       </TitleManager>
       <HeaderTopic />
       {isLoading && !isFetched ? (
         <SekeletonUI />
       ) : (
-        <Box width={'full'} my={10}>
+        <Box width={'full'} my={4}>
           <TableManagamentTopic rows={data?.topics ? data.topics : []} />
         </Box>
       )}

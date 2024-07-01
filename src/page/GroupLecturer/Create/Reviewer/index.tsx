@@ -7,11 +7,8 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
+import { ENUM_STATUS_LECTURER } from '@/utils/validations/groupLecturer.validation';
 
-export const ENUM_STATUS_LECTURER = {
-  NO_GROUP: 'NO_GROUP',
-  HAVE_GROUP: 'HAVE_GROUP',
-};
 const convertLecturerGroup = (data: any[]) => {
   if (!data) {
     return [];

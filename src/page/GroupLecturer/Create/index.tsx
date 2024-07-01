@@ -15,7 +15,7 @@ function CreateGroupLecturer() {
   };
 
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 6, px: 10 }} elevation={1}>
       <Box sx={{ width: '100%', typography: 'body1' }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

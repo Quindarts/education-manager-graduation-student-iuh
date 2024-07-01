@@ -1,12 +1,12 @@
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
-import { useTerm } from "./useQueryTerm"
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 import { addMemberToGroupLecturerById, removeMemberFromGroupLecturerById } from "@/services/apiGroupLecturer"
 import { QueryKeysGroupLecturer } from "./useQueryGroupLecturer"
 
 const useMemberGroupLecturer = () => {
     const { enqueueSnackbar } = useSnackbar()
+
     const onAddMemberToGroupLecturer = (id: string) => {
         return useMutation((data: any) => addMemberToGroupLecturerById(id, data), {
             onSuccess: (data: any) => {
@@ -19,6 +19,7 @@ const useMemberGroupLecturer = () => {
             }
         })
     }
+    
     const onRemoveMemberFromGroupLecturer = (id: string) => {
         return useMutation((data: any) => removeMemberFromGroupLecturerById(id, data), {
             onSuccess: (data: any) => {

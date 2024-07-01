@@ -71,14 +71,42 @@ export const convertGroupMembersTable = (groupMember: any[]) => {
         return newArr
     }
 }
-// export const convertGroupStudentNoGroupList = (groupStudent: any[]) => {
-//     if (groupStudent === undefined)
-//         return []
-//     else {
-//         let newArr: any[] = []
-//         groupStudent.map((mem: any) => {
-//             newArr.push({ id: mem.student.id, studentId: mem.student.id, isAdmin: mem.isAdmin, status: mem.status, transcripts: mem.transcripts, ...mem.student })
-//         })
-//         return newArr
-//     }
-// }
+export const convertListStudentScore = (listStudent: any[]) => {
+    if (listStudent === undefined)
+        return []
+    else {
+        let newArr: any[] = []
+        listStudent.map((mem: any) => {
+            newArr.push({ id: mem.studentId, ...mem })
+        })
+        return newArr
+    }
+}
+
+export const convertGroupLecturerTable = (groupLecturer: any[]) => {
+    if (groupLecturer === undefined || groupLecturer === null)
+        return []
+    else {
+        let newArr: any[] = []
+        groupLecturer.map((gr: any) => {
+            newArr.push({ id: gr.groupLecturerId, ...gr })
+        })
+        return newArr
+    }
+}
+
+
+export const convertRowEvaluations = (listEvaluations: any) => {
+    if (listEvaluations !== undefined && listEvaluations.length < 1) {
+        return [];
+    } else {
+        const newList = listEvaluations?.map(
+            (evaluation: { id: string; name: string; scoreMax: number }) => ({
+                id: evaluation.id,
+                name: evaluation.name,
+                scoreMax: evaluation.scoreMax,
+            }),
+        );
+        return newList;
+    }
+};

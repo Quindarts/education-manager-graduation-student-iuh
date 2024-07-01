@@ -34,8 +34,8 @@ function HeaderTopic() {
   const { currentTerm } = termStore;
   return (
     <>
-      <Box display={'flex'} flexWrap={'wrap'} gap={4}>
-        <Box flex={1} display={'flex'} gap={4} width={'full'}>
+      <Box display={'flex'} flexWrap={'wrap'} gap={2}>
+        <Box flex={1} display={'flex'} gap={2} width={'full'}>
           <Box width={200}>
             <DropDown placeholder='Tìm kiếm đề tài' options={SEARCH_DROP_VALUE} />
           </Box>

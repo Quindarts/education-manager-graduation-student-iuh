@@ -8,21 +8,8 @@ import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import { ENUM_GROUP_LECTURER_REPORT, ENUM_STATUS_LECTURER } from '@/utils/validations/groupLecturer.validation';
 
-export const ENUM_STATUS_LECTURER = {
-  NO_GROUP: 'NO_GROUP',
-  HAVE_GROUP: 'HAVE_GROUP',
-};
-export const ENUM_DROP_LECTURER = [
-  {
-    _id: 'report_poster',
-    name: 'Nhóm chấm poster',
-  },
-  {
-    _id: 'report_council',
-    name: 'Nhóm chấm hội đồng',
-  },
-];
 const convertLecturerGroup = (data: any[]) => {
   if (!data) {
     return [];
@@ -36,7 +23,7 @@ const convertLecturerGroup = (data: any[]) => {
 };
 
 function CreateReportGroupPage() {
-  const [currentGroup, setCurrentGroup] = useState(ENUM_DROP_LECTURER[0]?._id);
+  const [currentGroup, setCurrentGroup] = useState(ENUM_GROUP_LECTURER_REPORT[0]?._id);
   const [task, setTask] = useState<any[]>();
   const { onCreateGroupLecturer } = useGroupLecturer();
   const { handleGetListLecturerTerms } = useLecturerTerm();
@@ -170,7 +157,7 @@ function CreateReportGroupPage() {
               onChange={(e: any) => {
                 setCurrentGroup(e.target.value);
               }}
-              options={ENUM_DROP_LECTURER}
+              options={ENUM_GROUP_LECTURER_REPORT}
             />
           </Box>
         </Box>
