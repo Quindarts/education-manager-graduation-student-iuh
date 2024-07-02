@@ -13,15 +13,16 @@ import { convertEvalutationTable } from '@/utils/convertDataTable';
 import { TypeEvaluation } from '@/services/apiEvaluation';
 import { Icon } from '@iconify/react';
 import AddEvaluationModal from './Modal/Add';
-import { string } from 'yup';
 import ExportWordModal from './Modal/ExportWord';
+import { useAuth } from '@/hooks/api/useAuth';
 
 function ReviewManagerPage() {
   const [currentTypeReview, setCurrentTypeReview] = useState(TypeEvaluation.ADVISOR);
   const { termStore } = useTerm();
-  const { handleGetEvalutationByType } = useEvaluation();
+  const { handleGetEvalutationByType, handleUiRender } = useEvaluation();
+  const currentRole = handleUiRender();
 
-  const { data, isLoading, isSuccess, isFetched } = handleGetEvalutationByType(
+  const { data, isLoading, isSuccess, isFetching } = handleGetEvalutationByType(
     termStore.currentTerm.id,
     currentTypeReview,
   );
@@ -72,43 +73,48 @@ function ReviewManagerPage() {
               },
             ]}
           />
-          <Button
-            size='small'
-            color='error'
-            variant='contained'
-            onClick={handleOpenCreateEvaluationModal}
-          >
-            <Icon icon='ic:baseline-plus' />
-            Tạo tiêu chí mới
-          </Button>
+          {currentRole.includes('all') && (
+            <>
+              <Button
+                size='small'
+                color='error'
+                variant='contained'
+                onClick={handleOpenCreateEvaluationModal}
+              >
+                <Icon icon='ic:baseline-plus' />
+                Tạo tiêu chí mới
+              </Button>
 
-          <Button
-            disabled={data?.evaluations.length < 1}
-            size='small'
-            color='success'
-            variant='contained'
-            onClick={handleOpenExportModal}
-          >
-            <Icon width={20} icon='material-symbols:export-notes' />
-            Xuất phiếu chấm
-          </Button>
-          <ModalUpload
-            disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0}
-            entityUpload={TypeEntityUpload.EVALUATION}
-            termId={termStore.currentTerm.id}
-            typeEvaluation={currentTypeReview}
-          />
+              <Button
+                disabled={data?.evaluations.length < 1}
+                size='small'
+                color='success'
+                variant='contained'
+                onClick={handleOpenExportModal}
+              >
+                <Icon width={20} icon='material-symbols:export-notes' />
+                Xuất phiếu chấm
+              </Button>
+              <ModalUpload
+                disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0}
+                entityUpload={TypeEntityUpload.EVALUATION}
+                termId={termStore.currentTerm.id}
+                typeEvaluation={currentTypeReview}
+              />
+            </>
+          )}
         </Box>
       </Box>
 
       <Box mt={4}>
-        {isLoading || !isFetched ? (
+        {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (
           <>
             <TableManagerReviewScore
               termId={termStore.currentTerm.id}
               type={currentTypeReview}
+              currentRole={currentRole}
               rows={convertEvalutationTable(data.evaluations)}
             />
             <Paper elevation={2} sx={{ px: 6, py: 10 }}>
@@ -117,19 +123,23 @@ function ReviewManagerPage() {
           </>
         )}
       </Box>
-      <AddEvaluationModal
-        open={openModalCreateEvaluation.isOpen}
-        termId={termStore.currentTerm.id}
-        type={currentTypeReview}
-        onClose={handleCloseCreateEvaluationModal}
-      />
-      <ExportWordModal
-        onClose={handleCloseExportModal}
-        termId={termStore.currentTerm.id}
-        typeReport={currentTypeReview}
-        open={openModalExport.isOpen}
-        evaluations={data?.evaluations}
-      />
+      {currentRole.includes('all') && (
+        <>
+          <AddEvaluationModal
+            open={openModalCreateEvaluation.isOpen}
+            termId={termStore.currentTerm.id}
+            type={currentTypeReview}
+            onClose={handleCloseCreateEvaluationModal}
+          />
+          <ExportWordModal
+            onClose={handleCloseExportModal}
+            termId={termStore.currentTerm.id}
+            typeReport={currentTypeReview}
+            open={openModalExport.isOpen}
+            evaluations={data?.evaluations}
+          />
+        </>
+      )}
     </Paper>
   );
 }

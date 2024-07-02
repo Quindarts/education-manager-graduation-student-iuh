@@ -12,7 +12,7 @@ function GroupLecturerManagementPage() {
     setCheckType(checkType);
   };
   const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
-  const { data, isSuccess, isLoading, isFetched } = handleGetAllGroupLecturerByTypeGroup(checkType);
+  const { data, isSuccess, isLoading, isFetching } = handleGetAllGroupLecturerByTypeGroup(checkType);
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager mb={0} mt={2}>
@@ -21,7 +21,7 @@ function GroupLecturerManagementPage() {
       <HeaderGroupLecturer handleTypeGroupLecturer={handleTypeGroupLecturer} />
 
       <Box width={'full'} my={4}>
-        {isLoading && !isFetched ? (
+        {isLoading ||isFetching ? (
           <SekeletonUI />
         ) : (
           <TableManagamentGroupLecturer rows={convertGroupLecturerTable(data?.groupLecturers)} />

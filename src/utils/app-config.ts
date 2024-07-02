@@ -2,6 +2,12 @@ import { RoleCheck } from "@/types/enum";
 
 export const APP_ROUTES = {
   DASHBOARD: '/',
+  MAJOR: {
+    MANAGEMENT: '/majors',
+    CREATE: '/majors/create',
+    term_DETAIL: '/majors/:termId',
+    EDIT: '/majors/edit',
+  },
   TERM: {
     MANAGEMENT: '/terms',
     ADD_NEW: '/terms/new',
@@ -83,6 +89,20 @@ export const APP_SIDEBAR = [
     key: '/',
   },
   {
+    icon: 'simple-icons:gitbook',
+    text: 'Chuyên Ngành',
+    roles: [RoleCheck.ADMIN],
+    link: [APP_ROUTES.MAJOR.MANAGEMENT],
+    key: '/majors',
+    children: [
+      {
+        text: 'Danh sách chuyên ngành',
+        link: APP_ROUTES.MAJOR.MANAGEMENT,
+        key: '/management',
+      },
+    ],
+  },
+  {
     icon: 'mage:book-fill',
     text: 'Học kì',
     roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
@@ -99,7 +119,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'fa-solid:user-cog',
     text: 'Phân quyền',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
+    roles: [RoleCheck.ADMIN],
     link: [APP_ROUTES.USER.MANAGEMENT, APP_ROUTES.USER.DETAIL],
     children: [
       {
@@ -122,7 +142,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'mdi:teach-poll',
     text: 'Giảng viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
     link: [APP_ROUTES.LECTURER.MANAGEMENT],
     children: [
       {
@@ -135,7 +155,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'mdi:account-student',
     text: 'Sinh viên',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
+    roles: [RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.STUDENT],
     children: [
       {
@@ -148,7 +168,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'material-symbols:topic',
     text: 'Đề tài',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
     link: [APP_ROUTES.TOPIC],
     children: [
       {
@@ -174,7 +194,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'fluent-mdl2:review-solid',
     text: 'Đánh giá',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
+    roles: [RoleCheck.HEAD_LECTURER,RoleCheck.LECTURER],
     link: APP_ROUTES.REVIEW,
     key: '/review',
     children: [
@@ -188,7 +208,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'healthicons:i-exam-multiple-choice',
     text: 'Chấm điểm',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER, RoleCheck.LECTURER],
+    roles: [RoleCheck.LECTURER],
     link: [APP_ROUTES.SCORE_STUDENT.MANAGEMENT],
     children: [
       {
@@ -232,7 +252,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'typcn:group',
     text: 'Nhóm giảng viên',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
     link: [APP_ROUTES.GROUP_LECTURER.MANAGEMENT],
     children: [
       {

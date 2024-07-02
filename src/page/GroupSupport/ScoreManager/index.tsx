@@ -44,8 +44,10 @@ function ScoreGroupSupport() {
       <TitleManager>Chấm điểm nhóm sinh viên hướng dẫn</TitleManager>
 
       <Box minHeight={'80vh'} display={'flex'} mt={10} gap={10}>
-        <Paper sx={{ px: 8, py: 10, flex: 1 }}>
-          <TitleManager color={'grey.900'} variant='body1'>Danh sách nhóm mà bạn đang hướng dẫn</TitleManager>
+        <Paper sx={{ px: 8, py: 10, width: 'calc(40% - 10px)' }}>
+          <TitleManager color={'grey.900'} variant='body1'>
+            Danh sách nhóm mà bạn đang hướng dẫn
+          </TitleManager>
           <Box width={'full'} display={'flex'} flexDirection={'column'} mt={6}></Box>
           <Box component={'section'} mt={8} display={'flex'} flexDirection={'column'} gap={6}>
             {demo.map((group_id) => (
@@ -56,18 +58,18 @@ function ScoreGroupSupport() {
             ))}
           </Box>
         </Paper>
-        <Paper sx={{ px: 8, py: 10, flex: 2 }}>
+        <Paper sx={{ px: 8, py: 10, width: '60%' }}>
           {currentGroupChecked.length < 1 ? (
-             <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
-             <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
-               <Typography color='primary.main' variant='h6' mt={20} fontWeight={600}>
-                 Vui lòng Chọn sinh viên trong danh sách sinh viên bên trái để chấm điểm ....
-               </Typography>
-               <Icon color='#dfdfdf' width={200} icon='icon-park-solid:hand-left' />
-             </Box>
-           </Box>
+            <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
+              <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
+                <Typography color='primary.main' variant='h6' mt={20} fontWeight={600}>
+                  Vui lòng Chọn sinh viên trong danh sách sinh viên bên trái để chấm điểm ....
+                </Typography>
+                <Icon color='#dfdfdf' width={200} icon='icon-park-solid:hand-left' />
+              </Box>
+            </Box>
           ) : (
-            <Box my={10}>
+            <Box width={'100%'} my={4}>
               {STUDENT_IN_GROUP.filter((student2) =>
                 currentGroupChecked.includes(student2.group_id),
               ).map((student: any) => (
@@ -79,13 +81,13 @@ function ScoreGroupSupport() {
                     <Box display={'flex'} gap={4}>
                       <Icon width={20} icon='flat-color-icons:folder' />
 
-                      <Typography fontWeight={'bold'} color={'primary.main'} variant='body1'>
+                      <Typography fontWeight={'500'} color={'primary.main'} variant='body1'>
                         {student.fullName} - MSSV: {student.mssv}
                       </Typography>
 
                       <Typography
                         justifyContent={'end'}
-                        fontWeight={'bold'}
+                        fontWeight={'500'}
                         color={'grey.500'}
                         variant='body1'
                       >
@@ -94,22 +96,18 @@ function ScoreGroupSupport() {
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Box display={'flex'} flexDirection={'column'}>
-                      <ScoreInput name='CLO1' scoreMax={10} />
-                      <ScoreInput name='CLO2' scoreMax={10} />
-                      <ScoreInput name='CLO3' scoreMax={10} />
-                      <ScoreInput name='CLO4' scoreMax={10} />
-                      <ScoreInput name='CLO5' scoreMax={10} />
-                      <ScoreInput name='CLO6' scoreMax={10} />
-                      <ScoreInput name='CLO7' scoreMax={10} />
+                    <Box display={'flex'} flexDirection={'column'} gap={4}>
+                      <ScoreInput oldScore='6' name='CLO1' scoreMax={10} />
+                      <ScoreInput oldScore='6' name='CLO2' scoreMax={10} />
+                      <ScoreInput oldScore='6' name='CLO3' scoreMax={10} />
+                      <ScoreInput oldScore='6' name='CLO4' scoreMax={10} />
+                      <ScoreInput oldScore='6' name='CLO5' scoreMax={10} />
+                      <ScoreInput oldScore='6' name='CLO6' scoreMax={10} />
+                      <ScoreInput oldScore='6' name='CLO7' scoreMax={10} />
                       <Box my={4} display={'flex'} gap={100} alignSelf={'end'} py={4} px={0}>
-                        <Typography fontWeight={'bold'} variant='h5' color='error'>
+                        <Typography fontWeight={'500'} variant='h5' color='error'>
                           Tổng Điểm : 100/100
                         </Typography>
-                        <Button color='primary' variant='contained'>
-                          <Icon icon='bi:pen-fill' />
-                          Cập nhật điểm
-                        </Button>
                       </Box>
                     </Box>
                   </AccordionDetails>

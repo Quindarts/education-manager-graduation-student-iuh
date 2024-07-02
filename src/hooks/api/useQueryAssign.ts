@@ -14,13 +14,14 @@ const useAssign = () => {
     const { termStore } = useTerm();
 
     const handletGetGroupStudentNoAssignByType = (type: string) => {
-        return useQuery([QueryKeysAssign.getGroupStudentNoAssignByType, type], () => getGroupStudentNoAssign(type, termStore.currentTerm.id))
+
+        return useQuery([QueryKeysAssign.getGroupStudentNoAssignByType, type, termStore.currentTerm.id], () => getGroupStudentNoAssign(type, termStore.currentTerm.id))
     }
     const onCreateAssignByType = (type: string) => {
         return useMutation((data: { groupLecturerId: string, listGroupStudentId: string[] }) => createAssignByType(type, data), {
             onSuccess() {
                 enqueueSnackbar("Phân công chấm điểm thành công", { variant: "success" })
-                queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type])
+                queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type, termStore.currentTerm.id])
 
             },
             onError(err: any) {

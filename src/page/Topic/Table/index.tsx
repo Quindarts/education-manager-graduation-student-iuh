@@ -1,35 +1,17 @@
 import Table from '@/components/ui/Table/Table';
-import { dummyTopics } from '@/dummy/topic';
-import { getColorLecturer } from '@/utils/validations/lecturer.validation';
-import {
-  getCardTopicStatus,
-  getColorStatusTopic,
-  getNameStatus,
-  getbgColorStatusTopic,
-} from '@/utils/validations/topic.validation';
+import { getCardTopicStatus } from '@/utils/validations/topic.validation';
 import { Icon } from '@iconify/react';
-import {
-  Box,
-  Button,
-  ButtonPropsColorOverrides,
-  Chip,
-  IconButton,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import InfoModal from '../Modal/InfoModal';
 import AcceptTopicModal from '../Modal/AcceptTopicModal';
 import RefuseTopicModal from '../Modal/RefuseTopicModal';
-import { convertTopicTable } from '@/utils/convertDataTable';
 import EditModal from '../Modal/EditModal';
-interface EnumStatusTopicType {
-  value: string;
-  color: string;
-}
+
 function TableManagamentTopic(props: any) {
-  const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
+  const { rows, totalItems, totalPages, page, handelChangePage, isApprovePermission, ...rest } =
+    props;
 
   //handle
   const [openInfoModal, setOpenEditInfoModal] = useState({ topic_id: '', isOpen: false });
@@ -67,6 +49,42 @@ function TableManagamentTopic(props: any) {
   const handleOpenEditModal = (topic_id: string) => {
     setOpenEditModal({ topic_id, isOpen: true });
   };
+  //Permission
+
+  const ApproveTopicColumn = isApprovePermission
+    ? {
+        headerName: 'Duyệt đề tài',
+        field: 'status',
+        flex: 1.2,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (params: any) => {
+          return (
+            <>
+              {params.row.status === 'PENDING' && (
+                <Box display={'flex'} gap={2}>
+                  <Button
+                    onClick={() => handleOpenAcceptModal(params.row.id)}
+                    color='success'
+                    variant='outlined'
+                  >
+                    Duyệt <Icon icon='mdi:tick-outline' />
+                  </Button>
+                  <Button
+                    onClick={() => handleOpenRefuseModal(params.row.id)}
+                    color='error'
+                    variant='outlined'
+                  >
+                    Từ chối
+                    <Icon icon='mingcute:close-fill' />
+                  </Button>
+                </Box>
+              )}
+            </>
+          );
+        },
+      }
+    : {};
 
   const basicColumns: GridColDef[] = [
     {
@@ -125,38 +143,7 @@ function TableManagamentTopic(props: any) {
         return <Box>{getCardTopicStatus(param.row.status)}</Box>;
       },
     },
-    {
-      headerName: 'Duyệt đề tài',
-      field: 'status',
-      flex: 1.2,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return (
-          <>
-            {params.row.status === 'PENDING' && (
-              <Box display={'flex'} gap={2}>
-                <Button
-                  onClick={() => handleOpenAcceptModal(params.row.id)}
-                  color='success'
-                  variant='outlined'
-                >
-                  Duyệt <Icon icon='mdi:tick-outline' />
-                </Button>
-                <Button
-                  onClick={() => handleOpenRefuseModal(params.row.id)}
-                  color='error'
-                  variant='outlined'
-                >
-                  Từ chối
-                  <Icon icon='mingcute:close-fill' />
-                </Button>
-              </Box>
-            )}
-          </>
-        );
-      },
-    },
+    ApproveTopicColumn,
   ];
   return (
     <Box {...rest}>
@@ -172,7 +159,7 @@ function TableManagamentTopic(props: any) {
           totalPages={1}
           page={1}
           checkboxSelection={true}
-          handelChangePage={() => {}}
+          handleChangePage={() => {}}
           disableColumnMenu
           disableColumnFilter
           disableColumnSelector
@@ -187,16 +174,20 @@ function TableManagamentTopic(props: any) {
           onClose={handleCloseInfoModal}
           topic_id={openInfoModal.topic_id}
         />
-        <AcceptTopicModal
-          open={openAcceptModal.isOpen}
-          onClose={handleCloseAcceptModal}
-          topic_id={openAcceptModal.topic_id}
-        />
-        <RefuseTopicModal
-          open={openRefuseModal.isOpen}
-          onClose={handleCloseRefuseModal}
-          topic_id={openRefuseModal.topic_id}
-        />
+        {isApprovePermission && (
+          <>
+            <AcceptTopicModal
+              open={openAcceptModal.isOpen}
+              onClose={handleCloseAcceptModal}
+              topic_id={openAcceptModal.topic_id}
+            />
+            <RefuseTopicModal
+              open={openRefuseModal.isOpen}
+              onClose={handleCloseRefuseModal}
+              topic_id={openRefuseModal.topic_id}
+            />
+          </>
+        )}
       </>
     </Box>
   );

@@ -1,6 +1,5 @@
 import Table from '@/components/ui/Table/Table';
-import { Icon } from '@iconify/react';
-import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,13 +8,6 @@ function TableManagamentGroupStudent(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
   const navigate = useNavigate();
   const basicColumns: GridColDef[] = [
-    {
-      headerName: 'STT',
-      field: 'ddd',
-      flex: 0.5,
-      align: 'center',
-      headerAlign: 'center',
-    },
     {
       headerName: 'Tên nhóm',
       field: 'name',
@@ -26,12 +18,10 @@ function TableManagamentGroupStudent(props: any) {
     {
       headerName: 'Tên Đề tài',
       field: 'name6',
-      flex: 2,
-      align: 'center',
-      headerAlign: 'center',
+      flex: 3,
       renderCell: (params: any) => {
         return (
-          <Typography>{params.row.topic_id ? params.row.topic_id : 'Chưa có đề tài'}</Typography>
+          <Typography>{params.row.topicName ? params.row.topicName : 'Chưa có đề tài'}</Typography>
         );
       },
     },
@@ -42,37 +32,8 @@ function TableManagamentGroupStudent(props: any) {
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => {
-        return <Typography>0/2</Typography>;
+        return <Typography>{params.row.numOfMembers}</Typography>;
       },
-    },
-    {
-      headerName: 'Trạng thái nhóm',
-      field: 'status',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return <Chip color='success' sx={{ color: 'white' }} label={params.row.status} />;
-      },
-    },
-    {
-      headerName: '',
-      field: 'name8',
-      flex: 0.5,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={6}>
-          <Tooltip title='Chi tiết'>
-            <IconButton
-              color='primary'
-              onClick={() => navigate(`/group-student/detail/${params.row.id}`)}
-            >
-              <Icon icon='majesticons:checkbox-list-detail' />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
     },
   ];
   return (
@@ -86,7 +47,7 @@ function TableManagamentGroupStudent(props: any) {
         totalItems={1}
         totalPages={1}
         page={1}
-        handelChangePage={() => {}}
+        handleChangePage={() => {}}
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector

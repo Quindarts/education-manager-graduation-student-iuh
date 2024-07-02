@@ -1,3 +1,4 @@
+import ResponseType from '@/types/axios.type';
 import { queryClient } from '@/providers/ReactQueryClientProvider'
 import { createStudent, getAllStudent, getStudentById, lockOnlyStudent, searchStudentAdmin, updateStatusStudent, updateStudent } from '@/services/apiStudent'
 import { ENUM_RENDER_STUDENT, setParams, setTypeRender } from '@/store/slice/student.slice'
@@ -53,8 +54,8 @@ export const useStudent = () => {
     //[UPDATE]
     const onUpdateStudent = (studentId: string) => {
         return useMutation((data) => updateStudent(studentId, data), {
-            onSuccess(data: any) {
-                if (data.success)
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
+                if (data.student)
                     enqueueSnackbar('Cập nhật sinh viên thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, ENUM_RENDER_STUDENT.ALL, termStore.currentTerm.id, params.limit, params.page] })
                 queryClient.invalidateQueries({ queryKey: [QueryStudent.getStudentById, studentId] })
@@ -80,7 +81,7 @@ export const useStudent = () => {
 
     const onCreateStudent = (termId: string | number, limit: number, page: number) => {
         return useMutation((data) => createStudent(data), {
-            onSuccess(data: any) {
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar('Tạo sinh viên thành công', { variant: 'success' })
                     queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, ENUM_RENDER_STUDENT.ALL, termStore.currentTerm.id, params.limit, params.page] })

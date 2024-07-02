@@ -1,5 +1,5 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { assignTopic, getGroupStudentById, getGroupStudentByTerm, getMemberInGroupStudent, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
+import { assignTopic, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, getMemberInGroupStudent, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
 import { ENUM_RENDER_GROUP_STUDENT, setParams, setTypeRender } from "@/store/slice/groupStudent.slice"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
@@ -40,16 +40,17 @@ const useGroupStudent = () => {
         })
     }
     //[GET BY TERM]
-    const handleGetGroupStudentByTerm = (termId: string, limit: number, page: number, majorId?: string, topicId?: string) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentByTerm, termId, limit, page], () => getGroupStudentByTerm(termId, limit, page))
+    const handleGetGroupStudentByTerm = (termId?: string, limit?: number, page?: number, majorId?: string, topicId?: string) => {
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByTerm, termStore.currentTerm.id, 10, 1], () => getGroupStudentByTerm(termStore.currentTerm.id, 10, 1))
     }
-
+    //[GET BY TERM]
+    const handleGetGroupStudentByLecturerByTerm = (termId?: string,) => {
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByTerm, termStore.currentTerm.id], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id))
+    }
     //[GET BY ID]
     const handleGetGroupStudentById = (id: number | string) => {
         return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id))
     }
-
-
 
     const onImportGroupStudent = (termId: string) => {
         return useMutation((termId: string) => importGroupStudent(termId), {
@@ -67,6 +68,7 @@ const useGroupStudent = () => {
         onImportGroupStudent,
         handleGetGroupStudentByTerm,
         handleGetGroupStudentById,
+        handleGetGroupStudentByLecturerByTerm,
 
     }
 }

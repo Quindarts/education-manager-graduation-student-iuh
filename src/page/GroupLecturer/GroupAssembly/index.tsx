@@ -48,7 +48,7 @@ function GroupReportPage() {
   const { onCreateAssignByType, handletGetGroupStudentNoAssignByType } = useAssign();
 
   const { mutate: createAssign, isSuccess: successCreate } = onCreateAssignByType(checkedTyper);
-  const { data, isSuccess, isLoading, isFetched } =
+  const { data, isSuccess, isLoading, isFetching } =
     handletGetGroupStudentNoAssignByType(checkedTyper);
 
   const handleCreateAssign = () => {

@@ -1,11 +1,22 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider";
+import { Query, QueryCache } from "react-query";
 
+//Query Client -> query cache - have many -> query
 export const useApp = () => {
-    const getQueryKeyByEnumKey = (keyEnum: string) => {
-        const queryCache = queryClient.getQueryCache();
-        const queryKeys = queryCache.getAll().includes(keyEnum)
-        console.log("🚀 ~ onSuccess ~ queryKeys:", queryKeys)
+
+    const getQueryKey = async (key: any) => {
+        const rs = queryClient.getQueryCache().findAll().map(data => {
+            // console.log(data.queryKey);
+            data.queryKey
+        })
+        return queryClient.getQueryCache().find(key)?.queryKey
+    }
+    const getAllKey = () => {
+        return queryClient.getQueryCache().findAll()
+    }
+    const getQueryValueKey = (key: string | string[]) => {
+        return queryClient.getQueryData(key)
     }
 
-    return ()
+    return { getQueryKey, getAllKey, getQueryValueKey }
 }

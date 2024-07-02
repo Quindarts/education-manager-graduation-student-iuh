@@ -78,7 +78,7 @@ function CreateInstructorGroupPage() {
     let data = evt.dataTransfer.getData('text/plain');
 
     let updated = task?.map((task: any) => {
-      if (task.id.toString() === data.toString()) {
+      if (task?.id?.toString() === data?.toString()) {
         task.status = status;
       }
       return task;

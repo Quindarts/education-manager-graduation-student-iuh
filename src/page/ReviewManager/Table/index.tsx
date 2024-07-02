@@ -7,7 +7,7 @@ import EditEvaluationModal from '../Modal/Edit';
 import DeleteEvaluationModal from '../Modal/Delete';
 
 function TableManagerReviewScore(props: any) {
-  const { rows, termId, type } = props;
+  const { rows, termId, type, currentRole } = props;
 
   const [openModalEditEvaluation, setOpenEditEvaluationModal] = useState({
     isOpen: false,
@@ -31,6 +31,32 @@ function TableManagerReviewScore(props: any) {
   };
   const handleCloseDeleteEvaluationModal = () => {
     setOpenDeleteEvaluationModal({ ...openModalDeleteEvaluationModal, isOpen: false });
+  };
+  const FeatureComponent = currentRole.includes('all') && {
+    headerName: '',
+    field: 'none',
+    flex: 1.5,
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: (params: any) => (
+      <Box display={'flex'} gap={2}>
+        <Tooltip title='Sửa tiêu chí'>
+          <IconButton size='small' onClick={() => handleOpenEditEvaluationModal(params.row.id)}>
+            <Icon icon='emojione:pencil' />
+          </IconButton>
+        </Tooltip>
+        <Box></Box>
+        <Tooltip title='Xóa tiêu chí'>
+          <IconButton
+            color='error'
+            size='small'
+            onClick={() => handleOpenDeleteEvaluationModal(params.row.id)}
+          >
+            <Icon icon='mdi:trash' />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
   };
   const basicColumns: GridColDef[] = [
     {
@@ -59,32 +85,7 @@ function TableManagerReviewScore(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    {
-      headerName: '',
-      field: 'none',
-      flex: 1.5,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip title='Sửa tiêu chí'>
-            <IconButton size='small' onClick={() => handleOpenEditEvaluationModal(params.row.id)}>
-              <Icon icon='emojione:pencil' />
-            </IconButton>
-          </Tooltip>
-          <Box></Box>
-          <Tooltip title='Xóa tiêu chí'>
-            <IconButton
-              color='error'
-              size='small'
-              onClick={() => handleOpenDeleteEvaluationModal(params.row.id)}
-            >
-              <Icon icon='mdi:trash' />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
+    FeatureComponent,
   ];
   return (
     <Box>

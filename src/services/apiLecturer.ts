@@ -1,10 +1,11 @@
+import { ResponseType } from "@/types/axios.type";
 import axiosConfig from "./axiosConfig"
 
 export const getLecturerByMajorId = (majorId: number) => {
     return axiosConfig.get(`/api/v1/lecturers?majorId=${majorId}`)
 }
 
-export const getAllLecturer: any = (termId: string | number, limit: number, page: number) => {
+export const getAllLecturer = (termId: string | number, limit: number, page: number) => {
     return axiosConfig.get(`/api/v1/lecturers?limit=${limit}&page=${page}&termId=${termId}`);
 }
 

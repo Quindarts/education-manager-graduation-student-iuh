@@ -34,11 +34,12 @@ export const useGroupLecturer = () => {
         return useMutation((data: any) => createGroupLecturer(type, data), {
             onSuccess: (data: any) => {
                 enqueueSnackbar('Tạo nhóm Giảng viên thành công', { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termStore.currentTerm.id] })
+         
             },
             onError: (error: any) => {
                 enqueueSnackbar(error.message, { variant: 'error' })
-
             }
         })
     }

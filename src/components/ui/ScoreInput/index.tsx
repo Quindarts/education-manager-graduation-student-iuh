@@ -17,6 +17,7 @@ interface ScoreInputPropsType extends PaperProps {
   oldScore?: number;
   studentId: string;
   value: string;
+  widthInput?: number;
 }
 function ScoreInput(props: ScoreInputPropsType) {
   const {
@@ -67,7 +68,7 @@ function ScoreInput(props: ScoreInputPropsType) {
                 sx={{
                   input: {
                     fontSize: 16,
-                    width: 100,
+                    width: '100px',
                     color: '#3084E4',
                     fontWeight: 800,
                     textAlign: 'right',

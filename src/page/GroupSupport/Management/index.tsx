@@ -14,8 +14,8 @@ function GroupSupportManagement() {
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
     setView(nextView);
   };
-  const { handleGetGroupStudentByTerm } = useGroupStudent();
-  const { data, isFetched, isLoading } = handleGetGroupStudentByTerm(1);
+  const { handleGetGroupStudentByLecturerByTerm } = useGroupStudent();
+  const { data, isFetching, isLoading } = handleGetGroupStudentByLecturerByTerm();
 
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>

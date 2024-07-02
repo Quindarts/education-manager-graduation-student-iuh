@@ -7,19 +7,42 @@ import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
+import { useTerm } from "./useQueryTerm"
+import { useAuth } from "./useAuth"
+import { RoleCheck } from "@/types/enum"
 
 export enum QueryTopic {
+    //HEAD LECTURER
+    getAllTopicByTermMajor = 'getAllTopicByTermMajor',
     getAllTopic = 'getAllTopic',
     getTopicById = 'getTopicById',
-    getAllTopicByTermMajor = 'getAllTopicByTermMajor',
+    //LECTURER
     getAllTopicByLecturerTerm = 'getAllTopicByLecturerTerm'
 }
+//crud, all, readOnly
 
 export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
     const topicStore = useSelector((state: any) => state.topicSlice)
-    // const { params, renderUi } = topicStore
     const dispatch = useDispatch()
+    const { termStore } = useTerm()
+    const { lecturerStore } = useAuth()
+
+    const handleUiRender = (): string[] => {
+        const currentRole = lecturerStore.currentRoleRender;
+        var permissions: string[] = []
+        if (currentRole === RoleCheck.HEAD_LECTURER) {
+            permissions.push('all')
+            permissions.push('crud')
+        }
+        else if (currentRole === RoleCheck.LECTURER) {
+            permissions.push('crud')
+        }
+        else {
+            permissions.push('readOnly')
+        }
+        return permissions
+    }
 
     //[GET BY ID]
     const handleTopicById = (topicId: string) => {
@@ -29,7 +52,7 @@ export const useTopic = () => {
     //[GET BY TERM, MAJOR]
     const handleTopicsByTermByMajor = (termId: string | number, majorId: string | number, typeRender: ENUM_RENDER_TOPIC, limit: number, page: number) => {
         return useQuery([QueryTopic.getAllTopicByTermMajor, termId, majorId], () => getTopicsByTermByMajor(termId, majorId), {
-            staleTime: 10000,
+            staleTime: 1000,
             onSuccess(data) {
                 // dispatch(setParams(data.params))
                 // dispatch(setTypeRender(typeRender))
@@ -38,8 +61,8 @@ export const useTopic = () => {
     }
 
     //[GET BY TERM, LECTURER]
-    const handleTopicsByLecturerByTerm = (lecturerId: string | number, termId: string | number, typeRender: ENUM_RENDER_TOPIC) => {
-        return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerId, termId], () => getTopicsByLecturerByTerm(lecturerId, termId), {
+    const handleTopicsByLecturerByTerm = (lecturerId?: string | number, termId?: string | number, typeRender: string) => {
+        return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.id, termStore.currentTerm.id, typeRender], () => getTopicsByLecturerByTerm(lecturerStore.me.id, termStore.currentTerm.id), {
             staleTime: 10000, onSuccess(data) {
                 dispatch(setParams(data.params))
                 dispatch(setTypeRender(typeRender))
@@ -106,6 +129,7 @@ export const useTopic = () => {
     return {
         handleTopicsByTermByMajor,
         handleTopicsByLecturerByTerm,
+        handleUiRender,
         handleTopicById,
         onCreateTopicByToken,
         onUpdateTopicById,

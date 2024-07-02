@@ -7,6 +7,7 @@ import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
+import { useTopic } from '@/hooks/api/useQueryTopic';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -32,6 +33,8 @@ function HeaderTopic() {
   };
   const { termStore } = useTerm();
   const { currentTerm } = termStore;
+  const { handleUiRender } = useTopic();
+  const currentRole = handleUiRender();
   return (
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={2}>
@@ -41,17 +44,23 @@ function HeaderTopic() {
           </Box>
           <TextField fullWidth size='small' placeholder='Tim kiếm đề tài..' />
         </Box>
-        <Button
-          onClick={handleOpenModal}
-          size='small'
-          color='error'
-          type='button'
-          variant='contained'
-        >
-          <Icon icon='lets-icons:add-round' width={20} />
-          Tạo mới đề tài
-        </Button>
-        <ModalUpload entityUpload={TypeEntityUpload.TOPIC} termId={currentTerm.id} />
+        {currentRole.includes('crud') && (
+          <>
+            <Button
+              onClick={handleOpenModal}
+              size='small'
+              color='error'
+              type='button'
+              variant='contained'
+            >
+              <Icon icon='lets-icons:add-round' width={20} />
+              Tạo mới đề tài
+            </Button>
+          </>
+        )}
+        {currentRole.includes('all') && (
+          <ModalUpload entityUpload={TypeEntityUpload.TOPIC} termId={currentTerm.id} />
+        )}
         <Button color='warning' type='button' size='small' variant='contained'>
           <Icon icon='carbon:clean' color='white' width={20} /> Làm mới
         </Button>

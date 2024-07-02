@@ -1,6 +1,7 @@
 import { getMe, login } from "@/services/apiAuth";
 import { RootState } from "@/store";
 import { setCurrentRoleRender, setMe } from "@/store/slice/lecturer.slice";
+import ResponseType from "@/types/axios.type";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
 import { useSnackbar } from "notistack";
 import { useMutation, useQuery } from "react-query";
@@ -35,9 +36,10 @@ export const useAuth = () => {
     //[GET ME]
     const handleGetMe = () => {
         return useQuery(['get-me'], () => getMe(), {
-            onSuccess(data: any) {
+            onSuccess(data: Pick<ResponseType, 'success' | 'lecturer' | 'message'>) {
                 dispatch(setMe(data.lecturer));
-            }
+                return data.lecturer
+            },
         })
     }
 

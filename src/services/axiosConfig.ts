@@ -32,8 +32,10 @@ axiosConfig.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
+
     if (error.response.data.status === 401 && error.response.data.success === false) {
       originalRequest._retry = true;
+
       try {
         const refreshToken = getValueFromLocalStorage("refreshToken");
         const result: any = await axiosConfig.post('/api/v1/lecturers/refresh-token', {
@@ -41,6 +43,7 @@ axiosConfig.interceptors.response.use(
         });
         localStorage.setItem('accessToken', JSON.stringify(result.accessToken));
         originalRequest.headers.Authorization = `Bearer ${result.accessToken}`;
+     
         return axiosConfig(originalRequest);
 
       } catch (error: any) {
@@ -53,6 +56,7 @@ axiosConfig.interceptors.response.use(
     }
 
     return Promise.reject(error.response.data);
+
   },
 );
 export default axiosConfig;

@@ -8,7 +8,8 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useTerm } from './useQueryTerm';
 import { QueryKeysGroupLecturer } from './useQueryGroupLecturer';
-import { QueryKeysAssign } from './useQueryAssign';
+import { useApp } from './useApp';
+import ResponseType from '@/types/axios.type';
 
 export enum QueryKeysLecturer {
     getAllLecturer = 'getAllLecturer',
@@ -24,6 +25,8 @@ export const useLecturer = () => {
     const { params, me, currentRoleRender, renderUi, keywords } = lecturers
     const dispatch = useDispatch()
     const { termStore } = useTerm()
+
+    const { getQueryKey } = useApp();
 
     const handleManagerRenderActionLecturer = (limit: number, page: number, searchField: string,
         keywords: string | number) => {
@@ -45,7 +48,8 @@ export const useLecturer = () => {
     // [GET ALL]
     const handleGetAllLecturer = (termId: string | number, limit: number, page: number) => {
         return useQuery([QueryKeysLecturer.getAllLecturer, ENUM_RENDER_LECTURER.ALL, termId, limit, page], () => getAllLecturer(termId, limit, page), {
-            onSuccess(data) {
+
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
                 dispatch(setParams(data.params))
                 dispatch(setTypeRender(ENUM_RENDER_LECTURER.ALL))
             },
@@ -55,7 +59,7 @@ export const useLecturer = () => {
     // [SEARCH ROLE ADMIN]
     const handleSearchLecturerAdmin = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
         return useQuery([QueryKeysLecturer.searchLecturerByField, termId, limit, page, searchField, keywords], () => searchLecturerAdmin(termId, limit, page, searchField, keywords), {
-            onSuccess(data) {
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
                 console.log(data.params);
                 dispatch(setParams(data.params))
                 dispatch(setTypeRender(ENUM_RENDER_LECTURER.SEARCH_FULLNAME))
@@ -126,7 +130,7 @@ export const useLecturer = () => {
     const onImportLecturerTerm = (termId: string | number) => {
         // let myTerm = termId ? termId : termStore.currentTerm.id
         return useMutation((termId: number) => importLecturerTerm(termStore.currentTerm.id), {
-            onSuccess(data: any) {
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
                 if (data.success) {
                     enqueueSnackbar("Cập nhật danh sách giảng viên thành công", { variant: 'success' })
                     queryClient.invalidateQueries(

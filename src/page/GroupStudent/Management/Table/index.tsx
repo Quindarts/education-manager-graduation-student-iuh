@@ -12,28 +12,20 @@ function TableManagamentGroupStudent(props: any) {
   const navigate = useNavigate();
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'STT',
-      field: 'ddd',
-      flex: 0.5,
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
       headerName: 'Tên nhóm',
       field: 'name',
-      flex: 1,
+      flex: 0.5,
       align: 'center',
       headerAlign: 'center',
     },
     {
       headerName: 'Tên Đề tài',
       field: 'name6',
-      flex: 2,
-      align: 'center',
+      flex: 3,
       headerAlign: 'center',
       renderCell: (params: any) => {
         return (
-          <Typography>{params.row.topicId ? params.row.topicId : 'Chưa có đề tài'}</Typography>
+          <Typography>{params.row.topicName ? params.row.topicName : 'Chưa có đề tài'}</Typography>
         );
       },
     },
@@ -46,7 +38,7 @@ function TableManagamentGroupStudent(props: any) {
       renderCell: (params: any) => {
         return (
           <Typography>
-            {params.row.lecturerId ? params.row.lecturerId : 'Chưa có giảng viên HD'}
+            {params.row.lecturerName ? params.row.lecturerName : 'Chưa có giảng viên HD'}
           </Typography>
         );
       },

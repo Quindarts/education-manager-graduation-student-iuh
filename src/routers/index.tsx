@@ -27,6 +27,7 @@ import MyTopic from '@/page/MyTopic';
 import MyGroupLecturer from '@/page/MyGroupLecturer';
 import GroupLecturerManagementPage from '@/page/GroupLecturer/Management';
 import GroupLecturerDetailPage from '@/page/GroupLecturer/Detail';
+import MajorPage from '@/page/Major';
 
 function Routing() {
   return (
@@ -35,6 +36,8 @@ function Routing() {
         <Route path='/' element={<PrivateRouter />}>
           //ROUTE HOME
           <Route index path={APP_ROUTES.DASHBOARD} element={<Dashboard />} />
+          //ROUTE MAJOR
+          <Route path={APP_ROUTES.MAJOR.MANAGEMENT} element={<MajorPage />} />
           //ROUTE TERM
           <Route path={APP_ROUTES.TERM.MANAGEMENT} element={<TermPage />} />
           //ROUTE LECTURER

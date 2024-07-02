@@ -59,7 +59,7 @@ function BreadCrumbRouting() {
 
   return (
     <Breadcrumbs aria-label='breadcrumb'>
-      <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 12 }} to='/'>
+      <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 14 }} to='/'>
         Trang chủ
       </Link>
       {validPaths.map((path, index) => {
@@ -69,7 +69,7 @@ function BreadCrumbRouting() {
             {breadcrumbName}
           </Typography>
         ) : (
-          <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 12 }} to={path} key={path}>
+          <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 14 }} to={path} key={path}>
             {breadcrumbName}
           </Link>
         );

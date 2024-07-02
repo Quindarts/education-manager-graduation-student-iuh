@@ -23,7 +23,9 @@ const useQueryTranscript = () => {
     }
 
     const handleGetUnTranscriptStudentsByType = (type: string) => {
-        return useQuery([QueryKeysScoreStudent.getUnTranscriptStudentsByType, termStore.currentTerm.id, type], () => getUnTranscriptStudentsByType(termStore.currentTerm.id, type))
+        return useQuery([QueryKeysScoreStudent.getUnTranscriptStudentsByType, termStore.currentTerm.id, type], () => getUnTranscriptStudentsByType(termStore.currentTerm.id, type), {
+            staleTime: 1000,
+        })
 
     }
     const onCreateTranscript = (studentId: string, type: string) => {

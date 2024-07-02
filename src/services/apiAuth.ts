@@ -9,5 +9,5 @@ export const register = async (data: any) => {
     return axiosConfig.post(API_ROUTER.REGISTER, data)
 }
 export const getMe = async () => {
-    return axiosConfig.get('/api/v1/lecturers/me')
+    return await axiosConfig.get('/api/v1/lecturers/me')
 }

@@ -112,7 +112,7 @@ function AddModal(props: any) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={errors.username ? true : false}
-                helperText={errors.username}
+                helperText={`${errors.username}`}
               />
               <CustomTextField
                 value={values.fullName}
@@ -122,7 +122,7 @@ function AddModal(props: any) {
                 onBlur={handleBlur}
                 placeholder='Họ và tên'
                 error={errors.fullName ? true : false}
-                helperText={errors.fullName}
+                helperText={`${errors.fullName}`}
               />
               <Box display={'flex'} gap={8} alignContent={'center'}>
                 <Box width={'50%'}>
@@ -155,7 +155,7 @@ function AddModal(props: any) {
                 onBlur={handleBlur}
                 placeholder='Ví dụ: DHKTPM17C'
                 error={errors.clazzName ? true : false}
-                helperText={errors.clazzName}
+                helperText={`${errors.clazzName}`}
               />
               <CustomTextField
                 value={values.email}
@@ -165,7 +165,7 @@ function AddModal(props: any) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={errors.email ? true : false}
-                helperText={errors.email}
+                helperText={`${errors.email}`}
               />
               <CustomTextField
                 name='phone'
@@ -175,12 +175,12 @@ function AddModal(props: any) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={errors.phone ? true : false}
-                helperText={errors.phone}
+                helperText={`${errors.phone}`}
               />
               <Box sx={{ mb: 8 }}>
                 <DropDown
                   label='Chuyên ngành'
-                  value={values.majorId}
+                  value={`${values.majorId}`}
                   onChange={(e) => {
                     setFieldValue('majorId', e.target.value);
                   }}
