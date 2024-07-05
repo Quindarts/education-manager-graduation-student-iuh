@@ -1,3 +1,5 @@
+import CustomTextField from '@/components/ui/CustomTextField';
+import { Icon } from '@iconify/react';
 import {
   Accordion,
   AccordionDetails,
@@ -18,6 +20,7 @@ function BasicInformationGrStudentPage(props: any) {
       <Box display='flex' gap={10}>
         <Paper variant='elevation' sx={{ mt: 8, py: 12, px: 8, flex: 0.8 }}>
           <Typography fontWeight={600} color={'text.primary'} mb={2} variant='h6'>
+            <Icon icon='flat-color-icons:info' style={{ margin: ' 0 4px' }} />
             Thông tin cơ bản
           </Typography>
           <Typography color={'text.primary'} variant='body1'>
@@ -26,10 +29,6 @@ function BasicInformationGrStudentPage(props: any) {
           </Typography>
           <Typography color={'text.primary'} variant='body1'>
             Ngày tạo nhóm : {dayjs(groupStudent.created_at).format('DD/MM/YYYY')}
-          </Typography>
-          <Typography mt={4} color={'text.primary'} variant='body1'>
-            Trạng thái:
-            <Chip sx={{ mx: 6 }} color='primary' label={groupStudent.typeReport} />
           </Typography>
         </Paper>
         <Paper variant='elevation' sx={{ mt: 8, p: 8, flex: 1 }}>
@@ -45,6 +44,7 @@ function BasicInformationGrStudentPage(props: any) {
             id='panel-topic-header'
           >
             <Typography variant='h6' fontWeight={600}>
+              <Icon style={{ margin: ' 0 4px' }} icon='fxemoji:folder' />
               Thông tin đề tài
             </Typography>
           </AccordionSummary>
@@ -75,44 +75,46 @@ function BasicInformationGrStudentPage(props: any) {
               </Box>
             ) : (
               <Box pb={8}>
-                <Typography variant='h5' fontWeight={600} color='primary.dark'>
-                  Tên đề tài: Phát triển phần mềm thu hút người dùng mua hàng trực tuyến
+                <Typography variant='h3' textAlign={'center'} fontWeight={600} color='primary.dark'>
+                  Tên đề tài: {'  '} {groupStudent?.topic.name}
                 </Typography>
                 <Typography my={4} fontWeight={500} variant='h6'>
                   Mô tả
-                  <Typography fontWeight={400} px={2} variant='body1'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus delectus
-                    blanditiis dolore natus labore maxime! Voluptatum, voluptate ipsam fuga tempore
-                    eos inventore tempora voluptates iure quia aspernatur? Voluptatum, explicabo
-                    officiis.
-                  </Typography>
+                  <CustomTextField
+                    disabled
+                    multiline
+                    value={groupStudent?.topic.description}
+                    maxRows={8}
+                  />
+                  <Typography fontWeight={400} px={2} variant='body1'></Typography>
                 </Typography>
                 <Typography my={4} fontWeight={500} variant='h6'>
                   Mục tiêu cần đạt được
-                  <Typography fontWeight={400} px={2} variant='body1'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus delectus
-                    blanditiis dolore natus labore maxime! Voluptatum, voluptate ipsam fuga tempore
-                    eos inventore tempora voluptates iure quia aspernatur? Voluptatum, explicabo
-                    officiis.
-                  </Typography>
+                  <CustomTextField
+                    disabled
+                    multiline
+                    value={groupStudent?.topic.target}
+                    maxRows={8}
+                  />
                 </Typography>
                 <Typography my={4} fontWeight={500} variant='h6'>
                   Yêu cầu đầu vào
-                  <Typography fontWeight={400} px={2} variant='body1'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus delectus
-                    blanditiis dolore natus labore maxime! Voluptatum, voluptate ipsam fuga tempore
-                    eos inventore tempora voluptates iure quia aspernatur? Voluptatum, explicabo
-                    officiis.
-                  </Typography>
+                  <CustomTextField
+                    disabled
+                    multiline
+                    value={groupStudent?.topic.require_input}
+                    maxRows={8}
+                  />
                 </Typography>
                 <Typography my={4} fontWeight={500} variant='h6'>
                   Chuẩn đầu ra
-                  <Typography fontWeight={400} px={2} variant='body1'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus delectus
-                    blanditiis dolore natus labore maxime! Voluptatum, voluptate ipsam fuga tempore
-                    eos inventore tempora voluptates iure quia aspernatur? Voluptatum, explicabo
-                    officiis.
-                  </Typography>
+                  <CustomTextField
+                    disabled
+                    multiline
+                    value={groupStudent?.topic.standard_output}
+                    maxRows={12}
+                  />
+                  <Typography fontWeight={400} px={2} variant='body1'></Typography>
                 </Typography>
               </Box>
             )}

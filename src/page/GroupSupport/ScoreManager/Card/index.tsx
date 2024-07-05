@@ -4,7 +4,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 function CardStudentGroup(props: any) {
-  const { handleSetCurrentGroupChecked, group_id } = props;
+  const { handleSetCurrentGroupChecked, groupStudentId, topicName, groupName } = props;
 
   return (
     <Card sx={{ display: 'flex', gap: 4, px: 4, py: 2 }}>
@@ -13,19 +13,18 @@ function CardStudentGroup(props: any) {
           color='success'
           icon={<BookmarkBorderIcon />}
           checkedIcon={<BookmarkIcon />}
-          onChange={(e: any) => handleSetCurrentGroupChecked(group_id, e.target.checked)}
+          onChange={(e: any) => handleSetCurrentGroupChecked(groupStudentId, e.target.checked)}
         />
       </Box>
       <Box>
         <Typography color='primary' variant='body1'>
           Tên đề tài
           <Typography ml={2} component={'span'} variant='body1' color='grey.700'>
-            Hệ thống chấm điểm IUH Hệ thống chấm điểm IUH
+            {topicName}
           </Typography>
           <Typography color='primary' variant='body1'>
-            Nhóm
             <Typography ml={2} component={'span'} variant='body1' color='grey.700'>
-              {group_id}
+              {groupName}
             </Typography>
           </Typography>
         </Typography>

@@ -90,7 +90,14 @@ function TableManagamentStudent(props: any) {
       renderCell: (params: any) => {
         return (
           <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar sizes='small' src={params.row.avatar} />
+            <Avatar
+              sizes='small'
+              src={
+                params.row.avatar
+                  ? params.row.avatar
+                  : 'https://i.pngimg.me/thumb/f/720/m2H7H7K9m2Z5G6i8.jpg'
+              }
+            />
             <Box>
               <Typography fontWeight={600} variant='body1'>
                 {params.row.fullName}

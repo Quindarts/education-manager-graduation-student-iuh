@@ -1,6 +1,5 @@
 import SekeletonUI from '@/components/ui/Sekeleton';
 import Table from '@/components/ui/Table/Table';
-import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import { convertGroupMembersTable } from '@/utils/convertDataTable';
 import { getStatusGroup } from '@/utils/validations/groupStudent.validation';
 import { Icon } from '@iconify/react';
@@ -102,7 +101,9 @@ function TableStudentInGroup(props: any) {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 ? params.row.transcripts[3] : 'Chưa có'}
+            {params.row.transcripts.length > 0 && params.row.transcripts[0]
+              ? `${parseFloat(params.row.transcripts[0]?.avgScore.toFixed(2))}`
+              : 'Chưa có'}
           </Typography>
         );
       },
@@ -116,7 +117,9 @@ function TableStudentInGroup(props: any) {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 ? params.row.transcripts[3] : 'Chưa có'}
+            {params.row.transcripts.length > 0 && params.row.transcripts[1]
+              ? `${parseFloat(params.row.transcripts[1]?.avgScore.toFixed(2))}`
+              : 'Chưa có'}
           </Typography>
         );
       },
@@ -130,7 +133,9 @@ function TableStudentInGroup(props: any) {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 ? params.row.transcripts[3] : 'Chưa có'}
+            {params.row.transcripts.length > 0 && params.row.transcripts[2]
+              ? `${parseFloat(params.row.transcripts[2]?.avgScore.toFixed(2))}`
+              : 'Chưa có'}
           </Typography>
         );
       },
@@ -144,7 +149,9 @@ function TableStudentInGroup(props: any) {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 ? params.row.transcripts[3] : 'Chưa có'}
+            {params.row.transcripts.length > 0 && params.row.transcripts[3]
+              ? `${parseFloat(params.row.transcripts[3]?.avgScore.toFixed(2))}`
+              : 'Chưa có'}
           </Typography>
         );
       },
@@ -217,9 +224,9 @@ function TableStudentInGroup(props: any) {
               rows={convertGroupMembersTable(data?.members)}
               sx={{
                 bgcolor: 'white',
-                height: 400,
+                height: 350,
               }}
-              minHeight={200}
+              minHeight={350}
               rowHeight={100}
               columns={basicColumns}
               totalItems={1}

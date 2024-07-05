@@ -154,6 +154,7 @@ function TableManagamentTopic(props: any) {
           sx={{
             bgcolor: 'white',
           }}
+          minHeight={350}
           columns={basicColumns}
           totalItems={1}
           totalPages={1}

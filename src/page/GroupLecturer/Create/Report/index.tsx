@@ -8,7 +8,10 @@ import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import SekeletonUI from '@/components/ui/Sekeleton';
-import { ENUM_GROUP_LECTURER_REPORT, ENUM_STATUS_LECTURER } from '@/utils/validations/groupLecturer.validation';
+import {
+  ENUM_GROUP_LECTURER_REPORT,
+  ENUM_STATUS_LECTURER,
+} from '@/utils/validations/groupLecturer.validation';
 
 const convertLecturerGroup = (data: any[]) => {
   if (!data) {
@@ -81,7 +84,7 @@ function CreateReportGroupPage() {
     let data = evt.dataTransfer.getData('text/plain');
 
     let updated = task?.map((task: any) => {
-      if (task.id.toString() === data.toString()) {
+      if (task?.id?.toString() === data.toString()) {
         task.status = status;
       }
       return task;
@@ -110,11 +113,15 @@ function CreateReportGroupPage() {
         }}
         elevation={1}
       >
-        <Typography mb={4} variant='h5' color='primary'>
-          Danh sách giảng viên trống lịch
-        </Typography>
-        <CustomTextField placeholder='Tim kiem giang vien' />
-        <Box sx={{ overflowY: 'auto' }} height={450} pr={10}>
+        {' '}
+        <Box borderBottom={'2px solid #0c6b9e'} mb={4}>
+          <Typography mb={4} variant='h6' color='primary'>
+            <Icon icon='ic:baseline-list' />
+            Danh sách giảng viên trống lịch
+          </Typography>
+          <CustomTextField placeholder='Tim kiem giang vien' />
+        </Box>
+        <Box sx={{ overflowY: 'auto' }} height={500} pr={10}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (
@@ -137,7 +144,7 @@ function CreateReportGroupPage() {
         sx={{
           flex: 1,
           px: 6,
-          height: 450,
+          height: 500,
           py: 10,
         }}
         onDragLeave={(e: any) => handleOnDragLeave(e)}
@@ -149,6 +156,7 @@ function CreateReportGroupPage() {
       >
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography variant='h6' color='primary'>
+            <Icon icon='gridicons:create' />
             Tạo nhóm chấm báo cáo
           </Typography>
           <Box>
@@ -162,16 +170,16 @@ function CreateReportGroupPage() {
           </Box>
         </Box>
         {dataLecturerGradingAssembly && dataLecturerGradingAssembly.length < 1 ? (
-          <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
+          <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'}>
             <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
               <Typography color='grey.500' variant='h6' mt={20}>
                 Vui lòng kéo thả giảng viên...
               </Typography>
-              <Icon color='#dfdfdf' width={200} icon='icon-park-solid:hand-left' />
+              <Icon color='#dfdfdf' width={100} icon='icon-park-solid:hand-left' />
             </Box>
           </Box>
         ) : (
-          <Box sx={{ minHeight: 200 }}>
+          <Box sx={{ minHeight: 500 }}>
             {dataLecturerGradingAssembly?.map((task: any) => (
               <Paper
                 sx={{
@@ -220,20 +228,25 @@ function CreateReportGroupPage() {
                 </Box>
               </Paper>
             ))}{' '}
-            {dataLecturerGradingAssembly?.length === 3 && (
+            {dataLecturerGradingAssembly?.length === 2 && (
               <Typography component={'span'} variant='body1' mt={10} color='warning.main'>
                 <Icon icon='material-symbols-light:warning-outline' />
                 Đã đạt số lượng thành viên tối đa
               </Typography>
             )}
-            <Typography variant='body1' mt={10} color='primary'>
+            <Typography variant='body1' mt={4} color='primary'>
               Số lượng thành viên:{' '}
               <Typography component={'span'} variant='body1' mt={10} color='initial'>
-                {dataLecturerGradingAssembly?.length} /3
+                {dataLecturerGradingAssembly?.length} /2
               </Typography>
             </Typography>
             <Box display={'flex'} justifyContent={'end'} mt={10}>
-              <Button color='error' variant='contained' onClick={handleCreateGroup}>
+              <Button
+                color='error'
+                variant='contained'
+                disabled={dataLecturerGradingAssembly?.length > 2}
+                onClick={handleCreateGroup}
+              >
                 <Icon icon='dashicons:saved' />
                 Tạo nhóm
               </Button>

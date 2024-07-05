@@ -61,7 +61,6 @@ function ListEvaluation(props: any) {
     newEvaluation: [],
     total: 0,
   });
-  const [currentTranscripts, setCurrentTranscripts] = useState<{ [key: string]: number }>({});
 
   const { onCreateTranscript, onUpdateTranscript } = useQueryTranscript();
 
@@ -93,20 +92,12 @@ function ListEvaluation(props: any) {
     }
   };
 
-  const handleChangeTotalEvaluations = (score: number, id: string) => {
-    setCurrentTranscripts((prevScores: any) => ({
-      ...prevScores,
-      [id]: score,
-    }));
-  };
-
   const maxScore = evaluations
     .map((evl: any) => evl.scoreMax)
     .reduce((score1: number, score2: number) => score1 + score2, 0);
 
   useEffect(() => {
     setInitTranscripts({ newEvaluation: [], total: 0 });
-    setCurrentTranscripts({});
 
     if (dataTranscripts !== undefined) {
       setInitTranscripts(checkIsExistTranscripts(evaluations, dataTranscripts?.transcripts));
@@ -118,12 +109,27 @@ function ListEvaluation(props: any) {
         <SekeletonUI />
       ) : (
         <>
-          <Typography color='primary.main' variant='h6' fontWeight={600}>
-            Tên sinh viên: {student?.fullName}
-          </Typography>
-          <Typography color='primary.main' variant='body1' fontWeight={400}>
-            Nhóm Dề tài 1
-          </Typography>
+          <Box display={'flex'} justifyContent={'space-between'} pb={4} borderBottom='2px solid #002f5a'>
+            <Box>
+              <Typography color='dark.main' variant='h6' fontWeight={'bold'}>
+                Tên sinh viên: {student?.fullName}
+              </Typography>
+              <Typography color='dark.main' variant='body1' fontWeight={600}>
+                Nhóm Dề tài 1
+              </Typography>
+            </Box>
+
+            <Box>
+              <Typography textAlign={'start'} mr={20} color={'dark'} variant='h6'>
+                *Tổng điểm:
+                <Typography color='red' variant='h5' fontWeight={500} component={'span'}>
+                  {' '}
+                  {initTranscripts.total} / {maxScore}{' '}
+                </Typography>
+              </Typography>
+            </Box>
+          </Box>
+
           <Box
             sx={{ overflowY: 'auto', height: 500 }}
             my={10}
@@ -134,7 +140,6 @@ function ListEvaluation(props: any) {
           >
             {initTranscripts.newEvaluation.map((evaluation: any, key: number) => (
               <ScoreInput
-                handleChangeTotalEvaluations={handleChangeTotalEvaluations}
                 handleChangeCurrentTranscripts={handleChangeCurrentTranscripts}
                 value={evaluation.id}
                 name={evaluation?.name}
@@ -145,20 +150,6 @@ function ListEvaluation(props: any) {
                 isExist={evaluation?.isExist}
               />
             ))}
-          </Box>
-          <Box mt={4}>
-            <Typography
-              textAlign={'start'}
-              mr={20}
-              fontWeight={'bold'}
-              color={'primary'}
-              variant='h6'
-            >
-              Tổng điểm :
-              <Typography color='red' variant='h5' fontWeight={600} component={'span'}>
-                {initTranscripts.total} / {maxScore}{' '}
-              </Typography>
-            </Typography>
           </Box>
         </>
       )}

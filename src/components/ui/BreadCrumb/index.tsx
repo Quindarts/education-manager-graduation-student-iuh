@@ -14,6 +14,8 @@ const ROUTE_LABELS: { [key: string]: string } = {
 
   '/students': 'Quản lý Sinh viên',
 
+  '/my-group-lecturers': 'Nhóm giảng viên',
+  '/my-group-lecturers/detail': 'Chi tiết Nhóm giảng viên của tôi',
   '/group-students': 'Quản lý Nhóm Sinh viên',
   '/group-students/detail': 'Chi tiết nhóm',
   '/group-lecturers': 'Quản lý Nhóm giảng viên',

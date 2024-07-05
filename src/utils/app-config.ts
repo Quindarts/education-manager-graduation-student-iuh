@@ -38,6 +38,7 @@ export const APP_ROUTES = {
     REPORT: '/group-lecturers/group-report',
     CREATE: '/group-lecturers/create',
     ME: "/my-group-lecturers",
+    MY_DETAIL_GROUP: "/my-group-lecturers/detail/:groupLecturerId",
   },
   TOPIC: {
     MANAGEMENT: "/topics",
@@ -194,7 +195,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'fluent-mdl2:review-solid',
     text: 'Đánh giá',
-    roles: [RoleCheck.HEAD_LECTURER,RoleCheck.LECTURER],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER],
     link: APP_ROUTES.REVIEW,
     key: '/review',
     children: [

@@ -4,7 +4,6 @@ import React from 'react';
 
 function CardLecturer(props: any) {
   const { key, id, draggable, onDragStart, onDragEnd, lecturer } = props;
-  console.log('🚀 ~ CardLecturer ~ lecturer:', lecturer);
   return (
     <Paper
       key={key}
@@ -32,7 +31,7 @@ function CardLecturer(props: any) {
       }}
     >
       <Box>
-        <Avatar sizes='small' src={``} />
+        <Avatar  sizes='small' src={``} />
       </Box>
       <Box flex={1}>
         <Typography variant='body1' fontWeight={500} color='grey.700'>

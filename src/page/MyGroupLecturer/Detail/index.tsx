@@ -1,12 +1,12 @@
-import TitleManager from '@/components/ui/Title';
-import Box from '@mui/material/Box';
-import TabPanelUI from './TabPanel';
-import { Paper } from '@mui/material';
-import { useLocation } from 'react-router-dom';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import TitleManager from '@/components/ui/Title';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
+import { Box, Paper } from '@mui/material';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import TabPanelUI from './TabPanel';
 
-function GroupLecturerDetailPage() {
+function MyDetailGroupLecturer() {
   const { pathname } = useLocation();
   const current = pathname.split('/');
   const grLecturerId = `${current[current.length - 1]}`;
@@ -29,4 +29,4 @@ function GroupLecturerDetailPage() {
   );
 }
 
-export default GroupLecturerDetailPage;
+export default MyDetailGroupLecturer;

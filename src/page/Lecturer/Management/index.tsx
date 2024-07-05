@@ -11,7 +11,7 @@ import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 function LecturerManagementPage() {
   const { handleManagerRenderActionLecturer, params } = useLecturer();
   const [currentLimit, setCurrentLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(params.page);
+  const [currentPage, setCurrentPage] = useState(params?.page);
   const [keywords, setKeywords] = useState('');
   const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_LECTURER>(ENUM_RENDER_LECTURER.ALL);
 

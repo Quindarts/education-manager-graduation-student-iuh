@@ -12,9 +12,18 @@ export const ENUM_SCORE_STUDENT = [
   },
   {
     name: 'Chấm Hội đồng',
-    _id: 'REPORT',
+    _id: 'REPORT_COUNCIL',
+  },
+  {
+    name: 'Chấm Poster',
+    _id: 'REPORT_POSTER',
   },
 ];
+export const checkTypeEvaluation = (typeScore: string) => {
+  if (typeScore === 'REPORT_COUNCIL' || typeScore === 'REPORT_POSTER') {
+    return 'REPORT';
+  } else return 'REVIEWER';
+};
 
 export const getNameStatus = (value: string) => {
   if (value === 'REJECTED') return 'Đang chờ';

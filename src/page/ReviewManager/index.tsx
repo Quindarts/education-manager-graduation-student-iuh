@@ -50,7 +50,7 @@ function ReviewManagerPage() {
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <Box my={4} display={'flex'} justifyContent={'space-between'} gap={2}>
-        <TitleManager>Tiêu chí Đánh giá</TitleManager>
+        <TitleManager icon='quill:list'>Tiêu chí Đánh giá</TitleManager>
 
         <Box display={'flex'} gap={2}>
           <DropDown
@@ -117,8 +117,8 @@ function ReviewManagerPage() {
               currentRole={currentRole}
               rows={convertEvalutationTable(data.evaluations)}
             />
-            <Paper elevation={2} sx={{ px: 6, py: 10 }}>
-              <TitleManager>Tổng điểm: 100</TitleManager>
+            <Paper elevation={2} sx={{ px: 2, py: 3 }}>
+              <TitleManager variant='body1'>Tổng điểm: 100</TitleManager>
             </Paper>
           </>
         )}

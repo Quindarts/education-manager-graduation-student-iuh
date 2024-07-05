@@ -15,7 +15,7 @@ function GroupLecturerManagementPage() {
   const { data, isSuccess, isLoading, isFetching } = handleGetAllGroupLecturerByTypeGroup(checkType);
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-      <TitleManager mb={0} mt={2}>
+      <TitleManager icon='quill:list' mb={0} mt={2}>
         Danh sách nhóm giảng viên
       </TitleManager>
       <HeaderGroupLecturer handleTypeGroupLecturer={handleTypeGroupLecturer} />

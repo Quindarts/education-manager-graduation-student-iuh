@@ -10,6 +10,7 @@ import { setKeywords } from "@/store/slice/lecturer.slice"
 
 export const enum QueryKeysGroupStudent {
     getGroupStudentByTerm = 'getGroupStudentByTerm',
+    getGroupStudentByLecturerSupport = 'getGroupStudentByLecturerSupport',
     getGroupStudentById = "getGroupStudentById",
     managerActionGroupStudent = 'managerActionGroupStudent',
     searchGroupStudentByField = 'searchGroupStudentByField',
@@ -45,7 +46,7 @@ const useGroupStudent = () => {
     }
     //[GET BY TERM]
     const handleGetGroupStudentByLecturerByTerm = (termId?: string,) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentByTerm, termStore.currentTerm.id], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id))
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerSupport, termStore.currentTerm.id], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id))
     }
     //[GET BY ID]
     const handleGetGroupStudentById = (id: number | string) => {

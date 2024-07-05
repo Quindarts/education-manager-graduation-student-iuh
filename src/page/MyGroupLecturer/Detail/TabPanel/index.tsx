@@ -6,22 +6,22 @@ import TabList from '@mui/lab/TabList';
 import { TabPanel } from '@mui/lab';
 import TableManagementGroupLecturer from '@/page/DetailGroupLecturer/Management/Table';
 import { Paper, Typography } from '@mui/material';
-import CustomTextField from '@/components/ui/CustomTextField';
 import { Icon } from '@iconify/react';
+import CustomTextField from '@/components/ui/CustomTextField';
 
 function TabPanelUI(props: any) {
   const { groupLecturer } = props;
   const [value, setValue] = React.useState('1');
-  const type = groupLecturer.typeGroup;
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-
+  const type = groupLecturer.typeGroup;
   return (
     <Box sx={{ width: '100%', typography: 'h4' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'primary.main' }}>
-          <TabList onChange={handleChange} aria-label='lab API tabs example'>
+          <TabList onChange={handleChange} aria-label=''>
             <Tab label='Thông tin chung' value='1' />
             <Tab label='Danh sách giảng viên' value='2' />
           </TabList>
@@ -30,7 +30,7 @@ function TabPanelUI(props: any) {
         <TabPanel value={'1'}>
           {type === 'REVIEWER' ? (
             <Paper elevation={2} sx={{ px: 10, py: 6 }}>
-              <Typography variant='h6' color='primary'>
+              <Typography variant='h6' fontWeight='bold' color='dark'>
                 <Icon icon='el:list-alt' />
                 Danh sách đề tài chấm điểm của nhóm
               </Typography>
@@ -46,7 +46,7 @@ function TabPanelUI(props: any) {
                 </Typography>
               </Box>
               <Box my={4}>
-                <Typography variant='h6' color='primary'>
+                <Typography variant='h6' mb={4} fontWeight='bold' color='dark'>
                   <Icon icon='tdesign:time' /> Thời gian chấm phản biện
                 </Typography>
                 <Box mx={4}>
@@ -63,8 +63,8 @@ function TabPanelUI(props: any) {
               </Box>
 
               <Box my={4}>
-                <Typography variant='h6' color='primary'>
-                  <Icon icon='ph:link-bold' />
+                <Typography variant='h6' mb={4} fontWeight='bold' color='dark'>
+                  <Icon width={16} style={{ marginRight: 5 }} icon='ph:link-bold' />
                   Link phòng trực tuyến
                 </Typography>
                 <CustomTextField

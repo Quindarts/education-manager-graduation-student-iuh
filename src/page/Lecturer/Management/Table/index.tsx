@@ -37,7 +37,14 @@ function TableManagamentLecturer(props: any) {
       renderCell: (params: any) => {
         return (
           <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar sizes='small' src={params.row.avatar} />
+            <Avatar
+              sizes='small'
+              src={
+                params.row.avatar
+                  ? params.row.avatar
+                  : 'https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-business-user-profile-vector-png-image_1541960.jpg'
+              }
+            />
             <Box>
               <Typography fontWeight={600} variant='body1'>
                 {params.row.fullName}

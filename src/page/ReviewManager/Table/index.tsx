@@ -93,8 +93,8 @@ function TableManagerReviewScore(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
-          height: 500,
         }}
+        minHeight={300}
         columns={basicColumns}
         totalItems={1}
         totalPages={1}

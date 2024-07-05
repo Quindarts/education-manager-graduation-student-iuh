@@ -1,43 +1,38 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Chip,
-  LinearProgress,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, Paper, Typography } from '@mui/material';
+import React, { useState } from 'react';
 
 import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
-import ScoreInput from '@/components/ui/ScoreInput';
 import CardStudentGroup from './Card';
+import useGroupSupport from '@/hooks/api/useQueryGroupSupport';
 import SekeletonUI from '@/components/ui/Sekeleton';
-
-const STUDENT_IN_GROUP = [
-  { fullName: 'Le Minh Quang', mssv: '21089141', group_id: '1' },
-  { fullName: 'Nguyen Van Minh', mssv: '21089141', group_id: '2' },
-  { fullName: 'Pham Huy Hoang', mssv: '21020241', group_id: '1' },
-  { fullName: 'Nguyen Thi Nga', mssv: '21020241', group_id: '3' },
-  { fullName: 'Nguyen Thien Tu', mssv: '21020241', group_id: '4' },
-];
+import AccordionListScore from './AccordionListScore';
+import useQueryTranscript from '@/hooks/api/useQueryTranscript';
 
 function ScoreGroupSupport() {
   const [currentGroupChecked, setCurrentGroupChecked] = useState<string[]>([]);
+  const { handleGetMyGroupSupport, handleGetStudentMemberToScoring } = useGroupSupport();
+  const { hanleGetEvalutaionsForScoring } = useQueryTranscript();
+  const { data, isLoading, isFetching } = handleGetMyGroupSupport();
+  const {
+    data: dataEvaluation,
+    isLoading: isloadingEvaluation,
+    isFetching: isfetchingEvaluation,
+  } = hanleGetEvalutaionsForScoring('advisor');
+  const {
+    data: dataMember,
+    isLoading: loadingMember,
+    isFetching: fetchingMember,
+  } = handleGetStudentMemberToScoring();
 
-  const handleSetCurrentGroupChecked = (group_id: string, isChecked: boolean): void => {
-    if (isChecked === true) setCurrentGroupChecked([...currentGroupChecked, group_id]);
+  //[event]
+  const handleSetCurrentGroupChecked = (groupStudentId: string, isChecked: boolean): void => {
+    if (isChecked === true) setCurrentGroupChecked([...currentGroupChecked, groupStudentId]);
     else {
-      const current = currentGroupChecked.filter((gr) => gr !== group_id);
+      const current = currentGroupChecked.filter((gr) => gr !== groupStudentId);
       setCurrentGroupChecked(current);
     }
   };
-  const demo = ['1', '2', '3', '4'];
 
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
@@ -50,12 +45,18 @@ function ScoreGroupSupport() {
           </TitleManager>
           <Box width={'full'} display={'flex'} flexDirection={'column'} mt={6}></Box>
           <Box component={'section'} mt={8} display={'flex'} flexDirection={'column'} gap={6}>
-            {demo.map((group_id) => (
-              <CardStudentGroup
-                group_id={group_id}
-                handleSetCurrentGroupChecked={handleSetCurrentGroupChecked}
-              />
-            ))}
+            {isLoading || isFetching ? (
+              <SekeletonUI />
+            ) : (
+              data?.groupStudents.map((group: any) => (
+                <CardStudentGroup
+                  groupName={group.groupStudentName}
+                  topicName={group.topicName}
+                  groupStudentId={group.groupStudentId}
+                  handleSetCurrentGroupChecked={handleSetCurrentGroupChecked}
+                />
+              ))
+            )}
           </Box>
         </Paper>
         <Paper sx={{ px: 8, py: 10, width: '60%' }}>
@@ -69,51 +70,24 @@ function ScoreGroupSupport() {
               </Box>
             </Box>
           ) : (
-            <Box width={'100%'} my={4}>
-              {STUDENT_IN_GROUP.filter((student2) =>
-                currentGroupChecked.includes(student2.group_id),
-              ).map((student: any) => (
-                <Accordion sx={{ mb: 4 }}>
-                  <AccordionSummary
-                    sx={{ bgcolor: 'grey.100' }}
-                    expandIcon={<ExpandMoreIcon color='primary' />}
-                  >
-                    <Box display={'flex'} gap={4}>
-                      <Icon width={20} icon='flat-color-icons:folder' />
-
-                      <Typography fontWeight={'500'} color={'primary.main'} variant='body1'>
-                        {student.fullName} - MSSV: {student.mssv}
-                      </Typography>
-
-                      <Typography
-                        justifyContent={'end'}
-                        fontWeight={'500'}
-                        color={'grey.500'}
-                        variant='body1'
-                      >
-                        Nhóm Sinh viên {student.group_id}
-                      </Typography>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Box display={'flex'} flexDirection={'column'} gap={4}>
-                      <ScoreInput oldScore='6' name='CLO1' scoreMax={10} />
-                      <ScoreInput oldScore='6' name='CLO2' scoreMax={10} />
-                      <ScoreInput oldScore='6' name='CLO3' scoreMax={10} />
-                      <ScoreInput oldScore='6' name='CLO4' scoreMax={10} />
-                      <ScoreInput oldScore='6' name='CLO5' scoreMax={10} />
-                      <ScoreInput oldScore='6' name='CLO6' scoreMax={10} />
-                      <ScoreInput oldScore='6' name='CLO7' scoreMax={10} />
-                      <Box my={4} display={'flex'} gap={100} alignSelf={'end'} py={4} px={0}>
-                        <Typography fontWeight={'500'} variant='h5' color='error'>
-                          Tổng Điểm : 100/100
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-            </Box>
+            <>
+              {loadingMember || fetchingMember || isloadingEvaluation || isfetchingEvaluation ? (
+                <SekeletonUI />
+              ) : (
+                <Box width={'100%'} my={4}>
+                  {dataMember?.groupStudentMembers
+                    ?.filter((student2: any) =>
+                      currentGroupChecked.includes(student2.groupStudentId),
+                    )
+                    .map((student: any) => (
+                      <AccordionListScore
+                        student={student}
+                        evaluations={dataEvaluation?.evaluations}
+                      />
+                    ))}
+                </Box>
+              )}
+            </>
           )}
         </Paper>
       </Box>

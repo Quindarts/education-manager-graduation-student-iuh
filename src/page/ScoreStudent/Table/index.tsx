@@ -1,7 +1,6 @@
 import { GridColDef } from '@mui/x-data-grid';
 import {  Box, Typography } from '@mui/material';
 import Table from '@/components/ui/Table/Table';
-import { getCardTranscriptStatus } from '@/utils/validations/transcript.validation';
 
 function TableStudentScore(props: any) {
   const { handleRowClick, currentRowSelectId, rows } = props;
@@ -56,6 +55,7 @@ function TableStudentScore(props: any) {
         sx={{
           bgcolor: 'white',
         }}
+        minHeight={300}
         columns={basicColumns}
         totalItems={1}
         totalPages={1}

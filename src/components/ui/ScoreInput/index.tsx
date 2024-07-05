@@ -1,11 +1,11 @@
 import useDebounce from '@/hooks/ui/useDebounce';
+import { Icon } from '@iconify/react';
 import { Box, Button, Checkbox, Paper, PaperProps, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 interface ScoreInputPropsType extends PaperProps {
   name?: string;
   scoreMax: number;
-  handleChangeTotalEvaluations: (score: number, id: string) => void;
   handleChangeCurrentTranscripts: (
     score: number,
     value: string,
@@ -24,7 +24,6 @@ function ScoreInput(props: ScoreInputPropsType) {
     name,
     scoreMax,
     handleChangeCurrentTranscripts,
-    handleChangeTotalEvaluations,
     transcriptId,
     isExist,
     oldScore,
@@ -49,7 +48,6 @@ function ScoreInput(props: ScoreInputPropsType) {
       setErrorMess(`Điểm phải < ${scoreMax + 1}`);
     } else {
       setErrorMess('');
-      handleChangeTotalEvaluations(parseInt(scoreInput), value);
     }
     setScore(scoreInput);
   };
@@ -57,9 +55,9 @@ function ScoreInput(props: ScoreInputPropsType) {
     <Paper {...rest}>
       <>
         <Box display={'flex'} height={50} py={2} px={6} justifyContent={'space-between'}>
-          <Box display={'flex'} width={900} gap={2}>
-            <Typography color={'primary'} variant='body1'>
-              {name}
+          <Box display={'flex'} width={900}  gap={2}>
+            <Typography mt={5} color={'primary'} fontWeight={500} variant='body1'>
+               + {name}
             </Typography>
           </Box>
           <Box display={'flex'} width={500} justifyContent={'end'} gap={2}>
@@ -67,9 +65,9 @@ function ScoreInput(props: ScoreInputPropsType) {
               <TextField
                 sx={{
                   input: {
-                    fontSize: 16,
+                    fontSize: 18,
                     width: '100px',
-                    color: '#3084E4',
+                    color: '#e43030',
                     fontWeight: 800,
                     textAlign: 'right',
                   },
@@ -103,7 +101,8 @@ function ScoreInput(props: ScoreInputPropsType) {
               size='small'
               color='primary'
             >
-              Cap nhat
+              <Icon icon='ep:edit-pen' />
+              Cập nhật Điểm số
             </Button>
           ) : (
             <Button
@@ -115,6 +114,7 @@ function ScoreInput(props: ScoreInputPropsType) {
               size='small'
               color='primary'
             >
+              <Icon icon='mdi:pen-add' />
               Chấm điểm
             </Button>
           )}

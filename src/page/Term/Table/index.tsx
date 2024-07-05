@@ -175,7 +175,7 @@ function TableManagamentTerm(props: any) {
               {' '}
               -{' '}
             </Typography>
-            <Typography>{dayjs(params.row.startDate).format('DD/MM/YYYY')}</Typography>
+            <Typography>{dayjs(params.row.endDate).format('DD/MM/YYYY')}</Typography>
             <Tooltip title='Cập nhật thời gian học kì'>
               <IconButton
                 onClick={() => handleOpenEditTermDate(params.row.id)}

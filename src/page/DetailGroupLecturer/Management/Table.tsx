@@ -11,20 +11,42 @@ import LecturerLeaveGroupModal from './Modal/LeaveGroup';
 
 function TableManagementGroupLecturer(props: any) {
   const { rows } = props;
+  console.log('🚀 ~ TableManagementGroupLecturer ~ rows:', rows);
   const { pathname } = useLocation();
-  const current = pathname.split('/');
-  const grLecturerId = `${current[current.length - 1]}`;
   const [isOpenLeaveGroupModal, setIsOpenLeaveGroupModal] = useState({
     isOpen: false,
     lecturerId: '',
   });
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
+  const { handleUiRender } = useGroupLecturer();
+  const currentRole = handleUiRender();
+
   const handleOpenLeaveGroupModal = (lecturerId: string) => {
     setIsOpenLeaveGroupModal({ lecturerId: lecturerId, isOpen: true });
   };
   const handleCloseLeaveGroupModal = () => {
     setIsOpenLeaveGroupModal((pre) => ({ ...pre, isOpen: false }));
+  };
+  const PermissionComponent = currentRole.includes('all') && {
+    headerName: '',
+    field: 'name8',
+    flex: 1,
+    align: 'center',
+    headerAlign: 'center',
+    renderCell: (params: any) => (
+      <Box display={'flex'} gap={2}>
+        <Tooltip title='Mời rời nhóm'>
+          <IconButton
+            size='small'
+            color='primary'
+            onClick={() => handleOpenLeaveGroupModal(params.row.id)}
+          >
+            <Icon icon='pepicons-print:leave-circle' width={20} />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
   };
   const basicColumns: GridColDef[] = [
     {
@@ -67,55 +89,33 @@ function TableManagementGroupLecturer(props: any) {
         return <Box>{checkDegree(params.row.degree)}</Box>;
       },
     },
-    {
-      headerName: '',
-      field: 'name8',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip title='Mời rời nhóm'>
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => handleOpenLeaveGroupModal(params.row.id)}
-            >
-              <Icon icon='pepicons-print:leave-circle' width={20} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
+    PermissionComponent,
   ];
 
   return (
     <>
       <Box>
-        {/* {isLoading ? (
-          <SekeletonUI />
-        ) : ( */}
         <Box>
           <Box display={'flex'} mt={6} mb={4} justifyContent={'end'}>
-            <Button
-              // disabled={data?.members.length >= 2}
-              size='small'
-              color='error'
-              variant='contained'
-              // onClick={handleOpenModalAddStudent}
-            >
-              <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
-              Thêm Giảng viên
-            </Button>
+            {currentRole.includes('all') && (
+              <Button
+                size='small'
+                color='error'
+                disabled={rows.length >= 2 ? true : false}
+                variant='contained'
+              >
+                <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
+                Thêm Giảng viên
+              </Button>
+            )}
           </Box>
           <Table
             rows={rows}
             sx={{
               bgcolor: 'white',
-              height: 400,
+              height: 250,
             }}
-            minHeight={200}
-            rowHeight={100}
+            minHeight={250}
             columns={basicColumns}
             totalItems={1}
             totalPages={1}

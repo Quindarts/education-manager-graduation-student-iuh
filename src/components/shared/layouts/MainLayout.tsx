@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/api/useAuth';
 import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
 import Loading from '@/components/ui/Loading';
 import { useMajor } from '@/hooks/api/useQueryMajor';
+import { getValueFromLocalStorage } from '@/utils/localStorage';
 
 function MainLayout() {
   const [isOpenSideBar, setIsOpenSideBar] = useState(true);
@@ -74,7 +75,8 @@ function MainLayout() {
                 height: '100%',
               }}
             >
-              {lecturerStore.currentRoleRender.length > 0 ? (
+              {lecturerStore.currentRoleRender.length > 0 &&
+              getValueFromLocalStorage('accessToken') ? (
                 <Outlet />
               ) : (
                 <Navigate to='/auth/role' />

@@ -5,6 +5,7 @@ import { Paper } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import { Icon } from '@iconify/react';
 
 function GroupStudentDetailPage() {
   const { pathname } = useLocation();
@@ -14,13 +15,13 @@ function GroupStudentDetailPage() {
   const { data, isLoading } = handleGetGroupStudentById(grStudentId);
 
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       {isLoading ? (
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>{data.groupStudent.name}</TitleManager>
-          <Box my={4}>
+          <TitleManager icon='mingcute:group-fill'>{data.groupStudent.name}</TitleManager>
+          <Box mt={4}>
             <TabPanelUI groupStudent={data.groupStudent} />
           </Box>
         </>

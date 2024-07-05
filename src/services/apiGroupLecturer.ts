@@ -13,10 +13,13 @@ export const getGroupLecturerByType: any = async (term_id: string, type: TypeGro
 export const getLecturerNoGroupByTypeGroup: any = async (type: string, termId: string) => {
     return axiosConfig.get(`/api/v1/group-lecturers/${type}/no-group?termId=${termId}`)
 }
-
+//[GET] 
+export const getGroupLecturerByLecturerId: any = async (type: string, termId: string, lecturerId: string) => {
+    return axiosConfig.get(`/api/v1/group-lecturers/${type}/lecturers?lecturerId=${lecturerId}&termId=${termId}`)
+}
 
 //[GET]
-export const getGroupLecturerById: any = (id: string | number) => {
+export const getGroupLecturerById: any = (id: string) => {
     return axiosConfig.get(`/api/v1/group-lecturers/${id}`)
 }
 

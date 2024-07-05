@@ -28,6 +28,7 @@ import MyGroupLecturer from '@/page/MyGroupLecturer';
 import GroupLecturerManagementPage from '@/page/GroupLecturer/Management';
 import GroupLecturerDetailPage from '@/page/GroupLecturer/Detail';
 import MajorPage from '@/page/Major';
+import MyDetailGroupLecturer from '@/page/MyGroupLecturer/Detail';
 
 function Routing() {
   return (
@@ -72,6 +73,10 @@ function Routing() {
           <Route path={APP_ROUTES.GROUP_LECTURER.REPORT} element={<GroupGradingAssemblyPage />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.CREATE} element={<CreateGroupLecturer />} />
           <Route path={APP_ROUTES.GROUP_LECTURER.DETAIL} element={<GroupLecturerDetailPage />} />
+          <Route
+            path={APP_ROUTES.GROUP_LECTURER.MY_DETAIL_GROUP}
+            element={<MyDetailGroupLecturer />}
+          />
           <Route path={'/componentpage'} element={<ComponentPage />} />
           //ROUTE SCORE_STUDENT
           <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />

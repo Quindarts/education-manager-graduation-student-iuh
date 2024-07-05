@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import { Typography, TypographyProps } from '@mui/material';
 import React from 'react';
 
@@ -7,7 +8,15 @@ interface TittleManagerPropsType extends TypographyProps {
 function TitleManager(props: TittleManagerPropsType) {
   const { icon, children, fontWeight = 600, color = 'primary.main', ...rest } = props;
   return (
-    <Typography fontWeight={fontWeight} variant='h6' color={`${color}`} {...rest}>
+    <Typography fontWeight={fontWeight} variant='h5' color={`${color}`} {...rest}>
+      {icon && (
+        <Icon
+          width={30}
+          height={30}
+          style={{ position: 'relative', top: 7, marginRight: 4 }}
+          icon={icon}
+        />
+      )}
       {children}
     </Typography>
   );

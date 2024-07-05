@@ -47,7 +47,7 @@ function StudentPage() {
   };
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-      <TitleManager mb={8} mt={2}>
+      <TitleManager icon='quill:list' mb={8} mt={2}>
         Danh sách sinh viên
       </TitleManager>
       <HeaderStudent
