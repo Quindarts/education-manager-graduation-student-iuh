@@ -11,8 +11,8 @@ function TitleManager(props: TittleManagerPropsType) {
     <Typography fontWeight={fontWeight} variant='h5' color={`${color}`} {...rest}>
       {icon && (
         <Icon
-          width={30}
-          height={30}
+          width={24}
+          height={24}
           style={{ position: 'relative', top: 7, marginRight: 4 }}
           icon={icon}
         />

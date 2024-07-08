@@ -2,10 +2,10 @@ import { RoleCheck } from "@/types/enum";
 
 export const APP_ROUTES = {
   DASHBOARD: '/',
+
   MAJOR: {
     MANAGEMENT: '/majors',
     CREATE: '/majors/create',
-    term_DETAIL: '/majors/:termId',
     EDIT: '/majors/edit',
   },
   TERM: {
@@ -20,6 +20,11 @@ export const APP_ROUTES = {
   LECTURER: {
     MANAGEMENT: "/lecturers",
     DETAILS: "/lecturers/detail/:lecturer_id",
+  },
+  NOTIFICATION: {
+    MANAGEMENT: "/notifications",
+    DETAILS: "/notifications/:lecturer_id",
+    CREATE: "/notifications/create",
   },
   SCORE_STUDENT: {
     MANAGEMENT: "/scores"
@@ -53,6 +58,7 @@ export const APP_ROUTES = {
     DETAIL_SCORE_GROUP: '/group-supports/score/group_student_id'
   },
   FILE_UPLOADED: '/files',
+
   USER: {
     MANAGEMENT: '/users',
     DETAIL: '/users/:userId',
@@ -60,6 +66,11 @@ export const APP_ROUTES = {
     PROFILE: '/profile',
     LOGIN: '/auth/login',
     ROLE: '/',
+  },
+  USER_AUTHORIZATION: {
+    MANAGEMENT: "/authorizations",
+    UPDATE_ROLE: "/authorizations/change",
+    DETAIL: '/authorizations/detail'
   },
   FORGOT_PASSWORD: '/auth/forgot-password',
   SUCCESS_MESSAGE: '/auth/success',
@@ -90,16 +101,15 @@ export const APP_SIDEBAR = [
     key: '/',
   },
   {
-    icon: 'simple-icons:gitbook',
     text: 'Chuyên Ngành',
-    roles: [RoleCheck.ADMIN],
+    icon: 'simple-icons:gitbook',
     link: [APP_ROUTES.MAJOR.MANAGEMENT],
-    key: '/majors',
+    roles: [RoleCheck.ADMIN],
     children: [
       {
         text: 'Danh sách chuyên ngành',
         link: APP_ROUTES.MAJOR.MANAGEMENT,
-        key: '/management',
+        key: APP_ROUTES.MAJOR.MANAGEMENT,
       },
     ],
   },
@@ -113,30 +123,30 @@ export const APP_SIDEBAR = [
       {
         text: 'Danh sách học kì',
         link: APP_ROUTES.TERM.MANAGEMENT,
-        key: '/MANAGEMENT',
+        key: APP_ROUTES.TERM.MANAGEMENT,
       },
     ],
   },
   {
-    icon: 'fa-solid:user-cog',
+    icon: 'fluent-mdl2:permissions',
     text: 'Phân quyền',
     roles: [RoleCheck.ADMIN],
-    link: [APP_ROUTES.USER.MANAGEMENT, APP_ROUTES.USER.DETAIL],
+    link: [APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT],
     children: [
       {
-        text: 'Tất cả tài khoản',
-        link: APP_ROUTES.USER.MANAGEMENT,
-        key: '/MANAGEMENT',
+        text: 'Danh sách người dùng',
+        link: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
+        key: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
       },
       {
-        text: 'Đăng ký người dùng',
-        link: APP_ROUTES.USER.REGISTER,
-        key: '/auth/register',
+        text: 'Chi tiết quyền',
+        link: APP_ROUTES.USER_AUTHORIZATION.DETAIL,
+        key: APP_ROUTES.USER_AUTHORIZATION.DETAIL,
       },
       {
-        text: 'Quản lý quyền hạn',
-        link: APP_ROUTES.USER.ROLE,
-        key: '/auth/role',
+        text: 'Thêm quyền người dùng',
+        link: APP_ROUTES.USER_AUTHORIZATION.DETAIL,
+        key: APP_ROUTES.USER_AUTHORIZATION.DETAIL,
       },
     ],
   },
@@ -157,12 +167,12 @@ export const APP_SIDEBAR = [
     icon: 'mdi:account-student',
     text: 'Sinh viên',
     roles: [RoleCheck.HEAD_LECTURER],
-    link: [APP_ROUTES.STUDENT],
+    link: [APP_ROUTES.STUDENT.MANAGEMENT],
     children: [
       {
         text: 'Danh sách sinh viên',
         link: APP_ROUTES.STUDENT.MANAGEMENT,
-        key: '/MANAGEMENT',
+        key: APP_ROUTES.STUDENT.MANAGEMENT,
       },
     ],
   },
@@ -170,12 +180,12 @@ export const APP_SIDEBAR = [
     icon: 'material-symbols:topic',
     text: 'Đề tài',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
-    link: [APP_ROUTES.TOPIC],
+    link: [APP_ROUTES.TOPIC.MANAGEMENT],
     children: [
       {
         text: 'Danh sách đề tài',
         link: APP_ROUTES.TOPIC.MANAGEMENT,
-        key: '/MANAGEMENT',
+        key: APP_ROUTES.TOPIC.MANAGEMENT,
       },
     ],
   },
@@ -196,13 +206,26 @@ export const APP_SIDEBAR = [
     icon: 'fluent-mdl2:review-solid',
     text: 'Đánh giá',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER],
-    link: APP_ROUTES.REVIEW,
+    link: APP_ROUTES.REVIEW.MANAGEMENT,
     key: '/review',
     children: [
       {
         text: 'Danh sách',
         link: APP_ROUTES.REVIEW.MANAGEMENT,
-        key: '/MANAGEMENT',
+        key: APP_ROUTES.REVIEW.MANAGEMENT,
+      },
+    ],
+  },
+  {
+    icon: 'icon-park-outline:message',
+    text: 'Thông báo',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.ADMIN],
+    link: [APP_ROUTES.NOTIFICATION.MANAGEMENT],
+    children: [
+      {
+        text: 'Danh sách Thông báo',
+        link: APP_ROUTES.NOTIFICATION.MANAGEMENT,
+        key: APP_ROUTES.NOTIFICATION.MANAGEMENT,
       },
     ],
   },
@@ -215,7 +238,7 @@ export const APP_SIDEBAR = [
       {
         text: 'Danh sách Chấm điểm',
         link: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
-        key: '/MANAGEMENT',
+        key: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
       },
     ],
   },
@@ -228,7 +251,7 @@ export const APP_SIDEBAR = [
       {
         text: 'Danh sách nhóm quản lý',
         link: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
-        key: '/MANAGEMENT',
+        key: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
       },
     ],
   },
@@ -241,12 +264,12 @@ export const APP_SIDEBAR = [
       {
         text: 'Danh sách nhóm sinh viên',
         link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
-        key: '/MANAGEMENT',
+        key: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
       },
       {
         text: 'Chấm điểm hướng dẫn',
         link: APP_ROUTES.GROUP_SUPPORT.SCORE,
-        key: '/score',
+        key: APP_ROUTES.GROUP_SUPPORT.SCORE,
       },
     ],
   },

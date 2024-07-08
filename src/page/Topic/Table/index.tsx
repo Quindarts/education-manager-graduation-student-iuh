@@ -1,13 +1,14 @@
 import Table from '@/components/ui/Table/Table';
 import { getCardTopicStatus } from '@/utils/validations/topic.validation';
 import { Icon } from '@iconify/react';
-import { Box, Button, IconButton, Tooltip } from '@mui/material';
+import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InfoModal from '../Modal/InfoModal';
 import AcceptTopicModal from '../Modal/AcceptTopicModal';
 import RefuseTopicModal from '../Modal/RefuseTopicModal';
 import EditModal from '../Modal/EditModal';
+import { CustomToolbar } from './custom';
 
 function TableManagamentTopic(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, isApprovePermission, ...rest } =
@@ -49,69 +50,42 @@ function TableManagamentTopic(props: any) {
   const handleOpenEditModal = (topic_id: string) => {
     setOpenEditModal({ topic_id, isOpen: true });
   };
-  //Permission
-
-  const ApproveTopicColumn = isApprovePermission
-    ? {
-        headerName: 'Duyệt đề tài',
-        field: 'status',
-        flex: 1.2,
-        headerAlign: 'center',
-        align: 'center',
-        renderCell: (params: any) => {
-          return (
-            <>
-              {params.row.status === 'PENDING' && (
-                <Box display={'flex'} gap={2}>
-                  <Button
-                    onClick={() => handleOpenAcceptModal(params.row.id)}
-                    color='success'
-                    variant='outlined'
-                  >
-                    Duyệt <Icon icon='mdi:tick-outline' />
-                  </Button>
-                  <Button
-                    onClick={() => handleOpenRefuseModal(params.row.id)}
-                    color='error'
-                    variant='outlined'
-                  >
-                    Từ chối
-                    <Icon icon='mingcute:close-fill' />
-                  </Button>
-                </Box>
-              )}
-            </>
-          );
-        },
-      }
-    : {};
-
-  const basicColumns: GridColDef[] = [
+  const HeadLecturerColumn: GridColDef[] = [
     {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 1.5,
       headerAlign: 'center',
-      align: 'center',
     },
     {
-      headerName: 'Số lượng',
-      field: 'quantityGroupMax',
-      flex: 0.7,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      headerName: 'Mục tiêu',
+      headerName: 'Giảng viên HD',
       field: 'target',
-      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+      flex: 0.8,
+      renderCell: (params: any) => (
+        <Typography variant='body2' color='initial'>
+          {params.row.lecturerTerm.lecturer.fullName}
+        </Typography>
+      ),
+    },
+    {
+      headerName: 'SL nhóm tối đa',
+      field: 'quantityGroupMax',
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
     },
     {
-      headerName: '',
-      field: 'none',
+      headerName: 'Ghi chú',
+      field: 'note',
       flex: 1,
+      headerAlign: 'center',
+    },
+    {
+      headerName: 'Tính năng thêm',
+      field: 'none',
+      flex: 0.4,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
@@ -136,14 +110,105 @@ function TableManagamentTopic(props: any) {
     {
       headerName: 'Trạng thái',
       field: 'text2',
-      flex: 1.2,
+      flex: 0.4,
       headerAlign: 'center',
       align: 'center',
       renderCell: (param) => {
         return <Box>{getCardTopicStatus(param.row.status)}</Box>;
       },
     },
-    ApproveTopicColumn,
+    {
+      headerName: 'Duyệt đề tài',
+      field: 'status',
+      flex: 0.7,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => {
+        return (
+          <>
+            {params.row.status === 'PENDING' && (
+              <Box display={'flex'} gap={4}>
+                <Button
+                  size='small'
+                  onClick={() => handleOpenAcceptModal(params.row.id)}
+                  color='success'
+                  variant='outlined'
+                >
+                  <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
+                  Duyệt
+                </Button>
+                <Button
+                  size='small'
+                  onClick={() => handleOpenRefuseModal(params.row.id)}
+                  color='error'
+                  variant='outlined'
+                >
+                  <Icon style={{ marginRight: 1 }} icon='lets-icons:cancel-fill' />
+                  Từ chối
+                </Button>
+              </Box>
+            )}
+          </>
+        );
+      },
+    },
+  ];
+
+  const LecturerColumn: GridColDef[] = [
+    {
+      headerName: 'Tên Đề tài',
+      field: 'name',
+      flex: 1.5,
+      headerAlign: 'center',
+    },
+    {
+      headerName: 'SL nhóm tối đa',
+      field: 'quantityGroupMax',
+      flex: 0.5,
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
+      headerName: 'Ghi chú',
+      field: 'note',
+      flex: 1,
+      headerAlign: 'center',
+    },
+    {
+      headerName: 'Tính năng thêm',
+      field: 'none',
+      flex: 0.4,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => (
+        <Box display={'flex'} gap={2}>
+          <Tooltip title='Chỉnh sửa thông tin đề tài'>
+            <IconButton
+              size='small'
+              color='primary'
+              onClick={() => handleOpenEditModal(params.row.id)}
+            >
+              <Icon icon='emojione:pencil' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Xem thông tin đề tài'>
+            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
+              <Icon icon='noto-v1:eye-in-speech-bubble' />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
+    },
+    {
+      headerName: 'Trạng thái',
+      field: 'text2',
+      flex: 0.4,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (param) => {
+        return <Box>{getCardTopicStatus(param.row.status)}</Box>;
+      },
+    },
   ];
   return (
     <Box {...rest}>
@@ -155,17 +220,19 @@ function TableManagamentTopic(props: any) {
             bgcolor: 'white',
           }}
           minHeight={350}
-          columns={basicColumns}
+          columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={1}
           totalPages={1}
           page={1}
           checkboxSelection={true}
           handleChangePage={() => {}}
-          disableColumnMenu
           disableColumnFilter
-          disableColumnSelector
+          slots={{
+            toolbar: CustomToolbar,
+          }}
         />
         <EditModal
+          isApprovePermission={isApprovePermission}
           open={openEditModal.isOpen}
           onClose={handleCloseEditModal}
           topic_id={openEditModal.topic_id}

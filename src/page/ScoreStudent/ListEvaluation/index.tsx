@@ -1,8 +1,9 @@
 import ScoreInput from '@/components/ui/ScoreInput';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import useQueryTranscript from '@/hooks/api/useQueryTranscript';
+import { Icon } from '@iconify/react';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 var checkIsExistTranscripts = (evalu: any, dataResponse: any) => {
@@ -109,7 +110,12 @@ function ListEvaluation(props: any) {
         <SekeletonUI />
       ) : (
         <>
-          <Box display={'flex'} justifyContent={'space-between'} pb={4} borderBottom='2px solid #002f5a'>
+          <Box
+            display={'flex'}
+            justifyContent={'space-between'}
+            pb={4}
+            borderBottom='2px solid #002f5a'
+          >
             <Box>
               <Typography color='dark.main' variant='h6' fontWeight={'bold'}>
                 Tên sinh viên: {student?.fullName}
@@ -134,22 +140,40 @@ function ListEvaluation(props: any) {
             sx={{ overflowY: 'auto', height: 500 }}
             my={10}
             display={'flex'}
-            px={6}
-            flexDirection={'column'}
+            px={2}
+            flexDirection={'row'}
+            flexWrap={'wrap'}
             gap={8}
           >
             {initTranscripts.newEvaluation.map((evaluation: any, key: number) => (
-              <ScoreInput
-                handleChangeCurrentTranscripts={handleChangeCurrentTranscripts}
-                value={evaluation.id}
-                name={evaluation?.name}
-                studentId={currentRowSelectId}
-                scoreMax={evaluation?.scoreMax}
-                oldScore={evaluation.oldScore ? evaluation.oldScore : ''}
-                transcriptId={evaluation?.transcriptId}
-                isExist={evaluation?.isExist}
-              />
+              <Box width={'calc(50% - 12px)'}>
+                <ScoreInput
+                  numberCLO={key + 1}
+                  handleChangeCurrentTranscripts={handleChangeCurrentTranscripts}
+                  value={evaluation.id}
+                  name={evaluation?.name}
+                  studentId={currentRowSelectId}
+                  scoreMax={evaluation?.scoreMax}
+                  oldScore={evaluation.oldScore ? evaluation.oldScore : ''}
+                  transcriptId={evaluation?.transcriptId}
+                  isExist={evaluation?.isExist}
+                />
+              </Box>
             ))}
+          </Box>
+          <Box my={4}>
+            <Button
+              // onClick={() =>
+              //   handleChangeCurrentTranscripts(parseInt(score), value, transcriptId, isExist)
+              // }
+              variant='contained'
+              // disabled={errorMess !== ''}
+              size='small'
+              color='success'
+            >
+              <Icon icon='ep:edit-pen' />
+              Cập nhật Điểm số
+            </Button>
           </Box>
         </>
       )}

@@ -58,7 +58,7 @@ const useGroupStudent = () => {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Import danh sách nhóm sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.getGroupStudentByTerm, renderUi, termId, 10, 1] })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
                 }
             }
         })

@@ -15,7 +15,7 @@ function MyTopic() {
         <TitleManager icon='quill:list' mb={8} mt={2}>
           Danh sách đề tài
         </TitleManager>
-        <HeaderTopic />
+        <HeaderTopic  />
         {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (

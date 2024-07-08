@@ -3,7 +3,7 @@ import Modal from '@/components/ui/Modal';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import TextEditor from '@/components/ui/TextEditor';
 import TitleManager from '@/components/ui/Title';
-import useEvaluation from '@/hooks/api/useEvalutaion';
+import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
@@ -16,7 +16,7 @@ function EditEvaluationModal(props: any) {
   const { mutate: createEval, isSuccess: successUpdate } = onUpdateEvaluationById(
     termId,
     type,
-    evaluationId
+    evaluationId,
   );
 
   const handleSubmit = (values: any) => {

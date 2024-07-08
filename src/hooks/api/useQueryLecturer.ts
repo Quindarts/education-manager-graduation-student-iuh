@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useTerm } from './useQueryTerm';
 import { QueryKeysGroupLecturer } from './useQueryGroupLecturer';
-import { useApp } from './useApp';
 import ResponseType from '@/types/axios.type';
 
 export enum QueryKeysLecturer {
@@ -25,8 +24,6 @@ export const useLecturer = () => {
     const { params, me, currentRoleRender, renderUi, keywords } = lecturers
     const dispatch = useDispatch()
     const { termStore } = useTerm()
-
-    const { getQueryKey } = useApp();
 
     const handleManagerRenderActionLecturer = (limit: number, page: number, searchField: string,
         keywords: string | number) => {
@@ -153,7 +150,6 @@ export const useLecturer = () => {
         onDeleteLecturer,
         onUpdateLecturer,
         onImportLecturerTerm,
-        // handleGetAllLecturer,
         handleGetLecturerById, handleManagerRenderActionLecturer
     }
 }

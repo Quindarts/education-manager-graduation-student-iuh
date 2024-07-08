@@ -1,3 +1,4 @@
+import { useStudent } from '@/hooks/api/useQueryStudent';
 import { getAllStudent } from './../../services/apiStudent';
 import { bytesForHuman } from '@/components/ui/Upload/func';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
@@ -7,9 +8,11 @@ import axios, { AxiosProgressEvent } from 'axios';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { QueryKeysLecturer } from '../api/useQueryLecturer';
-import { QueryEvaluation } from '../api/useEvalutaion';
+import { QueryEvaluation } from '../api/useQueryEvalutaion';
 import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
+import { ENUM_RENDER_STUDENT } from '@/store/slice/student.slice';
+import useGroupStudent from '../api/useQueryGroupStudent';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -70,6 +73,7 @@ const useUploadExcel = (entityUpload: string, termId: string | number, typeEvalu
   const [totalSize, setTotalSize] = useState<string>('');
   const [currentFile, setCurrentFile] = useState()
   const { enqueueSnackbar } = useSnackbar();
+  const { params: paramsStudent } = useStudent()
 
   //axios
   const [valueLoading, setValueLoading] = useState<any>(0)
@@ -146,7 +150,7 @@ const useUploadExcel = (entityUpload: string, termId: string | number, typeEvalu
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, 20, 1] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, ENUM_RENDER_STUDENT.ALL, termId, paramsStudent.limit, paramsStudent.page] })
           }
           if (entityUpload === TypeEntityUpload.TOPIC) {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {

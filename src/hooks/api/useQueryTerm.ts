@@ -67,7 +67,7 @@ export function useTerm() {
             onSuccess(data) {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTerm] });
-                queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
+                queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, type, termId] });
                 
                 if (termStore.currentTerm.id === termId) {
                     queryClient.invalidateQueries({ queryKey: [TermQueryKey.currentTerm] });
@@ -88,7 +88,6 @@ export function useTerm() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTerm] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
-
             },
             onError(error) {
                 enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });

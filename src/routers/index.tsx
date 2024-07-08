@@ -29,6 +29,8 @@ import GroupLecturerManagementPage from '@/page/GroupLecturer/Management';
 import GroupLecturerDetailPage from '@/page/GroupLecturer/Detail';
 import MajorPage from '@/page/Major';
 import MyDetailGroupLecturer from '@/page/MyGroupLecturer/Detail';
+import NotificationManagementPage from '@/page/Notification/Management';
+import RolePermissionPage from '@/page/RolePermission';
 
 function Routing() {
   return (
@@ -64,6 +66,8 @@ function Routing() {
           //ROUTE USER
           <Route path={APP_ROUTES.USER.REGISTER} element={<Register />} />
           <Route path={APP_ROUTES.USER.PROFILE} element={<ProfilePage />} />
+          //ROLE PERMISSION
+          <Route path={APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT} element={<RolePermissionPage />} />
           //ROUTE GR_LECTURER
           <Route
             path={APP_ROUTES.GROUP_LECTURER.MANAGEMENT}
@@ -77,10 +81,15 @@ function Routing() {
             path={APP_ROUTES.GROUP_LECTURER.MY_DETAIL_GROUP}
             element={<MyDetailGroupLecturer />}
           />
+          //Notification
+          <Route
+            path={APP_ROUTES.NOTIFICATION.MANAGEMENT}
+            element={<NotificationManagementPage />}
+          />
           <Route path={'/componentpage'} element={<ComponentPage />} />
           //ROUTE SCORE_STUDENT
           <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />
-          <Route path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
+          {/* <Route path={APP_ROUTES.ROLE.ALL} element={<RolePage />} /> */}
           {/* <Route path={APP_ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
           <Route path={APP_ROUTES.SUCCESS_MESSAGE} element={<SuccessMessagePage />} /> */}
         </Route>

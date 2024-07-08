@@ -10,6 +10,16 @@ import { Box, Button, CircularProgress } from '@mui/material';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { validationTermSchema } from '../context';
+import dayjs from 'dayjs';
+
+const calculateEndDate = (date: null | string) => {
+  if (date !== null) {
+    const start = dayjs(date);
+    const end = start.add(15 * 7, 'day');
+    return end;
+  }
+  return null;
+};
 
 function AddModal(props: any) {
   const { onClose, open } = props;
@@ -90,8 +100,8 @@ function AddModal(props: any) {
                       label='Ngày kết thúc'
                       format='DD/MM/YYYY'
                       name='endDate'
+                      value={values.startDate ? calculateEndDate(values?.startDate) : null}
                       error={touched.endDate && errors.endDate ? true : false}
-                      value={values.endDate}
                     />
                   </Box>
                 </Box>

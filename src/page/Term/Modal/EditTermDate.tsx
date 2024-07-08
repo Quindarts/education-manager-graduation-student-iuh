@@ -18,7 +18,12 @@ function EditTermDate(props: any) {
     isSuccess,
   } = onUpdateTermWithTermId(termId);
 
-  const { data, isLoading: loadingDetail, isSuccess: successDetail } = handelGetTermById(termId);
+  const {
+    data,
+    isLoading: loadingDetail,
+    isFetching,
+    isSuccess: successDetail,
+  } = handelGetTermById(termId);
 
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
@@ -32,13 +37,20 @@ function EditTermDate(props: any) {
   useEffect(() => {
     onClose();
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (data?.termDetail) {
+      var checked: boolean = dayjs(data?.termDetail.endDate) <= dayjs() ? false : true;
+      setCheckedOpenGroup(checked);
+    }
+  }, [successDetail, isFetching]);
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
         <TitleManager mb={10} mt={4}>
           Cập nhật trạng thái học kì
         </TitleManager>
-        {loadingDetail && !successDetail ? (
+        {loadingDetail || isFetching ? (
           <Box
             justifyContent={'center'}
             display={'flex'}

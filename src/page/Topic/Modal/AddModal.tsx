@@ -13,10 +13,11 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 
 function AddModal(props: any) {
   const { onClose, open } = props;
+  const {} = useTopic();
 
   const { lecturerStore } = useAuth();
   const { termStore } = useTerm();
-  const { onCreateTopicByToken } = useTopic();
+  const { onCreateTopicByToken, handleUiRender } = useTopic();
   const { mutate: createTopic, isSuccess: successCreate } = onCreateTopicByToken(
     termStore.currentTerm.id,
     'e4fe02cb-f2b0-4afa-885d-d1b93130d350',
@@ -24,9 +25,13 @@ function AddModal(props: any) {
   const handleSubmit = (values: any) => {
     createTopic(values);
   };
+
   useEffect(() => {
     onClose();
   }, [successCreate]);
+
+  const currentRole = handleUiRender();
+
   return (
     <Modal maxWidth='lg' open={open} onClose={onClose}>
       <Box p={10}>
@@ -38,7 +43,7 @@ function AddModal(props: any) {
           onSubmit={(values) => handleSubmit(values)}
           initialValues={{
             name: '',
-            quantityGroupMax: 1,
+            quantityGroupMax: 5,
             description: '',
             note: '',
             target: '',
@@ -66,17 +71,19 @@ function AddModal(props: any) {
                 label='Giảng viên hướng dẫn'
                 placeholder='Tên giảng viên'
               />
-              <CustomTextField
-                placeholder='Số lượng nhóm phải lớn hơn 0 và bé hơn 5'
-                required
-                name='quantityGroupMax'
-                label='Số lượng nhóm đăng ký tối đa'
-                value={values.quantityGroupMax}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.quantityGroupMax ? true : false}
-                helperText={errors.quantityGroupMax}
-              />
+              {currentRole.includes('all') && (
+                <CustomTextField
+                  placeholder='Số lượng nhóm phải lớn hơn 0 và bé hơn 5'
+                  required
+                  name='quantityGroupMax'
+                  label='Số lượng nhóm đăng ký tối đa'
+                  value={values.quantityGroupMax}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.quantityGroupMax ? true : false}
+                  helperText={errors.quantityGroupMax}
+                />
+              )}
               <Box my={4}>
                 <TextEditor
                   label='Mô tả'

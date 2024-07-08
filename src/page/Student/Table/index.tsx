@@ -13,7 +13,16 @@ import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import ResetPassword from '../Modal/ResetPassword';
 import EditStatusMuiltiStudent from '../Modal/EditStatusMuiltiStudentModal';
+import { CustomToolbar } from './custom';
 
+const TRAINING_DROP_VALUE = [
+  { _id: 'UNIVERSITY', name: 'Đại học' },
+  { _id: 'COLLEGE', name: 'Cao đẳng' },
+];
+const convertTraning = (tran: string) => {
+  if (tran === 'UNIVERSITY') return 'Đại học';
+  else return 'Cao đẳng';
+};
 function TableManagamentStudent(props: any) {
   const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
 
@@ -83,33 +92,17 @@ function TableManagamentStudent(props: any) {
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Thông tin chung',
-      field: 'name',
-      flex: 1.5,
+      headerName: 'Tên sinh viên',
+      field: 'fullName',
+      flex: 1,
       headerAlign: 'center',
-      renderCell: (params: any) => {
-        return (
-          <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar
-              sizes='small'
-              src={
-                params.row.avatar
-                  ? params.row.avatar
-                  : 'https://i.pngimg.me/thumb/f/720/m2H7H7K9m2Z5G6i8.jpg'
-              }
-            />
-            <Box>
-              <Typography fontWeight={600} variant='body1'>
-                {params.row.fullName}
-              </Typography>
-              <Typography>
-                Mã SV: {'  '}
-                <Typography component={'span'}>{params.row.username}</Typography>
-              </Typography>
-            </Box>
-          </Box>
-        );
-      },
+    },
+    {
+      headerName: 'MSSV',
+      field: 'username',
+      flex: 0.5,
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       headerName: 'Email',
@@ -121,7 +114,7 @@ function TableManagamentStudent(props: any) {
     {
       headerName: 'Giới tính',
       field: 'gender',
-      flex: 1,
+      flex: 0.5,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => {
@@ -131,23 +124,30 @@ function TableManagamentStudent(props: any) {
     {
       headerName: 'Loại đào tạo',
       field: 'typeTraining',
-      flex: 1,
+      flex: 0.7,
       align: 'center',
       headerAlign: 'center',
+      renderCell: (params: any) => {
+        return (
+          <Typography variant='body1' color='initial'>
+            {convertTraning(params.row.typeTraining)}
+          </Typography>
+        );
+      },
     },
 
     {
-      headerName: 'Chuyên ngành',
-      field: 'majors',
+      headerName: 'Lớp danh nghĩa',
+      field: 'clazzName',
       flex: 1,
       align: 'center',
       headerAlign: 'center',
-      renderCell: (params: any) => <Typography>{params.row.majorName}</Typography>,
+      // renderCell: (params: any) => <Typography>{params.row.majorName}</Typography>,
     },
     {
       headerName: 'Trạng thái',
       field: 'isActive',
-      flex: 1,
+      flex: 0.7,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
@@ -169,7 +169,7 @@ function TableManagamentStudent(props: any) {
       ),
     },
     {
-      headerName: '',
+      headerName: 'Chức năng',
       field: 'name8',
       flex: 1,
       align: 'center',
@@ -233,8 +233,10 @@ function TableManagamentStudent(props: any) {
           handleChangePage={handleChangePage}
           disableColumnMenu
           disableColumnFilter
-          disableColumnSelector
           checkboxSelection
+          slots={{
+            toolbar: CustomToolbar,
+          }}
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
           }}

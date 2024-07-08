@@ -24,12 +24,7 @@ export const useStudent = () => {
     //[MANAGAER]
     const handleManagerRenderActionStudent = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email',
         keywords: string | number, typeRender: ENUM_RENDER_STUDENT) => {
-        // let key = [QueryStudent.getAllStudent, ENUM_RENDER_STUDENT.ALL, termId, limit, page]
-        // let callback = getAllStudent(termId, limit, page)
-        // if (typeRender === ENUM_RENDER_STUDENT.SEARCH) {
-        //     key = [QueryStudent.searchStudentByField, termId, limit, page, searchField, keywords]
-        //     callback = searchStudentAdmin(termId, limit, page, searchField, keywords)
-        // }
+            
         return useQuery([QueryStudent.getAllStudent, ENUM_RENDER_STUDENT.ALL, termStore.currentTerm.id, limit, page], () => getAllStudent(termId, limit, page), {
             onSuccess(data: any) {
                 dispatch(setParams(data.params))

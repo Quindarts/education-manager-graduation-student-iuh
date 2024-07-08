@@ -79,7 +79,7 @@ function EditInfoModal(props: any) {
           >
             {({ values, errors, handleSubmit, handleChange, handleBlur, setFieldValue }) => (
               <form onSubmit={handleSubmit}>
-                <Box
+                {/* <Box
                   mx={'auto'}
                   position={'relative'}
                   height={80}
@@ -110,7 +110,7 @@ function EditInfoModal(props: any) {
                       <input type='file' style={{ display: 'none' }} onChange={(event) => {}} />
                     </label>
                   </Box>
-                </Box>
+                </Box> */}
                 <CustomTextField
                   label='Mã sinh viên'
                   name='username'

@@ -87,6 +87,9 @@ function ProfileMenu() {
       display='flex'
       sx={{
         cursor: 'pointer',
+        '&:hover':{
+          bgcolor: "grey.200",
+        },
         gap: {
           xs: 0,
           md: 5,

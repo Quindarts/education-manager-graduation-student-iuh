@@ -7,8 +7,8 @@ export const checkIsTopic = (value: boolean) => {
 };
 
 export const getNameStatus = (value: string) => {
-  if (value === 'REJECTED') return 'Không được duyệt';
-  if (value === 'PENDING') return 'Đang chờ duyệt';
+  if (value === 'REJECTED') return 'Không duyệt';
+  if (value === 'PENDING') return 'Chờ duyệt';
   if (value === 'APPROVED') return 'Đã duyệt';
 };
 
@@ -60,12 +60,12 @@ export const getCardTopicStatus = (text: string) => {
 
   return (
     <Box
-      px={6}
+      px={4}
       py={2}
       textAlign={'center'}
       my={'auto'}
       borderRadius={1}
-      fontSize={14}
+      fontSize={12}
       color={`${color}`}
       bgcolor={`${bgColor}`}
     >

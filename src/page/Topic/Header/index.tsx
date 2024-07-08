@@ -23,7 +23,7 @@ const SEARCH_DROP_VALUE = [
     _id: 'ACCEPT',
   },
 ];
-function HeaderTopic() {
+function HeaderTopic(props) {
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
@@ -58,9 +58,9 @@ function HeaderTopic() {
             </Button>
           </>
         )}
-        {currentRole.includes('all') && (
-          <ModalUpload entityUpload={TypeEntityUpload.TOPIC} termId={currentTerm.id} />
-        )}
+
+        <ModalUpload entityUpload={TypeEntityUpload.TOPIC} termId={currentTerm.id} />
+
         <Button color='warning' type='button' size='small' variant='contained'>
           <Icon icon='carbon:clean' color='white' width={20} /> Làm mới
         </Button>

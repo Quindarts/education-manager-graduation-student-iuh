@@ -23,6 +23,7 @@ function EditTopicRegister(props: any) {
     data,
     isLoading: loadingDetail,
     isSuccess: successDetail,
+    isFetching,
   } = handleGetTermDetailWithType(termId, TypeTermStatus.CHOOSE_TOPIC);
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
@@ -36,13 +37,20 @@ function EditTopicRegister(props: any) {
   useEffect(() => {
     onClose();
   }, [isSuccess]);
+  
+  useEffect(() => {
+    if (data?.termDetail) {
+      var checked: boolean = dayjs(data?.termDetail.endDate) <= dayjs() ? false : true;
+      setCheckedOpenGroup(checked);
+    }
+  }, [successDetail, isFetching]);
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
         <TitleManager mb={10} mt={4}>
           Cập nhật trạng thái đăng kí đề tài
         </TitleManager>
-        {loadingDetail && !successDetail ? (
+        {loadingDetail || isFetching ? (
           <Box
             justifyContent={'center'}
             display={'flex'}

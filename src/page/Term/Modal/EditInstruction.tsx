@@ -23,12 +23,19 @@ function EditInstruction(props: any) {
     data,
     isLoading: loadingDetail,
     isSuccess: successDetail,
+    isFetching,
   } = handleGetTermDetailWithType(termId, TypeTermStatus.DISCUSSION);
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
   const handleChangeStatusInstruction = () => {
     setCheckedOpenGroup(!isCheckedOpenGroup);
   };
+  useEffect(() => {
+    if (data?.termDetail) {
+      var checked: boolean = dayjs(data?.termDetail.endDate) <= dayjs() ? false : true;
+      setCheckedOpenGroup(checked);
+    }
+  }, [successDetail, isFetching]);
 
   const handleSubmit = (data: any) => {
     updateTerm(data);
@@ -42,7 +49,7 @@ function EditInstruction(props: any) {
         <TitleManager mb={10} mt={4}>
           Cập nhật trạng thái phản biện
         </TitleManager>
-        {loadingDetail && !successDetail ? (
+        {loadingDetail || isFetching ? (
           <Box
             justifyContent={'center'}
             display={'flex'}

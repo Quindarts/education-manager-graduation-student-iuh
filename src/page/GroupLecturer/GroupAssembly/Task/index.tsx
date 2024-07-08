@@ -1,6 +1,17 @@
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
+
+const isExistLecturerSupport = (team: any, currentTopics: any) => {
+  if (team !== null && team !== undefined) {
+    const listLecturerId = team?.members.map((mem: any) => mem.id);
+    const valueCheck = currentTopics.map((topic: any) => topic.lecturerId);
+
+    return valueCheck.filter((value: string) => listLecturerId.includes(value)).length > 0;
+  }
+  return false;
+};
 
 const convertGroupStudentNoGroupList = (groupStudent: any[]) => {
   return !groupStudent ? [] : groupStudent.map((std) => ({ ...std, status: 'no_group' }));
@@ -8,7 +19,6 @@ const convertGroupStudentNoGroupList = (groupStudent: any[]) => {
 function Task(props: any) {
   const { team, typeGroupLecturer, handleGroupStudentHavedAssign, groupStudents } = props;
   const [tasks, setTask] = useState<any[]>([]);
-
   useEffect(() => {
     setTask(convertGroupStudentNoGroupList(groupStudents));
   }, [groupStudents]);
@@ -18,6 +28,15 @@ function Task(props: any) {
 
   useEffect(() => {
     handleGroupStudentHavedAssign(dataHaveGroup.map((groupStudent) => groupStudent));
+  }, [tasks]);
+
+  const { enqueueSnackbar } = useSnackbar();
+  useEffect(() => {
+    let dataHaveGroup = tasks?.filter((data: any) => data.status === 'have_group');
+
+    if (isExistLecturerSupport(team, dataHaveGroup) === true) {
+      enqueueSnackbar('Giảng viên hướng dẫn không được chấm phản biện', { variant: 'error' });
+    }
   }, [tasks]);
 
   const handleOnDrageStart = (evt: any) => {

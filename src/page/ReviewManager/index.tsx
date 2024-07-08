@@ -7,7 +7,7 @@ import TitleManager from '@/components/ui/Title';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import useEvaluation from '@/hooks/api/useEvalutaion';
+import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { convertEvalutationTable } from '@/utils/convertDataTable';
 import { TypeEvaluation } from '@/services/apiEvaluation';

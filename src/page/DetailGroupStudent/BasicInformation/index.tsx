@@ -18,7 +18,10 @@ function BasicInformationGrStudentPage(props: any) {
   return (
     <>
       <Box display='flex' gap={10}>
-        <Paper variant='elevation' sx={{ mt: 8, py: 12, px: 8, flex: 0.8 }}>
+        <Paper
+          variant='elevation'
+          sx={{ mt: 8, py: 12, px: 8, flex: 0.8, borderTop: '5px solid #333' }}
+        >
           <Typography fontWeight={600} color={'text.primary'} mb={2} variant='h6'>
             <Icon icon='flat-color-icons:info' style={{ margin: ' 0 4px' }} />
             Thông tin cơ bản
@@ -31,20 +34,22 @@ function BasicInformationGrStudentPage(props: any) {
             Ngày tạo nhóm : {dayjs(groupStudent.created_at).format('DD/MM/YYYY')}
           </Typography>
         </Paper>
-        <Paper variant='elevation' sx={{ mt: 8, p: 8, flex: 1 }}>
+        <Paper variant='elevation' sx={{ mt: 8, p: 8, flex: 1, borderTop: '5px solid #333' }}>
           <Typography>Thông báo mới</Typography>
           <Box>Không có thông báo</Box>
         </Paper>
       </Box>
-      <Box my={8}>
-        <Accordion sx={{ px: 10 }} defaultExpanded>
+      <Box position={'relative'} my={8}>
+        <Box sx={{ position: 'absolute', top: 10, zIndex: 10, left: '-20px' }}>
+          <Icon width={50} color='red' icon='game-icons:achievement' />
+        </Box>
+        <Accordion sx={{ px: 10, borderTop: '5px solid #0052b1' }} defaultExpanded>
           <AccordionSummary
             expandIcon={<GridExpandMoreIcon color='primary' />}
             aria-controls='panel-topic-content'
             id='panel-topic-header'
           >
             <Typography variant='h6' fontWeight={600}>
-              <Icon style={{ margin: ' 0 4px' }} icon='fxemoji:folder' />
               Thông tin đề tài
             </Typography>
           </AccordionSummary>

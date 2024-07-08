@@ -83,6 +83,7 @@ function TableManagamentGroupStudent(props: any) {
 
   const { mutate: importGr, isLoading } = onImportGroupStudent(termStore.currentTerm.id);
   const hanldeImport = () => {
+    
     importGr(termStore.currentTerm.id);
   };
   return (

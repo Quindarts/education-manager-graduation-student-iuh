@@ -14,8 +14,8 @@ export const updateLecturerTermById: any = async (lecturerTermId: number | strin
     return axiosConfig.put(`/api/v1/lecturer-terms/${lecturerTermId}`, data);
 }
 //[DELETE]
-export const deleteLecturerTermById: any = async (lecturerTermId: number | string) => {
-    return axiosConfig.delete(`/api/v1/lecturer-terms/${lecturerTermId}`);
+export const deleteLecturerTermById: any = async (lecturerId: string, termId: string) => {
+    return axiosConfig.delete(`/api/v1/lecturer-terms?lecturerId=${lecturerId}&termId=${termId}`);
 }
 
 export const importLecturerTerm: any = async (termId: number | string) => {

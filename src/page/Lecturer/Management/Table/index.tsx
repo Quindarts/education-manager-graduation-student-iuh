@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkGender } from '@/utils/validations/person.validation';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
+import DeleteModal from '../Modal/DeleteModal';
 
 function TableManagamentLecturer(props: any) {
   const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
@@ -24,39 +25,33 @@ function TableManagamentLecturer(props: any) {
     setOpenEditInfoModal({ lecturerId, isOpen: true });
   };
 
+  const [openDeleteModal, setOpenDeleteModal] = useState({ lecturerId: '', isOpen: false });
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal({ ...openDeleteModal, isOpen: false });
+  };
+  const handleOpenDeleteModal = (lecturerId: string) => {
+    setOpenDeleteModal({ lecturerId, isOpen: true });
+  };
+
   const handleImport = () => {
     importLecturer(currentTermId);
   };
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Thông tin giảng viên',
-      field: 'none',
-      flex: 1.5,
+      headerName: 'Tên giảng viên',
+      field: 'fullName',
+      flex: 1,
       headerAlign: 'center',
-      renderCell: (params: any) => {
-        return (
-          <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar
-              sizes='small'
-              src={
-                params.row.avatar
-                  ? params.row.avatar
-                  : 'https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-business-user-profile-vector-png-image_1541960.jpg'
-              }
-            />
-            <Box>
-              <Typography fontWeight={600} variant='body1'>
-                {params.row.fullName}
-              </Typography>
-              <Typography>
-                Mã GV: {'  '}
-                <Typography component={'span'}>{params.row.username}</Typography>
-              </Typography>
-            </Box>
-          </Box>
-        );
-      },
+      align: 'center',
+    },
+    {
+      headerName: 'Mã giảng viên',
+      field: 'username',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       headerName: 'Giới tính',
@@ -71,7 +66,7 @@ function TableManagamentLecturer(props: any) {
     {
       headerName: 'Cấp bậc',
       field: 'role',
-      flex: 1,
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
@@ -98,14 +93,14 @@ function TableManagamentLecturer(props: any) {
         return <Typography variant='body1'>{params.row.email}</Typography>;
       },
     },
-    {
-      headerName: 'Chuyên ngành',
-      field: 'none2',
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => <Typography variant='body1'>{params.row.majorName}</Typography>,
-    },
+    // {
+    //   headerName: 'Chuyên ngành',
+    //   field: 'none2',
+    //   flex: 1,
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   renderCell: (params: any) => <Typography variant='body1'>{params.row.majorName}</Typography>,
+    // },
     {
       headerName: '',
       field: 'updateTing',
@@ -127,6 +122,15 @@ function TableManagamentLecturer(props: any) {
               onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
             >
               <Icon width={20} icon='fluent:apps-list-detail-20-filled' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Xóa giảng viên'>
+            <IconButton
+              color='error'
+              size='small'
+              onClick={() => handleOpenDeleteModal(params.row.id)}
+            >
+              <Icon width={20} icon='ic:baseline-delete' />
             </IconButton>
           </Tooltip>
         </Box>
@@ -165,6 +169,11 @@ function TableManagamentLecturer(props: any) {
         open={openEditInfoModal.isOpen}
         onClose={handleCloseEditInfoModal}
         currentTermId={currentTermId}
+      />
+      <DeleteModal
+        lecturerId={openDeleteModal.lecturerId}
+        open={openDeleteModal.isOpen}
+        onClose={handleCloseDeleteModal}
       />
     </>
   );

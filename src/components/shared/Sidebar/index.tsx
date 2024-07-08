@@ -92,7 +92,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
     }
   }, [data, isLoading, isFetched]);
 
-
   const dispatch = useDispatch();
   const handleSelectTerm = (termId: number) => {
     data.terms.map((term: any) => {
@@ -101,7 +100,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
       }
     });
   };
-  
+
   return (
     <Box
       sx={{
@@ -164,9 +163,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
             '&::-webkit-scrollbar': {
               width: 4,
             },
-            '.MuiPaper-root': {
-              pb: 2,
-            },
+
             '&::-webkit-scrollbar-thumb': {
               bgcolor: 'grey.400',
             },
@@ -184,12 +181,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                 },
                 '&:hover': {
                   fontSize: 'body2',
-                },
-              },
-              '&:hover': {
-                color: 'primary.dark',
-                '& svg': {
-                  color: 'primary.dark',
                 },
               },
             },
@@ -218,9 +209,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   md: 8,
                 }}
                 sx={{
-                  color: 'primary',
                   opacity: 0.7,
-                  cursor: 'pointer',
                 }}
               >
                 Danh mục quản lý
@@ -265,37 +254,35 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   overflow: 'hidden',
                   height: 50,
                   px: 4,
-                  borderRadius: 2,
-
                   '&.Mui-expanded': {
                     minHeight: 0,
                   },
                   '&:hover': {
-                    bgcolor: 'grey.100',
+                    bgcolor: 'primary.main',
+                    '.MuiTypography-root': {
+                      color: 'white',
+                    },
                     transition: '0.2s all',
                     '& .MuiAccordionSummary-content': {
                       '& svg': {
-                        color: 'primary.main',
+                        color: 'white',
                       },
-                    },
-                    '& svg': {
-                      color: 'primary.main',
                     },
                   },
                   '& .MuiAccordionSummary-content': {
                     margin: 0,
                     '& svg': {
-                      color: 'primary.main',
+                      color: 'dark',
                     },
                   },
                   '& svg': {
-                    color: 'primary.main',
+                    color: 'dark',
                   },
                   '&.active': {
-                    color: 'primary.dark',
-                    bgcolor: 'grey.200',
+                    color: 'white',
+                    bgcolor: 'primary.main',
                     '& svg': {
-                      color: 'primary.dark',
+                      color: 'white',
                     },
                   },
                 }}
@@ -329,7 +316,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                 <AccordionDetails
                   sx={{
                     padding: 0,
-                    paddingLeft: 8,
                     cursor: 'pointer',
                   }}
                 >
@@ -340,7 +326,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                         alignItems='center'
                         gap={1}
                         sx={{
-                          px: 3,
                           py: 6,
                           position: 'relative',
                           '::after': {
@@ -353,6 +338,12 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                             transform: 'translateY(-50%)',
                             transition: '0.3s all',
                           },
+                          '&:hover': {
+                            bgcolor: 'rgba(0,82,177,0.4)',
+                            '& .MuiTypography-root': {
+                              color: 'white',
+                            },
+                          },
                         }}
                       >
                         <Typography
@@ -361,6 +352,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                           component='span'
                           sx={{
                             flex: 1,
+                            ml: 8,
                             textWrap: 'nowrap',
                           }}
                           key={submenuItemIndex}

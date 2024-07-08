@@ -1,5 +1,5 @@
 import Modal from '@/components/ui/Modal';
-import useEvaluation from '@/hooks/api/useEvalutaion';
+import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';

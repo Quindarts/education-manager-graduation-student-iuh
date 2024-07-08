@@ -13,32 +13,32 @@ import React from 'react';
 function TermDetail(props: any) {
   const { onClose, open, termId } = props;
   const { handelGetTermById } = useTerm();
-  const { data, isLoading, isSuccess } = handelGetTermById(termId);
+  const { data, isLoading, isSuccess, isFetching } = handelGetTermById(termId);
   return (
     <Modal open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Thông tin chi tiết Học kì
         </TitleManager>
-        {isLoading && !isSuccess ? (
+        {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (
           <Formik
             onSubmit={() => {}}
             initialValues={{
-              name: `${data?.term ? data?.term[0]?.name : ''}`,
-              startDate: data?.term[0]?.startDate,
-              endDate: data?.term[0]?.endDate,
-              startChooseGroupDate: data?.term[0]?.startChooseGroupDate,
-              endChooseGroupDate: data?.term[0]?.endChooseGroupDate,
-              startChooseTopicDate: data?.term[0]?.startChooseTopicDate,
-              endChooseTopicDate: data?.term[0]?.endChooseTopicDate,
-              startDiscussionDate: data?.term[0]?.endChooseTopicDate,
-              endDiscussionDate: data?.term[0]?.endDiscussionDate,
-              startReportDate: data?.term[0]?.startReportDate,
-              endReportDate: data?.term[0]?.endReportDate,
-              startPublicResultDate: data?.term[0]?.startPublicResultDate,
-              endPublicResultDate: data?.term[0]?.endPublicResultDate,
+              name: `${data?.term ? data?.term?.name : ''}`,
+              startDate: data?.term?.startDate,
+              endDate: data?.term?.endDate,
+              startChooseGroupDate: data?.term?.startChooseGroupDate,
+              endChooseGroupDate: data?.term?.endChooseGroupDate,
+              startChooseTopicDate: data?.term?.startChooseTopicDate,
+              endChooseTopicDate: data?.term?.endChooseTopicDate,
+              startDiscussionDate: data?.term?.endChooseTopicDate,
+              endDiscussionDate: data?.term?.endDiscussionDate,
+              startReportDate: data?.term?.startReportDate,
+              endReportDate: data?.term?.endReportDate,
+              startPublicResultDate: data?.term?.startPublicResultDate,
+              endPublicResultDate: data?.term?.endPublicResultDate,
             }}
           >
             {({ values, handleSubmit }) => (

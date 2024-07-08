@@ -22,6 +22,7 @@ interface ScoreInputPropsType extends PaperProps {
 function ScoreInput(props: ScoreInputPropsType) {
   const {
     name,
+    numberCLO,
     scoreMax,
     handleChangeCurrentTranscripts,
     transcriptId,
@@ -54,10 +55,11 @@ function ScoreInput(props: ScoreInputPropsType) {
   return (
     <Paper {...rest}>
       <>
-        <Box display={'flex'} height={50} py={2} px={6} justifyContent={'space-between'}>
-          <Box display={'flex'} width={900}  gap={2}>
+        <Box display={'flex'} height={100} py={2} px={6} justifyContent={'space-between'}>
+          <Box display={'flex'} width={900} gap={2}>
             <Typography mt={5} color={'primary'} fontWeight={500} variant='body1'>
-               + {name}
+              CLO{numberCLO}. {'   '}
+              {name}
             </Typography>
           </Box>
           <Box display={'flex'} width={500} justifyContent={'end'} gap={2}>
@@ -90,7 +92,7 @@ function ScoreInput(props: ScoreInputPropsType) {
             </Typography>
           </Box>
         </Box>
-        <Box display={'flex'} m={4} gap={4} justifyContent={'end'}>
+        {/* <Box display={'flex'} m={4} gap={4} justifyContent={'end'}>
           {isExist === true ? (
             <Button
               onClick={() =>
@@ -118,7 +120,7 @@ function ScoreInput(props: ScoreInputPropsType) {
               Chấm điểm
             </Button>
           )}
-        </Box>
+        </Box> */}
       </>
     </Paper>
   );
