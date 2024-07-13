@@ -8,14 +8,13 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 import { FormikHelpers, useFormik } from 'formik';
-import { Link } from 'react-router-dom';
 import { IAuth } from '@/types/auth.type';
-import { APP_ROUTES } from '@/utils/app-config';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { Icon } from '@iconify/react';
 import { EnumGender, RoleCheck } from '@/types/enum';
 import { useAuth } from '@/hooks/api/useAuth';
 import { CircularProgress } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 interface IAuthResponseData {
   accessToken: string;
@@ -45,7 +44,7 @@ export default function Login() {
       password: '',
     },
     onSubmit: (values: IAuth, { resetForm }: FormikHelpers<IAuth>) => {
-      mutateLogin(values);
+      mutateLogin({ username: values.username, password: values.password });
     },
   });
   const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
@@ -98,7 +97,7 @@ export default function Login() {
                 name='username'
               />
               <CustomTextField
-              label='Mật khẩu'
+                label='Mật khẩu'
                 error={Boolean(errors.password) && touched.password}
                 helperText={touched.password && errors.password}
                 onBlur={handleBlur}

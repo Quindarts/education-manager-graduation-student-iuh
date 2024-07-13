@@ -104,7 +104,7 @@ export const APP_SIDEBAR = [
     text: 'Chuyên Ngành',
     icon: 'simple-icons:gitbook',
     link: [APP_ROUTES.MAJOR.MANAGEMENT],
-    roles: [RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_COURSE],
     children: [
       {
         text: 'Danh sách chuyên ngành',
@@ -116,7 +116,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'mage:book-fill',
     text: 'Học kì',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.SUB_HEAD_LECTURER],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.TERM.MANAGEMENT],
     key: '/terms',
     children: [
@@ -130,7 +130,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'fluent-mdl2:permissions',
     text: 'Phân quyền',
-    roles: [RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT],
     children: [
       {
@@ -153,7 +153,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'mdi:teach-poll',
     text: 'Giảng viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.LECTURER.MANAGEMENT],
     children: [
       {
@@ -166,7 +166,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'mdi:account-student',
     text: 'Sinh viên',
-    roles: [RoleCheck.HEAD_LECTURER],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.STUDENT.MANAGEMENT],
     children: [
       {
@@ -219,7 +219,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'icon-park-outline:message',
     text: 'Thông báo',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.ADMIN, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.NOTIFICATION.MANAGEMENT],
     children: [
       {

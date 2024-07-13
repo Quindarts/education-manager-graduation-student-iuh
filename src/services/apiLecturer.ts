@@ -1,4 +1,4 @@
-import { ResponseType } from "@/types/axios.type";
+
 import axiosConfig from "./axiosConfig"
 
 export const getLecturerByMajorId = (majorId: number) => {

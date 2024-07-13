@@ -18,16 +18,16 @@ function docTranscriptAdvisor(evaluations: any) {
                                 children: [
                                     new TableCell({
                                         children: [
-                                            new Paragraph({ text: 'TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HCM', alignment: 'center' }),
-                                            new Paragraph({ text: 'KHOA CÔNG NGHỆ THÔNG TIN', alignment: 'center' }),
-                                            new Paragraph({ text: 'NGÀNH KỸ THUẬT PHẦN MỀM', alignment: 'center' }),
+                                            new Paragraph({ text: 'INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY', alignment: 'center' }),
+                                            new Paragraph({ text: 'FACULTY OF INFORMATION TECHNOLOGY', alignment: 'center' }),
+                                            new Paragraph({ text: 'SOFTWARE ENGINEERING', alignment: 'center' }),
                                         ],
                                         verticalAlign: 'top',
                                     }),
                                     new TableCell({
                                         children: [
-                                            new Paragraph({ text: 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM', alignment: 'center' }),
-                                            new Paragraph({ text: 'Độc lập - Tự do - Hạnh phúc', alignment: 'center' }),
+                                            new Paragraph({ text: 'CONG HOA XA HOI CHU NGHIA VIET NAM', alignment: 'center' }),
+                                            new Paragraph({ text: 'Doc lap - Tu do - Hanh phuc', alignment: 'center' }),
                                         ],
                                         verticalAlign: 'top',
                                     }),
@@ -40,24 +40,24 @@ function docTranscriptAdvisor(evaluations: any) {
                         spacing: { before: 200, after: 400 },
                         children: [
                             new TextRun({
-                                text: 'PHIẾU ĐÁNH GIÁ KHÓA LUẬN TỐT NGHIỆP',
+                                text: 'GRADUATION THESIS EVALUATION FORM',
                                 bold: true,
                                 size: 23,
                             }),
                         ],
                     }),
-                    new Paragraph('Họ tên người đánh giá: .................................................................'),
-                    new Paragraph('Vai trò của người đánh giá:  Chấm Poster  Thành viên hội đồng'),
-                    new Paragraph('Tên đề tài: .................................................................'),
+                    new Paragraph('Name of reviewer: .................................................................'),
+                    new Paragraph('Role of reviewer:  Scoring Poster  Member of council'),
+                    new Paragraph('Topic name: .................................................................'),
                     new Table({
                         rows: [
                             new TableRow({
                                 children: [
                                     new TableCell({ children: [new Paragraph('STT')] }),
-                                    new TableCell({ children: [new Paragraph('Nội dung đánh giá (CLO)')] }),
-                                    new TableCell({ children: [new Paragraph('Điểm tối đa')] }),
-                                    new TableCell({ children: [new Paragraph('Điểm đánh giá Sinh viên 1')] }),
-                                    new TableCell({ children: [new Paragraph('Điểm đánh giá Sinh viên 2')] }),
+                                    new TableCell({ children: [new Paragraph('Content review (CLO)')] }),
+                                    new TableCell({ children: [new Paragraph('Max score')] }),
+                                    new TableCell({ children: [new Paragraph('Score of student 1')] }),
+                                    new TableCell({ children: [new Paragraph('Score of student 2')] }),
                                     new TableCell({ children: [new Paragraph('Các ý kiến nhận xét')] }),
                                 ],
                             }),
@@ -75,12 +75,12 @@ function docTranscriptAdvisor(evaluations: any) {
                             )),
                         ],
                     }),
-                    new Paragraph('Nhận xét khác: .................................................................................................................. ..................................................................................................................................................................................................................................'),
+                    new Paragraph('Other comments: .................................................................................................................. ..................................................................................................................................................................................................................................'),
                     new Paragraph({
                         alignment: 'right',
                         children: [
                             new TextRun({
-                                text: 'TP. HCM, ngày.... tháng... năm ...\nNgười đánh giá\n(Ký và ghi rõ họ tên)\n.........',
+                                text: 'TP. HCM, day.... month... year ...\nInstructor scores\n(Sign and write full name)\n.........',
                                 italics: true,
                             }),
                         ],

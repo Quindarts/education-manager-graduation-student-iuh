@@ -41,49 +41,50 @@ function MainLayout() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Box
-          display='flex'
-          sx={{
-            height: '100%',
-            overflowX: 'hidden',
-          }}
-        >
-          <AdminSidebar
-            isOpenSideBar={isOpenSideBar}
-            currentSidebar={currentSidebarRole}
-            handleOpenSideBar={handleOpenSideBar}
-          />
-          <Box
-            height='100%'
-            component='section'
-            sx={{
-              maxWidth: isOpenSideBar ? `calc(100vw - 250px)` : `calc(100vw - 76px)`,
-              width: '100%',
-              minHeight: '100vh',
-              marginLeft: isOpenSideBar ? '250px' : '76px',
-              transition: 'all 0.1s ease',
-              backgroundColor: 'grey.100',
-            }}
-          >
-            <Navbar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
+        <>
+          {lecturerStore?.currentRoleRender?.length > 0 && getValueFromLocalStorage('accessToken') ? (
             <Box
-              pt={12}
-              pb={6}
-              mx={8}
-              mt={30}
+              display='flex'
               sx={{
                 height: '100%',
+                overflowX: 'hidden',
               }}
             >
-              {lecturerStore.currentRoleRender.length > 0 &&
-              getValueFromLocalStorage('accessToken') ? (
-                <Outlet />
-              ) : (
-                <Navigate to='/auth/role' />
-              )}
+              <AdminSidebar
+                isOpenSideBar={isOpenSideBar}
+                currentSidebar={currentSidebarRole}
+                handleOpenSideBar={handleOpenSideBar}
+              />
+              <Box
+                height='100%'
+                component='section'
+                sx={{
+                  maxWidth: isOpenSideBar ? `calc(100vw - 250px)` : `calc(100vw - 76px)`,
+                  width: '100%',
+                  minHeight: '100vh',
+                  marginLeft: isOpenSideBar ? '250px' : '76px',
+                  transition: 'all 0.1s ease',
+                  backgroundColor: 'grey.100',
+                }}
+              >
+                <Navbar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
+                <Box
+                  pt={12}
+                  pb={6}
+                  mx={8}
+                  mt={30}
+                  sx={{
+                    height: '100%',
+                  }}
+                >
+                  <Outlet />
+                </Box>
+              </Box>
             </Box>
-          </Box>
-        </Box>
+          ) : (
+            <Navigate to='/auth/role' />
+          )}
+        </>
       )}
     </>
   );

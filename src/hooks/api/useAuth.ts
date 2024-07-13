@@ -22,12 +22,13 @@ export const useAuth = () => {
                 enqueueSnackbar('Đăng nhập thành công', { variant: 'success' });
                 setValueInLocalStorage('accessToken', data.accessToken);
                 setValueInLocalStorage('refreshToken', data.refreshToken);
-                dispatch(setMe(data.user));
+                dispatch(setMe({ user: data.user, roles: data.roles }));
+
+                dispatch(setCurrentRoleRender(data.role));
                 navigate("/");
             },
-
             onError(error: any) {
-                enqueueSnackbar(error.response.data.message, { variant: 'error' });
+                enqueueSnackbar(error.message, { variant: 'error' });
             }
         }
         )
@@ -36,8 +37,9 @@ export const useAuth = () => {
     //[GET ME]
     const handleGetMe = () => {
         return useQuery(['get-me'], () => getMe(), {
-            onSuccess(data: Pick<ResponseType, 'success' | 'lecturer' | 'message'>) {
-                dispatch(setMe(data.lecturer));
+            onSuccess(data: Pick<ResponseType, 'success' | 'lecturer' | 'message' | 'roles'>) {
+                console.log("🚀 ~ onSuccess ~ data:", data)
+                dispatch(setMe({ user: data.lecturer, roles: data.roles }));
                 return data.lecturer
             },
         })

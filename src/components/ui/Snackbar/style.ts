@@ -14,7 +14,7 @@ export const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => (
         backgroundColor: '#299cdb',
     },
     '&.notistack-MuiContent-success': {
-        backgroundColor: '#4fd06b',
+        backgroundColor: '#46B892',
     },
     '&.notistack-MuiContent-error': {
         backgroundColor: '#ba0517',

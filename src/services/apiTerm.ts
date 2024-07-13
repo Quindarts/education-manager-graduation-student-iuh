@@ -25,6 +25,9 @@ export const getCurrentTerm: any = () => {
     return axiosConfig.get("/api/v1/terms/now")
 }
 
+export const getTermDetailWithMajor: any = (majorId: string) => {
+    return axiosConfig.get(`/api/v1/terms/major/${majorId}`)
+}
 
 export const getTermDetailWithType: any = (id: number | string, type: TypeTermStatus) => {
     return axiosConfig.get(`/api/v1/terms/${id}/${type}`)
@@ -38,7 +41,7 @@ export const createTerm = (data: TermDataRequest) => {
     return axiosConfig.post(`/api/v1/terms`, data);
 }
 
-export const updateTermById: any = (id: number | string, data: { startDate: string, endDate: string }) =>{
+export const updateTermById: any = (id: number | string, data: { startDate: string, endDate: string }) => {
     return axiosConfig.put(`/api/v1/terms/${id}`, data);
 }
 

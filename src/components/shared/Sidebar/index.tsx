@@ -29,7 +29,6 @@ export default function AdminSidebar(props: AdminSidebarProps) {
   const { isOpenSideBar, currentSidebar, handleOpenSideBar } = props;
 
   const location = useLocation();
-  const { termStore } = useTerm();
 
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
@@ -81,8 +80,8 @@ export default function AdminSidebar(props: AdminSidebarProps) {
     }
   };
 
-  const { handleGetAllTerm } = useTerm();
-  const { data, isLoading, isFetched } = handleGetAllTerm();
+  const { handleGetAllTerm, termStore, handleGetTermWithMajor } = useTerm();
+  const { data, isLoading, isFetched } = handleGetTermWithMajor();
   const [valueDropTerm, setValueDropTerm] = useState<any[]>([]);
 
   useEffect(() => {

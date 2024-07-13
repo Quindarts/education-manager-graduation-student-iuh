@@ -11,12 +11,12 @@ export default function docTranscriptReviewer(evaluations: any) {
                         alignment: 'center',
                         children: [
                             new TextRun({
-                                text: 'TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HCM\n',
+                                text: 'INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY',
                                 bold: true,
                                 size: 28, // 14px
                             }),
                             new TextRun({
-                                text: '\nKHOA CÔNG NGHỆ THÔNG TIN',
+                                text: 'FACULTY OF INFORMATION TECHNOLOGY',
                                 size: 28, // 14px
                             }),
                             new Paragraph({
@@ -32,7 +32,7 @@ export default function docTranscriptReviewer(evaluations: any) {
                         spacing: { after: 200 },
                         children: [
                             new TextRun({
-                                text: 'PHIẾU CHẤM ĐIỂM KHÓA LUẬN TỐT NGHIỆP',
+                                text: 'GRADUATION THESIS EVALUATION FORM',
                                 bold: true,
                                 size: 28, // 14px
                             }),
@@ -41,7 +41,7 @@ export default function docTranscriptReviewer(evaluations: any) {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: '1. Tên đề tài:\n\n',
+                                text: '1. Topic name:\n\n',
                                 size: 28, // 14px
                             }),
                         ],
@@ -49,7 +49,7 @@ export default function docTranscriptReviewer(evaluations: any) {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: '2. Nhóm thực hiện:\nHọ tên học viên 1: ...............................\nHọ tên học viên 2: ...............................',
+                                text: '2. Group student:\nName of student 1: ...............................\nName of student 2: ...............................',
                                 size: 28, // 14px
                             }),
                         ],
@@ -57,7 +57,7 @@ export default function docTranscriptReviewer(evaluations: any) {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: '3. Họ và tên người chấm điểm: ..............................',
+                                text: '3. Name of reviewer: ..............................',
                                 size: 28, // 14px
                             }),
                         ],
@@ -65,7 +65,7 @@ export default function docTranscriptReviewer(evaluations: any) {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: '5. Vai trò của người đánh giá:  GV hướng dẫn  Phản biện  Thành viên HĐ',
+                                text: '5. Role of reviewer:  Intructor  Reviewer  Member of council',
                                 size: 28, // 14px
                             }),
                         ],
@@ -74,7 +74,7 @@ export default function docTranscriptReviewer(evaluations: any) {
                         alignment: 'center',
                         children: [
                             new TextRun({
-                                text: 'NỘI DUNG ĐÁNH GIÁ',
+                                text: 'CONTENT REVIEW',
                                 bold: true,
                                 size: 28, // 14px
                             }),
@@ -85,11 +85,11 @@ export default function docTranscriptReviewer(evaluations: any) {
                             new TableRow({
                                 children: [
                                     new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'STT', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Nội dung', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Điểm tối đa', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Điểm đánh giá Sinh viên 1', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Điểm đánh giá Sinh viên 2', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'CÁC Ý KIẾN NHẬN XÉT', size: 28 })] })] }),
+                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Content', size: 28 })] })] }),
+                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Max score', size: 28 })] })] }),
+                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Evaluation score of student 1', size: 28 })] })] }),
+                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Evaluation score of student 2', size: 28 })] })] }),
+                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'COMMENTS', size: 28 })] })] }),
                                 ],
                             }),
                             ...rows.map((row: any, index: number) => (
@@ -109,7 +109,7 @@ export default function docTranscriptReviewer(evaluations: any) {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: 'Các góp ý Ý kiến khóa luận: ..................................................................................................................',
+                                text: 'Other comment: ..................................................................................................................',
                                 size: 28, // 14px
                             }),
                         ],
@@ -118,17 +118,17 @@ export default function docTranscriptReviewer(evaluations: any) {
                         alignment: 'right',
                         children: [
                             new TextRun({
-                                text: 'TP. HCM, ngày.... tháng... năm ...\n',
+                                text: 'TP. HCM, day.... month... year ...\n',
                                 italics: true,
                                 size: 28, // 14px
                             }),
                             new TextRun({
-                                text: 'Người chấm điểm\n',
+                                text: 'Name of lecturer\n',
                                 bold: true,
                                 size: 28, // 14px
                             }),
                             new TextRun({
-                                text: '(Ký và ghi rõ họ tên)\n.........',
+                                text: '(Sign and write full name)\n.........',
                                 italics: true,
                                 size: 28, // 14px
                             }),

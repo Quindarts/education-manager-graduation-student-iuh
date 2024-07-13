@@ -8,6 +8,7 @@ export default interface ResponseType {
     term: any,
     lecturerTerm: any,
     major: any,
+    roles: any,
     groupLecturer: any,
     evaluation: any,
     assign: any,

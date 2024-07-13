@@ -2,11 +2,17 @@ import { RoleCheck } from '@/types/enum'
 type PermissionItem = {
     id: string;
     name: string;
-    queryKey: string | any[];
+    feature: [
+        {
+            typeMethod: 'C' | 'R' | 'U' | 'D',
+            nameApi: string,
+        }
+    ]
+    majorId: string | 'all';
 }
 
 const useRole = () => {
-    const getListPermission = (role: RoleCheck) => {
+    const getListPermission = (role: RoleCheck, majorId: string) => {
         let listPermission: PermissionItem[] = []
 
         switch (role) {
@@ -15,13 +21,15 @@ const useRole = () => {
                     {
                         id: "term",
                         name: "Quản lý Học Kì",
-                        queryKey: ['C', 'R', 'U', 'D'],
+                        feature: [
+                            {
+                                typeMethod: 'R',
+                                nameApi: 'getAllTerm',
+                            },
+                        ],
+                        majorId: `${majorId}`
                     },
-                    {
-                        id: "lecturer",
-                        name: "Quản lý Giảng viên",
-                        queryKey: ['C', 'R', 'U', 'D', 'I'],
-                    },
+
                 ]
                 break;
 
@@ -30,7 +38,7 @@ const useRole = () => {
                     {
                         id: "",
                         name: "",
-                        queryKey: "",
+                        feature: "",
                     },
                 ]
                 break;
@@ -39,7 +47,7 @@ const useRole = () => {
                     {
                         id: "",
                         name: "",
-                        queryKey: "",
+                        feature: "",
                     },
                 ]
                 break;
