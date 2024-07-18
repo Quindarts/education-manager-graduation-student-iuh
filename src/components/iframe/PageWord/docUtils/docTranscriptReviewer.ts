@@ -11,12 +11,12 @@ export default function docTranscriptReviewer(evaluations: any) {
                         alignment: 'center',
                         children: [
                             new TextRun({
-                                text: 'TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HCM\n',
+                                text: 'INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY\n',
                                 bold: true,
                                 size: 28, // 14px
                             }),
                             new TextRun({
-                                text: '\nKHOA CÔNG NGHỆ THÔNG TIN',
+                                text: '\nFACULTY OF INFORMATION TECHNOLOGY',
                                 size: 28, // 14px
                             }),
                             new Paragraph({

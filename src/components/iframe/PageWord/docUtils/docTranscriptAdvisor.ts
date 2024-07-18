@@ -1,66 +1,30 @@
+import { MainLayout } from '@/components/shared/layouts/MainLayout';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
-import { Document, Paragraph, Table, TableCell, TableRow, TextRun } from 'docx';
+import { AlignmentType, Document, HeightRule, OverlapType, Paragraph, RelativeHorizontalPosition, RelativeVerticalPosition, ShadingType, Table, TableAnchorType, TableCell, TableLayoutType, TableRow, TextRun, VerticalAlign, WidthType } from 'docx';
 
-export default function docTranscriptAdvisor(evaluations: any) {
+export defaultgit  function docTranscriptAdvisor(evaluations: any) {
     const rows = convertRowEvaluations(evaluations);
     const doc = new Document({
         sections: [
             {
+                properties: {
+                    page: {
+                        margin: {
+                            top: 720, // 0.5 inch
+                            bottom: 720, // 0.5 inch
+                            left: 720, // 0.5 inch
+                            right: 720, // 0.5 inch
+                        },
+                    }
+                },
                 children: [
                     new Paragraph({
                         alignment: 'center',
                         children: [
                             new TextRun({
-                                text: 'TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HCM',
+                                text: 'INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY',
                                 bold: true,
-                                size: 28, // 14px
-                            }),
-                            new TextRun({
-                                text: '\nKHOA CÔNG NGHỆ THÔNG TIN\n=======//======',
-                                size: 28, // 14px
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        alignment: 'center',
-                        spacing: { after: 200 },
-                        children: [
-                            new TextRun({
-                                text: 'PHIẾU CHẤM ĐIỂM KHÓA LUẬN TỐT NGHIỆP',
-                                bold: true,
-                                size: 28, // 14px
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        children: [
-                            new TextRun({
-                                text: '1. Tên đề tài:\n\n',
-                                size: 28, // 14px
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        children: [
-                            new TextRun({
-                                text: '2. Nhóm thực hiện:\nHọ tên học viên 1: ...............................\nHọ tên học viên 2: ...............................',
-                                size: 28, // 14px
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        children: [
-                            new TextRun({
-                                text: '3. Họ và tên người chấm điểm: ..............................',
-                                size: 28, // 14px
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        children: [
-                            new TextRun({
-                                text: '5. Vai trò của người đánh giá:  GV hướng dẫn  Phản biện  Thành viên HĐ',
-                                size: 28, // 14px
+                                size: 28,
                             }),
                         ],
                     }),
@@ -68,67 +32,266 @@ export default function docTranscriptAdvisor(evaluations: any) {
                         alignment: 'center',
                         children: [
                             new TextRun({
-                                text: 'NỘI DUNG ĐÁNH GIÁ',
-                                bold: true,
-                                size: 28, // 14px
+                                text: '\nFACULTY OF INFORMATION TECHNOLOGY',
+                                size: 28,
                             }),
                         ],
+                    }),
+                    new Paragraph({
+                        alignment: 'center',
+                        children: [
+                            new TextRun({
+                                text: '=======//======',
+                                size: 28,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        alignment: 'center',
+                        spacing: { before: 300, after: 300 },
+                        children: [
+                            new TextRun({
+                                text: 'CAPSTONE PROJECT EVALUATION FORM',
+                                bold: true,
+                                size: 28,
+
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        spacing: { after: 400 },
+                        children: [
+                            new TextRun({
+                                text: '1. Topic name: ',
+                                size: 24,
+                            }),
+                        ],
+
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: '2. Instructors:  ',
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: '3. Team: ',
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: '     First student name:                                                            Student code 1: ',
+                                size: 24,
+
+
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: '     First student name:                                                            Student code 2: ',
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: `4. Evaluator's full name:`,
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: '5. Role of the evaluator:      Instructor ',
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        alignment: 'center',
+                        children: [
+                            new TextRun({
+                                text: 'CONTENTS',
+                                bold: true,
+                                size: 24,
+                            }),
+                        ], spacing: { before: 200, after: 200 }
                     }),
                     new Table({
+                        width: {
+                            size: 100,
+                            type: WidthType.PERCENTAGE,
+                        },
+                        columnWidths: [4000, 5505],
+
                         rows: [
                             new TableRow({
+                                height: {
+                                    value: 722,
+                                    rule: HeightRule.EXACT,
+                                },
+
+
                                 children: [
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'STT', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Nội dung', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Điểm tối đa', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Điểm đánh giá Sinh viên 1', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Điểm đánh giá Sinh viên 2', size: 28 })] })] }),
-                                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'CÁC Ý KIẾN NHẬN XÉT', size: 28 })] })] }),
+
+                                    new TableCell({
+                                        width: {
+                                            size: 5,
+                                            type: WidthType.PERCENTAGE,
+                                        },
+                                        shading: {
+                                            type: ShadingType.SOLID,
+                                            color: "#d9ecfb", // Màu nền
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({ children: [new TextRun({ text: 'CLO', size: 23 })], alignment: 'center', })],
+                                    }),
+                                    new TableCell({
+                                        width: {
+                                            size: 40,
+                                            type: WidthType.PERCENTAGE,
+                                        },
+                                        shading: {
+                                            type: ShadingType.SOLID,
+                                            color: "#d9ecfb", // Màu nền
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({ children: [new TextRun({ text: 'Content', size: 23 })], alignment: 'center', })]
+                                    }),
+                                    new TableCell({
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        width: {
+                                            size: 15,
+                                            type: WidthType.PERCENTAGE,
+                                        },
+                                        shading: {
+                                            type: ShadingType.SOLID,
+                                            color: "#d9ecfb", // Màu nền
+                                        },
+                                        children: [new Paragraph({ children: [new TextRun({ text: 'Max point', size: 23 })], alignment: 'center' })]
+                                    }),
+                                    new TableCell({
+                                        width: {
+                                            type: WidthType.PERCENTAGE,
+                                            size: 10,
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        shading: {
+                                            type: ShadingType.SOLID,
+                                            color: "#d9ecfb", // Màu nền
+                                        },
+                                        children: [new Paragraph({ children: [new TextRun({ text: 'Score student 1', size: 23 })], alignment: 'center', })]
+                                    }),
+                                    new TableCell({
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        shading: {
+                                            type: ShadingType.SOLID,
+                                            color: "#d9ecfb", // Màu nền
+                                        },
+                                        width: {
+                                            type: WidthType.PERCENTAGE,
+                                            size: 10,
+                                        },
+                                        children: [new Paragraph({ children: [new TextRun({ text: 'Score student 2', size: 23 })], alignment: 'center', })]
+                                    }),
+                                    new TableCell({
+                                        width: {
+                                            type: WidthType.PERCENTAGE,
+                                            size: 20,
+                                        },
+                                        shading: {
+                                            type: ShadingType.SOLID,
+                                            color: "#d9ecfb", // Màu nền
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({
+                                            alignment: 'center',
+                                            children: [new TextRun({ text: 'NOTES ', size: 20 }), new TextRun({ text: '(if applicable)', size: 23 })]
+                                        })]
+                                    }),
                                 ],
                             }),
                             ...rows.map((row: any, index: number) => (
                                 new TableRow({
+                                    height: {
+                                        value: 1000,
+                                        rule: HeightRule.EXACT,
+                                    },
                                     children: [
-                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: (index + 1).toString(), size: 28 })] })] }),
-                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row.name, size: 28 })] })] }),
-                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: row.scoreMax.toString(), size: 28 })] })] }),
-                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '', size: 28 })] })] }),
-                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '', size: 28 })] })] }),
-                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '', size: 28 })] })] }),
+                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: (index + 1).toString(), size: 23 })] })] }),
+                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ children: [new TextRun({ text: row.name, size: 23 })] })] }),
+                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: row.scoreMax.toString(), size: 23 })] })] }),
+                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: '', size: 23 })] })] }),
+                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: '', size: 23 })] })] }),
+                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ children: [new TextRun({ text: '', size: 23 })] })] }),
                                     ],
                                 })
                             )),
                         ],
                     }),
                     new Paragraph({
+                        spacing: { before: 300 },
                         children: [
                             new TextRun({
-                                text: 'Các ý kiến khác: ..................................................................................................................',
-                                size: 28, // 14px
+                                text: 'Other comments:',
+                                size: 24,
+                                bold: true,
                             }),
                         ],
                     }),
                     new Paragraph({
-                        alignment: 'right',
                         children: [
                             new TextRun({
-                                text: 'TP. HCM, ngày.... tháng... năm ...\n',
-                                italics: true,
-                                size: 28, // 14px
+                                text: '.............................................................................................................................................................................',
+                                size: 24,
                             }),
+                        ],
+                    }),
+                    new Paragraph({
+                        children: [
                             new TextRun({
-                                text: 'Người chấm điểm\n',
+                                text: '.............................................................................................................................................................................',
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        spacing: { before: 300, after: 150 },
+                        alignment: 'center',
+                        children: [
+                            new TextRun({
+                                text: '                                                                                                   Ho Chi Minh City, date    month     year   \n',
+                                italics: true,
+                                size: 24,
+                            }),
+
+                        ],
+                    }),
+                    new Paragraph({
+                        alignment: 'center',
+
+                        children: [
+                            new TextRun({
+                                text: '                                                                                                                      Evaluator',
                                 bold: true,
-                                size: 28, // 14px
-                            }),
-                            new TextRun({
-                                text: '(Ký và ghi rõ họ tên)\n.........',
-                                italics: true,
-                                size: 28, // 14px
+                                size: 24,
                             }),
                         ],
                     }),
                 ],
+
+
             },
         ],
     });
