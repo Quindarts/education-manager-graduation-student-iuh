@@ -2,7 +2,7 @@ import { MainLayout } from '@/components/shared/layouts/MainLayout';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
 import { AlignmentType, Document, HeightRule, OverlapType, Paragraph, RelativeHorizontalPosition, RelativeVerticalPosition, ShadingType, Table, TableAnchorType, TableCell, TableLayoutType, TableRow, TextRun, VerticalAlign, WidthType } from 'docx';
 
-export defaultgit  function docTranscriptAdvisor(evaluations: any) {
+export default function docTranscriptAdvisor(evaluations: any) {
     const rows = convertRowEvaluations(evaluations);
     const doc = new Document({
         sections: [
