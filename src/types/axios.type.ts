@@ -6,6 +6,7 @@ export default interface ResponseType {
     student: any,
     topic: any,
     term: any,
+    roles: any,
     lecturerTerm: any,
     major: any,
     groupLecturer: any,

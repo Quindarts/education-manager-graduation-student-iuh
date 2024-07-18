@@ -3,6 +3,7 @@ import ModalUpload from '@/components/ui/Upload';
 import ProgressUpload from '@/components/ui/Upload';
 import { useApp } from '@/hooks/api/useApp';
 import { useTopic } from '@/hooks/api/useQueryTopic';
+import { ProtectRouterProps } from '@/routers/ProtectRouter';
 import {
   createTopicByToken,
   getTopicsByLecturerByTerm,
@@ -13,7 +14,9 @@ import { Box, Button, InputLabel, LinearProgress, Paper } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useMutation, useQueries } from 'react-query';
-function ComponentPage() {
+
+function ComponentPage(props: ProtectRouterProps) {
+  const { roles, features } = props;
   // const queries = useQueries([
   //   { queryKey: ['lecturer', 1, 3], queryFn: () => getTopicsByTermByMajor(1, 3) },
   //   { queryKey: ['topics', 20018432, 1], queryFn: () => getTopicsByLecturerByTerm(20018432, 1) },
@@ -47,6 +50,7 @@ function ComponentPage() {
 
   return (
     <Paper elevation={3}>
+      hellowolrd
       {/* <ProgressUpload /> */}
       {/* <Button onClick={handleSubmit}>clickme</Button> */}
     </Paper>

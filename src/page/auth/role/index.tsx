@@ -1,45 +1,35 @@
 import { Box, Paper, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import CardRole from './Card';
 import { EnumRole } from '@/types/enum';
 import { useAuth } from '@/hooks/api/useAuth';
-import Loading from '@/components/ui/Loading';
 import { getValueFromLocalStorage } from '@/utils/localStorage';
 import { Navigate } from 'react-router-dom';
-
-const checkCurrentRole = (role: EnumRole, isAdmin: boolean) => {
-  var numRole = 0;
-  if (isAdmin) {
-    return 3;
-  }
-  switch (role) {
-    case EnumRole.HEAD_LECTURER:
-      numRole = 2;
-      break;
-    case EnumRole.LECTURER:
-      numRole = 1;
-      break;
-    case EnumRole.SUB_HEAD_LECTURER:
-      numRole = 2;
-      break;
-    default:
-      break;
-  }
-  return numRole;
-};
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import { useMajor } from '@/hooks/api/useQueryMajor';
+import { useDispatch } from 'react-redux';
+import { setAllMajor } from '@/store/slice/major.slice';
+import { setAllTerm } from '@/store/slice/term.slice';
 
 const CARD_ROLE_TYPE = [
   {
     icon: 'fluent-mdl2:party-leader',
-    name: 'Trưởng bộ môn',
+    name: 'Chủ nhiệm ngành',
     role: EnumRole.HEAD_LECTURER,
-    numRole: 2,
-    desc: 'Quyền trưởng bộ môn lãnh đạo, quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
+    // numRole: 2,
+    desc: 'Quyền Chủ nhiệm ngành lãnh đạo, quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
+  },
+  {
+    icon: 'ri:admin-line',
+    name: 'Quản trị viên',
+    role: EnumRole.HEAD_COURSE,
+    // numRole: 2,
+    desc: 'Quyền quản trị viên quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
   },
   {
     icon: 'ph:chalkboard-teacher',
     name: 'Giảng viên',
-    numRole: 1,
+    // numRole: 1,
 
     role: EnumRole.LECTURER,
 
@@ -47,18 +37,35 @@ const CARD_ROLE_TYPE = [
   },
   {
     icon: 'grommet-icons:user-admin',
-    name: 'Quản trị viên',
+    name: 'Chủ quản môn học',
     role: EnumRole.ADMIN,
-    numRole: 3,
-    desc: 'Trong hệ thống quản lý khóa luận, quyền admin quản lý người dùng, thiết lập hệ thống, và duy trì hoạt động.',
+    // numRole: 3,
+    desc: 'Trong hệ thống quản lý khóa luận, Chủ quản môn học quản lý người dùng, thiết lập hệ thống, và duy trì hoạt động.',
   },
 ];
 
 function RolePage() {
   const { lecturerStore, handleGetMe } = useAuth();
-  const { isLoading } = handleGetMe();
+  const { isLoading, data, isFetching } = handleGetMe();
+  const { handleGetCurrentTerm } = useTerm();
+  const dispatch = useDispatch();
+
   handleGetMe();
-  const currentRole = checkCurrentRole(lecturerStore.me.role, lecturerStore.me.isAdmin);
+  handleGetCurrentTerm(data?.lecturer.majorId);
+
+  const { handleGetAllMajor } = useMajor();
+  const { handleGetAllTermByMajor } = useTerm();
+  const { data: dataMajorFetch, isSuccess: successMajor } = handleGetAllMajor();
+
+  if(successMajor)
+  dispatch(setAllMajor(dataMajorFetch.majors));
+
+  const { data: dataTermFecth, isSuccess: successTerm } = handleGetAllTermByMajor(
+    data?.lecturer.majorId,
+  );
+  
+  if (successTerm) dispatch(setAllTerm(dataTermFecth.terms));
+
   const accessToken: string = getValueFromLocalStorage('accessToken') || '';
 
   return (
@@ -92,17 +99,16 @@ function RolePage() {
                 gap: 10,
               }}
             >
-              {CARD_ROLE_TYPE.map(
-                (item, key) =>
-                  currentRole >= item.numRole && (
-                    <CardRole
-                      name={item.name}
-                      role={item.role}
-                      desc={item.desc}
-                      icon={item.icon}
-                      key={key}
-                    />
-                  ),
+              {CARD_ROLE_TYPE.filter((item) => lecturerStore.me.roles.includes(item.role)).map(
+                (item, key) => (
+                  <CardRole
+                    name={item.name}
+                    desc={item.desc}
+                    role={item.role}
+                    icon={item.icon}
+                    key={key}
+                  />
+                ),
               )}
             </Box>
           </Paper>

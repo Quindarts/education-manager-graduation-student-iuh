@@ -12,17 +12,22 @@ export interface TermDataRequest {
     name: string;
     startDate: string;
     endDate: string;
+    majorId: string
 }
 
 export const getAllTerm: any = () => {
     return axiosConfig.get("/api/v1/terms");
 }
+export const getAllTermByMajor: any = (majorId: string) => {
+    return axiosConfig.get(`/api/v1/terms/major/${majorId}`);
+}
+
 export const getTermById: any = (id: number) => {
     return axiosConfig.get(`/api/v1/terms/${id}`)
 }
 
-export const getCurrentTerm: any = () => {
-    return axiosConfig.get("/api/v1/terms/now")
+export const getCurrentTerm: any = (majorId: string) => {
+    return axiosConfig.get(`/api/v1/terms/now?majorId=${majorId}`)
 }
 
 
@@ -38,7 +43,7 @@ export const createTerm = (data: TermDataRequest) => {
     return axiosConfig.post(`/api/v1/terms`, data);
 }
 
-export const updateTermById: any = (id: number | string, data: { startDate: string, endDate: string }) =>{
+export const updateTermById: any = (id: number | string, data: { startDate: string, endDate: string }) => {
     return axiosConfig.put(`/api/v1/terms/${id}`, data);
 }
 

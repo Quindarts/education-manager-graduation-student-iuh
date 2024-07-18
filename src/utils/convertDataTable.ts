@@ -4,11 +4,29 @@ import Major from "@/types/entities/major";
 
 export const convertTermDropdown = (terms: Term[]
 ) => {
-    let newTerms: any[] = []
-    terms.map((term: Term) => {
-        newTerms.push({ name: term.name, _id: term.id, })
-    })
+    let newTerms: any[] = [];
+    if (!terms) {
+        newTerms.push({ name: "Chưa có học kì", _id: 0 })
+    }
+    else {
+        terms.map((term: Term) => {
+            newTerms.push({ name: term.name, _id: term.id, })
+        })
+
+    }
     return newTerms
+}
+
+export const convertMajorDropdown = (majors: Major[]
+) => {
+    let newMajors: any[] = []
+    if (!majors) {
+        return []
+    }
+    majors.map((major: Major) => {
+        newMajors.push({ name: major.name, _id: major.id, })
+    })
+    return newMajors
 }
 
 export function convertMajorDropDown(majors: any[]) {

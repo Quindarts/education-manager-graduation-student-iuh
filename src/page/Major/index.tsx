@@ -6,10 +6,16 @@ import React, { useState } from 'react';
 import TableManagementMajor from './Table';
 import { Icon } from '@iconify/react';
 import AddMajorModal from './Modal/AddModal';
+import { useDispatch } from 'react-redux';
+import { setAllMajor } from '@/store/slice/major.slice';
 
 function MajorPage() {
-  const { handleGetAllMajor } = useMajor();
-  const { data, isLoading, isFetching } = handleGetAllMajor();
+  const { handleGetAllMajorsRender } = useMajor();
+  const { data, isLoading,isSuccess, isFetching } = handleGetAllMajorsRender();
+  const dispatch  = useDispatch();
+  if(isSuccess){
+    dispatch(setAllMajor(data.majors))
+  }
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleOpenAddModal = () => {
@@ -23,7 +29,7 @@ function MajorPage() {
       <Paper sx={{ py: 10, px: 10 }} elevation={1}>
         <Box display={'flex'} justifyContent={'space-between'}>
           <TitleManager mb={4} mt={2}>
-            Danh sách Chuyên ngành
+            Danh sách tất cả Chuyên ngành
           </TitleManager>
           <Button onClick={handleOpenAddModal} color='error' variant='contained' size='small'>
             <Icon width={16} icon='material-symbols:add' />
@@ -34,7 +40,7 @@ function MajorPage() {
           <SekeletonUI />
         ) : (
           <Box width={'full'} my={4}>
-            <TableManagementMajor rows={data.majors} />
+            <TableManagementMajor rows={data?.majors} />
           </Box>
         )}
         <>

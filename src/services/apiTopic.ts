@@ -14,7 +14,7 @@ export const getTopicById: any = async (topic_id: string | number) => {
 }
 
 //[HEAD LEC]
-export const getTopicsByTermByMajor: any = async (termId: string | number, majorId: string | number) => {
+export const getTopicsByTermByMajor: any = async (termId: string, majorId: string) => {
     return axiosConfig.get(`/api/v1/topics?termId=${termId}&majorId=${majorId}`)
 }
 
@@ -34,7 +34,7 @@ export const updateTopicById: any = async (topicId: string | number, topic: Topi
 }
 
 //PUT  [HEAD LEC]
-export const updateStatusTopicById: any = async (topicId: string | number, data: { status: string }) => {
+export const updateStatusTopicById: any = async (topicId: string | number, data: { status: string, note: string }) => {
     return axiosConfig.put(`/api/v1/topics/${topicId}/status`, data)
 }
 

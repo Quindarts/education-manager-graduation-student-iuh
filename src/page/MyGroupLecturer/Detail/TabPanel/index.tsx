@@ -16,7 +16,7 @@ function TabPanelUI(props: any) {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const type = groupLecturer.typeGroup;
+  const type = groupLecturer?.typeGroup;
   return (
     <Box sx={{ width: '100%', typography: 'h4' }}>
       <TabContext value={value}>
@@ -133,7 +133,7 @@ function TabPanelUI(props: any) {
           )}
         </TabPanel>
         <TabPanel value={'2'}>
-          <TableManagementGroupLecturer rows={groupLecturer.members} />
+          <TableManagementGroupLecturer rows={groupLecturer?.members} />
         </TabPanel>
       </TabContext>
     </Box>

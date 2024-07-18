@@ -46,11 +46,15 @@ const useGroupStudent = () => {
     }
     //[GET BY TERM]
     const handleGetGroupStudentByLecturerByTerm = (termId?: string,) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerSupport, termStore.currentTerm.id], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id))
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerSupport, termStore.currentTerm.id], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id), {
+            staleTime: 5000
+        })
     }
     //[GET BY ID]
     const handleGetGroupStudentById = (id: number | string) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id))
+        return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id), {
+            staleTime: 1000,
+        })
     }
 
     const onImportGroupStudent = (termId: string) => {

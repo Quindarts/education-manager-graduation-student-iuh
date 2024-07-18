@@ -7,6 +7,7 @@ import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import useDebounce from '@/hooks/ui/useDebounce';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 const DROP_SEARCH_VALUE = [
   {
     _id: 'full_name',
@@ -36,10 +37,12 @@ function HeaderStudent(props: any) {
     setOpenAddModal(true);
   };
   const { termStore } = useTerm();
-
+  const { majorStore } = useMajor();
+  
   const [isLoading, setIsLoading] = useState(isApiLoading);
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue, 500);
+
   return (
     <>
       <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
@@ -76,7 +79,11 @@ function HeaderStudent(props: any) {
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo sinh viên
         </Button>
-        <ModalUpload entityUpload={TypeEntityUpload.STUDENT} termId={termStore.currentTerm.id} />
+        <ModalUpload
+          entityUpload={TypeEntityUpload.STUDENT}
+          majorId={majorStore.currentMajor.id}
+          termId={termStore.currentTerm.id}
+        />
         <Button
           size='small'
           color='warning'

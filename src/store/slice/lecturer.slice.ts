@@ -9,7 +9,10 @@ export enum ENUM_RENDER_LECTURER {
 }
 
 const initLecturerSlice: any = {
-    me: {},
+    me: {
+        user: {},
+        roles: []
+    },
     currentRoleRender: '',
     renderUi: ENUM_RENDER_LECTURER.ALL,
     keywords: '',

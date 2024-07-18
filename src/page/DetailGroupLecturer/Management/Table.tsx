@@ -11,7 +11,6 @@ import LecturerLeaveGroupModal from './Modal/LeaveGroup';
 
 function TableManagementGroupLecturer(props: any) {
   const { rows } = props;
-  console.log('🚀 ~ TableManagementGroupLecturer ~ rows:', rows);
   const { pathname } = useLocation();
   const [isOpenLeaveGroupModal, setIsOpenLeaveGroupModal] = useState({
     isOpen: false,
@@ -28,27 +27,8 @@ function TableManagementGroupLecturer(props: any) {
   const handleCloseLeaveGroupModal = () => {
     setIsOpenLeaveGroupModal((pre) => ({ ...pre, isOpen: false }));
   };
-  const PermissionComponent = currentRole.includes('all') && {
-    headerName: '',
-    field: 'name8',
-    flex: 1,
-    align: 'center',
-    headerAlign: 'center',
-    renderCell: (params: any) => (
-      <Box display={'flex'} gap={2}>
-        <Tooltip title='Mời rời nhóm'>
-          <IconButton
-            size='small'
-            color='primary'
-            onClick={() => handleOpenLeaveGroupModal(params.row.id)}
-          >
-            <Icon icon='pepicons-print:leave-circle' width={20} />
-          </IconButton>
-        </Tooltip>
-      </Box>
-    ),
-  };
-  const basicColumns: GridColDef[] = [
+
+  const LecturerColumns: GridColDef[] = [
     {
       headerName: 'Thông tin chung',
       field: 'name',
@@ -89,7 +69,68 @@ function TableManagementGroupLecturer(props: any) {
         return <Box>{checkDegree(params.row.degree)}</Box>;
       },
     },
-    PermissionComponent,
+  ];
+  const HeadLecturerColumns: GridColDef[] = [
+    {
+      headerName: 'Thông tin chung',
+      field: 'name',
+      flex: 1.5,
+      headerAlign: 'center',
+      renderCell: (params: any) => {
+        return (
+          <Box gap={4} display={'flex'} alignItems={'center'}>
+            <Avatar sizes='small' src={params.row.avatar} />
+            <Box>
+              <Typography fontWeight={600} variant='body1'>
+                {params.row.fullName}
+              </Typography>
+
+              <Typography>
+                Mã SV: {'  '}
+                <Typography component={'span'}>{params.row.username}</Typography>
+              </Typography>
+            </Box>
+          </Box>
+        );
+      },
+    },
+    {
+      headerName: 'Chuyên ngành',
+      field: 'majorName',
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      headerName: 'Trình độ',
+      field: 'degree',
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params: any) => {
+        return <Box>{checkDegree(params.row.degree)}</Box>;
+      },
+    },
+    {
+      headerName: '',
+      field: 'name8',
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params: any) => (
+        <Box display={'flex'} gap={2}>
+          <Tooltip title='Mời rời nhóm'>
+            <IconButton
+              size='small'
+              color='primary'
+              onClick={() => handleOpenLeaveGroupModal(params.row.id)}
+            >
+              <Icon icon='pepicons-print:leave-circle' width={20} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
+    },
   ];
 
   return (
@@ -116,7 +157,7 @@ function TableManagementGroupLecturer(props: any) {
               height: 250,
             }}
             minHeight={250}
-            columns={basicColumns}
+            columns={currentRole.includes('all') ? HeadLecturerColumns : LecturerColumns}
             totalItems={1}
             totalPages={1}
             page={1}

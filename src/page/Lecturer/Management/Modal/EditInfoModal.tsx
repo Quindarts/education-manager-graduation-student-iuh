@@ -33,8 +33,12 @@ const RoleLecturerDrop = [
     name: 'Trưởng bộ môn',
   },
   {
-    _id: EnumRole.SUB_HEAD_LECTURER,
-    name: 'Phó bộ môn',
+    _id: EnumRole.HEAD_COURSE,
+    name: 'Quản trị viên',
+  },
+  {
+    _id: EnumRole.ADMIN,
+    name: 'Chủ quản môn học',
   },
 ];
 
@@ -46,13 +50,12 @@ const DEGREE_DROP_VALUE = [
 function EditInfoModal(props: any) {
   const { onClose, open, lecturerId } = props;
 
-  const { termStore } = useTerm();
-  const { currentTerm } = termStore;
   const { majorStore } = useMajor();
 
   const { handleGetLecturerById, onUpdateLecturer } = useLecturer();
   const { data, isLoading, isFetched } = handleGetLecturerById(lecturerId);
-  const { mutate: updateLecturer, isSuccess } = onUpdateLecturer(lecturerId, currentTerm.id, 20, 1);
+
+  const { mutate: updateLecturer, isSuccess } = onUpdateLecturer(lecturerId);
 
   const handleSubmitEditLecturer = (values: any) => {
     updateLecturer(values);
@@ -63,7 +66,7 @@ function EditInfoModal(props: any) {
   return (
     <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box py={10} px={10}>
-        <TitleManager mb={2} variant='body1' textTransform={'uppercase'}>
+        <TitleManager mb={6} textTransform={'uppercase'}>
           Cập nhật thông tin Giảng viên
         </TitleManager>
         {isLoading && !isFetched ? (
@@ -82,47 +85,22 @@ function EditInfoModal(props: any) {
               email: `${data?.lecturer?.email}`,
               phone: `${data?.lecturer?.phone}`,
               gender: `${data?.lecturer?.gender}`,
-              role: `${data?.lecturer?.role}`,
+              // role: `${data?.lecturer.role}`,
               degree: `${data?.lecturer?.degree}`,
               majorId: `${data?.lecturer?.majorId}`,
             }}
           >
-            {({ values, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
+            {({
+              values,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              errors,
+              setFieldValue,
+            }) => (
               <form onSubmit={handleSubmit}>
-                <Box
-                  mx={'auto'}
-                  position={'relative'}
-                  height={80}
-                  width={80}
-                  mb={3}
-                  sx={{ borderRadius: '50%', bgcolor: '#f3f3f9' }}
-                >
-                  <img style={{ borderRadius: '50%' }} alt='' src={'/'} />
-                  <Box
-                    sx={{
-                      border: '3px solid white',
-                      backgroundColor: 'primary.main',
-                      cursor: 'pointer',
-                    }}
-                    borderRadius={'50%'}
-                    height={32}
-                    width={32}
-                    position={'absolute'}
-                    top={0}
-                    right={'4px'}
-                    color={'white'}
-                    display={'flex'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                  >
-                    <label style={{ cursor: 'pointer' }}>
-                      <Icon icon='heroicons:camera-solid' width={16} />
-                      <input type='file' style={{ display: 'none' }} onChange={(event) => {}} />
-                    </label>
-                  </Box>
-                </Box>
                 <CustomTextField
-                  required
                   value={values.username}
                   name='username'
                   label='Mã giảng viên'
@@ -130,8 +108,8 @@ function EditInfoModal(props: any) {
                   disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.username ? true : false}
-                  helperText={errors.username}
+                  error={errors.username && touched.username ? true : false}
+                  helperText={`${errors.username && touched.username ? errors.username : ''}`}
                 />
                 <Box display={'flex'} gap={10} mt={8}>
                   <Box width={'100%'}>
@@ -143,8 +121,8 @@ function EditInfoModal(props: any) {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder='Họ và tên'
-                      error={errors.fullName ? true : false}
-                      helperText={errors.fullName}
+                      error={errors.fullName && touched.fullName ? true : false}
+                      helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
                     />
                   </Box>
                   <Box width={200}>
@@ -167,8 +145,8 @@ function EditInfoModal(props: any) {
                   placeholder='Nhập vào số điện thoại'
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.phone ? true : false}
-                  helperText={errors.phone}
+                  error={errors.phone && touched.phone ? true : false}
+                  helperText={`${errors.phone && touched.phone ? errors.phone : ''}`}
                 />
                 <CustomTextField
                   required
@@ -178,8 +156,8 @@ function EditInfoModal(props: any) {
                   placeholder='Nhập vào email'
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.email ? true : false}
-                  helperText={errors.email}
+                  error={errors.email && touched.email ? true : false}
+                  helperText={`${errors.email && touched.email ? errors.email : ''}`}
                 />
                 <Box mt={8} width={'full'}>
                   <DropDown
@@ -192,7 +170,7 @@ function EditInfoModal(props: any) {
                   />
                 </Box>{' '}
                 <Box mt={8} width={'full'}>
-                  <DropDown
+                  {/* <DropDown
                     value={`${values.role}`}
                     disabled
                     onChange={(e) => {
@@ -200,7 +178,7 @@ function EditInfoModal(props: any) {
                     }}
                     label='Vai trò'
                     options={RoleLecturerDrop}
-                  />
+                  /> */}
                 </Box>
                 <Box mt={8} width={'full'}>
                   <DropDown

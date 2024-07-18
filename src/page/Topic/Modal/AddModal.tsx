@@ -9,19 +9,14 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validationTopicSchema } from '../Context';
 import { useTopic } from '@/hooks/api/useQueryTopic';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 
 function AddModal(props: any) {
   const { onClose, open } = props;
   const {} = useTopic();
-
   const { lecturerStore } = useAuth();
-  const { termStore } = useTerm();
   const { onCreateTopicByToken, handleUiRender } = useTopic();
-  const { mutate: createTopic, isSuccess: successCreate } = onCreateTopicByToken(
-    termStore.currentTerm.id,
-    'e4fe02cb-f2b0-4afa-885d-d1b93130d350',
-  );
+  const { mutate: createTopic, isSuccess: successCreate } = onCreateTopicByToken();
+
   const handleSubmit = (values: any) => {
     createTopic(values);
   };
@@ -58,14 +53,14 @@ function AddModal(props: any) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={errors.name && touched.name ? true : false}
-                helperText={errors.name}
+                helperText={errors.name && touched.name ? errors.name : ''}
                 required
                 label='Tên đề tài'
                 name='name'
                 placeholder='Tên đề tài'
               />
               <CustomTextField
-                value={`${lecturerStore.me.fullName}`}
+                value={`${lecturerStore.me.user.fullName}`}
                 required
                 disabled
                 label='Giảng viên hướng dẫn'
@@ -80,59 +75,67 @@ function AddModal(props: any) {
                   value={values.quantityGroupMax}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.quantityGroupMax ? true : false}
-                  helperText={errors.quantityGroupMax}
+                  error={errors.quantityGroupMax && touched.quantityGroupMax ? true : false}
+                  helperText={
+                    errors.quantityGroupMax && touched.quantityGroupMax
+                      ? errors.quantityGroupMax
+                      : ''
+                  }
                 />
               )}
               <Box my={4}>
                 <TextEditor
                   label='Mô tả'
-                  errors={errors.description ? true : false}
+                  errors={errors.description && touched.description ? true : false}
                   value={values.description}
                   onChange={(value) => {
                     setFieldValue('description', value);
                   }}
                   id='description'
-                  helperText={errors.description}
+                  helperText={errors.description && touched.description ? errors.description : ''}
                   placeholder='Nhập vào mô tả đề tài'
                 />
               </Box>
               <Box my={4}>
                 <TextEditor
                   label='Mục tiêu đề tài'
-                  errors={errors.target ? true : false}
+                  errors={errors.target && touched.target ? true : false}
                   value={values.target}
                   onChange={(value) => {
                     setFieldValue('target', value);
                   }}
                   id='target'
-                  helperText={errors.target}
+                  helperText={errors.target && touched.target ? errors.target : ''}
                   placeholder='Nhập vào mục tiêu đề tài'
                 />
               </Box>{' '}
               <Box my={4}>
                 <TextEditor
                   label='Yêu cầu đầu vào'
-                  errors={errors.requireInput ? true : false}
+                  errors={errors.requireInput && touched.requireInput ? true : false}
                   value={values.requireInput}
                   onChange={(value) => {
                     setFieldValue('requireInput', value);
                   }}
                   id='requireInput'
-                  helperText={errors.requireInput}
+                  helperText={
+                    errors.requireInput && touched.requireInput ? errors.requireInput : ''
+                  }
                   placeholder='Nhập vào yêu cầu đầu vào'
                 />
               </Box>
               <Box my={4}>
                 <TextEditor
                   label='Chuẩn đầu ra'
-                  errors={errors.standardOutput ? true : false}
+                  errors={errors.standardOutput && touched.standardOutput ? true : false}
                   value={values.standardOutput}
                   onChange={(value) => {
                     setFieldValue('standardOutput', value);
                   }}
                   id='standardOutput'
-                  helperText={errors.standardOutput}
+                  helperText={
+                    errors.standardOutput && touched.standardOutput ? errors.standardOutput : ''
+                  }
                   placeholder='Nhập vào chuẩn đầu ra'
                 />
               </Box>

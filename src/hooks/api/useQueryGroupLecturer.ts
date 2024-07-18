@@ -49,7 +49,7 @@ export const useGroupLecturer = () => {
 
     const handleGetGroupLecturerByLecturerId = (type: string) => {
         const termId = termStore.currentTerm.id
-        const lecturerId = lecturerStore.me.id
+        const lecturerId = lecturerStore.me.user.id
         return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, type, termId, lecturerId], () => getGroupLecturerByLecturerId(type, termId, lecturerId))
     }
 

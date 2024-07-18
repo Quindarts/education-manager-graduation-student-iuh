@@ -7,12 +7,15 @@ import { useStudent } from '@/hooks/api/useQueryStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { ENUM_RENDER_STUDENT } from '@/store/slice/student.slice';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 
 function StudentPage() {
-  const { handleGetAllStudent, handleManagerRenderActionStudent, params } = useStudent();
+  const { handleGetAllStudent, params } = useStudent();
+
   const [typeRender, setTypeRender] = useState(ENUM_RENDER_STUDENT.ALL);
 
   const { termStore } = useTerm();
+  const { majorStore } = useMajor();
 
   const [currentLimit, setCurrentLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(params.page);
@@ -21,13 +24,11 @@ function StudentPage() {
   const [typeSearch, setTypeSearch] = useState<'full_name' | 'username' | 'phone' | 'email'>(
     'full_name',
   );
-  const { data, isLoading, isFetching } = handleManagerRenderActionStudent(
+  const { data, isLoading, isFetching } = handleGetAllStudent(
     termStore.currentTerm.id,
-    currentLimit,
+    majorStore.currentMajor.id,
+    10,
     currentPage,
-    typeSearch,
-    keywords,
-    typeRender,
   );
   useEffect(() => {
     if (keywords !== '') setTypeRender(ENUM_RENDER_STUDENT.SEARCH);
@@ -48,7 +49,7 @@ function StudentPage() {
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager icon='quill:list' mb={8} mt={2}>
-        Danh sách sinh viên
+        Danh sách sinh viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
       </TitleManager>
       <HeaderStudent
         typeSearch={typeSearch}

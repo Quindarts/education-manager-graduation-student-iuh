@@ -10,6 +10,7 @@ import { useSelector } from "react-redux"
 import { useTerm } from "./useQueryTerm"
 import { useAuth } from "./useAuth"
 import { RoleCheck } from "@/types/enum"
+import { useMajor } from "./useQueryMajor"
 
 export enum QueryTopic {
     //HEAD LECTURER
@@ -25,7 +26,9 @@ export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
     const topicStore = useSelector((state: any) => state.topicSlice)
     const dispatch = useDispatch()
+
     const { termStore } = useTerm()
+    const { majorStore } = useMajor()
     const { lecturerStore } = useAuth()
 
     const handleUiRender = (): string[] => {
@@ -50,32 +53,28 @@ export const useTopic = () => {
     }
 
     //[GET BY TERM, MAJOR]
-    const handleTopicsByTermByMajor = (termId: string | number, majorId: string | number, typeRender: ENUM_RENDER_TOPIC, limit: number, page: number) => {
-        return useQuery([QueryTopic.getAllTopicByTermMajor, termId, majorId], () => getTopicsByTermByMajor(termId, majorId), {
-            staleTime: 1000,
-            onSuccess(data) {
-                // dispatch(setParams(data.params))
+    const handleTopicsByTermByMajor = (typeRender: ENUM_RENDER_TOPIC, limit: number, page: number) => {
+        return useQuery([QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id], () => getTopicsByTermByMajor(termStore.currentTerm.id, majorStore.currentMajor.id), {
+            staleTime: Infinity,
+        })
+    }
+
+    //[GET BY TERM, LECTURER]
+    const handleTopicsByLecturerByTerm = () => {
+        return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id], () => getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
+            staleTime: Infinity, onSuccess(data) {
+                dispatch(setParams(data.params))
                 // dispatch(setTypeRender(typeRender))
             }
         })
     }
 
-    //[GET BY TERM, LECTURER]
-    const handleTopicsByLecturerByTerm = (lecturerId?: string | number, termId?: string | number, typeRender: string) => {
-        return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.id, termStore.currentTerm.id, typeRender], () => getTopicsByLecturerByTerm(lecturerStore.me.id, termStore.currentTerm.id), {
-            staleTime: 10000, onSuccess(data) {
-                dispatch(setParams(data.params))
-                dispatch(setTypeRender(typeRender))
-            }
-        })
-    }
-
     //[CREATE]
-    const onCreateTopicByToken = (termId: string | number, majorId: string | number) => {
-        return useMutation((newTopic: any) => createTopicByToken(newTopic, termId), {
+    const onCreateTopicByToken = () => {
+        return useMutation((newTopic: any) => createTopicByToken(newTopic), {
             onSuccess(data, variables) {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, majorId] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
             },
             onError(error) {
                 enqueueSnackbar("Tạo đề tài thất bại", { variant: 'error' })
@@ -86,11 +85,10 @@ export const useTopic = () => {
 
     //[UPDATE]
     const onUpdateTopicById = (topicId: string | number, majorId?: number, termId?: number) => {
-
         return useMutation((updateTopic: any) => updateTopicById(topicId, updateTopic), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
             },
             onError(error) {
                 enqueueSnackbar("Cập nhật tài thất bại vui lòng thử lại sau", { variant: 'error' })
@@ -100,11 +98,11 @@ export const useTopic = () => {
 
     //[UPDATE STATUS]
     const onUpdateStatusTopic = (topicId: string | number, majorId?: number, termId?: number) => {
-        return useMutation((status: any) => updateStatusTopicById(topicId, status),
+        return useMutation((data: any) => updateStatusTopicById(topicId, data),
             {
                 onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, majorId] });
+                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] });
                 },
                 onError(error) {
@@ -119,6 +117,7 @@ export const useTopic = () => {
         return useMutation((topicId: number | string) => deleteTopicById(topicId), {
             onSuccess(data, variables, context) {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
             },
             onError(error) {
                 enqueueSnackbar("Xóa đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
@@ -127,6 +126,7 @@ export const useTopic = () => {
     }
 
     return {
+        topicStore,
         handleTopicsByTermByMajor,
         handleTopicsByLecturerByTerm,
         handleUiRender,

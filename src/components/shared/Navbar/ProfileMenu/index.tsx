@@ -126,7 +126,7 @@ function ProfileMenu() {
         }}
       >
         <Typography color='grey.700' variant='h6' fontWeight={600}>
-          {lecturerStore['me'].fullName}
+          {lecturerStore['me'].user.fullName}
         </Typography>
         <Typography color='grey.600' variant='body2' fontWeight={600}>
           {checkRoleLecturer(lecturerStore['currentRoleRender'])}

@@ -11,7 +11,8 @@ import { queryClient } from '@/providers/ReactQueryClientProvider';
 
 export enum QueryKeysMajor {
     getAllMajor = 'getAllMajor',
-    getMajorById = 'getMajorById'
+    getMajorById = 'getMajorById',
+    getMajorsRender = "getMajorsRender"
 }
 
 export const useMajor = () => {
@@ -19,6 +20,14 @@ export const useMajor = () => {
     const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar()
 
+    //[GET RENDER]
+    const handleGetAllMajorsRender = () => {
+        return useQuery([QueryKeysMajor.getAllMajor], () => getAllMajor(), {
+            onSuccess(data: any) {
+                dispatch(setAllMajor(data.majors))
+            }
+        })
+    }
     //[GET ALL]
     const handleGetAllMajor = () => {
         return useQuery([QueryKeysMajor.getAllMajor], () => getAllMajor(), {
@@ -85,6 +94,7 @@ export const useMajor = () => {
     }
     return {
         handleGetAllMajor,
+        handleGetAllMajorsRender,
         handleGetMajorById,
         onCreateMajor,
         onUpdateMajor,

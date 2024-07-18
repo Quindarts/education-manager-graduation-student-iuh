@@ -6,17 +6,12 @@ import TitleManager from '@/components/ui/Title';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import { ENUM_RENDER_TOPIC } from '@/store/slice/topic.slice';
 
 function TopicPage() {
   const { handleTopicsByTermByMajor } = useTopic();
   const { termStore } = useTerm();
-  const { data, isLoading, isFetching } = handleTopicsByTermByMajor(
-    termStore.currentTerm.id,
-    'e4fe02cb-f2b0-4afa-885d-d1b93130d350',
-    'all',
-    10,
-    1,
-  );
+  const { data, isLoading, isFetching } = handleTopicsByTermByMajor(ENUM_RENDER_TOPIC.ALL, 10, 1);
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager icon='quill:list' mb={8} mt={2}>

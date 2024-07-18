@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TableManagamentLecturer from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderLecturer from './Header';
@@ -7,9 +7,11 @@ import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { convertLecturer } from '@/utils/convertDataTable';
 import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 
 function LecturerManagementPage() {
   const { handleManagerRenderActionLecturer, params } = useLecturer();
+  const { majorStore } = useMajor();
   const [currentLimit, setCurrentLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(params?.page);
   const [keywords, setKeywords] = useState('');
@@ -39,7 +41,7 @@ function LecturerManagementPage() {
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager mb={8} mt={2}>
-        Danh sách giảng viên
+        Danh sách giảng viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
       </TitleManager>
       <>
         <HeaderLecturer

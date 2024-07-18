@@ -33,8 +33,12 @@ const RoleLecturerDrop = [
     name: 'Trưởng bộ môn',
   },
   {
-    _id: EnumRole.SUB_HEAD_LECTURER,
-    name: 'Phó bộ môn',
+    _id: EnumRole.HEAD_COURSE,
+    name: 'Quản trị viên',
+  },
+  {
+    _id: EnumRole.ADMIN,
+    name: 'Chủ quản môn học',
   },
 ];
 
@@ -64,7 +68,7 @@ function AddLecturerModal(props: any) {
       majorId: values.majorId,
       termId: currentTerm.id,
     };
-    alert('hi')
+    alert('hi');
     createLecturer(dataSend);
   };
   useEffect(() => {
@@ -73,7 +77,7 @@ function AddLecturerModal(props: any) {
   return (
     <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box py={10} px={10}>
-        <TitleManager mb={2} variant='h5' textTransform={'uppercase'}>
+        <TitleManager mb={8} variant='h5' textTransform={'uppercase'}>
           Tạo thông tin Giảng viên
         </TitleManager>
 
@@ -90,12 +94,12 @@ function AddLecturerModal(props: any) {
             gender: EnumGender.MALE,
             role: '',
             degree: DEGREE_DROP_VALUE[0]?._id,
-            majorId: ``,
+            majorId: `${majorStore.currentMajor.id}`,
           }}
         >
-          {({ values, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
+          {({ values, touched, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              <Box
+              {/* <Box
                 mx={'auto'}
                 position={'relative'}
                 height={80}
@@ -126,7 +130,7 @@ function AddLecturerModal(props: any) {
                     <input type='file' style={{ display: 'none' }} onChange={(event) => {}} />
                   </label>
                 </Box>
-              </Box>
+              </Box> */}
               <CustomTextField
                 required
                 value={values.username}
@@ -135,8 +139,8 @@ function AddLecturerModal(props: any) {
                 placeholder='Mã Giảng viên'
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.username ? true : false}
-                helperText={errors.username}
+                error={errors.username && touched.username ? true : false}
+                helperText={errors.username && touched.username ? errors.username : ''}
               />
               <Box display={'flex'} gap={10} mt={8}>
                 <Box width={'100%'}>
@@ -148,8 +152,8 @@ function AddLecturerModal(props: any) {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder='Họ và tên'
-                    error={errors.fullName ? true : false}
-                    helperText={errors.fullName}
+                    error={errors.fullName && touched.fullName ? true : false}
+                    helperText={errors.fullName && touched.fullName ? errors.fullName : ''}
                   />
                 </Box>
                 <Box width={200}>
@@ -172,8 +176,8 @@ function AddLecturerModal(props: any) {
                 placeholder='Nhập vào số điện thoại'
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.phone ? true : false}
-                helperText={errors.phone}
+                error={errors.phone && touched.phone ? true : false}
+                helperText={errors.phone && touched.phone ? errors.phone : ''}
               />
               <CustomTextField
                 required
@@ -183,27 +187,28 @@ function AddLecturerModal(props: any) {
                 placeholder='Nhập vào email'
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.email ? true : false}
-                helperText={errors.email}
+                error={errors.email && touched.email ? true : false}
+                helperText={errors.email && touched.email ? errors.email : ''}
               />
               <Box mt={8} width={'full'}>
                 <DropDown
                   label='Chuyên ngành'
-                  value={values.majorId}
+                  value={majorStore.currentMajor.id}
+                  disabled={true}
                   onChange={(e) => {
                     setFieldValue('majorId', e.target.value);
                   }}
                   options={convertMajorDropDown(majorStore.allMajor)}
                 />
               </Box>{' '}
-              <Box mt={8} width={'full'}>
+              {/* <Box mt={8} width={'full'}>
                 <DropDown
                   value={`${EnumRole.LECTURER}`}
                   disabled
                   label='Vai trò'
                   options={RoleLecturerDrop}
                 />
-              </Box>
+              </Box> */}
               <Box mt={8} width={'full'}>
                 <DropDown
                   label='Trình độ'

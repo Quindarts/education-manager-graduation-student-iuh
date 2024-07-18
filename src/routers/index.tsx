@@ -86,13 +86,16 @@ function Routing() {
             path={APP_ROUTES.NOTIFICATION.MANAGEMENT}
             element={<NotificationManagementPage />}
           />
-          <Route path={'/componentpage'} element={<ComponentPage />} />
           //ROUTE SCORE_STUDENT
           <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentPage />} />
           {/* <Route path={APP_ROUTES.ROLE.ALL} element={<RolePage />} /> */}
           {/* <Route path={APP_ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
           <Route path={APP_ROUTES.SUCCESS_MESSAGE} element={<SuccessMessagePage />} /> */}
         </Route>
+        <Route
+          path={'/componentpage'}
+          element={<ComponentPage features={['']} roles={['hello']} />}
+        />
         <Route path='/auth' element={<AuthLayout />}>
           <Route index path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
           <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />

@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { validationTermSchema } from '../context';
 import dayjs from 'dayjs';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 
 const calculateEndDate = (date: null | string) => {
   if (date !== null) {
@@ -24,15 +25,16 @@ const calculateEndDate = (date: null | string) => {
 function AddModal(props: any) {
   const { onClose, open } = props;
   const { onCreateTerm } = useTerm();
-  const [clearedStartDate, setClearedStartDate] = useState<boolean>(false);
-
   const { mutate: createTerm, isLoading, isSuccess } = onCreateTerm();
+  const { majorStore } = useMajor();
   const handleSubmitTerm = (values: any) => {
     const data: TermDataRequest = {
       name: values.name,
+      majorId: values.majorId,
       startDate: formatDates(values.startDate),
       endDate: formatDates(values.endDate),
     };
+
     createTerm(data);
   };
   useEffect(() => {
@@ -54,6 +56,7 @@ function AddModal(props: any) {
             onSubmit={(values, actions) => handleSubmitTerm(values)}
             initialValues={{
               name: '',
+              majorId: majorStore.currentMajor.id,
               startDate: null,
               endDate: null,
             }}
@@ -78,6 +81,15 @@ function AddModal(props: any) {
                   helperText={errors.name}
                   name='name'
                   placeholder='Ví dụ hợp lệ: HK1_2023-2024'
+                />
+                <CustomTextField
+                  label='Chuyên ngành'
+                  required={true}
+                  value={majorStore.currentMajor.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled
+                  name='name'
                 />
                 <Box gap={10} display={'flex'} mt={6}>
                   <Box flex={1}>

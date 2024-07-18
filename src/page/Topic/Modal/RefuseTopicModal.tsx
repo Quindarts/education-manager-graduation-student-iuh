@@ -1,23 +1,29 @@
+import CustomTextField from '@/components/ui/CustomTextField';
 import Modal from '@/components/ui/Modal';
 import { useAuth } from '@/hooks/api/useAuth';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
+import { useState } from 'react';
 
 function RefuseTopicModal(props: any) {
-  const { onClose, open, topic_id } = props;
+  const { onClose, open, topicId } = props;
   const { onUpdateStatusTopic } = useTopic();
   const { lecturerStore } = useAuth();
   const { termStore } = useTerm();
+  const [note, setNote] = useState(
+    'Xin lỗi, đề tài của bạn không đủ điều kiện để được phép duyệt.',
+  );
+
   const { mutate: updateAcceptTopic } = onUpdateStatusTopic(
-    topic_id,
+    topicId,
     lecturerStore.me.majorId,
     termStore.currentTerm.id,
   );
 
   const handleSubmit = () => {
-    updateAcceptTopic({ status: 'REJECTED' });
+    updateAcceptTopic({ status: 'REJECTED', note: note });
     onClose();
   };
   return (
@@ -37,6 +43,16 @@ function RefuseTopicModal(props: any) {
         <Typography variant='h3' mt={10} mb={14}>
           Bạn có chắc chắn từ chối đề tài này ?
         </Typography>
+        <Box width={'100%'}>
+          <CustomTextField
+            placeholder='Lí do từ chối đề tài'
+            onChange={(e) => setNote(e.target.value)}
+            value={note}
+            label='Lý do từ chối'
+            multiline
+            rows={4}
+          />
+        </Box>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
           <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>
             <Icon width={20} style={{ marginRight: 4 }} icon='mdi:cancel-outline' />

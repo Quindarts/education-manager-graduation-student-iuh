@@ -11,9 +11,9 @@ import { useFormik } from 'formik';
 import React from 'react';
 
 function InfoModal(props: any) {
-  const { onClose, open, topic_id } = props;
+  const { onClose, open, topicId } = props;
   const { handleTopicById } = useTopic();
-  const { data, isLoading } = handleTopicById(topic_id);
+  const { data, isLoading } = handleTopicById(topicId);
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values: any) => {

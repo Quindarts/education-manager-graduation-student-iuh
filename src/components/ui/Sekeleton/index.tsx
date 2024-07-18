@@ -7,6 +7,7 @@ function SekeletonUI() {
       <LinearProgress />
       <Skeleton sx={{ bgColor: 'primary.main' }} width={'full'} height={100} />
       <Skeleton width={'full'} height={100} />
+      <Skeleton width={'full'} height={100} />
       <Skeleton width={'full'} height={200} />
     </>
   );

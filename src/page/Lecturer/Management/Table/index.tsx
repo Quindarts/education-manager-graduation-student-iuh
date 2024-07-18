@@ -14,7 +14,7 @@ function TableManagamentLecturer(props: any) {
   const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
   const navigate = useNavigate();
   const { onImportLecturerTerm } = useLecturer();
-  const { mutate: importLecturer } = onImportLecturerTerm(currentTermId);
+  const { mutate: importLecturer } = onImportLecturerTerm();
 
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
 
@@ -40,19 +40,47 @@ function TableManagamentLecturer(props: any) {
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Tên giảng viên',
-      field: 'fullName',
-      flex: 1,
+      headerName: 'Mã Giảng Viên',
+      field: 'username',
+      flex: 0.6,
       headerAlign: 'center',
       align: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' fontWeight={600} color='primary'>
+            {params.row.username}
+          </Typography>
+        );
+      },
     },
     {
-      headerName: 'Mã giảng viên',
-      field: 'username',
-      flex: 1,
+      headerName: 'Họ & Tên đệm',
+      field: 'firstName',
+      flex: 0.7,
+      headerAlign: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
+          </Typography>
+        );
+      },
+    },
+    {
+      headerName: 'Tên',
+      field: 'lastname',
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {params.row.fullName.trim().split(' ').pop()}
+          </Typography>
+        );
+      },
     },
+
     {
       headerName: 'Giới tính',
       field: 'gender',
@@ -63,16 +91,16 @@ function TableManagamentLecturer(props: any) {
         return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
       },
     },
-    {
-      headerName: 'Cấp bậc',
-      field: 'role',
-      flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkRoleLecturer(params.row.role)}</Typography>;
-      },
-    },
+    // {
+    //   headerName: 'Cấp bậc',
+    //   field: 'role',
+    //   flex: 0.5,
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   renderCell: (params: any) => {
+    //     return <Typography variant='body1'>{checkRoleLecturer(params.row.role)}</Typography>;
+    //   },
+    // },
     {
       headerName: 'SĐT',
       field: 'phone',
@@ -157,10 +185,14 @@ function TableManagamentLecturer(props: any) {
           disableColumnSelector
           minHeight={400}
           noData={
-            <Button color='primary' variant='contained' onClick={handleImport}>
-              <Icon icon='fe:import' />
-              Tải dữ liệu giảng viên lên học kì mới.
-            </Button>
+            rows.length <= 0 ? (
+              <Button color='primary' variant='contained' onClick={handleImport}>
+                <Icon icon='fe:import' />
+                Tải dữ liệu giảng viên lên học kì mới.
+              </Button>
+            ) : (
+              <></>
+            )
           }
         />
       </Box>

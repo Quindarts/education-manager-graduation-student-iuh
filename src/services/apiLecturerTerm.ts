@@ -1,5 +1,10 @@
 import axiosConfig from './axiosConfig'; // Make sure to adjust the import according to your project structure
 
+//[GET LIST Major]
+export const getListLecturerTermByMajor: any = async (termId: string, majorId: string) => {
+    return axiosConfig.get(`api/v1/lecturer-terms/list?termId=${termId}&majorId=${majorId}`);
+}
+
 
 //[GET LIST]
 export const getListLecturerTerm: any = async (termId: string) => {
@@ -18,6 +23,6 @@ export const deleteLecturerTermById: any = async (lecturerId: string, termId: st
     return axiosConfig.delete(`/api/v1/lecturer-terms?lecturerId=${lecturerId}&termId=${termId}`);
 }
 
-export const importLecturerTerm: any = async (termId: number | string) => {
-    return axiosConfig.post(`/api/v1/lecturer-terms/import`, { termId: termId })
+export const importLecturerTerm: any = async (termId: string, majorId: string) => {
+    return axiosConfig.post(`/api/v1/lecturer-terms/import`, { termId: termId, majorId: majorId })
 }

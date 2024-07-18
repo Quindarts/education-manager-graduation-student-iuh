@@ -37,12 +37,7 @@ function EditInfoModal(props: any) {
 
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
-  const { mutate: upDateStudent, isSuccess } = onUpdateStudent(
-    studentId,
-    termStore.currentTerm.id,
-    20,
-    1,
-  );
+  const { mutate: upDateStudent, isSuccess } = onUpdateStudent(studentId);
 
   const handleSubmitStudent = (values: any) => {
     upDateStudent(values);
@@ -77,60 +72,38 @@ function EditInfoModal(props: any) {
             }}
             onSubmit={(values: any) => handleSubmitStudent(values)}
           >
-            {({ values, errors, handleSubmit, handleChange, handleBlur, setFieldValue }) => (
+            {({
+              values,
+              errors,
+              touched,
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+            }) => (
               <form onSubmit={handleSubmit}>
-                {/* <Box
-                  mx={'auto'}
-                  position={'relative'}
-                  height={80}
-                  width={80}
-                  mb={3}
-                  sx={{ borderRadius: '50%', bgcolor: '#f3f3f9' }}
-                >
-                  <img style={{ borderRadius: '50%' }} alt='' src={'/'} />
-                  <Box
-                    sx={{
-                      border: '3px solid white',
-                      backgroundColor: 'primary.main',
-                      cursor: 'pointer',
-                    }}
-                    borderRadius={'50%'}
-                    height={32}
-                    width={32}
-                    position={'absolute'}
-                    top={0}
-                    right={'4px'}
-                    color={'white'}
-                    display={'flex'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                  >
-                    <label style={{ cursor: 'pointer' }}>
-                      <Icon icon='heroicons:camera-solid' width={16} />
-                      <input type='file' style={{ display: 'none' }} onChange={(event) => {}} />
-                    </label>
-                  </Box>
-                </Box> */}
                 <CustomTextField
                   label='Mã sinh viên'
                   name='username'
+                  required
                   value={values.username}
                   placeholder='Ví dụ: 20189141'
                   disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.username ? true : false}
-                  helperText={errors.username}
+                  error={errors.username && touched.username ? true : false}
+                  helperText={`${errors.username && touched.username ? errors.username : ''}`}
                 />
                 <CustomTextField
                   value={values.fullName}
                   name='fullName'
                   label='Họ và tên'
+                  required
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder='Họ và tên'
-                  error={errors.fullName ? true : false}
-                  helperText={errors.fullName}
+                  error={errors.fullName && touched.fullName ? true : false}
+                  helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
                 />
                 <Box display={'flex'} gap={8} alignContent={'center'}>
                   <Box width={'50%'}>
@@ -144,46 +117,40 @@ function EditInfoModal(props: any) {
                       options={GenderStudent}
                     />
                   </Box>
-                  <Calendar
-                    onChange={(value) => {
-                      setFieldValue('dateOfBirth', value);
-                    }}
-                    format='DD/MM/YYYY'
-                    name='dateOfBirth'
-                    value={values.dateOfBirth}
-                    sx={{ width: '100%', mb: 8 }}
-                    label='Ngày sinh'
+                  <CustomTextField
+                    value={values.clazzName}
+                    name='clazzName'
+                    label='Lớp danh nghĩa'
+                    required
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder='Ví dụ: DHKTPM17C'
+                    error={errors.clazzName && touched.clazzName ? true : false}
+                    helperText={`${errors.clazzName && touched.clazzName ? errors.clazzName : ''}`}
                   />
                 </Box>
-                <CustomTextField
-                  value={values.clazzName}
-                  name='clazzName'
-                  label='Lớp danh nghĩa'
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder='Ví dụ: DHKTPM17C'
-                  error={errors.clazzName ? true : false}
-                  helperText={errors.clazzName}
-                />
+
                 <CustomTextField
                   value={values.email}
                   name='email'
                   label='Email'
+                  required
                   placeholder='Nhập vào email'
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.email ? true : false}
-                  helperText={errors.email}
+                  error={errors.email && touched.email ? true : false}
+                  helperText={`${errors.email && touched.email ? errors.email : ''}`}
                 />
                 <CustomTextField
                   name='phone'
                   value={values.phone}
                   label='Số điện thoại'
+                  required
                   placeholder='Nhập vào số điện thoại'
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.phone ? true : false}
-                  helperText={errors.phone}
+                  error={errors.phone && touched.phone ? true : false}
+                  helperText={`${errors.phone && touched.phone ? errors.phone : ''}`}
                 />
                 <Box sx={{ mb: 8 }}>
                   <DropDown

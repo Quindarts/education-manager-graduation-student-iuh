@@ -4,7 +4,7 @@ import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validateSchemaStudent } from '../Context';
@@ -62,48 +62,15 @@ function AddModal(props: any) {
             fullName: '',
             email: '',
             phone: '',
-            dateOfBirth: null,
-            clazzName: '',
+            clazzName: 'DH',
             gender: '',
-            majorId: '',
-            typeTraining: '',
+            majorId: `${majorStore.currentMajor.id}`,
+            typeTraining: 'UNIVERSITY',
           }}
           onSubmit={(values: any) => handleSubmitStudent(values)}
         >
-          {({ values, errors, handleSubmit, handleChange, handleBlur, setFieldValue }) => (
+          {({ values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              {/* <Box
-                mx={'auto'}
-                position={'relative'}
-                height={80}
-                width={80}
-                mb={3}
-                sx={{ borderRadius: '50%', bgcolor: '#f3f3f9' }}
-              >
-                <img style={{ borderRadius: '50%' }} alt='' src={'/'} />
-                <Box
-                  sx={{
-                    border: '3px solid white',
-                    backgroundColor: 'primary.main',
-                    cursor: 'pointer',
-                  }}
-                  borderRadius={'50%'}
-                  height={32}
-                  width={32}
-                  position={'absolute'}
-                  top={0}
-                  right={'4px'}
-                  color={'white'}
-                  display={'flex'}
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                >
-                  <label style={{ cursor: 'pointer' }}>
-                    <Icon icon='heroicons:camera-solid' width={16} />
-                    <input type='file' style={{ display: 'none' }} onChange={(event) => {}} />
-                  </label>
-                </Box>
-              </Box> */}
               <CustomTextField
                 label='Mã sinh viên'
                 name='username'
@@ -111,8 +78,8 @@ function AddModal(props: any) {
                 placeholder='Ví dụ: 21089141'
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.username ? true : false}
-                helperText={`${errors.username ? errors.username : ''}`}
+                error={errors.username && touched.username ? true : false}
+                helperText={`${errors.username && touched.username ? errors.username : ''}`}
               />
               <CustomTextField
                 value={values.fullName}
@@ -121,8 +88,8 @@ function AddModal(props: any) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder='Họ và tên'
-                error={errors.fullName ? true : false}
-                helperText={`${errors.fullName ? errors.fullName : ''}`}
+                error={errors.fullName && touched.fullName ? true : false}
+                helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
               />
               <Box display={'flex'} gap={8} alignContent={'center'}>
                 <Box width={'50%'}>
@@ -136,27 +103,18 @@ function AddModal(props: any) {
                     options={GenderStudent}
                   />
                 </Box>
-                <Calendar
-                  onChange={(value) => {
-                    setFieldValue('dateOfBirth', value);
-                  }}
-                  format='DD/MM/YYYY'
-                  name='dateOfBirth'
-                  value={values.dateOfBirth}
-                  sx={{ width: '100%', mb: 8 }}
-                  label='Ngày sinh'
+                <CustomTextField
+                  value={values.clazzName}
+                  name='clazzName'
+                  label='Lớp danh nghĩa'
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder='Ví dụ: DHKTPM17C'
+                  error={errors.clazzName && touched.clazzName ? true : false}
+                  helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
                 />
               </Box>
-              <CustomTextField
-                value={values.clazzName}
-                name='clazzName'
-                label='Lớp danh nghĩa'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder='Ví dụ: DHKTPM17C'
-                error={errors.clazzName ? true : false}
-                helperText={`${errors.clazzName ? errors.clazzName : ''}`}
-              />
+
               <CustomTextField
                 value={values.email}
                 name='email'
@@ -174,12 +132,13 @@ function AddModal(props: any) {
                 placeholder='Nhập vào số điện thoại'
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.phone ? true : false}
-                helperText={`${errors.phone ? errors.phone : ''}`}
+                error={errors.phone && touched.phone ? true : false}
+                helperText={`${errors.phone && touched.phone ? errors.phone : ''}`}
               />
               <Box sx={{ mb: 8 }}>
                 <DropDown
                   label='Chuyên ngành'
+                  disabled={true}
                   value={`${values.majorId}`}
                   onChange={(e) => {
                     setFieldValue('majorId', e.target.value);

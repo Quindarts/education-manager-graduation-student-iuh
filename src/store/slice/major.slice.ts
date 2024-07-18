@@ -2,6 +2,10 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initMajorSlice: any = {
     allMajor: [],
+    currentMajor: {
+        id: "",
+        name: ""
+    },
 }
 
 export const useMajorSlice = createSlice({
@@ -10,10 +14,13 @@ export const useMajorSlice = createSlice({
     reducers: {
         setAllMajor: (state: any, { payload }: PayloadAction<any>) => {
             state.allMajor = payload
+        },
+        setCurrentMajor: (state: any, { payload }: PayloadAction<any>) => {
+            state.currentMajor = payload
         }
     }
 })
 
-export const { setAllMajor } = useMajorSlice.actions
+export const { setAllMajor, setCurrentMajor } = useMajorSlice.actions
 
 export default useMajorSlice.reducer

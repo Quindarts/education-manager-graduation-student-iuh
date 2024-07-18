@@ -14,7 +14,6 @@ import { TypeEvaluation } from '@/services/apiEvaluation';
 import { Icon } from '@iconify/react';
 import AddEvaluationModal from './Modal/Add';
 import ExportWordModal from './Modal/ExportWord';
-import { useAuth } from '@/hooks/api/useAuth';
 
 function ReviewManagerPage() {
   const [currentTypeReview, setCurrentTypeReview] = useState(TypeEvaluation.ADVISOR);

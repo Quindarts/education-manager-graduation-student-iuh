@@ -53,14 +53,15 @@ function TableManagamentStudent(props: any) {
   //
   const [openResetPasswordStudentModal, setOpenResetPasswordStudentModal] = useState({
     studentId: '',
+    username: '',
     isOpen: false,
   });
 
   const handleCloseResetPasswordStudentModal = () => {
     setOpenResetPasswordStudentModal({ ...openResetPasswordStudentModal, isOpen: false });
   };
-  const handleOpenResetPasswordStudentModal = (studentId: string) => {
-    setOpenResetPasswordStudentModal({ studentId, isOpen: true });
+  const handleOpenResetPasswordStudentModal = (studentId: string, username: string) => {
+    setOpenResetPasswordStudentModal({ studentId, username, isOpen: true });
   };
 
   const [openDeleteStudentModal, setOpenDeleteStudentModal] = useState({
@@ -92,18 +93,47 @@ function TableManagamentStudent(props: any) {
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Tên sinh viên',
-      field: 'fullName',
-      flex: 1,
-      headerAlign: 'center',
-    },
-    {
       headerName: 'MSSV',
       field: 'username',
+      flex: 0.6,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' fontWeight={600} color='primary'>
+            {params.row.username}
+          </Typography>
+        );
+      },
+    },
+    {
+      headerName: 'Họ & Tên đệm',
+      field: 'firstName',
+      flex: 0.7,
+      headerAlign: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
+          </Typography>
+        );
+      },
+    },
+    {
+      headerName: 'Tên',
+      field: 'lastname',
       flex: 0.5,
       headerAlign: 'center',
       align: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {params.row.fullName.trim().split(' ').pop()}
+          </Typography>
+        );
+      },
     },
+
     {
       headerName: 'Email',
       field: 'email',
@@ -121,28 +151,26 @@ function TableManagamentStudent(props: any) {
         return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
       },
     },
-    {
-      headerName: 'Loại đào tạo',
-      field: 'typeTraining',
-      flex: 0.7,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return (
-          <Typography variant='body1' color='initial'>
-            {convertTraning(params.row.typeTraining)}
-          </Typography>
-        );
-      },
-    },
-
+    // {
+    //   headerName: 'Loại đào tạo',
+    //   field: 'typeTraining',
+    //   flex: 0.7,
+    //   align: 'center',
+    //   headerAlign: 'center',
+    //   renderCell: (params: any) => {
+    //     return (
+    //       <Typography variant='body1' color='initial'>
+    //         {convertTraning(params.row.typeTraining)}
+    //       </Typography>
+    //     );
+    //   },
+    // },
     {
       headerName: 'Lớp danh nghĩa',
       field: 'clazzName',
-      flex: 1,
+      flex: 0.7,
       align: 'center',
       headerAlign: 'center',
-      // renderCell: (params: any) => <Typography>{params.row.majorName}</Typography>,
     },
     {
       headerName: 'Trạng thái',
@@ -171,7 +199,7 @@ function TableManagamentStudent(props: any) {
     {
       headerName: 'Chức năng',
       field: 'name8',
-      flex: 1,
+      flex: 0.6,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
@@ -186,7 +214,9 @@ function TableManagamentStudent(props: any) {
             <IconButton
               color='primary'
               size='small'
-              onClick={() => handleOpenResetPasswordStudentModal(params.row.id)}
+              onClick={() =>
+                handleOpenResetPasswordStudentModal(params.row.id, params.row.username)
+              }
             >
               <Icon width={20} icon='wpf:password1' />
             </IconButton>
@@ -253,6 +283,7 @@ function TableManagamentStudent(props: any) {
         studentId={openResetPasswordStudentModal.studentId}
         open={openResetPasswordStudentModal.isOpen}
         onClose={handleCloseResetPasswordStudentModal}
+        username={openResetPasswordStudentModal.username}
       />
       <EditInfoModal
         studentId={openEditInfoModal.studentId}

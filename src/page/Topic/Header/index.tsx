@@ -8,6 +8,7 @@ import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useTopic } from '@/hooks/api/useQueryTopic';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -23,7 +24,7 @@ const SEARCH_DROP_VALUE = [
     _id: 'ACCEPT',
   },
 ];
-function HeaderTopic(props) {
+function HeaderTopic(props: any) {
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
@@ -31,8 +32,6 @@ function HeaderTopic(props) {
   const handleOpenModal = () => {
     setOpenAddModal(true);
   };
-  const { termStore } = useTerm();
-  const { currentTerm } = termStore;
   const { handleUiRender } = useTopic();
   const currentRole = handleUiRender();
   return (
@@ -59,7 +58,7 @@ function HeaderTopic(props) {
           </>
         )}
 
-        <ModalUpload entityUpload={TypeEntityUpload.TOPIC} termId={currentTerm.id} />
+        <ModalUpload entityUpload={TypeEntityUpload.TOPIC} />
 
         <Button color='warning' type='button' size='small' variant='contained'>
           <Icon icon='carbon:clean' color='white' width={20} /> Làm mới

@@ -22,12 +22,12 @@ export const useTermSlice = createSlice({
     reducers: {
         setCurrentTerm: (state: any, { payload }: PayloadAction<any>) => {
             state.currentTerm = payload
-            state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.startDate, payload.endDate)
-            state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.startChooseGroupDate, payload.endChooseGroupDate)
-            state.partCurrentTerm.isChChooseTopic = checkedValidDistanceDate(payload.startChooseTopicDate, payload.endChooseTopicDate)
-            state.partCurrentTerm.isDiscussion = checkedValidDistanceDate(payload.startDiscussionDate, payload.endDiscussionDate)
-            state.partCurrentTerm.isReport = checkedValidDistanceDate(payload.startReportDate, payload.endReportDate)
-            state.partCurrentTerm.isPublicResult = checkedValidDistanceDate(payload.startPublicResultDate, payload.endPublicResultDate)
+            // state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.startDate, payload.endDate)
+            // state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.startChooseGroupDate, payload.endChooseGroupDate)
+            // state.partCurrentTerm.isChChooseTopic = checkedValidDistanceDate(payload.startChooseTopicDate, payload.endChooseTopicDate)
+            // state.partCurrentTerm.isDiscussion = checkedValidDistanceDate(payload.startDiscussionDate, payload.endDiscussionDate)
+            // state.partCurrentTerm.isReport = checkedValidDistanceDate(payload.startReportDate, payload.endReportDate)
+            // state.partCurrentTerm.isPublicResult = checkedValidDistanceDate(payload.startPublicResultDate, payload.endPublicResultDate)
 
         },
         setAllTerm: (state: any, { payload }: PayloadAction<any>) => {

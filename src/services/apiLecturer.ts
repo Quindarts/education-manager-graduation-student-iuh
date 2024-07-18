@@ -1,17 +1,16 @@
-import { ResponseType } from "@/types/axios.type";
 import axiosConfig from "./axiosConfig"
 
 export const getLecturerByMajorId = (majorId: number) => {
     return axiosConfig.get(`/api/v1/lecturers?majorId=${majorId}`)
 }
 
-export const getAllLecturer = (termId: string | number, limit: number, page: number) => {
-    return axiosConfig.get(`/api/v1/lecturers?limit=${limit}&page=${page}&termId=${termId}`);
+export const getAllLecturer = (termId: string, majorId: string, limit: number, page: number) => {
+    return axiosConfig.get(`/api/v1/lecturers?limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
 }
 
 //[Admin role]
-export const searchLecturerAdmin: any = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
-    return axiosConfig.get(`/api/v1/lecturers/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}`);
+export const searchLecturerAdmin: any = (termId: string, majorId: string, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
+    return axiosConfig.get(`/api/v1/lecturers/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
 }
 export const getLecturerById: any = (lecturer_id: number | string) => {
     return axiosConfig.get(`/api/v1/lecturers/${lecturer_id}`);

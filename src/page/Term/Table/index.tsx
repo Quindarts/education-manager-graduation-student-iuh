@@ -161,6 +161,13 @@ function TableManagamentTerm(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
+    // {
+    //   headerName: 'Chuyên ngành',
+    //   field: 'majorId',
+    //   flex: 1.4,
+    //   headerAlign: 'center',
+    //   align: 'center',
+    // },
     {
       headerName: 'Ngày Bắt đầu   -  Ngày kết thúc',
       field: 'startDate',

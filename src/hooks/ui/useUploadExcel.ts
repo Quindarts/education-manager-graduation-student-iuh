@@ -1,5 +1,4 @@
 import { useStudent } from '@/hooks/api/useQueryStudent';
-import { getAllStudent } from './../../services/apiStudent';
 import { bytesForHuman } from '@/components/ui/Upload/func';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import axiosConfig from '@/services/axiosConfig';
@@ -12,7 +11,6 @@ import { QueryEvaluation } from '../api/useQueryEvalutaion';
 import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
 import { ENUM_RENDER_STUDENT } from '@/store/slice/student.slice';
-import useGroupStudent from '../api/useQueryGroupStudent';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -66,7 +64,7 @@ axiosUpload.interceptors.response.use(
   },
 );
 
-const useUploadExcel = (entityUpload: string, termId: string | number, typeEvalutaion?: string) => {
+const useUploadExcel = (entityUpload: string, termId: string, majorId: string, typeEvalutaion?: string) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState<string>('');
@@ -86,6 +84,8 @@ const useUploadExcel = (entityUpload: string, termId: string | number, typeEvalu
   };
 
   const importExcel = async (e: any) => {
+
+    //read file
     const file = e.target.files[0];
     setFileName(file.name);
     setTotalSize(bytesForHuman(file.size));
@@ -93,6 +93,8 @@ const useUploadExcel = (entityUpload: string, termId: string | number, typeEvalu
     setSuccess(false);
     setLoading(true);
 
+
+    //validate file
     if (file) {
       setCurrentFile(file)
       if (getExention(file)) {
@@ -110,12 +112,14 @@ const useUploadExcel = (entityUpload: string, termId: string | number, typeEvalu
 
 
   };
+
+  //saved file
   const savedFileToDatabase = async (file: any) => {
     const bodyRequestBasic =
     {
       file: file,
       termId: termId,
-      majorId: "e4fe02cb-f2b0-4afa-885d-d1b93130d350",
+      majorId: majorId,
     }
     const bodyRequestEval = {
       termId: termId,

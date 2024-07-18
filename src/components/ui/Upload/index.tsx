@@ -15,6 +15,8 @@ import { Icon } from '@iconify/react';
 import TitleManager from '../Title';
 import styled from '@emotion/styled';
 import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import { useMajor } from '@/hooks/api/useQueryMajor';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -44,13 +46,16 @@ const VisuallyHiddenInput = styled('input')({
 });
 interface ModalUploadPropsType {
   entityUpload: TypeEntityUpload;
-  termId: string | number;
+  termId?: string;
   typeEvaluation?: string;
   disabled?: boolean;
+  majorId?: string;
 }
 
 function ModalUpload(props: ModalUploadPropsType) {
-  const { entityUpload, termId, typeEvaluation, disabled = false } = props;
+  const { entityUpload, typeEvaluation, disabled = false } = props;
+  const { termStore } = useTerm();
+  const { majorStore } = useMajor();
   const [isOpen, setIsOpen] = useState(false);
   const {
     importExcel,
@@ -63,7 +68,12 @@ function ModalUpload(props: ModalUploadPropsType) {
     setCurrentFile,
     setValueLoading,
     fileName,
-  } = useUploadExcel(entityUpload, termId, typeEvaluation);
+  } = useUploadExcel(
+    entityUpload,
+    termStore.currentTerm.id,
+    majorStore.currentMajor.id,
+    typeEvaluation,
+  );
 
   const handleOpenUpload = () => {
     setIsOpen(true);
@@ -78,7 +88,6 @@ function ModalUpload(props: ModalUploadPropsType) {
     setValueLoading('');
     setCurrentFile(undefined);
   };
-  useEffect(() => {},[]) 
   return (
     <Box>
       <Tooltip arrow title={!disabled ? '' : 'Danh sách tiêu chí trống, tải lên ngay'}>
