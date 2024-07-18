@@ -87,8 +87,8 @@ function ProfileMenu() {
       display='flex'
       sx={{
         cursor: 'pointer',
-        '&:hover':{
-          bgcolor: "grey.200",
+        '&:hover': {
+          bgcolor: 'grey.200',
         },
         gap: {
           xs: 0,
@@ -105,11 +105,7 @@ function ProfileMenu() {
     >
       <Box sx={avatarStyles}>
         <style>{keyframes}</style>
-        <Avatar
-          alt='avatar'
-          src='https://img.artpal.com/867752/16-22-10-3-9-27-51m.jpg'
-          sx={imgStyles}
-        />
+        <Avatar alt='avatar' src='' sx={imgStyles} />
         <Box sx={statusStyles}>
           <Box sx={statusCircleStyles} />
         </Box>

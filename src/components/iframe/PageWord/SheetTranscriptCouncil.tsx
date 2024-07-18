@@ -8,55 +8,62 @@ function SheetTranscriptCouncil(props: any) {
     <Paper sx={{ p: 4, overflowY: 'auto', height: 650 }} elevation={3}>
       <Box display={'flex'} mx={10} justifyContent={'space-between'} gap={10}>
         <Typography textAlign={'center'} variant='body2' color='initial'>
-          TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HCM <br /> KHOA CÔNG NGHỆ THÔNG TIN <br />
-          NGÀNH KỸ THUẬT PHẦN MỀM
+          INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY <br />
+          FACULTY OF INFORMATION TECHNOLOGY <br />
+          SOFTWARE ENGINEER MAJOR
         </Typography>
         <Typography textAlign={'center'} variant='body2' color='initial'>
-          CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM <br />
-          Độc lập - Tự do - Hạnh phúc
+          CONG HOA XA HOI CHU NGHIA VIETNAM <br />
+          Doc lap - Tu do - Hanh phuc
         </Typography>
       </Box>
       <Box>
         <Typography textAlign={'center'} my={3} variant='body1' fontWeight={800} color='initial'>
-          PHIẾU ĐÁNH GIÁ KHÓA LUẬN TỐT NGHIỆP
+          GRADUATION THESIS EVALUATION FORM
         </Typography>
       </Box>
       <Box mx={6}>
         <Typography my={3} variant='body1' color='initial'>
-          Họ tên người đánh giá: ................................................................
+          Evaluator's full name:
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          Vai trò của người đánh giá:  Chấm Poster  Thành viên hội đồng
+          Role of evaluator:  Poster Evaluator  Member of Council{' '}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          Tên đề tài: ................................................................
+          Topic name:
+        </Typography>
+        <Typography my={3} variant='body1' color='initial'>
+          First student name:
+        </Typography>{' '}
+        <Typography my={3} variant='body1' color='initial'>
+          Second student name:
         </Typography>
         <Box>
           <Box display={'flex'} justifyContent={'space-between'}>
             <Typography my={3} variant='body1' color='initial'>
-              Họ tên sinh viên 1:............................
+              First student name: ............................
             </Typography>
             <Typography my={3} variant='body1' color='initial'>
-              Mã số sinh viên: ................................
+              Student code 1: ............................
             </Typography>
           </Box>
           <Box display={'flex'} justifyContent={'space-between'}>
             <Typography my={3} variant='body1' color='initial'>
-              Họ tên sinh viên 2:............................
+              Second student name: ............................
             </Typography>
             <Typography my={3} variant='body1' color='initial'>
-              Mã số sinh viên: ................................
+              Student code 2: ............................
             </Typography>
           </Box>
           <Box component={'section'}>
             <TableHead>
               <StyledTableRow>
                 <StyledTableCell>STT </StyledTableCell>
-                <StyledTableCell align='center'>Nội dung đánh giá (CLO)</StyledTableCell>
-                <StyledTableCell align='center'>Điểm tối đa</StyledTableCell>
-                <StyledTableCell align='center'>Điểm đánh giá Sinh viên 1</StyledTableCell>
-                <StyledTableCell align='center'>Điểm đánh giá Sinh viên 2</StyledTableCell>
-                <StyledTableCell align='center'>Các ý kiến nhận xét</StyledTableCell>
+                <StyledTableCell align='center'>CLO</StyledTableCell>
+                <StyledTableCell align='center'>Max point</StyledTableCell>
+                <StyledTableCell align='center'>Score student 1</StyledTableCell>
+                <StyledTableCell align='center'>Score student 2</StyledTableCell>
+                <StyledTableCell align='center'>NOTES</StyledTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
@@ -80,16 +87,16 @@ function SheetTranscriptCouncil(props: any) {
             </TableBody>
           </Box>
           <Typography my={3} variant='body2' fontWeight={'bold'} color='initial'>
-            Nhận xét khác:
+            Other comments:
           </Typography>
-          <Typography variant='body2' color='initial'>
-            ……………………………………………………………………………………………………………………………………………………………………………………………………
-            ………………………………………………………………………………………………………………………………………………………………………………………………………………………………
+          <Typography variant='body1' color='initial'>
+            ....................................................................................................................................................................................
+            ....................................................................................................................................................................................
+            ....................................................................................................................................................................................
           </Typography>
           <Box display={'flex'} justifyContent={'end'}>
             <Typography component={'i'} textAlign={'center'} my={3} variant='body2' color='initial'>
-              TP. HCM, ngày.... tháng... năm ... <br /> <b> Người đánh giá</b> <br />
-              (Ký và ghi rõ họ tên) <br />
+              Ho Chi Minh City, date month year <br /> <b> Evaluator</b> <br />
               .........
             </Typography>
           </Box>

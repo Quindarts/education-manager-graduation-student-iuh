@@ -1,6 +1,6 @@
 import ResponseType from '@/types/axios.type';
 import { queryClient } from '@/providers/ReactQueryClientProvider'
-import { createStudent, getAllStudent, getAllStudentByMajor, getStudentById, lockOnlyStudent, resetPasswordStudent, searchStudentAdmin, updateStatusStudent, updateStudent } from '@/services/apiStudent'
+import { createStudent, deleteStudent, getAllStudent, getAllStudentByMajor, getStudentById, lockOnlyStudent, resetPasswordStudent, searchStudentAdmin, updateStatusStudent, updateStudent } from '@/services/apiStudent'
 import { ENUM_RENDER_STUDENT, setParams, setTypeRender } from '@/store/slice/student.slice'
 import { useSnackbar } from 'notistack'
 import { useMutation, useQuery } from 'react-query'
@@ -98,6 +98,22 @@ export const useStudent = () => {
             }
         })
     }
+    const onDeleteStudent = () => {
+        return useMutation((id: string) => deleteStudent(id), {
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
+                if (data.success) {
+                    enqueueSnackbar("Xóa sinh viên ra khỏi học kì.", { variant: 'success' })
+                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, params.limit, params.page] })
+                }
+            }
+            ,
+            onError() {
+                enqueueSnackbar('Tạo sinh viên thất bại, thử lại', { variant: 'error' })
+
+            }
+        })
+    }
+
     const onResetPassword = () => {
         return useMutation((username: string) => resetPasswordStudent(username), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
@@ -124,6 +140,6 @@ export const useStudent = () => {
         handleGetStudentById,
         onUpdateStudent,
         onCreateStudent,
-        handleGetAllStudent
+        handleGetAllStudent, onDeleteStudent
     }
 }

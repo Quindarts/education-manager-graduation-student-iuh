@@ -1,9 +1,9 @@
 import CustomTextField from '@/components/ui/CustomTextField';
 import Modal from '@/components/ui/Modal';
-import SekeletonUI from '@/components/ui/Sekeleton';
 import TextEditor from '@/components/ui/TextEditor';
 import TitleManager from '@/components/ui/Title';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
+import { getTypeEvaluation } from '@/utils/validations/evaluation.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
@@ -38,7 +38,7 @@ function AddEvaluationModal(props: any) {
         >
           {({ handleBlur, handleChange, handleSubmit, values, setFieldValue, touched, errors }) => (
             <form onSubmit={handleSubmit}>
-              <CustomTextField name='type' label='Loại đánh giá' disabled value={values.type} />
+              <CustomTextField name='type' label='Loại đánh giá' disabled value={getTypeEvaluation(values.type)} />
               <CustomTextField
                 name='name'
                 onBlur={handleBlur}

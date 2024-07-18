@@ -29,14 +29,15 @@ import {
 } from '@/utils/validations/evaluation.validation';
 import SheetTranscriptCouncil from '@/components/iframe/PageWord/SheetTranscriptCouncil';
 import SheetTranscriptAdvisor from '@/components/iframe/PageWord/SheetTranscriptAdvisor';
-import docTranscriptCouncil from '@/components/iframe/PageWord/docUtils/docTranscriptCouncil';
 import docTranscriptAdvisor from '@/components/iframe/PageWord/docUtils/docTranscriptAdvisor';
 import docTranscriptReviewer from '@/components/iframe/PageWord/docUtils/docTranscriptReviewer';
+import docTranscriptCouncil from '@/components/iframe/PageWord/docUtils/docTranscriptCouncil';
+import SheetTranscriptReviewer from '@/components/iframe/PageWord/SheetTranscriptReviewer';
 
 function ExportWordModal(props: ExportWordModalProps) {
   const { open, onClose, termId, typeReport, evaluations } = props;
   const [fileName, setFileName] = useState(getFileNameExportEvaluation(typeReport));
-  
+
   useEffect(() => {
     setFileName(getFileNameExportEvaluation(typeReport));
   }, [typeReport]);
@@ -44,10 +45,12 @@ function ExportWordModal(props: ExportWordModalProps) {
   const { onExportDocxFile } = useDocx();
   const handleSubmit = () => {
     if (typeReport === 'ADVISOR')
-      onExportDocxFile(`${fileName}`, docTranscriptAdvisor(evaluations));
+      return onExportDocxFile(`${fileName}`, docTranscriptAdvisor(evaluations));
     else if (typeReport === 'REPORT')
-      onExportDocxFile(`${fileName}`, docTranscriptCouncil(evaluations));
-    else onExportDocxFile(`${fileName}`, docTranscriptReviewer(evaluations));
+      return onExportDocxFile(`${fileName}`, docTranscriptCouncil(evaluations));
+    else if (typeReport === 'REVIEWER')
+      return onExportDocxFile(`${fileName}`, docTranscriptReviewer(evaluations));
+    return;
   };
   return (
     <Modal maxWidth='lg' open={open} onClose={onClose}>
@@ -59,7 +62,7 @@ function ExportWordModal(props: ExportWordModalProps) {
         <Box sx={{ display: 'flex', gap: 10, px: 10, py: 6 }}>
           <Box flex={1.2}>
             {typeReport === 'ADVISOR' && <SheetTranscriptAdvisor evaluations={evaluations} />}
-            {typeReport === 'REVIEWER' && <SheetTranscriptAdvisor evaluations={evaluations} />}
+            {typeReport === 'REVIEWER' && <SheetTranscriptReviewer evaluations={evaluations} />}
             {typeReport === 'REPORT' && <SheetTranscriptCouncil evaluations={evaluations} />}
           </Box>
           <Paper elevation={2} sx={{ flex: 1, p: 10, height: 200 }}>
@@ -68,7 +71,7 @@ function ExportWordModal(props: ExportWordModalProps) {
               initialValues={{
                 fileName: fileName,
               }}
-              onSubmit={handleSubmit}
+              onSubmit={() => {}}
             >
               {({ values, handleBlur, handleChange, setFieldValue }) => (
                 <Form>

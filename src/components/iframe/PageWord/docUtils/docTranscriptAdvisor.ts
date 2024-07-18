@@ -1,8 +1,7 @@
-import { MainLayout } from '@/components/shared/layouts/MainLayout';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
-import { AlignmentType, Document, HeightRule, OverlapType, Paragraph, RelativeHorizontalPosition, RelativeVerticalPosition, ShadingType, Table, TableAnchorType, TableCell, TableLayoutType, TableRow, TextRun, VerticalAlign, WidthType } from 'docx';
+import { Document, HeightRule, Paragraph, ShadingType, Table, TableCell, TableRow, TextRun, VerticalAlign, WidthType } from 'docx';
 
-export default  function docTranscriptAdvisor(evaluations: any) {
+export default function docTranscriptAdvisor(evaluations: any) {
     const rows = convertRowEvaluations(evaluations);
     const doc = new Document({
         sections: [
@@ -141,8 +140,6 @@ export default  function docTranscriptAdvisor(evaluations: any) {
                                     value: 722,
                                     rule: HeightRule.EXACT,
                                 },
-
-
                                 children: [
 
                                     new TableCell({
@@ -225,7 +222,7 @@ export default  function docTranscriptAdvisor(evaluations: any) {
                             ...rows.map((row: any, index: number) => (
                                 new TableRow({
                                     height: {
-                                        value: 1000,
+                                        value: 700,
                                         rule: HeightRule.EXACT,
                                     },
                                     children: [
@@ -238,10 +235,71 @@ export default  function docTranscriptAdvisor(evaluations: any) {
                                     ],
                                 })
                             )),
+                            new TableRow({
+                                height: {
+                                    value: 600,
+                                    rule: HeightRule.EXACT,
+                                },
+                                children: [
+
+                                    new TableCell({
+                                        width: {
+                                            size: 5,
+                                            type: WidthType.PERCENTAGE,
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({ children: [new TextRun({ text: '', size: 23 })], alignment: 'center', })],
+                                    }),
+                                    new TableCell({
+                                        width: {
+                                            size: 40,
+                                            type: WidthType.PERCENTAGE,
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({ children: [new TextRun({ text: 'Total', size: 23, bold: true })], alignment: 'center', })]
+                                    }),
+                                    new TableCell({
+                                        width: {
+                                            size: 15,
+                                            type: WidthType.PERCENTAGE,
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({ children: [new TextRun({ text: '100', size: 23, bold: true })], alignment: 'center' })]
+                                    }),
+                                    new TableCell({
+                                        width: {
+                                            type: WidthType.PERCENTAGE,
+                                            size: 10,
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({ children: [new TextRun({ text: '', size: 23 })], alignment: 'center', })]
+                                    }),
+                                    new TableCell({
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        width: {
+                                            type: WidthType.PERCENTAGE,
+                                            size: 10,
+                                        },
+                                        children: [new Paragraph({ children: [new TextRun({ text: '', size: 23 })], alignment: 'center', })]
+                                    }),
+                                    new TableCell({
+                                        width: {
+                                            type: WidthType.PERCENTAGE,
+                                            size: 20,
+                                        },
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({
+                                            alignment: 'center',
+                                            children: [new TextRun({ text: ' ', size: 20 })]
+                                        })]
+                                    }),
+                                ],
+
+                            })
                         ],
                     }),
                     new Paragraph({
-                        spacing: { before: 300 },
+                        spacing: { before: 200 },
                         children: [
                             new TextRun({
                                 text: 'Other comments:',
@@ -267,7 +325,15 @@ export default  function docTranscriptAdvisor(evaluations: any) {
                         ],
                     }),
                     new Paragraph({
-                        spacing: { before: 300, after: 150 },
+                        children: [
+                            new TextRun({
+                                text: '.............................................................................................................................................................................',
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        spacing: { before: 200, after: 150 },
                         alignment: 'center',
                         children: [
                             new TextRun({

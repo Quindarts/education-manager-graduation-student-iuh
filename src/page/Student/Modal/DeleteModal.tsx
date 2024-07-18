@@ -1,10 +1,22 @@
 import Modal from '@/components/ui/Modal';
+import { useStudent } from '@/hooks/api/useQueryStudent';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function DeleteModal(props: any) {
-  const { onClose, open, student_id } = props;
+  const { onClose, open, studentId } = props;
+  const { onDeleteStudent } = useStudent();
+  const { mutate: deleteStudent, isSuccess } = onDeleteStudent();
+
+  const handleSubmit = () => {
+    deleteStudent(studentId);
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+    }
+  }, [isSuccess]);
   return (
     <Modal onClose={onClose} open={open}>
       <Box
@@ -27,7 +39,13 @@ function DeleteModal(props: any) {
             <Icon width={20} style={{ marginRight: 4 }} icon='mdi:cancel-outline' />
             Hủy
           </Button>
-          <Button type='submit' sx={{ width: '50%' }} color='error' variant='contained'>
+          <Button
+            type='submit'
+            onClick={handleSubmit}
+            sx={{ width: '50%' }}
+            color='error'
+            variant='contained'
+          >
             <Icon
               width={20}
               style={{ marginRight: 4 }}

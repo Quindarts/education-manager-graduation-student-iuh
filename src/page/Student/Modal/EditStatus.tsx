@@ -1,19 +1,8 @@
-import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
 import { useStudent } from '@/hooks/api/useQueryStudent';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-const DROP_STATUS_STUDENT_VALUE = [
-  {
-    name: 'Đang hoạt động',
-    _id: '1',
-  },
-  {
-    name: 'Khóa tài khoản',
-    _id: '0',
-  },
-];
+import React, { useEffect } from 'react';
 function EditStatus(props: any) {
   const { onClose, open, studentId, status } = props;
 

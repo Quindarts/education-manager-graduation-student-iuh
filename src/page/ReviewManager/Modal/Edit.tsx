@@ -4,6 +4,7 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 import TextEditor from '@/components/ui/TextEditor';
 import TitleManager from '@/components/ui/Title';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
+import { getTypeEvaluation } from '@/utils/validations/evaluation.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
@@ -52,7 +53,7 @@ function EditEvaluationModal(props: any) {
               errors,
             }) => (
               <form onSubmit={handleSubmit}>
-                <CustomTextField name='type' label='Loại đánh giá' disabled value={values.type} />
+                <CustomTextField name='type' label='Loại đánh giá' disabled value={getTypeEvaluation(values.type)} />
                 <CustomTextField
                   name='name'
                   onBlur={handleBlur}

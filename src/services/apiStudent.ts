@@ -36,6 +36,13 @@ export const lockOnlyStudent: any = async (id: string, status: boolean) => {
 export const createStudent: any = async (data: any) => {
     return axiosConfig.post("/api/v1/students", data)
 }
+
+//[DELETE STUNDENT]
+export const deleteStudent: any = async (id: string) => {
+    return axiosConfig.delete(`/api/v1/students/${id}`)
+}
+
+
 //[UPDATE STUDENT]
 export const updateStudent: any = async (id: string | number, data: any) => {
     return axiosConfig.put(`/api/v1/students/${id}`, data)

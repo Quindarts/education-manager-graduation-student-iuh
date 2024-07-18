@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/api/useAuth';
 import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
 import Loading from '@/components/ui/Loading';
 import { getValueFromLocalStorage } from '@/utils/localStorage';
+import BreadCrumbRouting from '@/components/ui/BreadCrumb';
 
 function MainLayout() {
   const [isOpenSideBar, setIsOpenSideBar] = useState(true);
@@ -72,6 +73,10 @@ function MainLayout() {
                     height: '100%',
                   }}
                 >
+                  <Box my={4}>
+                    <BreadCrumbRouting />
+                  </Box>
+
                   <Outlet />
                 </Box>
               </Box>
