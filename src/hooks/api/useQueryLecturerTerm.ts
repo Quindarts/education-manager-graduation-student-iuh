@@ -18,12 +18,12 @@ export const useLecturerTerm = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     //[GET LIST LECTURER]
-    const handleGetListLecturerTerms = (termId: string, majorId?: string) => {
+    const handleGetListLecturerTerms = (termId?: string, majorId?: string) => {
         const currentMajor = majorId ? majorId : majorStore.currentMajor.id;
-        return useQuery([QueryKeysLecturerTerm.listLecturerTerms, termId, currentMajor], () => getListLecturerTermByMajor(termId, currentMajor))
+        return useQuery([QueryKeysLecturerTerm.listLecturerTerms, termStore.currentTerm.id, currentMajor], () => getListLecturerTermByMajor(termStore.currentTerm.id, currentMajor))
     }
 
-    
+
     const onDeleteLecturerTerm = (termId?: string) => {
         return useMutation((lecturerId) => deleteLecturerTermById(lecturerId, termStore.currentTerm.id), {
             onSuccess: (data: Pick<ResponseType, 'success' | 'message'>) => {

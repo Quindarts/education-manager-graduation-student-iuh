@@ -133,7 +133,7 @@ function TabPanelUI(props: any) {
           )}
         </TabPanel>
         <TabPanel value={'2'}>
-          <TableManagementGroupLecturer rows={groupLecturer.members} />
+          <TableManagementGroupLecturer groupType={type} rows={groupLecturer.members} />
         </TabPanel>
       </TabContext>
     </Box>

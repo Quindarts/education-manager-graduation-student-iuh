@@ -41,8 +41,8 @@ export const updateGroupLecturerById = (id: string | number, data: any) => {
 //[GET MEMBER]
 
 //[ADD MEMBER]
-export const addMemberToGroupLecturerById: any = (id: string, data: { lecturerId: string }) => {
-    return axiosConfig.post(`/api/v1/group-lecturers/${id}/members`, data)
+export const addMemberToGroupLecturerById: any = (id: string, lecturerId: string) => {
+    return axiosConfig.post(`/api/v1/group-lecturers/${id}/members`, { lecturerId: lecturerId })
 }
 //[DELETE MEMBER]
 export const removeMemberFromGroupLecturerById: any = (id: string, data: { lecturerId: string }) => {

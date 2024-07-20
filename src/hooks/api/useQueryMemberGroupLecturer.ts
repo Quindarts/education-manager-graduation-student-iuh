@@ -8,7 +8,7 @@ const useMemberGroupLecturer = () => {
     const { enqueueSnackbar } = useSnackbar()
 
     const onAddMemberToGroupLecturer = (id: string) => {
-        return useMutation((data: any) => addMemberToGroupLecturerById(id, data), {
+        return useMutation((lecturerId: string) => addMemberToGroupLecturerById(id, lecturerId), {
             onSuccess: (data: any) => {
                 enqueueSnackbar('Thêm giảng viên vào nhóm thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getGroupLecturerById, id] })
@@ -19,7 +19,7 @@ const useMemberGroupLecturer = () => {
             }
         })
     }
-    
+
     const onRemoveMemberFromGroupLecturer = (id: string) => {
         return useMutation((data: any) => removeMemberFromGroupLecturerById(id, data), {
             onSuccess: (data: any) => {

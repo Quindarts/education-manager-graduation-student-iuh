@@ -1,9 +1,8 @@
 import DropDown from '@/components/ui/Dropdown';
-import MenuButton from '@/components/ui/MenuButton';
 import { Icon } from '@iconify/react';
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import AddGroupStudentModal from '../../Modal/Add';
+import AddGroupStudentModal from '../Modal/AddModal/Add';
 
 function HeaderGroupStudent() {
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -32,7 +31,10 @@ function HeaderGroupStudent() {
         Tạo nhóm sinh viên
       </Button>
       {/* <MenuButton /> */}
-      <AddGroupStudentModal open={openAddModal} onClose={handleCloseAddModal} />
+      <AddGroupStudentModal
+        open={openAddModal}
+        onClose={handleCloseAddModal}
+      />
     </Box>
   );
 }

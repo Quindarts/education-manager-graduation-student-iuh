@@ -1,20 +1,13 @@
-import { Box, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import React, { useState } from 'react';
 import TableManagamentGroupStudent from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderGroupStudent from './Header';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import GridGroupStudent from './Grid';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { ENUM_RENDER_GROUP_STUDENT } from '@/store/slice/groupStudent.slice';
 
 function GroupStudentManagement() {
-  const [view, setView] = React.useState('table');
-  const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-    setView(nextView);
-  };
   const { handleManagerRenderActionGroupStudent, params } = useGroupStudent();
   const [currentLimit, setCurrentLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(params.page);
@@ -50,39 +43,19 @@ function GroupStudentManagement() {
         <TitleManager icon='quill:list' mb={8} mt={2}>
           Danh sách nhóm sinh viên
         </TitleManager>
-        <ToggleButtonGroup
-          sx={{ height: 20 }}
-          orientation='horizontal'
-          value={view}
-          exclusive
-          onChange={handleChange}
-        >
-          <ToggleButton color='primary' value='table' aria-label='table'>
-            <ViewListIcon />
-          </ToggleButton>
-          <ToggleButton color='primary' value='module' aria-label='module'>
-            <ViewModuleIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
       </Box>
 
       <HeaderGroupStudent />
       {isLoading || isFetching ? (
         <SekeletonUI />
       ) : (
-        <>
-          {view === 'table' ? (
-            <TableManagamentGroupStudent
-              totalPage={params.totalPage}
-              totalItems={data?.groupStudents.length}
-              handleChangePage={handleChangePage}
-              page={currentPage}
-              rows={data ? data.groupStudents : []}
-            />
-          ) : (
-            <GridGroupStudent />
-          )}
-        </>
+        <TableManagamentGroupStudent
+          totalPage={params.totalPage}
+          totalItems={data?.groupStudents.length}
+          handleChangePage={handleChangePage}
+          page={currentPage}
+          rows={data ? data.groupStudents : []}
+        />
       )}
     </Paper>
   );

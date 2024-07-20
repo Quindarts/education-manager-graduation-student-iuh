@@ -6,7 +6,6 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import CreateInstructorGroupPage from './Reviewer';
 import CreateReportGroupPage from './Report';
-import { Icon } from '@iconify/react';
 import TitleManager from '@/components/ui/Title';
 
 function CreateGroupLecturer() {

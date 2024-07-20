@@ -1,18 +1,20 @@
 import axiosConfig from "./axiosConfig"
 
 //[Admin role]
-export const searchStudentAdmin: any = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
+export const searchStudentAdmin: any = (termId: string, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
     return axiosConfig.get(`/api/v1/students/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}`);
 }
-
-
+//[GET]
+export const getStudentsNoHaveGroup: any = (termId: string) => {
+    return axiosConfig.get(`/api/v1/students/no-have-group?termId=${termId}`)
+}
 //[GET]
 export const getAllStudentByMajor: any = async (termId: string, majorId: string, limit: number, page: number) => {
     return axiosConfig.get(`/api/v1/students?limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
 }
 
 //[GET]
-export const getAllStudent: any = async (termId: string | number, limit: number, page: number) => {
+export const getAllStudent: any = async (termId: string, limit: number, page: number) => {
     return axiosConfig.get(`/api/v1/students?limit=${limit}&page=${page}&termId=${termId}`);
 }
 
@@ -25,6 +27,7 @@ export const getStudentById: any = async (id: number) => {
 export const updatePasswordStudent: any = async (data: { password: string, newPassword: string }) => {
     return axiosConfig.post("/api/v1/students/update-password", data)
 }
+
 
 //[LOCK ACCOUNT]
 export const lockOnlyStudent: any = async (id: string, status: boolean) => {
@@ -57,7 +60,6 @@ export const updateStatusStudent: any = async (id: string, data: { status: strin
 
 //[CHANGE ACTIVE STUDENT]
 
-//
 export const resetPasswordStudent: any = async (id: string) => {
     return axiosConfig.post(`api/v1/students/reset-password`, { id: id })
 }
