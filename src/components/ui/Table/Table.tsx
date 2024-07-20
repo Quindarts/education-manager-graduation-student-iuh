@@ -30,6 +30,8 @@ export default function Table(props: Props) {
     noData,
     ...rest
   } = props;
+
+  
   return (
     <Box
       style={{ minWidth: 0 }}

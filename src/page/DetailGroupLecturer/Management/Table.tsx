@@ -6,17 +6,15 @@ import { Icon } from '@iconify/react';
 import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import LecturerLeaveGroupModal from './Modal/LeaveGroup';
+import AddMemberGroupLecturerModal from './Modal/AddMember';
 
 function TableManagementGroupLecturer(props: any) {
-  const { rows } = props;
-  const { pathname } = useLocation();
+  const { rows, groupType } = props;
   const [isOpenLeaveGroupModal, setIsOpenLeaveGroupModal] = useState({
     isOpen: false,
     lecturerId: '',
   });
-  const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
   const { handleUiRender } = useGroupLecturer();
   const currentRole = handleUiRender();
@@ -28,6 +26,13 @@ function TableManagementGroupLecturer(props: any) {
     setIsOpenLeaveGroupModal((pre) => ({ ...pre, isOpen: false }));
   };
 
+  const [isOpenAddMember, setIsOpenAddMember] = useState(false);
+  const handleOpenAddMemberModal = () => {
+    setIsOpenAddMember(true);
+  };
+  const handleCloseAddMemberModal = () => {
+    setIsOpenAddMember(false);
+  };
   const LecturerColumns: GridColDef[] = [
     {
       headerName: 'Thông tin chung',
@@ -141,6 +146,7 @@ function TableManagementGroupLecturer(props: any) {
             {currentRole.includes('all') && (
               <Button
                 size='small'
+                onClick={handleOpenAddMemberModal}
                 color='error'
                 disabled={rows.length >= 2 ? true : false}
                 variant='contained'
@@ -173,6 +179,11 @@ function TableManagementGroupLecturer(props: any) {
         onClose={handleCloseLeaveGroupModal}
         open={isOpenLeaveGroupModal.isOpen}
         lecturerId={isOpenLeaveGroupModal.lecturerId}
+      />
+      <AddMemberGroupLecturerModal
+        groupType={groupType}
+        onClose={handleCloseAddMemberModal}
+        open={isOpenAddMember}
       />
     </>
   );

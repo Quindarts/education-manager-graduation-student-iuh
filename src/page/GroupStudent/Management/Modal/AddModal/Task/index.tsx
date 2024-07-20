@@ -1,37 +1,54 @@
+import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import { Icon } from '@iconify/react';
 import { Box, Button, Link, Tooltip, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const listStudent = [
   {
     fullName: 'Le Minh Quang',
     mssv: 21089141,
-    group_id: '100',
+    group: '100',
   },
   {
     fullName: 'Le Minh Long',
     mssv: 21089133,
-    group_id: 'NO_GROUP',
+    group: 'NO_GROUP',
   },
   {
     fullName: 'Phan Minh',
     mssv: 21094873,
-    group_id: '100',
+    group: '100',
   },
   {
     fullName: 'Phan Lang',
     mssv: 21285831,
-    group_id: 'NO_GROUP',
+    group: 'NO_GROUP',
   },
   {
     fullName: 'Phan rang',
     mssv: 23123123,
-    group_id: 'NO_GROUP',
+    group: 'NO_GROUP',
   },
 ];
-const currentGroup = '100';
+
+const convertStudents = (data: any[]) => {
+  if (!data) {
+    return [];
+  }
+  const newData: any = [];
+  data.map((student: any) => {
+    newData.push({ ...student, mssv: student.username, group: 'NO_GROUP' });
+  });
+  return newData;
+};
+
 function TaskAddStudent(props: any) {
-  const [taskAddStudent, setTaskAddStudent] = React.useState(listStudent);
+  const { nameGroup, handleSetData } = props;
+  const currentGroup = nameGroup;
+
+  const [taskAddStudent, setTaskAddStudent] = useState<any[]>();
+  const { handleGetStudentNoHaveGroup } = useGroupStudent();
+  const { data, isLoading, isFetching, isSuccess } = handleGetStudentNoHaveGroup();
 
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
@@ -61,22 +78,28 @@ function TaskAddStudent(props: any) {
     evt.preventDefault();
     evt.dataTransfer.dropEffect = 'move';
   };
-  const handleOnDrop = (evt: any, value: any, group_id: any) => {
+  const handleOnDrop = (evt: any, value: any, group: any) => {
     evt.preventDefault();
     evt.currentTarget.classList.remove('dragged-over');
     let data = evt.dataTransfer.getData('text/plain');
 
-    let updated = taskAddStudent.map((task: any) => {
+    let updated = taskAddStudent?.map((task: any) => {
       if (task.mssv.toString() === data.toString()) {
-        task.group_id = group_id;
+        task.group = group;
       }
       return task;
     });
     setTaskAddStudent(updated);
   };
-  let dataStudenInGroup = taskAddStudent.filter((data: any) => data.group_id === currentGroup);
-  let dataStudentNoGroup = taskAddStudent.filter((data: any) => data.group_id === 'NO_GROUP');
+  const dataStudenInGroup = taskAddStudent?.filter((data: any) => data.group === nameGroup);
+  const dataStudentNoGroup = taskAddStudent?.filter((data: any) => data.group === 'NO_GROUP');
+  useEffect(() => {
+    if (isSuccess) setTaskAddStudent(convertStudents(data?.students));
+  }, [isLoading, isFetching]);
 
+  useEffect(() => {
+    handleSetData(taskAddStudent?.filter((data: any) => data.group === nameGroup));
+  }, [taskAddStudent]);
   return (
     <Box position={'relative'} sx={{ bgcolor: 'white', py: 4, px: 8, borderRadius: 4 }}>
       <Box className='container' width={'full'} display={'flex'} gap={10}>
@@ -120,8 +143,7 @@ function TaskAddStudent(props: any) {
               <Box className='container'>
                 <Box className='drag_column'>
                   <Box className='drag_row'>
-                    {dataStudentNoGroup.map((item: any, index: number) => (
-                      // <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
+                    {dataStudentNoGroup?.map((item: any, index: number) => (
                       <Box
                         sx={{
                           bgcolor: 'grey.100',
@@ -130,25 +152,23 @@ function TaskAddStudent(props: any) {
                           py: 4,
                           color: 'white',
                           my: 4,
+                          border: '2px solid #fefefe',
+                          cursor: 'pointer',
+                          ':hover': {
+                            border: '2px solid #00B1A2',
+                            boxShadow: ' rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;',
+                            transition: '0.1s ease-in',
+                            backgroundColor: '#D3FFEF',
+                          },
                         }}
                         key={item.mssv}
                         id={item.mssv}
                         draggable
                         onDragStart={(e) => handleOnDrageStart(e)}
                         onDragEnd={(e) => handleOnDrageStart(e)}
+                        onDrop={(e) => handleOnDrop(e, false, nameGroup)}
                       >
                         <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
-                          <Box
-                            bgcolor={'warning.main'}
-                            borderRadius={'50%'}
-                            width={30}
-                            height={30}
-                            justifyContent={'center'}
-                            alignItems={'center'}
-                            display={'flex'}
-                          >
-                            <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
-                          </Box>
                           <Box>
                             <Typography
                               position='absolute'
@@ -170,34 +190,21 @@ function TaskAddStudent(props: any) {
                             <Typography variant='body2' color={'primary.dark'} fontWeight={'500'}>
                               <span>Mã sinh vien: {'  '}</span> {item.mssv}
                             </Typography>
-                            <Link textAlign={'end'}>Xem chi tiết</Link>
                           </Box>
                         </Box>
                       </Box>
-                      // </Tooltip>
                     ))}
                   </Box>
                 </Box>
               </Box>
             </Box>
-            {/* <Box mb={6} mt={14} pt={10}>  
-              <Typography variant='h6' color='primary.main' fontWeight={'500'}>
-                Số lượng : {'      '}
-                <span style={{ color: 'black' }}> {dataStudentNoGroup.length}</span>
-              </Typography>
-            </Box> */}
           </Box>
         </Box>
-        <Box flex={1}>
+        <Box mt={20} flex={1}>
           <Box justifyContent={'space-between'} display={'flex'} mb={10}>
             <Typography variant='h4' fontWeight={'500'} color='error.main'>
-              Nhóm sinh viên {currentGroup}
+              Nhóm sinh viên {nameGroup}
             </Typography>
-            <Box>
-              <Typography variant='body2' fontWeight={'500'} color='primary.main'>
-                GV hướng dẫn: Chưa có
-              </Typography>
-            </Box>
           </Box>
           <Box
             sx={{
@@ -216,21 +223,20 @@ function TaskAddStudent(props: any) {
                 bgcolor: 'grey.400',
                 color: 'grey.400',
               },
-              height: 280,
+              height: 200,
             }}
             flex={1}
             onDragLeave={(e: any) => handleOnDragLeave(e)}
             onDragEnter={(e) => handleOnDragEnter(e)}
             onDragEnd={(e) => handleOnDrageEnd(e)}
             onDragOver={(e) => handleOnDragOver(e)}
-            onDrop={(e) => handleOnDrop(e, false, '100')}
+            onDrop={(e) => handleOnDrop(e, false, nameGroup)}
           >
             <Box className='drag_container'>
               <Box className='container'>
                 <Box className='drag_column'>
                   <Box className='drag_row'>
-                    {dataStudenInGroup.map((item: any) => (
-                      //   <Tooltip title={<Typography variant='body2'>Kéo thả thẻ này</Typography>}>
+                    {dataStudenInGroup?.map((item: any) => (
                       <Box
                         sx={{
                           bgcolor: 'grey.100',
@@ -239,6 +245,14 @@ function TaskAddStudent(props: any) {
                           py: 4,
                           color: 'white',
                           my: 4,
+                          border: '2px solid #fefefe',
+                          cursor: 'pointer',
+                          ':hover': {
+                            border: '2px solid #b11500',
+                            boxShadow: '1px 1px 1px 1px #E6E6E6',
+                            transition: '0.1s ease-in',
+                            backgroundColor: '#ffd5d3',
+                          },
                         }}
                         key={item.mssv}
                         id={item.mssv}
@@ -247,17 +261,6 @@ function TaskAddStudent(props: any) {
                         onDragEnd={(e) => handleOnDrageStart(e)}
                       >
                         <Box gap={10} position={'relative'} alignItems={'center'} display='flex'>
-                          <Box
-                            bgcolor={'warning.main'}
-                            borderRadius={'50%'}
-                            width={30}
-                            height={30}
-                            justifyContent={'center'}
-                            alignItems={'center'}
-                            display={'flex'}
-                          >
-                            <Icon icon='fluent-emoji:man-student-medium-light' width={60} />
-                          </Box>
                           <Box>
                             <Typography
                               position='absolute'
@@ -279,11 +282,9 @@ function TaskAddStudent(props: any) {
                             <Typography variant='body2' color={'error.dark'} fontWeight={'500'}>
                               <span>Mã sinh vien: {'  '}</span> {item.mssv}
                             </Typography>
-                            <Link textAlign={'end'}>Xem chi tiết</Link>
                           </Box>
                         </Box>
                       </Box>
-                      // </Tooltip>
                     ))}
                   </Box>
                 </Box>
@@ -301,14 +302,15 @@ function TaskAddStudent(props: any) {
           >
             <Typography flex={1} variant='h6' color='primary.main' fontWeight={'500'}>
               Số lượng : {'      '}
-              <span style={{ color: 'black' }}> {dataStudenInGroup.length} / 3</span>
+              <span style={{ color: 'black' }}> {dataStudenInGroup?.length} / 2</span>
             </Typography>
-            <Button color='warning' size='small'>
-              Làm mới
-            </Button>
-            <Button color='success' size='small'>
-              Tạo ngẫu nhiên
-            </Button>
+            {dataStudenInGroup && dataStudenInGroup.length > 2 && (
+              <Typography variant='body1' color='warning.dark'>
+                <Icon icon='twemoji:warning' />
+                Nhóm sinh viên tối đa 2 thành viên
+              </Typography>
+            )}
+           
           </Box>
         </Box>
       </Box>

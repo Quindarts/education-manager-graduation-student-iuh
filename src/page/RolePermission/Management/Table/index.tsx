@@ -1,58 +1,72 @@
 import Table from '@/components/ui/Table/Table';
-import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
-import { checkGender } from '@/utils/validations/person.validation';
+import { checkRoleLecturer, checkRoleLecturerColor } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import EditRoleModal from '../Modal/EditModal';
 
-function TableManagementRole(props) {
-  const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
+function TableManagementRole(props: any) {
+  const { rows, totalItems, totalPage, page, handleChangePage } = props;
   const navigate = useNavigate();
 
-  //   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
+  const [openEditInfoModal, setOpenEditInfoModal] = useState({
+    lecturerId: '',
+    lecturerName: '',
+    username: '',
+    isOpen: false,
+  });
 
-  //   const handleCloseEditInfoModal = () => {
-  //     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
-  //   };
-  //   const handleOpenInfoModal = (lecturerId: string) => {
-  //     setOpenEditInfoModal({ lecturerId, isOpen: true });
-  //   };
+  const handleCloseEditInfoModal = () => {
+    setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
+  };
+  const handleOpenRoleModal = (lecturerId: string, lecturerName: string, username: string) => {
+    setOpenEditInfoModal({ lecturerId, lecturerName, username, isOpen: true });
+  };
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Thông tin giảng viên',
-      field: 'none',
-      flex: 1.5,
+      headerName: 'Mã Giảng Viên',
+      field: 'username',
+      flex: 0.6,
       headerAlign: 'center',
-      renderCell: (params: any) => {
+      align: 'center',
+      renderCell(params) {
         return (
-          <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Box>
-              <Typography fontWeight={600} variant='body1'>
-                {params.row.fullName}
-              </Typography>
-              <Typography>
-                Mã GV: {'  '}
-                <Typography component={'span'}>{params.row.username}</Typography>
-              </Typography>
-            </Box>
-          </Box>
+          <Typography variant='body1' fontWeight={600} color='primary'>
+            {params.row.username}
+          </Typography>
         );
       },
     },
     {
-      headerName: 'Giới tính',
-      field: 'gender',
+      headerName: 'Họ & Tên đệm',
+      field: 'firstName',
+      flex: 0.7,
+      headerAlign: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
+          </Typography>
+        );
+      },
+    },
+    {
+      headerName: 'Tên',
+      field: 'lastname',
       flex: 0.5,
       headerAlign: 'center',
       align: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {params.row.fullName.trim().split(' ').pop()}
+          </Typography>
+        );
       },
     },
-
     {
       headerName: 'Chuyên ngành',
       field: 'none2',
@@ -63,12 +77,39 @@ function TableManagementRole(props) {
     },
     {
       headerName: 'Quyền người dùng',
-      field: 'role',
-      flex: 1,
+      field: 'myRole',
+      flex: 2,
       headerAlign: 'center',
-      align: 'center',
       renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkRoleLecturer(params.row.role)}</Typography>;
+        return (
+          <Box display={'flex'} flexWrap={'wrap'} gap={4}>
+            {params.row.roles.map((role: string) => (
+              <Typography
+                display={'flex'}
+                color={checkRoleLecturerColor(role)}
+                alignItems={'center'}
+                justifyItems={'center'}
+                gap={2}
+                bgcolor={'grey.300'}
+                px={4}
+                py={2}
+                borderRadius={3}
+                variant='body1'
+              >
+                <Typography
+                  borderRadius={'50%'}
+                  width={10}
+                  height={10}
+                  bgcolor={checkRoleLecturerColor(role)}
+                  variant='body1'
+                  color='initial'
+                >
+                </Typography>
+                {checkRoleLecturer(role)}
+              </Typography>
+            ))}
+          </Box>
+        );
       },
     },
     {
@@ -79,9 +120,14 @@ function TableManagementRole(props) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip title='Cập nhật quyền'>
+          <Tooltip
+            title='Cập nhật quyền'
+            onClick={() =>
+              handleOpenRoleModal(params.row.id, params.row.fullName, params.row.username)
+            }
+          >
             <IconButton size='small'>
-              <Icon icon='emojione:pencil' />
+              <Icon icon='uiw:setting' />
             </IconButton>
           </Tooltip>
           <Box></Box>
@@ -89,9 +135,9 @@ function TableManagementRole(props) {
             <IconButton
               color='primary'
               size='small'
-              onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
+              onClick={() => navigate(`/authorizations/lecturers?lecturerId=${params.row.id}`)}
             >
-              <Icon width={20} icon='fluent:apps-list-detail-20-filled' />
+              <Icon width={20} icon='mdi:card-account-details-star-outline' />
             </IconButton>
           </Tooltip>
         </Box>
@@ -108,6 +154,7 @@ function TableManagementRole(props) {
             bgcolor: 'white',
             width: '100%',
           }}
+          rowHeight={80}
           columns={basicColumns}
           totalItems={totalItems}
           totalPages={totalPage}
@@ -119,6 +166,13 @@ function TableManagementRole(props) {
           minHeight={400}
         />
       </Box>
+      <EditRoleModal
+        open={openEditInfoModal.isOpen}
+        lecturerName={openEditInfoModal.lecturerName}
+        username={openEditInfoModal.username}
+        lecturerId={openEditInfoModal.lecturerId}
+        onClose={handleCloseEditInfoModal}
+      />
     </>
   );
 }

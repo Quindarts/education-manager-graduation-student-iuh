@@ -4,12 +4,30 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DeleteGroupStudentModal from '../Modal/DeleteModal';
 
 function TableManagamentGroupStudent(props: any) {
   const { rows, totalItems, totalPage, page, handleChangePage } = props;
   const navigate = useNavigate();
+  const [openModalDelete, setOpenModalDelete] = useState({
+    isOpen: false,
+    groupStudentId: '',
+    groupStudentName: '',
+  });
+  
+  const handleOpenModalDelete = (groupStudentId: string, groupStudentName: string) => {
+    setOpenModalDelete({
+      groupStudentId: groupStudentId,
+      groupStudentName: groupStudentName,
+      isOpen: true,
+    });
+  };
+
+  const handleCloseModalDelete = () => {
+    setOpenModalDelete((pre: any) => ({ ...pre, isOpen: false }));
+  };
   const basicColumns: GridColDef[] = [
     {
       headerName: 'Tên nhóm',
@@ -71,7 +89,15 @@ function TableManagamentGroupStudent(props: any) {
               color='primary'
               onClick={() => navigate(`/group-students/detail/${params.row.id}`)}
             >
-              <Icon icon='majesticons:checkbox-list-detail' />
+              <Icon icon='clarity:file-group-line' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Xóa nhóm'>
+            <IconButton
+              color='primary'
+              onClick={() => handleOpenModalDelete(params.row.id, params.row.name)}
+            >
+              <Icon width={20}  icon='uiw:usergroup-delete' />
             </IconButton>
           </Tooltip>
         </Box>
@@ -83,7 +109,6 @@ function TableManagamentGroupStudent(props: any) {
 
   const { mutate: importGr, isLoading } = onImportGroupStudent(termStore.currentTerm.id);
   const hanldeImport = () => {
-    
     importGr(termStore.currentTerm.id);
   };
   return (
@@ -106,6 +131,12 @@ function TableManagamentGroupStudent(props: any) {
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector
+      />
+      <DeleteGroupStudentModal
+        groupStudentId={openModalDelete.groupStudentId}
+        groupStudentName={openModalDelete.groupStudentName}
+        open={openModalDelete.isOpen}
+        onClose={handleCloseModalDelete}
       />
     </Box>
   );

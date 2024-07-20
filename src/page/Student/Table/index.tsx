@@ -151,20 +151,6 @@ function TableManagamentStudent(props: any) {
         return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
       },
     },
-    // {
-    //   headerName: 'Loại đào tạo',
-    //   field: 'typeTraining',
-    //   flex: 0.7,
-    //   align: 'center',
-    //   headerAlign: 'center',
-    //   renderCell: (params: any) => {
-    //     return (
-    //       <Typography variant='body1' color='initial'>
-    //         {convertTraning(params.row.typeTraining)}
-    //       </Typography>
-    //     );
-    //   },
-    // },
     {
       headerName: 'Lớp danh nghĩa',
       field: 'clazzName',

@@ -1,5 +1,6 @@
+import { getStudentsNoHaveGroup } from './../../services/apiStudent';
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { assignTopic, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, getMemberInGroupStudent, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
+import { assignTopic, createGroupStudent, deleteGroupStudent, getCountOfGroupStudent, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, getMemberInGroupStudent, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
 import { ENUM_RENDER_GROUP_STUDENT, setParams, setTypeRender } from "@/store/slice/groupStudent.slice"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
@@ -14,7 +15,9 @@ export const enum QueryKeysGroupStudent {
     getGroupStudentById = "getGroupStudentById",
     managerActionGroupStudent = 'managerActionGroupStudent',
     searchGroupStudentByField = 'searchGroupStudentByField',
-    getMemberInGroupStudent = "getMemberInGroupStudent"
+    getMemberInGroupStudent = "getMemberInGroupStudent",
+    getStudentsNohaveGroup = "getStudentsNoHaveGroup",
+    getCountOfGroupStudent = "getCountOfGroupStudent",
 }
 const useGroupStudent = () => {
     const { enqueueSnackbar } = useSnackbar()
@@ -50,13 +53,30 @@ const useGroupStudent = () => {
             staleTime: 5000
         })
     }
+    const handleGetCountOfGroupStudent = () => {
+        return useQuery([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id], () => getCountOfGroupStudent(termStore.currentTerm.id))
+    }
     //[GET BY ID]
     const handleGetGroupStudentById = (id: number | string) => {
         return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id), {
             staleTime: 1000,
         })
     }
-
+    const handleGetStudentNoHaveGroup = () => {
+        return useQuery([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id], () => getStudentsNoHaveGroup(termStore.currentTerm.id))
+    }
+    const onCreateGroupStudent = () => {
+        return useMutation((studentIds: string[]) => createGroupStudent({ termId: termStore.currentTerm.id, studentIds }), {
+            onSuccess(data: any) {
+                if (data.success) {
+                    enqueueSnackbar('Tạo nhóm sinh viên thành công', { variant: 'success' })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                }
+            },
+        })
+    }
     const onImportGroupStudent = (termId: string) => {
         return useMutation((termId: string) => importGroupStudent(termId), {
             onSuccess(data: any) {
@@ -67,14 +87,31 @@ const useGroupStudent = () => {
             }
         })
     }
+
+    const onDeleteGroupStudent = () => {
+        return useMutation((id) => deleteGroupStudent(id), {
+            onSuccess(data: any) {
+                if (data.success) {
+                    enqueueSnackbar('Xóa nhóm sinh vien thành công', { variant: 'success' })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
+                }
+            }
+        })
+    }
     return {
-        params, renderUi,
+        params,
+        renderUi,
         handleManagerRenderActionGroupStudent,
-        onImportGroupStudent,
+        handleGetCountOfGroupStudent,
+        handleGetStudentNoHaveGroup,
         handleGetGroupStudentByTerm,
         handleGetGroupStudentById,
         handleGetGroupStudentByLecturerByTerm,
-
+        onDeleteGroupStudent,
+        onCreateGroupStudent,
+        onImportGroupStudent,
     }
 }
 export default useGroupStudent

@@ -9,6 +9,7 @@ const components: Components = {
       contained: () => ({
         color: 'white'
       }),
+
       sizeSmall: ({ theme }: any) => ({
         fontSize: theme.typography.h6,
         height: 35,
@@ -106,7 +107,7 @@ const components: Components = {
   MuiIconButton: {
     styleOverrides: {
       root: ({ theme }: any) => ({
-        color:theme.palette.grey[600],
+        color: theme.palette.grey[600],
         '&:focus': {
           backgroundColor: theme.palette.grey[300]
         }

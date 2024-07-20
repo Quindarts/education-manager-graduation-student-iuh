@@ -2,14 +2,15 @@ import { Box, Breadcrumbs, Typography } from '@mui/material';
 import React from 'react';
 import { Link, matchPath, useLocation, useNavigate, useParams } from 'react-router-dom';
 const ROUTE_LABELS: { [key: string]: string } = {
-  '/': 'Trang chủ',
+  '/': ' ',
   '/terms': 'Quản lý Học kì',
   '/terms/new': 'Thêm Học kì mới',
   '/terms/:termId': 'Chi tiết Học kì',
   '/terms/edit': 'Chỉnh sửa Học kì',
-
+  '/majors': 'Quản lý Chuyên ngành',
   '/lecturers': 'Quản lý Giảng viên',
   '/lecturers/detail': 'Chi tiết Giảng viên',
+  '/authorizations': 'Quản lý phân quyền',
   '/scores': 'Quản lý Chấm điểm',
 
   '/students': 'Quản lý Sinh viên',
@@ -61,13 +62,11 @@ function BreadCrumbRouting() {
 
   return (
     <Breadcrumbs aria-label='breadcrumb'>
-      <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 14 }} to='/'>
-        Trang chủ
-      </Link>
+      {/* <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 14 }} to='/'></Link> */}
       {validPaths.map((path, index) => {
         const breadcrumbName = findBreadcrumbName(path);
         return index === validPaths.length - 1 ? (
-          <Typography color='grey.500' fontWeight={500} variant='body2' key={path}>
+          <Typography color='grey.600' fontWeight={'600'} variant='h6' key={path}>
             {breadcrumbName}
           </Typography>
         ) : (

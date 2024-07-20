@@ -31,6 +31,7 @@ import MajorPage from '@/page/Major';
 import MyDetailGroupLecturer from '@/page/MyGroupLecturer/Detail';
 import NotificationManagementPage from '@/page/Notification/Management';
 import RolePermissionPage from '@/page/RolePermission';
+import RoleDetailPage from '@/page/RolePermission/Detail/RoleDetailPage';
 
 function Routing() {
   return (
@@ -68,6 +69,7 @@ function Routing() {
           <Route path={APP_ROUTES.USER.PROFILE} element={<ProfilePage />} />
           //ROLE PERMISSION
           <Route path={APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT} element={<RolePermissionPage />} />
+          <Route path={APP_ROUTES.USER_AUTHORIZATION.DETAIL} element={<RoleDetailPage />} />
           //ROUTE GR_LECTURER
           <Route
             path={APP_ROUTES.GROUP_LECTURER.MANAGEMENT}
@@ -92,10 +94,10 @@ function Routing() {
           {/* <Route path={APP_ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
           <Route path={APP_ROUTES.SUCCESS_MESSAGE} element={<SuccessMessagePage />} /> */}
         </Route>
-        <Route
+        {/* <Route
           path={'/componentpage'}
           element={<ComponentPage features={['']} roles={['hello']} />}
-        />
+        /> */}
         <Route path='/auth' element={<AuthLayout />}>
           <Route index path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
           <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />

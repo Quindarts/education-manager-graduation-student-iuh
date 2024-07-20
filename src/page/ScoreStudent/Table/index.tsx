@@ -1,52 +1,24 @@
 import { GridColDef } from '@mui/x-data-grid';
-import {  Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Table from '@/components/ui/Table/Table';
 
 function TableStudentScore(props: any) {
   const { handleRowClick, currentRowSelectId, rows } = props;
-
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Thông tin sinh viên',
-      field: 'name',
-      flex: 0.7,
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return (
-          <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Box>
-              <Typography fontWeight={600} variant='body1'>
-                {params.row.fullName}
-              </Typography>
-              <Typography>
-                Mã SV: {'  '}
-                <Typography component={'span'}>{params.row.username}</Typography>
-              </Typography>
-            </Box>
-          </Box>
-        );
-      },
-    },
-    {
-      headerName: 'Nhóm',
-      field: 'groupId',
-      flex: 0.4,
+      headerName: 'Nhóm Sinh viên',
+      field: 'topic',
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
-        return <Typography>{params.row.groupStudentName}</Typography>;
+        return (
+          <Typography sx={{ textTransform: 'uppercase', fontWeight: '600' }} variant='body1'>
+            {params.row.name}
+          </Typography>
+        );
       },
     },
-  //   {
-  //     headerName: 'Trạng thái',
-  //     field: 'status',
-  //     flex: 0.4,
-  //     headerAlign: 'center',
-  //     align: 'center',
-  //     renderCell: (params: any) => {
-  //       return <>{getCardTranscriptStatus('REJECTED')}</>;
-  //     },
-  //   },
   ];
   return (
     <>
@@ -54,6 +26,10 @@ function TableStudentScore(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
+          '&  .Mui-selected': {
+            color: 'error.main',
+            bgcolor: '#f8d2cb !important',
+          },
         }}
         minHeight={300}
         columns={basicColumns}

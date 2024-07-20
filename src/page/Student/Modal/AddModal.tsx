@@ -36,17 +36,20 @@ function AddModal(props: any) {
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
 
-  const {
-    mutate: createStudent,
-    isSuccess: successAdd,
-    isLoading,
-  } = onCreateStudent(termStore.currentTerm.id, 20, 1);
+  const { mutate: createStudent, isSuccess: successAdd } = onCreateStudent(
+    termStore.currentTerm.id,
+    20,
+    1,
+  );
 
   const handleSubmitStudent = (values: any) => {
     createStudent(values);
   };
+
   useEffect(() => {
-    onClose();
+    if (successAdd) {
+      onClose();
+    }
   }, [successAdd]);
   return (
     <Modal maxWidth='xs' open={open} onClose={onClose}>
@@ -66,6 +69,7 @@ function AddModal(props: any) {
             gender: '',
             majorId: `${majorStore.currentMajor.id}`,
             typeTraining: 'UNIVERSITY',
+            termId: `${termStore.currentTerm.id}`,
           }}
           onSubmit={(values: any) => handleSubmitStudent(values)}
         >
@@ -122,8 +126,8 @@ function AddModal(props: any) {
                 placeholder='Nhập vào email'
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.email ? true : false}
-                helperText={`${errors.email ? errors.email : ''}`}
+                error={errors.email && touched.email ? true : false}
+                helperText={`${errors.email && touched.email ? errors.email : ''}`}
               />
               <CustomTextField
                 name='phone'

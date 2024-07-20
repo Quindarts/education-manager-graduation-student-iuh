@@ -86,10 +86,6 @@ function Navbar(props: NavbarProps) {
             Khoa Công nghệ thông tin
           </Typography>
         </Box>
-
-        <Box mx={10}>
-          <BreadCrumbRouting />
-        </Box>
       </Box>
 
       <Box display='flex' alignItems='center' gap={6}>

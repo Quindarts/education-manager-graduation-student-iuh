@@ -24,7 +24,10 @@ export const getGroupStudentByTerm: any = (termId: string, limit: number, page: 
 export const getGroupStudentByLecturerByTerm: any = (termId: string) => {
     return axiosConfig.get(`/api/v1/group-students/lecturer?termId=${termId}`)
 }
-
+//[GET]
+export const getCountOfGroupStudent: any = (termId: string) => {
+    return axiosConfig.get(`/api/v1/group-students/count?termId=${termId}`)
+}
 //[GET BY ID]
 export const getGroupStudentById: any = (id: string) => {
     return axiosConfig.get(`/api/v1/group-students/${id}`)
@@ -52,11 +55,11 @@ export const assignTopic: any = (id: string, topicId: string) => {
 
 
 //[CREATE GROUP STUDENT] BE FIX
-export const createGroupStudent: any = (data: any) => {
+export const createGroupStudent: any = (data: { termId: string, studentIds: string[] }) => {
     return axiosConfig.post(`/api/v1/group-students`, data)
 }
 
-export const deleteGroupStudent: any = (id: string) => {
+export const deleteGroupStudent: any = (id: string, termId: string) => {
     return axiosConfig.delete(`/api/v1/group-students/${id}`)
 }
 

@@ -35,7 +35,6 @@ function EditInfoModal(props: any) {
   const { handleGetStudentById, onUpdateStudent } = useStudent();
   const { data, isLoading, isFetched } = handleGetStudentById(studentId);
 
-  const { termStore } = useTerm();
   const { majorStore } = useMajor();
   const { mutate: upDateStudent, isSuccess } = onUpdateStudent(studentId);
 
@@ -43,7 +42,9 @@ function EditInfoModal(props: any) {
     upDateStudent(values);
   };
   useEffect(() => {
-    onClose();
+    if (isSuccess) {
+      onClose();
+    }
   }, [isSuccess]);
 
   return (

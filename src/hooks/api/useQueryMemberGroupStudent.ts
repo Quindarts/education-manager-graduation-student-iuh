@@ -3,12 +3,15 @@ import { addMemberInGroup, deleteMemberInGroup, getMemberInGroupStudent } from "
 import { updateStatusStudent } from "@/services/apiStudent"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
+import { useTerm } from "./useQueryTerm"
+import { QueryKeysGroupStudent } from "./useQueryGroupStudent"
 
 export const enum QueryKeysMemberOfGroupStudent {
     getMemberInGroupStudent = "getMemberInGroupStudent"
 }
 const useMemberGroupStudent = () => {
     const { enqueueSnackbar } = useSnackbar()
+    const { termStore } = useTerm()
     //[GET MEMBER]
     const handleGetMemberInGroupStudent = (id: string) => {
         return useQuery([QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id], () => getMemberInGroupStudent(id))
@@ -36,6 +39,8 @@ const useMemberGroupStudent = () => {
             onSuccess() {
                 enqueueSnackbar('Xóa sinh viên khỏi nhóm thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id] })
+                queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
             }
         })
     }
@@ -45,6 +50,8 @@ const useMemberGroupStudent = () => {
             onSuccess() {
                 enqueueSnackbar('Thêm sinh viên vào nhóm thành công', { variant: 'error' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id] })
+                queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
             }
         })
     }

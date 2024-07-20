@@ -8,34 +8,38 @@ function SheetTranscriptAdvisor(props: any) {
     <Paper sx={{ p: 4, overflowY: 'auto', height: 650 }} elevation={3}>
       <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
         <Typography textAlign={'center'} variant='body2' color='initial'>
-          <b>TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HCM</b>
-          <br /> KHOA CÔNG NGHỆ THÔNG TIN <br />
+          <b>INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY</b>
+          <br /> FACULTY OF INFORMATION TECHNOLOGY <br />
           =======//======
         </Typography>
       </Box>
       <Box>
         <Typography textAlign={'center'} my={3} variant='body1' fontWeight={800} color='initial'>
-          PHIẾU CHẤM ĐIỂM KHÓA LUẬN TỐT NGHIỆP
+          CAPSTONE PROJECT EVALUATION FORM
         </Typography>
       </Box>
       <Box mx={6}>
         <Typography my={3} variant='body1' color='initial'>
-          1. Tên đề tài:
+          1. Topic name:
           <br />
           <br />
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          2. Nhóm thực hiện:
+          2. Instructors:
           <br />
-          Họ tên học viên 1: ...............................
-          <br />
-          Họ tên học viên 2: ...............................
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          3. Họ và tên người chấm điểm: ..............................
+          3. Team:
+          <br />
+          First student full name: ............................  Student code 1:............................
+          <br />
+          Second student full name:............................  Student code 2:............................
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          5. Vai trò của người đánh giá:  GV hướng dẫn  Phản biện  Thành viên HĐ
+          4. Evaluator's full name:
+        </Typography>
+        <Typography my={3} variant='body1' color='initial'>
+          5. Role of the evaluator:  Instructor{' '}
         </Typography>
         <Box>
           <Typography
@@ -45,17 +49,17 @@ function SheetTranscriptAdvisor(props: any) {
             fontWeight={'bold'}
             color='initial'
           >
-            NỘI DUNG ĐÁNH GIÁ
+            CONTENTS
           </Typography>
           <Box component={'section'}>
             <TableHead sx={{ bgcolor: '#d8ecfc' }}>
               <StyledTableRow>
-                <StyledTableCell>STT </StyledTableCell>
-                <StyledTableCell align='center'>Nội dung</StyledTableCell>
-                <StyledTableCell align='center'>Điểm tối đa</StyledTableCell>
-                <StyledTableCell align='center'>Điểm đánh giá Sinh viên 1</StyledTableCell>
-                <StyledTableCell align='center'>Điểm đánh giá Sinh viên 2</StyledTableCell>
-                <StyledTableCell align='center'>CÁC Ý KIẾN NHẬN XÉT</StyledTableCell>
+                <StyledTableCell>CLO </StyledTableCell>
+                <StyledTableCell align='center'>Contents</StyledTableCell>
+                <StyledTableCell align='center'>Max score</StyledTableCell>
+                <StyledTableCell align='center'>Score student 1</StyledTableCell>
+                <StyledTableCell align='center'>Score student 2</StyledTableCell>
+                <StyledTableCell align='center'>NOTES</StyledTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
@@ -79,21 +83,23 @@ function SheetTranscriptAdvisor(props: any) {
             </TableBody>
           </Box>
           <Typography my={3} variant='body2' fontWeight={'bold'} color='initial'>
-            Các ý kiến khác:
+            Other comments:
           </Typography>
           <Typography variant='body1' color='initial'>
-            ……………………………………………………………………………………………………………………………………………………………………………………………………
-            ………………………………………………………………………………………………………………………………………………………………………………………………………………………………
+          ....................................................................................................................................................................................
+          ....................................................................................................................................................................................
+          ....................................................................................................................................................................................
+
           </Typography>
           <Box display={'flex'} justifyContent={'end'}>
             <Typography component={'i'} textAlign={'center'} my={3} variant='body2' color='initial'>
-              TP. HCM, ngày.... tháng... năm ... <br />{' '}
+              Ho Chi Minh City, date month year <br />{' '}
               <Typography component={'b'} fontWeight={'bold'}>
                 {' '}
-                Người chấm điểm{' '}
+                Evaluator
               </Typography>
               <br />
-              (Ký và ghi rõ họ tên) <br />
+              <br />
               .........
             </Typography>
           </Box>

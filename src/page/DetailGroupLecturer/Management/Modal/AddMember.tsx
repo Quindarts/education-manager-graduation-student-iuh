@@ -1,4 +1,10 @@
+import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
+import SekeletonUI from '@/components/ui/Sekeleton';
+import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
+import { useLecturer } from '@/hooks/api/useQueryLecturer';
+import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
+import useMemberGroupLecturer from '@/hooks/api/useQueryMemberGroupLecturer';
 import { Icon } from '@iconify/react';
 import {
   Box,
@@ -13,6 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
@@ -25,56 +32,67 @@ const MenuProps = {
   },
 };
 
-const names = ['Lê Minh Quang - mssv: 21089141', 'Lê Văn Long - mssv: 21029291'];
-
+const convertLecturer = (lterms: any) => {
+  let updateLecturers: any[] = [];
+  if (!lterms) {
+    return [];
+  } else
+    lterms.map((lect: any) => {
+      updateLecturers.push({
+        _id: lect.lecturer.id,
+        name: lect.lecturer.fullName + ' - ' + lect.lecturer.username,
+      });
+    });
+  return updateLecturers;
+};
 function AddMemberGroupLecturerModal(props: any) {
-  const { onClose, open, groupStudentId } = props;
-  const [personName, setPersonName] = useState<string[]>([]);
+  const { onClose, open, groupType } = props;
+  const [lecturer, setlecturer] = useState<string>('');
+  const { handleGetListLecturerTerms } = useLecturerTerm();
+  const { pathname } = useLocation();
+  const current = pathname.split('/');
+  const grLecturerId = `${current[current.length - 1]}`;
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(typeof value === 'string' ? value.split(',') : value);
+  const { data, isLoading, isFetching } = handleGetListLecturerTerms();
+  const { onAddMemberToGroupLecturer } = useMemberGroupLecturer();
+  const { mutate: addMember } = onAddMemberToGroupLecturer(grLecturerId);
+  const handleSubmit = () => {
+    addMember(lecturer);
   };
-
   return (
     <Modal open={open} onClose={onClose}>
       <Box m={10}>
         <Typography mb={4} fontWeight={600} variant='h3'>
-          Thêm sinh viên vào nhóm
+          Thêm Giảng viên vào nhóm
         </Typography>
         <Box my={10}>
-          <FormControl sx={{ width: '100%' }}>
-            <Select
-              value={personName}
-              onChange={handleChange}
-              input={<OutlinedInput id='select-multiple-chip' />}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {names.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {isLoading || isFetching ? (
+            <SekeletonUI />
+          ) : (
+            <FormControl sx={{ width: '100%' }}>
+              <DropDown
+                onChange={(e: any) => {
+                  setlecturer(e.target.value);
+                }}
+                options={convertLecturer(data.lecturerTerms)}
+              />
+            </FormControl>
+          )}
         </Box>
         <Box mt={12} sx={{ display: 'flex', gap: 3 }}>
           <Button onClick={onClose} sx={{ width: '50%' }} variant='contained' color='primary'>
             <Icon width={20} style={{ marginRight: 4 }} icon='mdi:cancel-outline' />
             Hủy
           </Button>
-          <Button type='submit' sx={{ width: '50%' }} variant='contained' color={'error'}>
+          <Button
+            onClick={handleSubmit}
+            type='submit'
+            sx={{ width: '50%' }}
+            variant='contained'
+            color={'error'}
+          >
             <Icon width={20} icon='radix-icons:plus' />
-            Thêm sinh viên
+            Thêm Giảng viên
           </Button>
         </Box>
       </Box>
