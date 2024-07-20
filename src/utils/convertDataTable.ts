@@ -91,15 +91,11 @@ export const convertGroupMembersTable = (groupMember: any[]) => {
         return newArr
     }
 }
-export const convertListStudentScore = (listStudent: any[]) => {
-    if (listStudent === undefined)
+export const convertListGroupStudentScore = (grStudents: any[]) => {
+    if (grStudents === undefined)
         return []
     else {
-        let newArr: any[] = []
-        listStudent.map((mem: any) => {
-            newArr.push({ id: mem.studentId, ...mem })
-        })
-        return newArr
+        return grStudents
     }
 }
 
@@ -108,8 +104,9 @@ export const convertGroupLecturerTable = (groupLecturer: any[]) => {
         return []
     else {
         let newArr: any[] = []
-        groupLecturer.map((gr: any) => {
-            newArr.push({ id: gr.groupLecturerId, ...gr })
+        groupLecturer.map((gr: any, index: number) => {
+            let i = index + 1;
+            newArr.push({ id: gr.groupLecturerId, stt: i, ...gr })
         })
         return newArr
     }

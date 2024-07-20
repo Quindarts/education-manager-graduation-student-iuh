@@ -11,7 +11,13 @@ export const checkRoleLecturer = (value: string) => {
     if (value === EnumRole.HEAD_LECTURER) return 'Chủ nhiệm ngành';
     if (value === EnumRole.HEAD_COURSE) return 'Quản trị viên';
     if (value === EnumRole.ADMIN) return 'Chủ quản môn học';
-
+    return;
+};
+export const checkRoleLecturerColor = (value: string) => {
+    if (value === EnumRole.LECTURER) return '#207D47';
+    if (value === EnumRole.HEAD_LECTURER) return '#F1970F';
+    if (value === EnumRole.HEAD_COURSE) return '#3498DB';
+    if (value === EnumRole.ADMIN) return '#FF5733';
     return;
 };
 

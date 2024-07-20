@@ -7,9 +7,10 @@ const ROUTE_LABELS: { [key: string]: string } = {
   '/terms/new': 'Thêm Học kì mới',
   '/terms/:termId': 'Chi tiết Học kì',
   '/terms/edit': 'Chỉnh sửa Học kì',
-
+  '/majors': 'Quản lý Chuyên ngành',
   '/lecturers': 'Quản lý Giảng viên',
   '/lecturers/detail': 'Chi tiết Giảng viên',
+  '/authorizations': 'Quản lý phân quyền',
   '/scores': 'Quản lý Chấm điểm',
 
   '/students': 'Quản lý Sinh viên',
