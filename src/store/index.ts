@@ -5,6 +5,7 @@ import useMajorSliceReducer from "./slice/major.slice";
 import useGroupStudentSlice from "./slice/groupStudent.slice";
 import useStudentSlice from "./slice/student.slice";
 import useTopicSlice from "./slice/topic.slice";
+import useSidebarSlice from "./slice/sidebar.slice";
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         termSlice: useTermSliceReducer,
         groupStudentSlice: useGroupStudentSlice,
         studentSlice: useStudentSlice,
-        topicSlice: useTopicSlice
+        topicSlice: useTopicSlice,
+        sidebarSlice: useSidebarSlice
     },
 });
 
