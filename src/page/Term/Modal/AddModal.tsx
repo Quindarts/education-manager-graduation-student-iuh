@@ -3,12 +3,11 @@ import CustomTextField from '@/components/ui/CustomTextField';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import { TermDataRequest } from '@/services/apiTerm';
 import { formatDates } from '@/utils/formatDate';
 import { Icon } from '@iconify/react';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { Formik } from 'formik';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { validationTermSchema } from '../context';
 import dayjs from 'dayjs';
 import { useMajor } from '@/hooks/api/useQueryMajor';
@@ -28,14 +27,12 @@ function AddModal(props: any) {
   const { mutate: createTerm, isLoading, isSuccess } = onCreateTerm();
   const { majorStore } = useMajor();
   const handleSubmitTerm = (values: any) => {
-    const data: TermDataRequest = {
+    createTerm({
       name: values.name,
       majorId: values.majorId,
       startDate: formatDates(values.startDate),
       endDate: formatDates(values.endDate),
-    };
-
-    createTerm(data);
+    });
   };
   useEffect(() => {
     onClose();
@@ -53,7 +50,7 @@ function AddModal(props: any) {
         ) : (
           <Formik
             validationSchema={validationTermSchema}
-            onSubmit={(values, actions) => handleSubmitTerm(values)}
+            onSubmit={(values) => handleSubmitTerm(values)}
             initialValues={{
               name: '',
               majorId: majorStore.currentMajor.id,

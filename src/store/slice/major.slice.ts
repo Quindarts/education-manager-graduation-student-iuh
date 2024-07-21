@@ -1,6 +1,12 @@
+import Major from "@/types/entities/major";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initMajorSlice: any = {
+export interface InitMajorSliceType {
+    allMajor: Major[],
+    currentMajor: Omit<Required<Major>, 'created_at' | 'updated_at'>;
+}
+
+const initMajorSlice: InitMajorSliceType = {
     allMajor: [],
     currentMajor: {
         id: "",
@@ -12,10 +18,10 @@ export const useMajorSlice = createSlice({
     name: "MajorSlice",
     initialState: initMajorSlice,
     reducers: {
-        setAllMajor: (state: any, { payload }: PayloadAction<any>) => {
+        setAllMajor: (state: Pick<InitMajorSliceType, 'allMajor'>, { payload }: PayloadAction<any>) => {
             state.allMajor = payload
         },
-        setCurrentMajor: (state: any, { payload }: PayloadAction<any>) => {
+        setCurrentMajor: (state: Pick<InitMajorSliceType, 'currentMajor'>, { payload }: PayloadAction<any>) => {
             state.currentMajor = payload
         }
     }

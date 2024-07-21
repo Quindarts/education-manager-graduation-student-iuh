@@ -1,45 +1,39 @@
+import { Topic, TopicBodyRequestType } from "@/types/entities/topic";
 import axiosConfig from "./axiosConfig";
+import { ResponseType } from "@/types/axios.type";
 
-interface TopicBodySend {
-    name?: string;
-    description?: string;
-    quantityGroupMax?: number;
-    standardOutput?: string;
-    requireInput?: string;
-    target?: string;
-}
+
 //[HEAD LEC, LEC]
-export const getTopicById: any = async (topic_id: string | number) => {
-    return axiosConfig.get(`/api/v1/topics/${topic_id}`)
+export const getTopicById = async (topicId: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics/${topicId}`)
 }
 
 //[HEAD LEC]
-export const getTopicsByTermByMajor: any = async (termId: string, majorId: string) => {
-    return axiosConfig.get(`/api/v1/topics?termId=${termId}&majorId=${majorId}`)
+export const getTopicsByTermByMajor = async (termId: string, majorId: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics?termId=${termId}&majorId=${majorId}`)
 }
 
 //[HEAD LEC, LEC]
-export const getTopicsByLecturerByTerm: any = async (lecturerId: string | number, termId: string | number) => {
-    return axiosConfig.get(`/api/v1/topics?lecturerId=${lecturerId}&termId=${termId}`)
+export const getTopicsByLecturerByTerm = async (lecturerId: string, termId: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics?lecturerId=${lecturerId}&termId=${termId}`)
 }
 
 //POST [HEAD LEC, LEC]
-export const createTopicByToken: any = async (topic: TopicBodySend, termId: string) => {
-    return axiosConfig.post(`/api/v1/topics?termId=${termId}`, topic);
+export const createTopicByToken = async (topic: TopicBodyRequestType, termId: string) => {
+    return axiosConfig.post<ResponseType, any>(`/api/v1/topics?termId=${termId}`, topic);
 }
 
 //PUT [HEAD LEC, LEC]
-export const updateTopicById: any = async (topicId: string | number, topic: TopicBodySend) => {
-    return axiosConfig.put(`/api/v1/topics/${topicId}`, topic)
+export const updateTopicById = async (topicId: string, topic: TopicBodyRequestType) => {
+    return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}`, topic)
 }
 
 //PUT  [HEAD LEC]
-export const updateStatusTopicById: any = async (topicId: string | number, data: { status: string, note: string }) => {
-    return axiosConfig.put(`/api/v1/topics/${topicId}/status`, data)
+export const updateStatusTopicById = async (topicId: string, data: Pick<Topic, 'status' | 'note'>) => {
+    return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}/status`, data)
 }
 
 //DELETE  [HEAD LEC, LEC]
-export const deleteTopicById: any = async (topicId: string | number) => {
-
-    return axiosConfig.delete(`/api/v1/topics/${topicId}`)
+export const deleteTopicById = async (topicId: string) => {
+    return axiosConfig.delete<ResponseType, any>(`/api/v1/topics/${topicId}`)
 }

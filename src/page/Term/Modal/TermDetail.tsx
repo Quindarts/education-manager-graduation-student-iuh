@@ -7,13 +7,13 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { Formik, useFormik } from 'formik';
+import { Formik } from 'formik';
 import React from 'react';
 
 function TermDetail(props: any) {
   const { onClose, open, termId } = props;
   const { handelGetTermById } = useTerm();
-  const { data, isLoading, isSuccess, isFetching } = handelGetTermById(termId);
+  const { data, isLoading, isFetching } = handelGetTermById(termId);
   return (
     <Modal open={open} onClose={onClose}>
       <Box p={10}>

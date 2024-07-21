@@ -1,9 +1,8 @@
 import { useMutation, useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setAllNotifications } from './notificationSlice';
 import { useSnackbar } from 'notistack';
-import { CreateNotificationOfLecturerId, deleteNotificationLecturer, getNotificationsOfLecturer, updateNotificationLecturer } from '@/services/apiNotification';
+import { createNotificationOfLecturerId, deleteNotificationLecturer, getNotificationsOfLecturer, updateNotificationLecturer } from '@/services/apiNotification';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 
 export enum QueryKeysNotification {
@@ -26,7 +25,7 @@ export const useNotification = () => {
 
     //[CREATE]
     const onCreateNotification = () => {
-        return useMutation(() => CreateNotificationOfLecturerId(), {
+        return useMutation(() => createNotificationOfLecturerId(), {
             onSuccess: (data: any) => {
                 if (data.success) {
                     enqueueSnackbar('Thêm thông báo thành công', { variant: 'success' });

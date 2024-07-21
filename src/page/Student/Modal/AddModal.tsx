@@ -1,4 +1,3 @@
-import Calendar from '@/components/ui/Calendar';
 import CustomTextField from '@/components/ui/CustomTextField';
 import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
@@ -36,11 +35,7 @@ function AddModal(props: any) {
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
 
-  const { mutate: createStudent, isSuccess: successAdd } = onCreateStudent(
-    termStore.currentTerm.id,
-    20,
-    1,
-  );
+  const { mutate: createStudent, isSuccess: successAdd } = onCreateStudent();
 
   const handleSubmitStudent = (values: any) => {
     createStudent(values);

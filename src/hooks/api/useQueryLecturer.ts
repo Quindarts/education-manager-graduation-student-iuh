@@ -1,15 +1,16 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { createLecturer, deleteLecturerById, getAllLecturer, getLecturerById, searchLecturerAdmin, updateLecturerById } from "@/services/apiLecturer"
 import { importLecturerTerm } from '@/services/apiLecturerTerm';
-import { ENUM_RENDER_LECTURER, setKeywords, setParams, setTypeRender } from '@/store/slice/lecturer.slice';
+import { setKeywords, setParams, setTypeRender } from '@/store/slice/lecturer.slice';
 import { useSnackbar } from 'notistack';
 import { useMutation, useQuery } from "react-query"
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useTerm } from './useQueryTerm';
 import { QueryKeysGroupLecturer } from './useQueryGroupLecturer';
-import ResponseType from '@/types/axios.type';
 import { useMajor } from './useQueryMajor';
+import { Lecturer } from '@/types/entities';
+import { ResponseType } from '@/types/axios.type';
 
 export enum QueryKeysLecturer {
     getAllLecturer = 'getAllLecturer',
@@ -27,7 +28,7 @@ export const useLecturer = () => {
     const { termStore } = useTerm()
     const { majorStore } = useMajor()
 
-    const handleManagerRenderActionLecturer = (limit: number, page: number, searchField: string,
+    const handleManagerRenderActionLecturer = (limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email' | 'all',
         keywords: string | number) => {
         return useQuery([QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, majorStore.currentMajor.id, limit, page, renderUi, keywords], () => {
             if (searchField !== 'all' && keywords != '')
@@ -43,7 +44,6 @@ export const useLecturer = () => {
             staleTime: 10000,
         })
     }
-
     // [GET ALL]
     // const handleGetAllLecturer = (termId: string | number, limit: number, page: number) => {
     //     return useQuery([QueryKeysLecturer.getAllLecturer, ENUM_RENDER_LECTURER.ALL, termId, limit, page], () => getAllLecturer(termId, limit, page), {
@@ -69,15 +69,14 @@ export const useLecturer = () => {
 
 
     //[GET BY ID]
-    const handleGetLecturerById = (id: number | string) => {
+    const handleGetLecturerById = (id: string) => {
         return useQuery([QueryKeysLecturer.getLecturerById, id], () => getLecturerById(id), {
             enabled: !!id
         })
     }
-
     //[CREATE]
-    const onCreateLecturer = (termId: string | number, limit: number, page: number) => {
-        return useMutation((lecturer: any) => createLecturer(lecturer), {
+    const onCreateLecturer = () => {
+        return useMutation((lecturer: Lecturer) => createLecturer(lecturer), {
             onSuccess() {
                 enqueueSnackbar("Tạo giang vien thành công", { variant: 'success' })
                 queryClient.invalidateQueries(
@@ -86,7 +85,7 @@ export const useLecturer = () => {
                     }
                 );
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
             },
         },
@@ -94,8 +93,8 @@ export const useLecturer = () => {
     }
 
     //[UPDATE]
-    const onUpdateLecturer = (id: number | string) => {
-        return useMutation((lecturer: any) => updateLecturerById(id, lecturer), {
+    const onUpdateLecturer = (id: string) => {
+        return useMutation((lecturer: Lecturer) => updateLecturerById(id, lecturer), {
             onSuccess() {
                 enqueueSnackbar("Cập nhật giảng viên thành công", { variant: 'success' })
                 queryClient.invalidateQueries(
@@ -108,7 +107,7 @@ export const useLecturer = () => {
 
 
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Cập nhật giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
             },
 
@@ -126,7 +125,7 @@ export const useLecturer = () => {
                     }
                 );
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Xóa giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
             }
         })
@@ -144,7 +143,7 @@ export const useLecturer = () => {
                     );
                 };
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Cập nhật danh sách giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
             }
         })

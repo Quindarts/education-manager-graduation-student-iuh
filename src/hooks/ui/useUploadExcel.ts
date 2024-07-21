@@ -1,4 +1,3 @@
-import { useStudent } from '@/hooks/api/useQueryStudent';
 import { bytesForHuman } from '@/components/ui/Upload/func';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import axiosConfig from '@/services/axiosConfig';
@@ -10,7 +9,6 @@ import { QueryKeysLecturer } from '../api/useQueryLecturer';
 import { QueryEvaluation } from '../api/useQueryEvalutaion';
 import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
-import { ENUM_RENDER_STUDENT } from '@/store/slice/student.slice';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -71,7 +69,6 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
   const [totalSize, setTotalSize] = useState<string>('');
   const [currentFile, setCurrentFile] = useState()
   const { enqueueSnackbar } = useSnackbar();
-  const { params: paramsStudent } = useStudent()
 
   //axios
   const [valueLoading, setValueLoading] = useState<any>(0)
@@ -154,7 +151,7 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, ENUM_RENDER_STUDENT.ALL, termId, paramsStudent.limit, paramsStudent.page] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, 10, 1] })
           }
           if (entityUpload === TypeEntityUpload.TOPIC) {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {

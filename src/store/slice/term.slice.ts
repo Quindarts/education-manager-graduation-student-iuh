@@ -1,9 +1,42 @@
+import { Term } from "@/types/entities/term";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 
-const initTermSlice: any = {
-    currentTerm: {},
-    allTerm: {},
+export interface InitTermSliceType {
+    currentTerm: Required<Term>,
+    allTerm: Partial<Term[]>,
+    partCurrentTerm: {
+        isInTerm: boolean,
+        isChooseGroup: boolean,
+        isChChooseTopic: boolean,
+        isDiscussion: boolean,
+        isReport: boolean,
+        isPublicResult: boolean
+    }
+}
+
+const initTermSlice: InitTermSliceType = {
+    currentTerm: {
+        id: '',
+        key: '',
+        createdAt: '',
+        dateDiscussion: '',
+        dateReport: '',
+        majorId: '',
+        endDate: '',
+        endDateChooseTopic: '',
+        endDateSubmitTopic: '',
+        name: '',
+        startDate: '',
+        startDateChooseTopic: '',
+        startDateSubmitTopic: '',
+        updatedAt: '',
+        startDateDiscussion: '',
+        endDateDiscussion: '',
+        startDateReport: '',
+        endDateReport: '',
+    },
+    allTerm: [],
     partCurrentTerm: {
         isInTerm: true,
         isChooseGroup: true,
@@ -13,24 +46,23 @@ const initTermSlice: any = {
         isPublicResult: true
     }
 }
-const checkedValidDistanceDate = (startDate: string, endDate: string) => {
+const checkedValidDistanceDate = (endDate: string) => {
     return dayjs(endDate) >= dayjs()
 }
 export const useTermSlice = createSlice({
     name: "TermSlice",
     initialState: initTermSlice,
     reducers: {
-        setCurrentTerm: (state: any, { payload }: PayloadAction<any>) => {
+        setCurrentTerm: (state: Omit<InitTermSliceType, 'allTerm'>, { payload }: PayloadAction<any>) => {
             state.currentTerm = payload
-            // state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.startDate, payload.endDate)
-            // state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.startChooseGroupDate, payload.endChooseGroupDate)
-            // state.partCurrentTerm.isChChooseTopic = checkedValidDistanceDate(payload.startChooseTopicDate, payload.endChooseTopicDate)
-            // state.partCurrentTerm.isDiscussion = checkedValidDistanceDate(payload.startDiscussionDate, payload.endDiscussionDate)
-            // state.partCurrentTerm.isReport = checkedValidDistanceDate(payload.startReportDate, payload.endReportDate)
-            // state.partCurrentTerm.isPublicResult = checkedValidDistanceDate(payload.startPublicResultDate, payload.endPublicResultDate)
-
+            state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.startDate)
+            state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.startChooseGroupDate)
+            state.partCurrentTerm.isChChooseTopic = checkedValidDistanceDate(payload.startChooseTopicDate)
+            state.partCurrentTerm.isDiscussion = checkedValidDistanceDate(payload.startDiscussionDate)
+            state.partCurrentTerm.isReport = checkedValidDistanceDate(payload.startReportDate)
+            state.partCurrentTerm.isPublicResult = checkedValidDistanceDate(payload.startPublicResultDate)
         },
-        setAllTerm: (state: any, { payload }: PayloadAction<any>) => {
+        setAllTerm: (state: Pick<InitTermSliceType, 'allTerm'>, { payload }: PayloadAction<any>) => {
             state.allTerm = payload
         }
     }

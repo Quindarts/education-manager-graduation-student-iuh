@@ -31,12 +31,9 @@ function HeaderGroupStudent() {
         Tạo nhóm sinh viên
       </Button>
       {/* <MenuButton /> */}
-      <AddGroupStudentModal
-        open={openAddModal}
-        onClose={handleCloseAddModal}
-      />
+      <AddGroupStudentModal open={openAddModal} onClose={handleCloseAddModal} />
     </Box>
   );
 }
 
-export default HeaderGroupStudent;
+export default React.memo(HeaderGroupStudent);

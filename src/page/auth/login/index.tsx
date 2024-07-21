@@ -8,48 +8,29 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Typography from '@mui/material/Typography';
 import { FormikHelpers, useFormik } from 'formik';
-import { Link } from 'react-router-dom';
-import { IAuth } from '@/types/auth.type';
-import { APP_ROUTES } from '@/utils/app-config';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { Icon } from '@iconify/react';
-import { EnumGender, RoleCheck } from '@/types/enum';
 import { useAuth } from '@/hooks/api/useAuth';
 import { CircularProgress } from '@mui/material';
+import { IAuth } from '@/types/entities/user';
 
-interface IAuthResponseData {
-  accessToken: string;
-  lecturer: {
-    avatar?: string;
-    degree: string;
-    email: string;
-    fullName: string;
-    gender?: EnumGender;
-    id?: string;
-    isAdmin: false;
-    major_id: 1;
-    phone: string;
-    role: RoleCheck;
-    username: string;
-  };
-}
 export default function Login() {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
   const { handleLogin } = useAuth();
   const { mutate: mutateLogin, isLoading } = handleLogin();
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
 
   const formik = useFormik<IAuth>({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: (values: IAuth, { resetForm }: FormikHelpers<IAuth>) => {
+    onSubmit: (values: IAuth, {}: FormikHelpers<IAuth>) => {
       mutateLogin(values);
     },
   });
-  const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
 
+  const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
   return (
     <Grid container spacing={2} pb={8}>
       <Grid item xs={12}>
@@ -98,7 +79,7 @@ export default function Login() {
                 name='username'
               />
               <CustomTextField
-              label='Mật khẩu'
+                label='Mật khẩu'
                 error={Boolean(errors.password) && touched.password}
                 helperText={touched.password && errors.password}
                 onBlur={handleBlur}

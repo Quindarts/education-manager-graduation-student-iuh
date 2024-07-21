@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack"
-import { useMutation, useQuery } from "react-query"
+import { useMutation } from "react-query"
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 import { addMemberToGroupLecturerById, removeMemberFromGroupLecturerById } from "@/services/apiGroupLecturer"
 import { QueryKeysGroupLecturer } from "./useQueryGroupLecturer"

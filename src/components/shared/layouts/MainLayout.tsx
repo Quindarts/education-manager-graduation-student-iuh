@@ -28,7 +28,7 @@ function MainLayout() {
         }
       });
     });
-  }, [lecturerStore.currentRoleRender]);
+  }, []);
 
   return (
     <>

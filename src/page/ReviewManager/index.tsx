@@ -132,7 +132,7 @@ function ReviewManagerPage() {
           />
           <ExportWordModal
             onClose={handleCloseExportModal}
-            termId={termStore.currentTerm.id}
+            termId={`${termStore.currentTerm.id}`}
             typeReport={currentTypeReview}
             open={openModalExport.isOpen}
             evaluations={data?.evaluations}

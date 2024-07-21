@@ -26,18 +26,18 @@ const useEvaluation = () => {
         return permissions
     }
 
-    const handleGetEvalutationByType = (termId: number | string, type: TypeEvaluation) => {
+    const handleGetEvalutationByType = (termId?: string, type?: TypeEvaluation) => {
         return useQuery([QueryEvaluation.getEvaluationByType, termId, type], () => getEvaluationByTermByType(termId, type), {
             staleTime: 1000
         })
     }
-    const handleGetEvaluationById = (evaluationId: string) => {
+    const handleGetEvaluationById = (evaluationId?: string) => {
         return useQuery([QueryEvaluation.getEvaluationById, evaluationId], () => getEvaluationById(evaluationId), {
             enabled: !!evaluationId
         })
     }
 
-    const onCreateEvaluation = (termId: number | string, type: TypeEvaluation) => {
+    const onCreateEvaluation = (termId?: string, type?: TypeEvaluation) => {
         return useMutation((data: EvaluationDataRequestType) => createEvaluation(data), {
             onSuccess() {
                 enqueueSnackbar('Tạo tiêu chí đánh giá thành công', { variant: "success" })
@@ -48,7 +48,7 @@ const useEvaluation = () => {
             }
         })
     }
-    const onUpdateEvaluationById = (termId: number | string, type: TypeEvaluation, evaluationId: string) => {
+    const onUpdateEvaluationById = (termId?: string, type?: TypeEvaluation, evaluationId?: string) => {
         return useMutation((data: EvaluationDataRequestType) => updateEvaluation(evaluationId, data), {
             onSuccess() {
                 enqueueSnackbar('Cập nhật tiêu chí đánh giá thành công', { variant: "success" })
@@ -61,7 +61,7 @@ const useEvaluation = () => {
             }
         })
     }
-    const onDeleteEvaluationById = (termId: number | string, type: TypeEvaluation, evaluationId: string) => {
+    const onDeleteEvaluationById = (termId?: string, type?: TypeEvaluation, evaluationId?: string) => {
         return useMutation(() => deleteEvaluation(evaluationId), {
             onSuccess() {
                 enqueueSnackbar('Xóa tiêu chí đánh giá thành công', { variant: "success" })

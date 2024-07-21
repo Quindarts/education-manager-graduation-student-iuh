@@ -3,11 +3,8 @@ import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
 import {
   Box,
-  Button,
   CircularProgress,
   Paper,
-  TableBody,
-  TableHead,
   Typography,
 } from '@mui/material';
 
@@ -18,6 +15,7 @@ import { checkTypeEvaluation, ENUM_SCORE_STUDENT } from '@/utils/validations/tra
 import useQueryTranscript from '@/hooks/api/useQueryTranscript';
 import { convertListGroupStudentScore } from '@/utils/convertDataTable';
 import TranscriptGroupStudent from './ChangeTranscriptsGroupSection';
+
 function ScoreStudentPage() {
   const [currentDataRow, setCurrentDataRow] = useState(null);
   const [currentRowSelectId, setCurrentRowSelectId] = useState('');

@@ -30,7 +30,7 @@ export const APP_ROUTES = {
     MANAGEMENT: "/scores"
   },
   STUDENT: {
-    MANAGEMENT: '/students',
+    MANAGEMENT: '/students/query',
   },
   GROUP_STUDENT: {
     MANAGEMENT: "/group-students",

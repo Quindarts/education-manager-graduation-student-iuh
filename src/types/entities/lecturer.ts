@@ -1,18 +1,5 @@
-import { EnumRole, EnumGender } from '../enum';
+import { User } from './user';
 
-interface Lecturer {
-  id: any;
-  username: string;
-  avatar: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  gender: EnumGender;
-  role: EnumRole;
-  majors: {
-    id: number;
-  };
-  degree: string;
-  isAdmin: boolean;
+export interface Lecturer extends User {
+
 }
-export default Lecturer;

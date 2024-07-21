@@ -6,7 +6,6 @@ import AddLecturerModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import Search from '@/components/ui/Search';
 import useDebounce from '@/hooks/ui/useDebounce';
 import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 
@@ -34,11 +33,9 @@ const DROP_SEARCH_VALUE = [
 ];
 
 function HeaderLecturer(props: any) {
-  const { handleChangeDropSearch, typeSearch, isApiLoading, handleChangeKeywords, onClearSearch } =
-    props;
+  const { handleChangeDropSearch, typeSearch, handleChangeKeywords, onClearSearch } = props;
   const [openAddModal, setOpenAddModal] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(isApiLoading);
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue, 500);
 

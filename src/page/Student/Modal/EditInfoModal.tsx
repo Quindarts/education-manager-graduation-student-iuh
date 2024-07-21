@@ -1,4 +1,3 @@
-import Calendar from '@/components/ui/Calendar';
 import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
@@ -11,9 +10,9 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validateSchemaStudent } from '../Context';
 import CustomTextField from '@/components/ui/CustomTextField';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import dayjs from 'dayjs';
 import { useMajor } from '@/hooks/api/useQueryMajor';
+import { ModalProps } from '@/types/ui/Modal';
 const GenderStudent = [
   {
     _id: EnumGender.FEMALE,
@@ -29,7 +28,11 @@ const TRAINING_DROP_VALUE = [
   { _id: 'UNIVERSITY', name: 'Đại học' },
   { _id: 'COLLEGE', name: 'Cao đẳng' },
 ];
-function EditInfoModal(props: any) {
+
+type EditModalType = { studentId: string };
+
+function EditInfoModal(props: ModalProps & EditModalType) {
+
   const { onClose, open, studentId } = props;
 
   const { handleGetStudentById, onUpdateStudent } = useStudent();

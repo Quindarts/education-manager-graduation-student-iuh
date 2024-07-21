@@ -1,53 +1,48 @@
+import { ResponseType } from "@/types/axios.type";
 import axiosConfig from "./axiosConfig"
+import { Term, } from "@/types/entities/term";
 
 export enum TypeTermStatus {
     CHOOSE_GROUP = 'choose-group',
     CHOOSE_TOPIC = 'choose-topic',
     DISCUSSION = 'discussion',
     REPORT = 'report',
-    PUBLIC_RESULT = 'public-result'
+    PUBLIC_RESULT = 'public-result',
 }
 
-export interface TermDataRequest {
-    name: string;
-    startDate: string;
-    endDate: string;
-    majorId: string
+export const getAllTerm = () => {
+    return axiosConfig.get<ResponseType, any>("/api/v1/terms");
+}
+export const getAllTermByMajor = (majorId: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/major/${majorId}`);
 }
 
-export const getAllTerm: any = () => {
-    return axiosConfig.get("/api/v1/terms");
-}
-export const getAllTermByMajor: any = (majorId: string) => {
-    return axiosConfig.get(`/api/v1/terms/major/${majorId}`);
+export const getTermById = (id: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/${id}`)
 }
 
-export const getTermById: any = (id: number) => {
-    return axiosConfig.get(`/api/v1/terms/${id}`)
-}
-
-export const getCurrentTerm: any = (majorId: string) => {
-    return axiosConfig.get(`/api/v1/terms/now?majorId=${majorId}`)
+export const getCurrentTerm = (majorId: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/now?majorId=${majorId}`)
 }
 
 
-export const getTermDetailWithType: any = (id: number | string, type: TypeTermStatus) => {
-    return axiosConfig.get(`/api/v1/terms/${id}/${type}`)
+export const getTermDetailWithType = (id: string, type: TypeTermStatus) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/${id}/${type}`)
 }
 
-export const updateTermWithType: any = (id: number | string, type: TypeTermStatus, data: { startDate: string, endDate: string }) => {
-    return axiosConfig.put(`/api/v1/terms/${id}/${type}`, data)
+export const updateTermWithType = (id: string, type: TypeTermStatus, data: Pick<Term, 'startDate' | 'endDate'>) => {
+    return axiosConfig.put<ResponseType, any>(`/api/v1/terms/${id}/${type}`, data)
 }
 
-export const createTerm = (data: TermDataRequest) => {
-    return axiosConfig.post(`/api/v1/terms`, data);
+export const createTerm = (data: Pick<Term, 'name' | 'startDate' | 'endDate' | 'majorId'>) => {
+    return axiosConfig.post<ResponseType, any>(`/api/v1/terms`, data);
 }
 
-export const updateTermById: any = (id: number | string, data: { startDate: string, endDate: string }) => {
-    return axiosConfig.put(`/api/v1/terms/${id}`, data);
+export const updateTermById = (id: string, data: Pick<Term, 'startDate' | 'endDate'>) => {
+    return axiosConfig.put<ResponseType, any>(`/api/v1/terms/${id}`, data);
 }
 
 //delete term BE
-export const deleteTerm = (id: number | string) => {
-    return axiosConfig.post(`/api/v1/terms/${id}`);
+export const deleteTerm = (id: string) => {
+    return axiosConfig.post<ResponseType, any>(`/api/v1/terms/${id}`);
 }

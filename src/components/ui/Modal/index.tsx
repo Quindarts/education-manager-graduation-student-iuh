@@ -10,7 +10,6 @@ export interface ModalTypeProps extends DialogProps {
   onClose: () => void;
   children: React.ReactNode;
 }
-
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;

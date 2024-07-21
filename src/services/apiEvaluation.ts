@@ -18,7 +18,7 @@ export const getEvaluationById: any = async (id: number | string) => {
     return axiosConfig.get(`/api/v1/evaluations/${id}`)
 }
 
-export const getEvaluationByTermByType: ReturnType<any> = async (termId: string, type: TypeEvaluation) => {
+export const getEvaluationByTermByType: ReturnType<any> = async (termId?: string, type?: TypeEvaluation) => {
     return axiosConfig.get(`/api/v1/evaluations?termId=${termId}&type=${type}`)
 }
 
@@ -28,12 +28,12 @@ export const createEvaluation: any = async (data: EvaluationDataRequestType) => 
 }
 
 // [UPDATE]
-export const updateEvaluation = async (id: string, data: EvaluationDataRequestType) => {
+export const updateEvaluation = async (id?: string, data?: EvaluationDataRequestType) => {
     return axiosConfig.put(`api/v1/evaluations/${id}`, data)
 }
 
 //[DELETE]
-export const deleteEvaluation = async (id: string | number) => {
+export const deleteEvaluation = async (id?: string) => {
     return axiosConfig.delete(`api/v1/evaluations/${id}`)
 }
 

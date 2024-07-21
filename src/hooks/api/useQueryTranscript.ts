@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
 import { BodyEvaluation, createTranscript, createTranscripts, getEvaluationsForScoring, getTranscriptByGroupStudent, getTranscriptOfStudentInGroup, getTranscriptsByTypeEvaluation, getUnTranscriptGroupStudentsByType, updateTranscript } from "@/services/apiTranscipts"
-import { enqueueSnackbar, useSnackbar } from "notistack"
+import { useSnackbar } from "notistack"
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 export enum QueryKeysScoreStudent {
     getEvaluationsForScoring = 'getEvaluationsForScoring',

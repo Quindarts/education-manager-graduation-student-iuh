@@ -1,4 +1,4 @@
-import ResponseType from '@/types/axios.type';
+import { MajorResponse } from './../../types/entities/major';
 import { createMajor, deleteMajor, getAllMajor, getMajorById, updateMajor } from "@/services/apiMajor"
 import { RootState } from "@/store"
 import { setAllMajor } from "@/store/slice/major.slice"
@@ -23,7 +23,7 @@ export const useMajor = () => {
     //[GET RENDER]
     const handleGetAllMajorsRender = () => {
         return useQuery([QueryKeysMajor.getAllMajor], () => getAllMajor(), {
-            onSuccess(data: any) {
+            onSuccess(data: MajorResponse) {
                 dispatch(setAllMajor(data.majors))
             }
         })
@@ -31,7 +31,7 @@ export const useMajor = () => {
     //[GET ALL]
     const handleGetAllMajor = () => {
         return useQuery([QueryKeysMajor.getAllMajor], () => getAllMajor(), {
-            onSuccess(data: any) {
+            onSuccess(data: Pick<MajorResponse, 'majors'>) {
                 dispatch(setAllMajor(data.majors))
             }
         })
@@ -39,8 +39,8 @@ export const useMajor = () => {
     //[GET ALL]
     const handleGetMajorById = (id: string) => {
         return useQuery([QueryKeysMajor.getMajorById, id], () => getMajorById(id), {
-            onSuccess(data: any) {
-                dispatch(setAllMajor(data.majors))
+            onSuccess(data: Pick<MajorResponse, 'major' | 'message' | 'success'>) {
+                // dispatch(setAllMajor(data.major))
             }
         })
     }

@@ -11,7 +11,6 @@ export const store = configureStore({
         lecturerSlice: useLecturerReducer,
         majorSlice: useMajorSliceReducer,
         termSlice: useTermSliceReducer,
-
         groupStudentSlice: useGroupStudentSlice,
         studentSlice: useStudentSlice,
         topicSlice: useTopicSlice

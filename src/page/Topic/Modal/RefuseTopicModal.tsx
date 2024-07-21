@@ -1,7 +1,5 @@
 import CustomTextField from '@/components/ui/CustomTextField';
 import Modal from '@/components/ui/Modal';
-import { useAuth } from '@/hooks/api/useAuth';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
@@ -10,17 +8,11 @@ import { useState } from 'react';
 function RefuseTopicModal(props: any) {
   const { onClose, open, topicId } = props;
   const { onUpdateStatusTopic } = useTopic();
-  const { lecturerStore } = useAuth();
-  const { termStore } = useTerm();
   const [note, setNote] = useState(
     'Xin lỗi, đề tài của bạn không đủ điều kiện để được phép duyệt.',
   );
 
-  const { mutate: updateAcceptTopic } = onUpdateStatusTopic(
-    topicId,
-    lecturerStore.me.majorId,
-    termStore.currentTerm.id,
-  );
+  const { mutate: updateAcceptTopic } = onUpdateStatusTopic(topicId);
 
   const handleSubmit = () => {
     updateAcceptTopic({ status: 'REJECTED', note: note });

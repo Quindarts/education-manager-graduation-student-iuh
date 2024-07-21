@@ -1,25 +1,16 @@
-import Calendar from '@/components/ui/Calendar';
 import CustomTextField from '@/components/ui/CustomTextField';
-import DropDown from '@/components/ui/Dropdown';
-import Modal, { ModalTypeProps } from '@/components/ui/Modal';
+import Modal from '@/components/ui/Modal';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import TitleManager from '@/components/ui/Title';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import { Icon } from '@iconify/react';
-import { Box, Button, DialogProps } from '@mui/material';
-import { useFormik } from 'formik';
+import { Box, Button } from '@mui/material';
 import React from 'react';
 
 function InfoModal(props: any) {
   const { onClose, open, topicId } = props;
   const { handleTopicById } = useTopic();
   const { data, isLoading } = handleTopicById(topicId);
-  const formik = useFormik({
-    initialValues: {},
-    onSubmit: (values: any) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
   return (
     <Modal maxWidth={'md'} open={open} onClose={onClose}>
       <Box p={10}>
@@ -29,7 +20,7 @@ function InfoModal(props: any) {
         {isLoading ? (
           <SekeletonUI />
         ) : (
-          <form onSubmit={formik.handleSubmit}>
+          <Box>
             <CustomTextField
               label='Tên đề tài'
               value={data?.topic?.name}
@@ -103,7 +94,7 @@ function InfoModal(props: any) {
                 Thoát
               </Button>
             </Box>
-          </form>
+          </Box>
         )}
       </Box>
     </Modal>

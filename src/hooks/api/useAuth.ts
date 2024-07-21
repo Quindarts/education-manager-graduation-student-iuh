@@ -1,7 +1,8 @@
+import { ErrorResponseType, ResponseType } from './../../types/axios.type';
+import { LoginResponse } from './../../types/entities/user';
 import { getMe, login } from "@/services/apiAuth";
 import { RootState } from "@/store";
 import { setCurrentRoleRender, setMe } from "@/store/slice/lecturer.slice";
-import ResponseType from "@/types/axios.type";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
 import { useSnackbar } from "notistack";
 import { useMutation, useQuery } from "react-query";
@@ -10,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { setAllTerm, setCurrentTerm } from "@/store/slice/term.slice";
 import { setAllMajor, setCurrentMajor } from "@/store/slice/major.slice";
 import { queryClient } from "@/providers/ReactQueryClientProvider";
+import { IAuth } from "@/types/entities/user";
 
 export const useAuth = () => {
     const lecturerStore = useSelector((state: RootState) => state.lecturerSlice);
@@ -20,8 +22,8 @@ export const useAuth = () => {
     //[LOGIN]
     const handleLogin = () => {
         return useMutation(
-            (data: any) => login(data), {
-            onSuccess(data: any) {
+            (data: IAuth) => login(data), {
+            onSuccess(data: LoginResponse) {
                 enqueueSnackbar('Đăng nhập thành công', { variant: 'success' });
                 setValueInLocalStorage('accessToken', data.accessToken);
                 setValueInLocalStorage('refreshToken', data.refreshToken);
@@ -29,7 +31,7 @@ export const useAuth = () => {
                 dispatch(setCurrentMajor({ majorId: data.user.majorId, majorName: data.user.majorName }))
                 navigate("/");
             },
-            onError(error: any) {
+            onError(error: ErrorResponseType) {
                 enqueueSnackbar(error.message, { variant: 'error' });
             }
         }

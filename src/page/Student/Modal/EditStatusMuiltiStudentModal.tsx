@@ -2,9 +2,15 @@ import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 
-function EditStatusMuiltiStudent(props: any) {
+interface EditStatusMuiltiStudentPropsType {
+  listStudent: any[];
+  rows: any[];
+  open: boolean;
+  onClose: () => void;
+}
+
+function EditStatusMuiltiStudent(props: EditStatusMuiltiStudentPropsType) {
   const { listStudent, rows, open, onClose } = props;
 
   return (

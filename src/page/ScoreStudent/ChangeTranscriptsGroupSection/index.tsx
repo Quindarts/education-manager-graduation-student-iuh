@@ -149,22 +149,7 @@ function TranscriptGroupStudent(props: any) {
         <SekeletonUI />
       ) : (
         <Paper sx={{ p: 4 }}>
-          <Box>
-            {initTranscripts.isExistTranscripts && (
-              <Typography
-                px={10}
-                py={4}
-                width={150}
-                textAlign={'center'}
-                borderRadius={4}
-                color='white'
-                bgcolor='success.main'
-                variant='body1'
-              >
-                Đã chấm điểm
-              </Typography>
-            )}
-          </Box>
+          <Box></Box>
           <Box>
             <Typography
               textAlign={'center'}

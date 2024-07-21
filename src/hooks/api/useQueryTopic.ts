@@ -1,7 +1,6 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
-import { setParams, setTypeRender } from "@/store/slice/lecturer.slice"
-import { ENUM_RENDER_TOPIC } from "@/store/slice/topic.slice"
+import { setParams } from "@/store/slice/lecturer.slice"
 import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
@@ -11,6 +10,7 @@ import { useTerm } from "./useQueryTerm"
 import { useAuth } from "./useAuth"
 import { RoleCheck } from "@/types/enum"
 import { useMajor } from "./useQueryMajor"
+import { Topic, TopicBodyRequestType } from "@/types/entities/topic"
 
 export enum QueryTopic {
     //HEAD LECTURER
@@ -53,7 +53,7 @@ export const useTopic = () => {
     }
 
     //[GET BY TERM, MAJOR]
-    const handleTopicsByTermByMajor = (typeRender: ENUM_RENDER_TOPIC, limit: number, page: number) => {
+    const handleTopicsByTermByMajor = () => {
         return useQuery([QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id], () => getTopicsByTermByMajor(termStore.currentTerm.id, majorStore.currentMajor.id), {
             staleTime: Infinity,
         })
@@ -64,19 +64,18 @@ export const useTopic = () => {
         return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id], () => getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
             staleTime: Infinity, onSuccess(data) {
                 dispatch(setParams(data.params))
-                // dispatch(setTypeRender(typeRender))
             }
         })
     }
 
     //[CREATE]
     const onCreateTopicByToken = () => {
-        return useMutation((newTopic: any) => createTopicByToken(newTopic), {
-            onSuccess(data, variables) {
+        return useMutation((newTopic: TopicBodyRequestType) => createTopicByToken(newTopic, termStore.currentTerm.id), {
+            onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Tạo đề tài thất bại", { variant: 'error' })
             }
         },
@@ -84,28 +83,28 @@ export const useTopic = () => {
     }
 
     //[UPDATE]
-    const onUpdateTopicById = (topicId: string | number, majorId?: number, termId?: number) => {
+    const onUpdateTopicById = (topicId: string) => {
         return useMutation((updateTopic: any) => updateTopicById(topicId, updateTopic), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Cập nhật tài thất bại vui lòng thử lại sau", { variant: 'error' })
             }
         })
     }
 
     //[UPDATE STATUS]
-    const onUpdateStatusTopic = (topicId: string | number, majorId?: number, termId?: number) => {
-        return useMutation((data: any) => updateStatusTopicById(topicId, data),
+    const onUpdateStatusTopic = (topicId: string) => {
+        return useMutation((data: Pick<Topic, 'status' | 'note'>) => updateStatusTopicById(topicId, data),
             {
                 onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] });
                 },
-                onError(error) {
+                onError() {
                     enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
                 }
             }
@@ -114,12 +113,12 @@ export const useTopic = () => {
 
     //[DELETE]
     const onDeleteTopicById = () => {
-        return useMutation((topicId: number | string) => deleteTopicById(topicId), {
-            onSuccess(data, variables, context) {
+        return useMutation((topicId: string) => deleteTopicById(topicId), {
+            onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Xóa đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
             }
         })

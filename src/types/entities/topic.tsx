@@ -1,21 +1,22 @@
-import Teacher from './lecturer';
+import { LecturerTerm } from './lecturer_term';
 
-interface Topic {
-  id: number;
-  comment: string;
-  description: string;
-  lecturer?: Teacher;
+export interface Topic {
+  id: string;
   name: string;
-  note: string;
+  description: string;
   quantityGroupMax: number;
-  requireInput: string;
-  standradOutput: string;
-  status: string;
+  note: string;
   target: string;
-  term: {
-    id: number;
-  };
-  totalGroupChoose: number;
-  level: string;
+  standardOutput: string;
+  requireInput: string;
+  status: string;
+  createdAt?: string;
+  updatedAt?: string;
+  lecturerTerm: Partial<LecturerTerm>;
+  quantityGroup: number;
 }
-export default Topic;
+
+export type TopicBodyRequestType = Pick<
+  Topic,
+  'name' | 'description' | 'quantityGroupMax' | 'standardOutput' | 'requireInput' | 'target'
+>;

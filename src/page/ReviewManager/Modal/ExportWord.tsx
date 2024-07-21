@@ -1,15 +1,6 @@
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
-import {
-  Box,
-  Button,
-  Paper,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 interface ExportWordModalProps {
@@ -35,7 +26,7 @@ import docTranscriptCouncil from '@/components/iframe/PageWord/docUtils/docTrans
 import SheetTranscriptReviewer from '@/components/iframe/PageWord/SheetTranscriptReviewer';
 
 function ExportWordModal(props: ExportWordModalProps) {
-  const { open, onClose, termId, typeReport, evaluations } = props;
+  const { open, onClose, typeReport, evaluations } = props;
   const [fileName, setFileName] = useState(getFileNameExportEvaluation(typeReport));
 
   useEffect(() => {
@@ -73,7 +64,7 @@ function ExportWordModal(props: ExportWordModalProps) {
               }}
               onSubmit={() => {}}
             >
-              {({ values, handleBlur, handleChange, setFieldValue }) => (
+              {({ values, handleBlur }) => (
                 <Form>
                   <Box>
                     <Box>

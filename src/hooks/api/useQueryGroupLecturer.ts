@@ -4,7 +4,6 @@ import { createGroupLecturer, getGroupLecturerById, getGroupLecturerByType, getL
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
-import { QueryKeysLecturerTerm } from "./useQueryLecturerTerm"
 import { useAuth } from './useAuth';
 import { RoleCheck } from '@/types/enum';
 
@@ -59,11 +58,10 @@ export const useGroupLecturer = () => {
     }
     const onCreateGroupLecturer = (type: string) => {
         return useMutation((data: any) => createGroupLecturer(type, data), {
-            onSuccess: (data: any) => {
+            onSuccess: () => {
                 enqueueSnackbar('Tạo nhóm Giảng viên thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termStore.currentTerm.id] })
-
             },
             onError: (error: any) => {
                 enqueueSnackbar(error.message, { variant: 'error' })

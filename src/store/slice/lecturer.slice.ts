@@ -1,3 +1,5 @@
+import { ParamsType } from "@/types/axios.type"
+import { User } from "@/types/entities/user"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export enum ENUM_RENDER_LECTURER {
@@ -7,10 +9,30 @@ export enum ENUM_RENDER_LECTURER {
     SEARCH_USERNAME = 'username',
     ALL = 'all'
 }
-
-const initLecturerSlice: any = {
+export interface InitLecturerSliceType {
     me: {
-        user: {},
+        user: Required<User>,
+        roles: string[],
+    },
+    currentRoleRender: string,
+    renderUi: ENUM_RENDER_LECTURER,
+    keywords: string,
+    params: ParamsType,
+}
+const initLecturerSlice: InitLecturerSliceType = {
+    me: {
+        user: {
+            id: '',
+            username: '',
+            fullName: '',
+            phone: '',
+            email: '',
+            gender: '',
+            degree: '',
+            isActive: false,
+            majorId: '',
+            majorName: '',
+        },
         roles: []
     },
     currentRoleRender: '',
@@ -27,19 +49,19 @@ export const useLecturerSlice = createSlice({
     name: "LecturerSlice",
     initialState: initLecturerSlice,
     reducers: {
-        setMe: (state: any, { payload }: PayloadAction<any>) => {
+        setMe: (state: Pick<InitLecturerSliceType, 'me'>, { payload }: PayloadAction<any>) => {
             state.me = payload
         },
-        setCurrentRoleRender: (state: any, { payload }: PayloadAction<any>) => {
+        setCurrentRoleRender: (state: Pick<InitLecturerSliceType, 'currentRoleRender'>, { payload }: PayloadAction<any>) => {
             state.currentRoleRender = payload
         },
-        setParams: (state: any, { payload }: PayloadAction<any>) => {
+        setParams: (state: Pick<InitLecturerSliceType, 'params'>, { payload }: PayloadAction<any>) => {
             state.params = payload
         },
-        setTypeRender: (state: any, { payload }: PayloadAction<any>) => {
+        setTypeRender: (state: Pick<InitLecturerSliceType, 'renderUi'>, { payload }: PayloadAction<any>) => {
             state.renderUi = payload
         },
-        setKeywords: (state: any, { payload }: PayloadAction<any>) => {
+        setKeywords: (state: Pick<InitLecturerSliceType, 'keywords'>, { payload }: PayloadAction<any>) => {
             state.keywords = payload
         },
     }

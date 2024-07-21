@@ -2,7 +2,7 @@ import { Term } from "@/dummy/term";
 import Major from "@/types/entities/major";
 
 
-export const convertTermDropdown = (terms: Term[]
+export const convertTermDropdown = (terms?: Term[]
 ) => {
     let newTerms: any[] = [];
     if (!terms) {

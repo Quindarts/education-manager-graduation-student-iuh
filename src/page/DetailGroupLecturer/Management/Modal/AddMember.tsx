@@ -34,13 +34,13 @@ const MenuProps = {
 
 const convertLecturer = (lterms: any) => {
   let updateLecturers: any[] = [];
-  if (!lterms) {
+  if (lterms == null) {
     return [];
   } else
-    lterms.map((lect: any) => {
+    lterms?.map((lect: any) => {
       updateLecturers.push({
-        _id: lect.lecturer.id,
-        name: lect.lecturer.fullName + ' - ' + lect.lecturer.username,
+        _id: lect.lecturer?.id,
+        name: lect.lecturer?.fullName + ' - ' + lect?.lecturer?.username,
       });
     });
   return updateLecturers;

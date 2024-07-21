@@ -2,7 +2,7 @@ import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
 import { Box, Button, TextField } from '@mui/material';
 import AddModal from '../Modal/AddModal';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function HeaderTerm() {
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -35,4 +35,4 @@ function HeaderTerm() {
   );
 }
 
-export default HeaderTerm;
+export default React.memo(HeaderTerm);

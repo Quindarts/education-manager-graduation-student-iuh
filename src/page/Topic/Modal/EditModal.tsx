@@ -27,7 +27,6 @@ function EditModal(props: any) {
   useEffect(() => {
     onClose();
   }, [successCreate]);
-
   const currentRole = handleUiRender();
 
   return (

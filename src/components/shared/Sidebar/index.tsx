@@ -33,6 +33,8 @@ const drawerWidth = '250px';
 const hidedDrawerWidth = '76px';
 const screen_mobile = 900;
 
+// const SidebarContext = createContext();
+
 export default function AdminSidebar(props: AdminSidebarProps) {
   const { isOpenSideBar, currentSidebar, handleOpenSideBar, role } = props;
 

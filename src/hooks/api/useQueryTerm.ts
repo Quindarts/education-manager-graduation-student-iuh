@@ -1,6 +1,6 @@
-import { TypeTermStatus, getTermDetailWithType, getTermById, updateTermById, getAllTermByMajor } from './../../services/apiTerm';
+import { getTermDetailWithType, getTermById, updateTermById, getAllTermByMajor, TypeTermStatus } from './../../services/apiTerm';
 import { RootState } from '@/store';
-import { TermDataRequest, createTerm, getAllTerm, getCurrentTerm, updateTermWithType } from "@/services/apiTerm"
+import { createTerm, getAllTerm, getCurrentTerm, updateTermWithType } from "@/services/apiTerm"
 import { useMutation, useQuery } from "react-query"
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { setAllTerm, setCurrentTerm } from '@/store/slice/term.slice';
 import { useSnackbar } from 'notistack';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { useMajor } from './useQueryMajor';
+import { Term } from '@/types/entities/term';
 
 export enum TermQueryKey {
     allTerm = 'allTerm',
@@ -27,7 +28,7 @@ export function useTerm() {
     //[GET ALL]
     const handleGetAllTerm = () => {
         return useQuery([TermQueryKey.allTerm], () => getAllTerm(), {
-            onSuccess: (data: any) => {
+            onSuccess: (data) => {
                 dispatch(setAllTerm(data.terms));
             }
         });
@@ -38,7 +39,7 @@ export function useTerm() {
         const majorIdCallApi = majorId ? majorId : majorStore.currentMajor.id;
 
         return useQuery([TermQueryKey.allTermWithMajor, majorIdCallApi], () => getAllTermByMajor(majorIdCallApi), {
-            onSuccess: (data: any) => {
+            onSuccess: (data) => {
                 dispatch(setAllTerm([]));
                 dispatch(setAllTerm(data.terms));
             },
@@ -48,7 +49,7 @@ export function useTerm() {
     //[GET CURRENT]
     const handleGetCurrentTerm = (majorId: string) => {
         return useQuery([TermQueryKey.currentTerm, majorId], () => getCurrentTerm(majorId), {
-            onSuccess: (data: any) => {
+            onSuccess: (data) => {
                 dispatch(setCurrentTerm(data.term));
             },
             enabled: !!majorId
@@ -56,14 +57,14 @@ export function useTerm() {
     };
 
     //[GET BY ID]
-    const handelGetTermById = (termId: string | number) => {
+    const handelGetTermById = (termId: string) => {
         return useQuery([TermQueryKey.getTermDetailById, termId], () => getTermById(termId), {
             enabled: !!termId
         });
     };
 
     //[GET DETAIL WITH TYPE]
-    const handleGetTermDetailWithType = (termId: string | number, type: string) => {
+    const handleGetTermDetailWithType = (termId: string, type: TypeTermStatus) => {
         // alert(type)
         return useQuery([TermQueryKey.getTermDetailById, type, termId], () => getTermDetailWithType(termId, type), {
             enabled: !!termId
@@ -72,7 +73,7 @@ export function useTerm() {
 
     //[CREATE]
     const onCreateTerm = () => {
-        return useMutation((data: TermDataRequest) => createTerm(data), {
+        return useMutation((data: Pick<Term, 'startDate' | 'endDate' | 'name' | 'majorId'>) => createTerm(data), {
             onSuccess() {
                 enqueueSnackbar("Tạo học kì mới thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorStore.currentMajor.id] });
@@ -82,8 +83,8 @@ export function useTerm() {
 
     //[UPDATE WITH TYPE]
     const onUpdateTermWithType = (termId: string, type: TypeTermStatus) => {
-        return useMutation((data) => updateTermWithType(termId, type, data), {
-            onSuccess(data) {
+        return useMutation((data: Pick<Term, 'startDate' | 'endDate'>) => updateTermWithType(termId, type, data), {
+            onSuccess() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorStore.currentMajor.id] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, type, termId] });
@@ -92,21 +93,21 @@ export function useTerm() {
                     queryClient.invalidateQueries({ queryKey: [TermQueryKey.currentTerm] });
                 }
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });
             }
         });
     };
 
     //[UPDATE WITH ID]
-    const onUpdateTermWithTermId = (termId: number) => {
-        return useMutation((data) => updateTermById(termId, data), {
-            onSuccess(data) {
+    const onUpdateTermWithTermId = (termId: string) => {
+        return useMutation((data: Pick<Term, 'startDate' | 'endDate'>) => updateTermById(termId, data), {
+            onSuccess() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorStore.currentMajor.id] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
             },
-            onError(error) {
+            onError() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });
 
             }

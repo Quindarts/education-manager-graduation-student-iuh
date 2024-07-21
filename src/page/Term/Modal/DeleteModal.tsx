@@ -4,7 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
 
 function DeleteModal(props: any) {
-  const { onClose, open, term_id } = props;
+  const { onClose, open } = props;
   return (
     <Modal onClose={onClose} open={open}>
       <Box

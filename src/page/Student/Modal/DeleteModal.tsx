@@ -1,10 +1,13 @@
 import Modal from '@/components/ui/Modal';
 import { useStudent } from '@/hooks/api/useQueryStudent';
+import { ModalProps } from '@/types/ui/Modal';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
-function DeleteModal(props: any) {
+type DeleteModalType = { studentId: string };
+
+function DeleteModal(props: DeleteModalType & ModalProps) {
   const { onClose, open, studentId } = props;
   const { onDeleteStudent } = useStudent();
   const { mutate: deleteStudent, isSuccess } = onDeleteStudent();

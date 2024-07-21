@@ -1,14 +1,11 @@
 import DropDown from '@/components/ui/Dropdown';
-import UploadFileExcel from '@/components/ui/Upload';
 import { Icon } from '@iconify/react';
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useTopic } from '@/hooks/api/useQueryTopic';
-import { useMajor } from '@/hooks/api/useQueryMajor';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -24,7 +21,7 @@ const SEARCH_DROP_VALUE = [
     _id: 'ACCEPT',
   },
 ];
-function HeaderTopic(props: any) {
+function HeaderTopic() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
@@ -69,4 +66,4 @@ function HeaderTopic(props: any) {
   );
 }
 
-export default HeaderTopic;
+export default React.memo(HeaderTopic);

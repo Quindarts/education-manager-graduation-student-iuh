@@ -1,19 +1,15 @@
-import { EnumGender } from '../enum';
-interface Student {
-  id: number;
-  isTopicExists: boolean;
+import { EnumGender } from "../enum";
+
+export interface Student {
+  id: string;
   username: string;
-  createdAt?: Date;
-  email?: string;
+  fullName: string;
+  phone: string;
+  email: string;
   gender: EnumGender;
-  majors: {
-    id: number;
-  };
-  name?: string;
-  phoneNumber?: string;
-  schoolYear?: string;
-  typeTraining?: string;
-  updatedAt?: Date;
-  avatar?: string;
+  clazzName: string;
+  typeTraining: string;
+  isActive: boolean;
+  majorId: string;
+  majorName: string;
 }
-export default Student;

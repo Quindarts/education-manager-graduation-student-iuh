@@ -1,22 +1,20 @@
-interface Term {
-  id: number;
-  key: number;
-  createdAt: Date;
-  dateDiscussion: Date;
-  dateReport: Date;
-  endDate: Date;
-  endDateChooseTopic: Date;
-  endDateSubmitTopic: Date;
+export interface Term {
+  id: string;
+  key: string;
+  createdAt: string;
+  dateDiscussion: string;
+  dateReport: string;
+  majorId: string;
+  endDate: string;
+  endDateChooseTopic: string;
+  endDateSubmitTopic: string;
   name: string;
-  startDate: Date;
-  startDateChooseTopic: Date;
-  startDateSubmitTopic: Date;
-  updatedAt: Date;
-  startDateDiscussion: Date;
-  endDateDiscussion: Date;
-  startDateReport: Date;
-  endDateReport: Date;
-  isPublicResult: boolean;
+  startDate: string;
+  startDateChooseTopic: string;
+  startDateSubmitTopic: string;
+  updatedAt: string;
+  startDateDiscussion: string;
+  endDateDiscussion: string;
+  startDateReport: string;
+  endDateReport: string;
 }
-
-export default Term;
