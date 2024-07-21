@@ -1,34 +1,19 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import AdminSidebar from '../Sidebar';
 import Navbar from '../Navbar';
 import { Box } from '@mui/material';
 import { useAuth } from '@/hooks/api/useAuth';
-import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
 import Loading from '@/components/ui/Loading';
 import { getValueFromLocalStorage } from '@/utils/localStorage';
 import BreadCrumbRouting from '@/components/ui/BreadCrumb';
+import useSidebar from '@/hooks/ui/useSidebar';
+import GlobalLoading from '@/components/ui/Loading/GlobalLoading';
 
 function MainLayout() {
-  const [isOpenSideBar, setIsOpenSideBar] = useState(true);
-  const handleOpenSideBar = () => {
-    setIsOpenSideBar(!isOpenSideBar);
-  };
-
   const { handleGetMe, lecturerStore } = useAuth();
-  const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
   const { isLoading } = handleGetMe();
-
-  useLayoutEffect(() => {
-    APP_SIDEBAR.map((item: any) => {
-      item.roles.forEach((role: string) => {
-        if (role === lecturerStore.currentRoleRender) {
-          currentSidebarRole.push(item);
-          setCurrentSidebarRole(currentSidebarRole);
-        }
-      });
-    });
-  }, []);
+  const { isOpen, handleToggleSidebar } = useSidebar();
 
   return (
     <>
@@ -45,25 +30,20 @@ function MainLayout() {
                 overflowX: 'hidden',
               }}
             >
-              <AdminSidebar
-                isOpenSideBar={isOpenSideBar}
-                currentSidebar={currentSidebarRole}
-                handleOpenSideBar={handleOpenSideBar}
-                role={lecturerStore.currentRoleRender}
-              />
+              <AdminSidebar />
               <Box
                 height='100%'
                 component='section'
                 sx={{
-                  maxWidth: isOpenSideBar ? `calc(100vw - 250px)` : `calc(100vw - 76px)`,
+                  maxWidth: isOpen ? `calc(100vw - 250px)` : `calc(100vw - 76px)`,
                   width: '100%',
                   minHeight: '100vh',
-                  marginLeft: isOpenSideBar ? '250px' : '76px',
+                  marginLeft: isOpen ? '250px' : '76px',
                   transition: 'all 0.1s ease',
                   backgroundColor: 'grey.100',
                 }}
               >
-                <Navbar isOpenSideBar={isOpenSideBar} handleOpenSideBar={handleOpenSideBar} />
+                <Navbar />
                 <Box
                   pt={12}
                   pb={6}
@@ -76,8 +56,9 @@ function MainLayout() {
                   <Box my={4}>
                     <BreadCrumbRouting />
                   </Box>
-
-                  <Outlet />
+                  <React.Suspense fallback={<GlobalLoading />}>
+                    <Outlet />
+                  </React.Suspense>
                 </Box>
               </Box>
             </Box>

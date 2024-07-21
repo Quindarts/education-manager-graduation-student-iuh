@@ -2,16 +2,12 @@ import { Icon } from '@iconify/react';
 import Box from '@mui/material/Box';
 import ProfileMenu from './ProfileMenu';
 import Notification from './Notification';
-import BreadCrumbRouting from '@/components/ui/BreadCrumb';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import useSidebar from '@/hooks/ui/useSidebar';
 
-interface NavbarProps {
-  handleOpenSideBar: () => void;
-  isOpenSideBar: boolean;
-}
-function Navbar(props: NavbarProps) {
-  const { handleOpenSideBar, isOpenSideBar } = props;
+function Navbar() {
+  const { handleToggleSidebar, isOpen } = useSidebar();
   const [bgColor, setBgColor] = useState('rgba(255, 255, 255, 0.9)');
 
   const handleScroll = () => {
@@ -31,7 +27,7 @@ function Navbar(props: NavbarProps) {
   }, []);
   return (
     <Box
-      sx={{ backgroundColor: bgColor, zIndex: 1001, transition: 'background-color 0.5s' }}
+      sx={{ backgroundColor: bgColor, zIndex: 900, transition: 'background-color 0.5s' }}
       px={8}
       display='flex'
       position='fixed'
@@ -40,9 +36,9 @@ function Navbar(props: NavbarProps) {
       bottom={0}
       width='100%'
       height={70}
-      maxWidth={isOpenSideBar ? `calc(100vw - 250px)` : `calc(100vw - 76px)`}
+      maxWidth={isOpen ? `calc(100vw - 250px)` : `calc(100vw - 76px)`}
       alignItems='center'
-      left={isOpenSideBar ? '250px' : '76px'}
+      left={isOpen ? '250px' : '76px'}
       justifyContent='space-between'
     >
       <Box display={'flex'} alignItems={'center'}>
@@ -61,11 +57,11 @@ function Navbar(props: NavbarProps) {
           display='flex'
           p={6}
           alignItems='center'
-          onClick={handleOpenSideBar}
+          onClick={handleToggleSidebar}
           fontWeight={'bold'}
           color={'grey.700'}
         >
-          <Icon width={30} icon={isOpenSideBar ? 'grommet-icons:previous' : 'ep:menu'} />
+          <Icon width={30} icon={isOpen ? 'grommet-icons:previous' : 'ep:menu'} />
         </Box>
         <img width={100} src='/images/logo-light.png' />
         <Box>

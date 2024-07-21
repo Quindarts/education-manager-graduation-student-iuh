@@ -3,44 +3,45 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AppSiderBarType } from '@/utils/app-config';
+import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
 import { TermQueryKey, useTerm } from '@/hooks/api/useQueryTerm';
 import { convertMajorDropdown, convertTermDropdown } from '@/utils/convertDataTable';
 import { useDispatch } from 'react-redux';
-import { setAllTerm, setCurrentTerm } from '@/store/slice/term.slice';
+import { setCurrentTerm } from '@/store/slice/term.slice';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { setCurrentMajor } from '@/store/slice/major.slice';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
-import useRole from '@/hooks/author/useRole';
 import { RoleCheck } from '@/types/enum';
 import { useAuth } from '@/hooks/api/useAuth';
 import TitleManager from '@/components/ui/Title';
+import useSidebar from '@/hooks/ui/useSidebar';
 
-interface AdminSidebarProps {
-  isOpenSideBar: boolean;
-  handleOpenSideBar: () => void;
-  currentSidebar: AppSiderBarType[];
-  role: string;
-}
 const homePageIndex = 0;
 const drawerWidth = '250px';
 const hidedDrawerWidth = '76px';
 const screen_mobile = 900;
 
-// const SidebarContext = createContext();
-
-export default function AdminSidebar(props: AdminSidebarProps) {
-  const { isOpenSideBar, currentSidebar, handleOpenSideBar, role } = props;
-
-  //Head_course
-  const isHeadCourseRole = role === RoleCheck.HEAD_COURSE;
+export default function AdminSidebar() {
+  const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
+  const { isOpen, handleToggleSidebar } = useSidebar();
   const { lecturerStore } = useAuth();
+  useLayoutEffect(() => {
+    APP_SIDEBAR.map((item: any) => {
+      item.roles.forEach((role: string) => {
+        if (role === lecturerStore.currentRoleRender) {
+          currentSidebarRole.push(item);
+          setCurrentSidebarRole(currentSidebarRole);
+        }
+      });
+    });
+  }, []);
+  //Head_course
+  const isHeadCourseRole = lecturerStore.currentRoleRender === RoleCheck.HEAD_COURSE;
   const location = useLocation();
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
@@ -63,7 +64,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
       setCurrentSidebarItemIndex(homePageIndex);
       return;
     }
-    currentSidebar.forEach((item: any, itemIndex: number) => {
+    currentSidebarRole.forEach((item: any, itemIndex: number) => {
       if (item.children) {
         item.children.forEach((subItem: any) => {
           if (location.pathname.includes(subItem.link)) {
@@ -81,10 +82,10 @@ export default function AdminSidebar(props: AdminSidebarProps) {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (isOpenSideBar === true) {
+    if (isOpen === true) {
       setActiveItemIndexes([]);
     }
-  }, [isOpenSideBar]);
+  }, [isOpen]);
 
   const handleClickSidebarItem = (indexNumber: number) => {
     if (activeItemIndexes.includes(indexNumber)) {
@@ -127,7 +128,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
   return (
     <Box
       sx={{
-        width: isOpenSideBar ? drawerWidth : hidedDrawerWidth,
+        width: isOpen ? drawerWidth : hidedDrawerWidth,
         transition: '0.1s all ease',
         transform: 'scaleX(1)',
         maxHeight: '100vh',
@@ -145,8 +146,8 @@ export default function AdminSidebar(props: AdminSidebarProps) {
     >
       <Drawer
         variant={isMobile ? 'temporary' : 'permanent'}
-        open={isOpenSideBar}
-        onClose={handleOpenSideBar}
+        open={isOpen}
+        onClose={handleToggleSidebar}
         sx={{
           flexShrink: 0,
           height: isMobile ? '100%' : 'calc(100vh - 70px)',
@@ -195,7 +196,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
         }}
       >
         {isMobile ||
-          (isOpenSideBar && (
+          (isOpen && (
             <Box
               display={'flex'}
               alignItems={'center'}
@@ -257,7 +258,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
               </Box>
             </Box>
           ))}
-        {currentSidebar.map((item: any, itemIndex: number) => (
+        {currentSidebarRole.map((item: any, itemIndex: number) => (
           <>
             <Accordion
               expanded={activeItemIndexes.includes(itemIndex)}
@@ -267,7 +268,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
               sx={{
                 bgcolor: 'primary.dark',
                 boxShadow: 'none',
-                mx: !isOpenSideBar ? 'auto!important' : '',
+                mx: !isOpen ? 'auto!important' : '',
                 '&::before': {
                   display: 'none',
                 },
@@ -277,7 +278,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                 className={`${currentSidebarItemIndex === itemIndex ? 'active' : ''}`}
                 expandIcon={
                   <>
-                    {item.children && isOpenSideBar && (
+                    {item.children && isOpen && (
                       <Icon width={20} height={20} icon='ic:outline-keyboard-arrow-down' />
                     )}
                   </>
@@ -323,7 +324,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                   display='flex'
                   alignItems='flex-start'
                   justifyContent='left'
-                  marginLeft={isOpenSideBar ? 0 : 4}
+                  marginLeft={isOpen ? 0 : 4}
                   className={`${item.key && location.pathname.endsWith(item.key) ? 'active' : ''}`}
                   gap={4}
                   onClick={() => {
@@ -331,7 +332,7 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                     navigate(item.link);
                   }}
                 >
-                  <Icon onClick={handleOpenSideBar} icon={item.icon} width={20} height={20} />
+                  <Icon onClick={handleToggleSidebar} icon={item.icon} width={20} height={20} />
                   <Typography
                     variant='body1'
                     fontWeight={500}
@@ -340,18 +341,18 @@ export default function AdminSidebar(props: AdminSidebarProps) {
                       textWrap: 'nowrap',
                     }}
                   >
-                    {isOpenSideBar && item.text}
+                    {isOpen && item.text}
                   </Typography>
                 </Box>
               </AccordionSummary>
-              {item?.children && isOpenSideBar && (
+              {item?.children && isOpen && (
                 <AccordionDetails
                   sx={{
                     padding: 0,
                     cursor: 'pointer',
                   }}
                 >
-                  {isOpenSideBar &&
+                  {isOpen &&
                     item?.children?.map((submenuItem: any, submenuItemIndex: number) => (
                       <Box
                         display='flex'
