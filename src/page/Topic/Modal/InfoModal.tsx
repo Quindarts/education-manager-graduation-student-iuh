@@ -12,7 +12,7 @@ function InfoModal(props: any) {
   const { handleTopicById } = useTopic();
   const { data, isLoading } = handleTopicById(topicId);
   return (
-    <Modal maxWidth={'md'} open={open} onClose={onClose}>
+    <Modal maxWidth={'xl'} open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h6' textTransform={'uppercase'}>
           Thông tin chi tiết Đề tài

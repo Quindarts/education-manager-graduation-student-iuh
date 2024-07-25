@@ -17,6 +17,7 @@ interface ParamsType {
 export interface ResponseType {
     success?: boolean;
     message: string;
+    notificationLecturers?: string;
     params?: ParamsType,
     lecturer: Lecturer,
     status?: number,

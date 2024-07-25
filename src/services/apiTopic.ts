@@ -27,7 +27,12 @@ export const createTopicByToken = async (topic: TopicBodyRequestType, termId: st
 export const updateTopicById = async (topicId: string, topic: TopicBodyRequestType) => {
     return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}`, topic)
 }
+// {{url}}/api/v1/topics/:id/quantity-group-max
 
+//PUT [HEAD LEC, LEC]
+export const updateQuantityGroupMax = async (topicId: string, topic: TopicBodyRequestType) => {
+    return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}`, topic)
+}
 //PUT  [HEAD LEC]
 export const updateStatusTopicById = async (topicId: string, data: Pick<Topic, 'status' | 'note'>) => {
     return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}/status`, data)

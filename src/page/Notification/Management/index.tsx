@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import TableManagementNotification from './Table';
 import { Icon } from '@iconify/react';
 import AddNotificationModal from './Modal/AddModal';
+import { useNotification } from '@/hooks/api/useQueryNotification';
+import SekeletonUI from '@/components/ui/Sekeleton';
 
 function NotificationManagementPage() {
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -13,6 +15,8 @@ function NotificationManagementPage() {
   const handleCloseModal = () => {
     setOpenAddModal(false);
   };
+  const { handleGetAllNotificationsOfLecturer } = useNotification();
+  const { data, isFetching, isLoading } = handleGetAllNotificationsOfLecturer();
   return (
     <>
       <Paper sx={{ py: 10, px: 10 }} elevation={1}>
@@ -25,13 +29,13 @@ function NotificationManagementPage() {
             Thêm thông báo mới{' '}
           </Button>
         </Box>
-        {/* {isLoading || isFetching ? (
+        {isLoading || isFetching ? (
           <SekeletonUI />
-        ) : ( */}
-        <Box width={'full'} my={4}>
-          <TableManagementNotification rows={[]} />
-        </Box>
-        {/* )} */}
+        ) : (
+          <Box width={'full'} my={4}>
+            <TableManagementNotification rows={data?.notificationLecturers} />
+          </Box>
+        )}  
         <>
           <AddNotificationModal open={openAddModal} onClose={handleCloseModal} />
         </>

@@ -6,14 +6,15 @@ export const getLecturerByMajorId = (majorId: number) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/lecturers?majorId=${majorId}`)
 }
 
-export const getAllLecturer = (termId: string, majorId: string, limit: number, page: number) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/lecturers?limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
-}
+
 
 //[Admin role]
-export const searchLecturerAdmin = (termId: string, majorId: string, limit: number, page: number, searchField: 'all' | 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/lecturers/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
+export const getAllLecturer = (majorId: string, limit: number | string, page: number | string, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string) => {
+    let searchFieldSend = searchField ? searchField : "";
+    let keywordSend = keywords ? keywords : ""
+    return axiosConfig.get<ResponseType, any>(`/api/v1/lecturers/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&majorId=${majorId}`);
 }
+
 export const getLecturerById = (lecturerId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/lecturers/${lecturerId}`);
 }

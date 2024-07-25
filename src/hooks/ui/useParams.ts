@@ -31,6 +31,13 @@ function useParams() {
             })
         }
     }
+    const setDefaultTypeSearch = (type: string) => {
+        query.set(QueryEnum.SEARCH_FIELD, type);
+        setSearch(query, {
+            replace: true,
+        })
+
+    }
 
     const getQueryField = (type: QueryType) => {
         return query.get(type)
@@ -94,7 +101,7 @@ function useParams() {
         }
     }
 
-    return { onSearchChange, onTypeSearchChange, getQueryField, setPage, setLimit, setTotalPage, focus, handleFocused }
+    return { onSearchChange, setDefaultTypeSearch, onTypeSearchChange, getQueryField, setPage, setLimit, setTotalPage, focus, handleFocused }
 }
 
 export default useParams

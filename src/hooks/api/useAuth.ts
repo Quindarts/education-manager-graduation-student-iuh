@@ -43,6 +43,8 @@ export const useAuth = () => {
         return useQuery(['get-me'], () => getMe(), {
             onSuccess(data: Pick<ResponseType, 'success' | 'lecturer' | 'message' | 'roles'>) {
                 dispatch(setMe({ user: data.lecturer, roles: data.roles }));
+                console.log("🚀 ~ onSuccess ~ data:", data)
+
                 dispatch(setCurrentMajor({ id: data.lecturer.majorId, name: data.lecturer.majorName }))
                 navigate("/");
                 return data.lecturer

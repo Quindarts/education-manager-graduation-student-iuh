@@ -50,10 +50,18 @@ interface ModalUploadPropsType {
   typeEvaluation?: string;
   disabled?: boolean;
   majorId?: string;
+  label?: string;
+  labelToolTip?: string;
 }
 
 function ModalUpload(props: ModalUploadPropsType) {
-  const { entityUpload, typeEvaluation, disabled = false } = props;
+  const {
+    entityUpload,
+    typeEvaluation,
+    label = 'Tải dữ liệu lên từ Excel',
+    labelToolTip = '',
+    disabled = false,
+  } = props;
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
   const [isOpen, setIsOpen] = useState(false);
@@ -90,14 +98,14 @@ function ModalUpload(props: ModalUploadPropsType) {
   };
   return (
     <Box>
-      <Tooltip arrow title={!disabled ? '' : 'Danh sách tiêu chí trống, tải lên ngay'}>
-        <Button disabled={disabled} onClick={handleOpenUpload} variant='contained' color='primary'>
+      <Tooltip arrow title={labelToolTip}>
+        <Button size='small' disabled={disabled} onClick={handleOpenUpload} variant='contained' color='primary'>
           <Icon icon='uiw:file-excel' style={{ marginRight: 2 }} width={20} />
-          Tải lên file excel mới
+          {label}
         </Button>
       </Tooltip>
       <Modal maxWidth={'sm'} open={isOpen} onClose={handleCloseUpload}>
-        <Paper sx={{ px: 10, py: 6 }} elevation={3}>
+        <Paper sx={{ px: 10, py: 7 }} elevation={3}>
           <Box display={'flex'} gap={4}>
             <Icon width={26} icon='vscode-icons:file-type-excel2' />
             <TitleManager>Tải File Excel</TitleManager>

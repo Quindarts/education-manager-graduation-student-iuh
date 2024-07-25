@@ -8,6 +8,7 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import useParams from '@/hooks/ui/useParams';
+import { convertStudentTable } from '@/utils/convertDataTable';
 
 function StudentPage() {
   const { handleGetAllStudent } = useStudent();
@@ -32,6 +33,11 @@ function StudentPage() {
     setPage(currentPage);
   }, [currentPage]);
 
+  useEffect(() => {
+    setLimit(10);
+    setPage(1);
+  }, [getQueryField('keywords')]);
+  
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager icon='quill:list' mb={8} mt={2}>
@@ -43,8 +49,8 @@ function StudentPage() {
       ) : (
         <TableManagamentStudent
           totalPage={getQueryField('totalPage')}
-          totalItems={data?.students.length}
-          rows={data?.students}
+          totalItems={data.students.length}
+          rows={convertStudentTable(data.students)}
           handleChangePage={handleChangePage}
           page={currentPage}
         />

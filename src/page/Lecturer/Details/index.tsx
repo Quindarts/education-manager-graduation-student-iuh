@@ -6,7 +6,6 @@ import TabPanelUI from './TabPanel';
 import { useParams } from 'react-router-dom';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import SekeletonUI from '@/components/ui/Sekeleton';
-import { formatDates } from '@/utils/formatDate';
 import { checkGender } from '@/utils/validations/person.validation';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 

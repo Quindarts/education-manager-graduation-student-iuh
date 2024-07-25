@@ -1,19 +1,16 @@
 import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
 import { Box, Button, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AddLecturerModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import useDebounce from '@/hooks/ui/useDebounce';
+import useSearch from '@/hooks/ui/useParams';
+
 import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 
 const DROP_SEARCH_VALUE = [
-  {
-    _id: ENUM_RENDER_LECTURER.ALL,
-    name: 'Tất cả',
-  },
   {
     _id: ENUM_RENDER_LECTURER.SEARCH_FULLNAME,
     name: 'Tên giảng viên',
@@ -32,20 +29,12 @@ const DROP_SEARCH_VALUE = [
   },
 ];
 
-function HeaderLecturer(props: any) {
-  const { handleChangeDropSearch, typeSearch, handleChangeKeywords, onClearSearch } = props;
+function HeaderLecturer() {
   const [openAddModal, setOpenAddModal] = useState(false);
 
-  const [searchValue, setSearchValue] = useState('');
-  const debouncedSearchValue = useDebounce(searchValue, 500);
+  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setDefaultTypeSearch } =
+    useSearch();
 
-  useEffect(() => {
-    handleChangeKeywords(debouncedSearchValue);
-  }, [debouncedSearchValue]);
-  const handleClearSearch = () => {
-    setSearchValue('');
-    onClearSearch();
-  };
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
   };
@@ -54,27 +43,27 @@ function HeaderLecturer(props: any) {
   };
   const { termStore } = useTerm();
   const { currentTerm } = termStore;
+  const handleDefault = () => {
+    setDefaultTypeSearch(ENUM_RENDER_LECTURER.SEARCH_USERNAME);
+    return ENUM_RENDER_LECTURER.SEARCH_USERNAME;
+  };
   return (
     <>
       <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
         <Box flex={1} display={'flex'} gap={4} width={'full'}>
           <Box width={200}>
             <DropDown
-              value={typeSearch}
-              onChange={(e) => handleChangeDropSearch(e.target.value)}
+              value={getQueryField('searchField') ? getQueryField('searchField') : handleDefault}
+              onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={DROP_SEARCH_VALUE}
             />
           </Box>
           <TextField
             fullWidth
             size='small'
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-            }}
-            onBlur={(e) => {
-              setSearchValue(e.target.value);
-            }}
+            defaultValue={getQueryField('keywords')}
+            onChange={onSearchChange}
+            onBlur={() => handleFocused(false)}
             placeholder='Tim kiếm giảng viên theo..'
           />
         </Box>
@@ -88,13 +77,16 @@ function HeaderLecturer(props: any) {
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo giảng viên
         </Button>
-        <ModalUpload entityUpload={TypeEntityUpload.LECTURER} termId={currentTerm.id} />
+        <ModalUpload
+          label='Tải lên Excel Giảng viên'
+          entityUpload={TypeEntityUpload.LECTURER}
+          termId={currentTerm.id}
+        />
         <Button
           size='small'
           color='warning'
           type='button'
           sx={{ color: 'white' }}
-          onClick={handleClearSearch}
           variant='contained'
         >
           <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
@@ -105,4 +97,4 @@ function HeaderLecturer(props: any) {
   );
 }
 
-export default HeaderLecturer;
+export default React.memo(HeaderLecturer);

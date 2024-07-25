@@ -46,24 +46,23 @@ const CARD_ROLE_TYPE = [
 
 function RolePage() {
   const { lecturerStore, handleGetMe } = useAuth();
-  const { isLoading, data, isFetching } = handleGetMe();
+  const { isLoading, data, isFetching, isSuccess } = handleGetMe();
   const { handleGetCurrentTerm } = useTerm();
   const dispatch = useDispatch();
 
   handleGetMe();
-  handleGetCurrentTerm(data?.lecturer.majorId);
+  if (isSuccess) handleGetCurrentTerm(data.lecturer.majorId);
 
   const { handleGetAllMajor } = useMajor();
   const { handleGetAllTermByMajor } = useTerm();
   const { data: dataMajorFetch, isSuccess: successMajor } = handleGetAllMajor();
 
-  if(successMajor)
-  dispatch(setAllMajor(dataMajorFetch.majors));
+  if (successMajor) dispatch(setAllMajor(dataMajorFetch.majors));
 
   const { data: dataTermFecth, isSuccess: successTerm } = handleGetAllTermByMajor(
     data?.lecturer.majorId,
   );
-  
+
   if (successTerm) dispatch(setAllTerm(dataTermFecth.terms));
 
   const accessToken: string = getValueFromLocalStorage('accessToken') || '';

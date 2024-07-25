@@ -31,7 +31,6 @@ export default function Table(props: Props) {
     ...rest
   } = props;
 
-  
   return (
     <Box
       style={{ minWidth: 0 }}
@@ -73,7 +72,8 @@ export default function Table(props: Props) {
           loadingOverlay: () => <LinearProgress />,
         }}
         sx={{
-          fontSize: 12,
+          fontSize: 14,
+          color: 'grey.700',
           cursor: 'pointer',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
             outline: 'none !important',
@@ -114,17 +114,17 @@ export default function Table(props: Props) {
       />
       <Box display='flex' alignItems='center' justifyContent='space-between' mr={2} mt={4}>
         <Box display='flex' alignItems='center'>
-          {/* <Box width={190}> */}
-            {/* <DropDown
+          {/* <Box width={190}>
+            <DropDown
               value={5}
               options={[
-                { _id: 5, name: 'Hiển thị 5 dòng' },
-                { _id: 10, name: 'Hiển thị 10 dòng' },
-                { _id: 15, name: 'Hiển thị 15 dòng' },  
-                { _id: 20, name: 'Hiển thị 20 dòng' },
+                { _id: '5', name: 'Hiển thị 5 dòng' },
+                { _id: '10', name: 'Hiển thị 10 dòng' },
+                { _id: '15', name: 'Hiển thị 15 dòng' },
+                { _id: '20', name: 'Hiển thị 20 dòng' },
               ]}
-            /> */}
-          {/* </Box> */}
+            />
+          </Box> */}
           <Typography variant='body1' sx={{ mx: 2 }} display='flex'>
             Tổng số dòng:{'  '}
             <Typography variant='body1' fontWeight={600}>

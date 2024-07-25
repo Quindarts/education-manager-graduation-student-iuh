@@ -22,4 +22,4 @@ function TitleManager(props: TittleManagerPropsType) {
   );
 }
 
-export default TitleManager;
+export default React.memo(TitleManager);

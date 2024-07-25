@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import { color } from '@/theme/variables/palette';
 
 function AuthLayout() {
+  
   return (
     <Container
       maxWidth={false}

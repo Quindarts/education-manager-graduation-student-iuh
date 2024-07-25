@@ -7,6 +7,7 @@ const CustomModal = styled(Dialog)`
       align-items: center;
       width: 96%;
       max-height:94vh;
+      border-top: 6px solid #1349BD ;
 
       margin: auto;
 
@@ -25,6 +26,7 @@ const CustomModal = styled(Dialog)`
         .icon_close {
           margin-left: 380px;
           cursor: pointer;
+
         }
       }
       .modal__body {

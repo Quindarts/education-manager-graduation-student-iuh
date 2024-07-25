@@ -1,11 +1,12 @@
 import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Tooltip, IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTopic } from '@/hooks/api/useQueryTopic';
+import UpdateQuantityTopicModal from '../Modal/UpdateQuantityTopic';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -29,6 +30,14 @@ function HeaderTopic() {
   const handleOpenModal = () => {
     setOpenAddModal(true);
   };
+  const [openChangeQuantityModal, setOpenChangeQuantityModal] = useState(false);
+  const handleCloseChangeQuantityModal = () => {
+    setOpenChangeQuantityModal(false);
+  };
+  const handleOpenChangeQuantityModal = () => {
+    setOpenChangeQuantityModal(true);
+  };
+
   const { handleUiRender } = useTopic();
   const currentRole = handleUiRender();
   return (
@@ -55,13 +64,32 @@ function HeaderTopic() {
           </>
         )}
 
-        <ModalUpload entityUpload={TypeEntityUpload.TOPIC} />
+        <ModalUpload
+          label=''
+          labelToolTip='Tải lên Excel DS Đề tài'
+          entityUpload={TypeEntityUpload.TOPIC}
+        />
+        <Tooltip onClick={handleOpenChangeQuantityModal} title='Cập nhật số lượng Đề tài'>
+          <Button
+            sx={{ bgcolor: 'grey.800' }}
+            color='primary'
+            type='button'
+            size='small'
+            variant='contained'
+          >
+            <Icon icon='uiw:setting' color='white' width={20} />
+          </Button>
+        </Tooltip>
 
-        <Button color='warning' type='button' size='small' variant='contained'>
+        {/* <Button color='warning' type='button' size='small' variant='contained'>
           <Icon icon='carbon:clean' color='white' width={20} /> Làm mới
-        </Button>
+        </Button> */}
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
+      <UpdateQuantityTopicModal
+        open={openChangeQuantityModal}
+        onClose={handleCloseChangeQuantityModal}
+      />
     </>
   );
 }

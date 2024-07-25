@@ -30,7 +30,7 @@ function EditModal(props: any) {
   const currentRole = handleUiRender();
 
   return (
-    <Modal maxWidth='lg' open={open} onClose={onClose}>
+    <Modal maxWidth='xl' open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Cập nhật thông tin đề tài

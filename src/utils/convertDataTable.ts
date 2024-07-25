@@ -1,4 +1,5 @@
 import { Term } from "@/dummy/term";
+import { Lecturer, Student } from "@/types/entities";
 import Major from "@/types/entities/major";
 
 
@@ -42,12 +43,15 @@ export function convertMajorDropDown(majors: any[]) {
     return newMajors;
 }
 
-export const convertLecturer = (lecturers: any[]
+export const convertLecturer = (lecturers: Lecturer[]
 ) => {
     if (lecturers === undefined)
         return []
-    else
-        return lecturers
+    else {
+        return lecturers.map(
+            (lec: Lecturer) => ({ ...lec, firstName: lec.fullName.trim().split(' ').slice(0, -1).join(' '), lastName: lec?.fullName.trim().split(' ').pop() }))
+    }
+
 }
 
 export const convertTopicTable = (topic: any[]
@@ -86,8 +90,6 @@ export const convertGroupMembersTable = (groupMember: any[]) => {
         groupMember.map((mem: any) => {
             newArr.push({ id: mem.student.id, studentId: mem.student.id, isAdmin: mem.isAdmin, status: mem.status, transcripts: mem.transcripts, ...mem.student })
         })
-        console.log("🚀 ~ convertGroupMembersTable ~ newArr:", newArr)
-
         return newArr
     }
 }
@@ -97,6 +99,13 @@ export const convertListGroupStudentScore = (grStudents: any[]) => {
     else {
         return grStudents
     }
+}
+export const convertStudentTable = (students: Student[]) => {
+    if (students === undefined) {
+        return []
+    }
+    else
+        return students.map((std: Student) => ({ ...std, firstName: std.fullName.trim().split(' ').slice(0, -1).join(' '), lastName: std.fullName.trim().split(' ').pop() }))
 }
 
 export const convertGroupLecturerTable = (groupLecturer: any[]) => {

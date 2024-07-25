@@ -1,42 +1,34 @@
 import { Box, Paper } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TableManagamentLecturer from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderLecturer from './Header';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { convertLecturer } from '@/utils/convertDataTable';
-import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 import { useMajor } from '@/hooks/api/useQueryMajor';
+import useParams from '@/hooks/ui/useParams';
 
 function LecturerManagementPage() {
-  const { handleManagerRenderActionLecturer, params } = useLecturer();
+  const { handleGetAllLecturer } = useLecturer();
   const { majorStore } = useMajor();
   const [currentLimit, setCurrentLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(params?.page);
-  const [keywords, setKeywords] = useState('');
-  const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_LECTURER>(ENUM_RENDER_LECTURER.ALL);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading, isFetching } = handleManagerRenderActionLecturer(
-    currentLimit,
-    currentPage,
-    typeSearch,
-    keywords,
-  );
+  const { data, isLoading, isFetching } = handleGetAllLecturer();
+  const { setLimit, setPage, getQueryField } = useParams();
+  useEffect(() => {
+    setLimit(10);
+    setPage(currentPage);
+  }, [currentPage]);
 
-  const handleChangePage = (value: string | Number) => {
+  useEffect(() => {
+    setLimit(10);
+    setPage(1);
+  }, [getQueryField('keywords')]);
+
+  const handleChangePage = (value: number) => {
     setCurrentPage(value);
-  };
-  const handleChangeDropSearch = (value: ENUM_RENDER_LECTURER) => {
-    setTypeSearch(value);
-  };
-  const handleChangeKeywords = (value: string) => {
-    setKeywords(value);
-  };
-  const onClearSearch = () => {
-    setCurrentPage(1);
-    setKeywords('');
-    setTypeSearch(ENUM_RENDER_LECTURER.ALL);
   };
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
@@ -44,18 +36,13 @@ function LecturerManagementPage() {
         Danh sách giảng viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
       </TitleManager>
       <>
-        <HeaderLecturer
-          typeSearch={typeSearch}
-          handleChangeKeywords={handleChangeKeywords}
-          handleChangeDropSearch={handleChangeDropSearch}
-          onClearSearch={onClearSearch}
-        />
+        <HeaderLecturer />
         {isLoading && !isFetching ? (
           <SekeletonUI />
         ) : (
           <TableManagamentLecturer
             rows={convertLecturer(data?.lecturers)}
-            totalPage={params.totalPage}
+            totalPage={getQueryField('totalPage')}
             totalItems={data?.lecturers.length}
             handleChangePage={handleChangePage}
             page={currentPage}

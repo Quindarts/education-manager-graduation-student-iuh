@@ -3,7 +3,10 @@ import { Route, Routes } from 'react-router-dom';
 import PrivateRouter from './privateRouter';
 import { APP_ROUTES } from '@/utils/app-config';
 import { lazy } from 'react';
-const AuthLayoutTemplate = lazy(() => import('@/components/shared/layouts/AuthLayout/AuthLayout'));
+import AuthLayout from '@/components/shared/layouts/AuthLayout/AuthLayout';
+import RolePage from '@/page/auth/role';
+import Login from '@/page/auth/login';
+import DetailNotificationPage from '@/page/DetailNotification';
 const LoginTemplate = lazy(() => import('@/page/auth/login'));
 const RegisterTemplate = lazy(() => import('@/page/auth/register'));
 const DashboardTemplate = lazy(() => import('@/page/Dashboard/Dashboard'));
@@ -31,10 +34,9 @@ const MyDetailGroupLecturerTemplate = lazy(() => import('@/page/MyGroupLecturer/
 const NotificationManagementTemplate = lazy(() => import('@/page/Notification/Management'));
 const RolePermissionTemplate = lazy(() => import('@/page/RolePermission'));
 const RoleDetailTemplate = lazy(() => import('@/page/RolePermission/Detail/RoleDetailPage'));
-
+const LecturerTermManagementTemplate = lazy(() => import('@/page/LecturerTerm/Management'));
 function Routing() {
   return (
-    
     <Routes>
       <Route path='/' element={<PrivateRouter />}>
         //ROUTE HOME
@@ -46,6 +48,11 @@ function Routing() {
         //ROUTE LECTURER
         <Route path={APP_ROUTES.LECTURER.MANAGEMENT} element={<LecturerManagementTemplate />} />
         <Route path={APP_ROUTES.LECTURER.DETAILS} element={<DetailsLecturerTemplate />} />
+        <Route
+          path={APP_ROUTES.LECTURER_TERM.MANAGEMENT}
+          element={<LecturerTermManagementTemplate />}
+        />
+        <Route path={APP_ROUTES.LECTURER_TERM.DETAILS} element={<DetailsLecturerTemplate />} />
         //ROUTE STUDENT
         <Route path={APP_ROUTES.STUDENT.MANAGEMENT} element={<StudentTemplate />} />
         //ROUTE USER
@@ -96,13 +103,14 @@ function Routing() {
           path={APP_ROUTES.NOTIFICATION.MANAGEMENT}
           element={<NotificationManagementTemplate />}
         />
+        <Route path={APP_ROUTES.NOTIFICATION.DETAILS} element={<DetailNotificationPage />} />
         //ROUTE SCORE_STUDENT
         <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentTemplate />} />
       </Route>
 
-      <Route path='/auth' element={<AuthLayoutTemplate />}>
-        <Route index path={APP_ROUTES.ROLE.ALL} element={<RoleTemplate />} />
-        <Route index path={APP_ROUTES.USER.LOGIN} element={<LoginTemplate />} />
+      <Route path='/auth' element={<AuthLayout />}>
+        <Route index path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
+        <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />
       </Route>
       <Route path='*' element={<h1>404</h1>} />
     </Routes>

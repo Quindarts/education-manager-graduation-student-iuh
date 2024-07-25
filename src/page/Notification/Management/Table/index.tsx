@@ -5,6 +5,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 
 import dayjs from 'dayjs';
+import { Html } from '@mui/icons-material';
 
 function TableManagementNotification(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
@@ -48,45 +49,35 @@ function TableManagementNotification(props: any) {
   };
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Tiêu Đề',
-      field: 'title',
-      flex: 2,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
       headerName: 'Ngày Tạo',
-      field: 'startDate',
-      flex: 1,
+      field: 'created_at',
+      flex: 0.8,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
         return (
           <>
-            <Typography>{dayjs(params.row.created_at).format('DD/MM/YYYY')}</Typography>
+            <Typography>{dayjs(params.row.created_at).format('DD/MM/YYYY hh:ss')}</Typography>
           </>
         );
       },
     },
-    {
-      headerName: 'Người gửi',
-      field: 'fullName',
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-    },
 
     {
       headerName: 'Nội dung',
-      field: 'details',
-      flex: 2,
+      field: 'message',
+      flex: 5,
       headerAlign: 'center',
-      align: 'center',
-      renderCell: (params) => {
+      align: 'left',
+      renderCell(params) {
         return (
-          <>
-            <Typography>{dayjs(params.row.created_at).format('DD/MM/YYYY')}</Typography>
-          </>
+          <Box>
+            <Typography
+              variant='body1'
+              color='initial'
+              dangerouslySetInnerHTML={{ __html: params.row.message }}
+            />
+          </Box>
         );
       },
     },
@@ -129,8 +120,9 @@ function TableManagementNotification(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
-          height: 500,
+          // height: 500,
         }}
+        rowHeight={200}
         columns={basicColumns}
         totalItems={1}
         totalPages={1}

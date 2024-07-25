@@ -8,7 +8,7 @@ export interface InitTermSliceType {
     partCurrentTerm: {
         isInTerm: boolean,
         isChooseGroup: boolean,
-        isChChooseTopic: boolean,
+        isChooseTopic: boolean,
         isDiscussion: boolean,
         isReport: boolean,
         isPublicResult: boolean
@@ -40,7 +40,7 @@ const initTermSlice: InitTermSliceType = {
     partCurrentTerm: {
         isInTerm: true,
         isChooseGroup: true,
-        isChChooseTopic: true,
+        isChooseTopic: true,
         isDiscussion: true,
         isReport: true,
         isPublicResult: true
@@ -57,7 +57,7 @@ export const useTermSlice = createSlice({
             state.currentTerm = payload
             state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.startDate)
             state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.startChooseGroupDate)
-            state.partCurrentTerm.isChChooseTopic = checkedValidDistanceDate(payload.startChooseTopicDate)
+            state.partCurrentTerm.isChooseTopic = checkedValidDistanceDate(payload.startChooseTopicDate)
             state.partCurrentTerm.isDiscussion = checkedValidDistanceDate(payload.startDiscussionDate)
             state.partCurrentTerm.isReport = checkedValidDistanceDate(payload.startReportDate)
             state.partCurrentTerm.isPublicResult = checkedValidDistanceDate(payload.startPublicResultDate)

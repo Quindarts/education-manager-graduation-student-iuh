@@ -21,9 +21,13 @@ export const APP_ROUTES = {
     MANAGEMENT: "/lecturers",
     DETAILS: "/lecturers/detail/:lecturer_id",
   },
+  LECTURER_TERM: {
+    MANAGEMENT: "/lecturer-terms",
+    DETAILS: "/lecturer-terms/detail/:lecturer_id"
+  },
   NOTIFICATION: {
     MANAGEMENT: "/notifications",
-    DETAILS: "/notifications/:lecturer_id",
+    DETAILS: "/notifications/:id",
     CREATE: "/notifications/create",
   },
   SCORE_STUDENT: {
@@ -147,9 +151,14 @@ export const APP_SIDEBAR = [
     link: [APP_ROUTES.LECTURER.MANAGEMENT],
     children: [
       {
-        text: 'Danh sách giảng viên',
+        text: 'Danh sách GV chuyên ngành',
         link: APP_ROUTES.LECTURER.MANAGEMENT,
         key: APP_ROUTES.LECTURER.MANAGEMENT,
+      },
+      {
+        text: 'Danh sách GV hướng dẫn',
+        link: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
+        key: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
       },
     ],
   },

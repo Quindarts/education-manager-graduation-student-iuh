@@ -12,12 +12,12 @@ import GlobalLoading from '@/components/ui/Loading/GlobalLoading';
 
 function MainLayout() {
   const { handleGetMe, lecturerStore } = useAuth();
-  const { isLoading } = handleGetMe();
-  const { isOpen, handleToggleSidebar } = useSidebar();
-
+  const { isLoading, isFetching } = handleGetMe();
+  const { isOpen } = useSidebar();
+  
   return (
     <>
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <Loading />
       ) : (
         <>
