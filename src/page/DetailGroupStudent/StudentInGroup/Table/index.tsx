@@ -36,8 +36,8 @@ function TableStudentInGroup(props: any) {
   });
   const handleOpenModalStatusStudent = (studentId: string, status: string) => {
     setOpenModalStatusStudent({
-      studentId,
-      status,
+      studentId: studentId,
+      status: status,
       isOpen: true,
     });
   };

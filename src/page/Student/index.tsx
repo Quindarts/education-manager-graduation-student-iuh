@@ -5,23 +5,16 @@ import TitleManager from '@/components/ui/Title';
 import HeaderStudent from './Header';
 import { useStudent } from '@/hooks/api/useQueryStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import useParams from '@/hooks/ui/useParams';
 import { convertStudentTable } from '@/utils/convertDataTable';
 
 function StudentPage() {
-  const { handleGetAllStudent } = useStudent();
-
-  const { termStore } = useTerm();
+  const { handleGetAllStudent, paramTotalPage } = useStudent();
   const { majorStore } = useMajor();
-
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading, isFetching } = handleGetAllStudent(
-    termStore.currentTerm.id,
-    majorStore.currentMajor.id,
-  );
+  const { data, isLoading, isFetching, refetch } = handleGetAllStudent();
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
   };
@@ -36,8 +29,11 @@ function StudentPage() {
   useEffect(() => {
     setLimit(10);
     setPage(1);
+    if (getQueryField('keywords') === '') {
+      refetch();
+    }
   }, [getQueryField('keywords')]);
-  
+
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager icon='quill:list' mb={8} mt={2}>
@@ -47,13 +43,15 @@ function StudentPage() {
       {isLoading || isFetching ? (
         <SekeletonUI />
       ) : (
-        <TableManagamentStudent
-          totalPage={getQueryField('totalPage')}
-          totalItems={data.students.length}
-          rows={convertStudentTable(data.students)}
-          handleChangePage={handleChangePage}
-          page={currentPage}
-        />
+        <>
+          <TableManagamentStudent
+            totalPage={paramTotalPage}
+            totalItems={data.students.length}
+            rows={convertStudentTable(data.students)}
+            handleChangePage={handleChangePage}
+            page={currentPage}
+          />
+        </>
       )}
     </Paper>
   );

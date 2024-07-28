@@ -12,6 +12,8 @@ export interface Term {
   startDate: string;
   startDateChooseTopic: string;
   startDateSubmitTopic: string;
+  startPublicTopicDate: string;
+  endPublicTopicDate: string;
   updatedAt: string;
   startDateDiscussion: string;
   endDateDiscussion: string;

@@ -10,24 +10,24 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { TypeTermStatus } from '@/services/apiTerm';
 import DateTimeCalendar from '@/components/ui/Calendar/DateTimeCalendar';
 
-function EditTopicReport(props: any) {
+function EditPreviewTopic(props: any) {
   const { onClose, open, termId } = props;
   const { handleGetTermDetailWithType, onUpdateTermWithType } = useTerm();
   const {
     mutate: updateTerm,
     isLoading: loadingUpdate,
     isSuccess,
-  } = onUpdateTermWithType(termId, TypeTermStatus.REPORT);
+  } = onUpdateTermWithType(termId, TypeTermStatus.PUBLIC_TOPIC);
 
   const {
     data,
     isLoading: loadingDetail,
     isSuccess: successDetail,
     isFetching,
-  } = handleGetTermDetailWithType(termId, TypeTermStatus.REPORT);
+  } = handleGetTermDetailWithType(termId, TypeTermStatus.PUBLIC_TOPIC);
   const [isCheckedOpenGroup, setCheckedOpenGroup] = useState(true);
 
-  const handleChangeStatusTopicReport = () => {
+  const handleChangeStatusTopicRegister = () => {
     setCheckedOpenGroup(!isCheckedOpenGroup);
   };
 
@@ -48,7 +48,7 @@ function EditTopicReport(props: any) {
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
         <TitleManager textTransform={'uppercase'} mb={10} mt={4}>
-          Cập nhật trạng thái báo cáo đề tài
+          Cập nhật trạng thái công bố đề tài
         </TitleManager>
         {loadingDetail || isFetching ? (
           <Box
@@ -105,11 +105,11 @@ function EditTopicReport(props: any) {
                 {dayjs(values.startDate) <= dayjs() ? (
                   <Box mt={6}>
                     <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
-                      Trạng thái báo cáo đề tài
+                      Trạng thái xem trước đề tài
                     </Typography>
                     <Switch
                       onChange={() => {
-                        handleChangeStatusTopicReport();
+                        handleChangeStatusTopicRegister();
                         setFieldValue('endDate', dayjs());
                       }}
                       checked={isCheckedOpenGroup}
@@ -120,16 +120,16 @@ function EditTopicReport(props: any) {
                       variant='h6'
                       color={isCheckedOpenGroup ? 'primary' : 'error'}
                     >
-                      {isCheckedOpenGroup ? 'Đang mở báo cáo đề tài' : 'Đã đóng báo cáo đề tài'}
+                      {isCheckedOpenGroup ? 'Đang mở xem trước đề tài' : 'Đã đóng xem trước đề tài'}
                     </Typography>
                   </Box>
                 ) : (
                   <Box mt={10}>
                     <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
-                      Trạng thái báo cáo đề tài :
+                      Trạng thái xem trước đề tài :
                     </Typography>
                     <Typography variant='body1'>
-                      Chưa đến ngày mở báo cáo đề tài, bắt đầu mở từ ngày:{' '}
+                      Chưa đến ngày mở xem trước đề tài, bắt đầu mở từ ngày:{' '}
                       {dayjs(values.startDate).format('DD/MM/YYYY hh:mm:ss A')}
                     </Typography>
                   </Box>
@@ -141,7 +141,7 @@ function EditTopicReport(props: any) {
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
                     <Icon icon='material-symbols:save-outline' />
-                    Lưu trạng thái
+                    Lưu thông tin
                     {loadingUpdate && (
                       <CircularProgress
                         size={'small'}
@@ -159,4 +159,4 @@ function EditTopicReport(props: any) {
   );
 }
 
-export default EditTopicReport;
+export default EditPreviewTopic;

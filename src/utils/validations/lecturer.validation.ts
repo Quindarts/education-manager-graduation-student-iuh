@@ -9,8 +9,8 @@ export const checkDegree = (value: string) => {
 export const checkRoleLecturer = (value: string) => {
     if (value === EnumRole.LECTURER) return 'Giảng viên';
     if (value === EnumRole.HEAD_LECTURER) return 'Chủ nhiệm ngành';
-    if (value === EnumRole.HEAD_COURSE) return 'Quản trị viên';
-    if (value === EnumRole.ADMIN) return 'Chủ quản môn học';
+    if (value === EnumRole.HEAD_COURSE) return 'Chủ quản môn học';
+    if (value === EnumRole.ADMIN) return 'Quản trị viên';
     return;
 };
 export const checkRoleLecturerColor = (value: string) => {

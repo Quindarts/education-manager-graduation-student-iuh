@@ -63,6 +63,7 @@ function TableManagerReviewScore(props: any) {
       headerName: 'STT',
       field: 'stt',
       flex: 0.25,
+      align: 'center',
       headerAlign: 'center',
     },
     {
@@ -70,13 +71,6 @@ function TableManagerReviewScore(props: any) {
       field: 'name',
       flex: 6,
       headerAlign: 'center',
-    },
-    {
-      headerName: 'Mô tả',
-      field: 'description',
-      flex: 3,
-      headerAlign: 'center',
-      align: 'center',
     },
     {
       headerName: 'Điểm tối đa',
@@ -96,10 +90,9 @@ function TableManagerReviewScore(props: any) {
         }}
         minHeight={350}
         columns={basicColumns}
-        totalItems={1}
+        totalItems={rows.length}
         totalPages={1}
         page={1}
-        checkboxSelection={true}
         handleChangePage={() => {}}
         disableColumnMenu
         disableColumnFilter

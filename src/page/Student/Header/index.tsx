@@ -46,9 +46,7 @@ function HeaderStudent() {
           <Box width={200}>
             <DropDown
               placeholder='Tìm kiếm theo'
-              defaultValue={
-                getQueryField('searchField') ? getQueryField('searchField') : 'username'
-              }
+              value={getQueryField('searchField') ? getQueryField('searchField') : 'username'}
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={DROP_SEARCH_VALUE}
             />
@@ -74,16 +72,7 @@ function HeaderStudent() {
           Tạo sinh viên
         </Button>
         <ModalUpload entityUpload={TypeEntityUpload.STUDENT} majorId={majorStore.currentMajor.id} />
-        <Button
-          size='small'
-          color='warning'
-          type='button'
-          sx={{ color: 'white' }}
-          variant='contained'
-        >
-          <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
-        </Button>
-        <Button
+        {/* <Button
           size='small'
           onClick={handleOpenModal}
           color='primary'
@@ -91,7 +80,7 @@ function HeaderStudent() {
           variant='contained'
         >
           Khóa tài khoản
-        </Button>
+        </Button> */}
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
     </>

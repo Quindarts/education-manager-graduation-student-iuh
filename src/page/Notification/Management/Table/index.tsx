@@ -89,7 +89,7 @@ function TableManagementNotification(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={6}>
-          <Tooltip title='Cập nhật thông báo'>
+          {/* <Tooltip title='Cập nhật thông báo'>
             <IconButton
               //   onClick={() => {
               //     handleOpenModalEditNotification(params.row.id);
@@ -98,8 +98,8 @@ function TableManagementNotification(props: any) {
             >
               <Icon icon='lucide:edit' />
             </IconButton>
-          </Tooltip>
-          <Tooltip title='Xóa thông báo'>
+          </Tooltip> */}
+          {/* <Tooltip title='Xóa thông báo'>
             <IconButton
               //   onClick={() => {
               //     handleOpenModalDeleteNotification(params.row.id);
@@ -108,7 +108,7 @@ function TableManagementNotification(props: any) {
             >
               <Icon icon='ic:baseline-delete' />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       ),
     },

@@ -1,6 +1,5 @@
 import Table from '@/components/ui/Table/Table';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
@@ -16,7 +15,7 @@ function TableManagamentGroupStudent(props: any) {
     groupStudentId: '',
     groupStudentName: '',
   });
-  
+
   const handleOpenModalDelete = (groupStudentId: string, groupStudentName: string) => {
     setOpenModalDelete({
       groupStudentId: groupStudentId,
@@ -32,8 +31,8 @@ function TableManagamentGroupStudent(props: any) {
     {
       headerName: 'Tên nhóm',
       field: 'name',
-      flex: 0.5,
-      align: 'center',
+      flex: 1,
+      align: 'left',
       headerAlign: 'center',
     },
     {
@@ -51,7 +50,7 @@ function TableManagamentGroupStudent(props: any) {
       headerName: 'GV hướng dẫn',
       field: 'name3',
       flex: 1,
-      align: 'center',
+      align: 'left',
       headerAlign: 'center',
       renderCell: (params: any) => {
         return (
@@ -97,7 +96,7 @@ function TableManagamentGroupStudent(props: any) {
               color='primary'
               onClick={() => handleOpenModalDelete(params.row.id, params.row.name)}
             >
-              <Icon width={20}  icon='uiw:usergroup-delete' />
+              <Icon width={20} icon='uiw:usergroup-delete' />
             </IconButton>
           </Tooltip>
         </Box>
@@ -105,12 +104,11 @@ function TableManagamentGroupStudent(props: any) {
     },
   ];
   const { onImportGroupStudent } = useGroupStudent();
-  const { termStore } = useTerm();
-
-  const { mutate: importGr, isLoading } = onImportGroupStudent(termStore.currentTerm.id);
+  const { mutate: importGr } = onImportGroupStudent();
   const hanldeImport = () => {
-    importGr(termStore.currentTerm.id);
+    importGr();
   };
+
   return (
     <Box>
       <Table

@@ -8,6 +8,8 @@ import { useMajor } from './useQueryMajor';
 import useParams from '../ui/useParams';
 import { ResponseType } from '@/types/axios.type'
 import { Student } from '@/types/entities'
+import { useDispatch } from 'react-redux'
+import { setParamTotalPage } from '@/store/slice/student.slice'
 
 export enum QueryStudent {
     getAllStudent = 'getAllStudent',
@@ -18,31 +20,39 @@ export enum QueryStudent {
 export const useStudent = () => {
     const { enqueueSnackbar } = useSnackbar()
     const studentStore = useSelector((state: any) => state.studentSlice)
+    const { paramTotalPage } = studentStore
+
     const { termStore } = useTerm()
     const { majorStore } = useMajor()
+    const majorId = majorStore.currentMajor.id
+    const termId = termStore.currentTerm.id
     const { getQueryField, setTotalPage } = useParams()
-
-
+    const dispatch = useDispatch()
     //[GET ALL]
-    const handleGetAllStudent = (termId?: string, majorId?: string) => {
-        const currentMajor = majorId ? majorId : majorStore.currentMajor.id
-        const currentTerm = termId ? termId : termStore.currentTerm.id
+    const handleGetAllStudent = () => {
 
         return useQuery
-            ([QueryStudent.getAllStudent, currentTerm, currentMajor,
-            getQueryField('limit'), getQueryField('page'), getQueryField('totalPage'), getQueryField('searchField'), getQueryField('keywords')],
-                () => getStudentOfSearch(currentTerm, currentMajor, getQueryField('limit'),
-                    getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')), {
-                onSuccess(data: any) {
-                    setTotalPage(data.params ? data.params.totalPage : 0)
-                },
-            })
+            ([QueryStudent.getAllStudent, termId, majorId,
+            getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],
+                () => getStudentOfSearch(termId, majorId, getQueryField('limit'),
+                    getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')),
+                {
+                    onSuccess(data: any) {
+                        const total = data.params ? data.params.totalPage : 0
+                        dispatch(setParamTotalPage(total))
+                        setTotalPage(total)
+                    },
+                    staleTime: 1000 * (60 * 10), // 10 min,
+                    refetchInterval: 1000 * (60 * 20),
+                    keepPreviousData: true,
+                })
     }
 
     //[GET BY ID]
     const handleGetStudentById = (id: string) => {
         return useQuery([QueryStudent.getStudentById, id], () => getStudentById(id), {
-            enabled: !!id
+            enabled: !!id,
+            cacheTime: 1000 * (60 * 1)
         })
     }
 
@@ -52,10 +62,9 @@ export const useStudent = () => {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.student)
                     enqueueSnackbar('Cập nhật sinh viên thành công', { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
+                queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
                 queryClient.invalidateQueries({ queryKey: [QueryStudent.getStudentById, id] })
-            }
-            ,
+            },
             onError() {
                 enqueueSnackbar('Cập nhật sinh viên thất bại, thử lại', { variant: 'error' })
 
@@ -67,7 +76,7 @@ export const useStudent = () => {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar(`sinh viên thành công!`, { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
+                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
                     queryClient.invalidateQueries({ queryKey: [`get-student-by-id`, id] })
                 }
             }
@@ -78,7 +87,7 @@ export const useStudent = () => {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar('Tạo sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
+                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
                 }
             }
             ,
@@ -93,7 +102,7 @@ export const useStudent = () => {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar("Xóa sinh viên ra khỏi học kì.", { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
+                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
                 }
             }
             ,
@@ -121,6 +130,7 @@ export const useStudent = () => {
     }
 
     return {
+        paramTotalPage,
         studentStore,
         onResetPassword,
         onLockOnlyStudent,

@@ -71,8 +71,8 @@ export const getMemberInGroupStudent: any = (id: string) => {
 
 
 //[ADD MEMBER]
-export const addMemberInGroup: any = (id: string) => {
-    return axiosConfig.put(`/api/v1/group-students/${id}/add-member`)
+export const addMemberInGroup: any = (id: string, data: { studentId: string, termId: string }) => {
+    return axiosConfig.put(`/api/v1/group-students/${id}/add-member`, data)
 }
 
 

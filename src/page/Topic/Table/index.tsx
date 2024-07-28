@@ -3,7 +3,7 @@ import { getCardTopicStatus } from '@/utils/validations/topic.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import InfoModal from '../Modal/InfoModal';
 import AcceptTopicModal from '../Modal/AcceptTopicModal';
 import RefuseTopicModal from '../Modal/RefuseTopicModal';
@@ -66,12 +66,14 @@ function TableManagamentTopic(props: any) {
       field: 'name',
       flex: 1.5,
       headerAlign: 'center',
+      align: 'left',
     },
     {
       headerName: 'Giảng viên HD',
       field: 'target',
       headerAlign: 'center',
-      align: 'center',
+      align: 'left',
+
       flex: 0.8,
       renderCell: (params: any) => (
         <Typography variant='body2' color='initial'>
@@ -86,41 +88,7 @@ function TableManagamentTopic(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    {
-      headerName: 'Ghi chú',
-      field: 'note',
-      flex: 1,
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Tính năng thêm',
-      field: 'none',
-      flex: 0.4,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip
-            title='Chỉnh sửa thông tin đề tài'
-            onClick={() => handleOpenEditModal(params.row.id)}
-          >
-            <IconButton size='small' color='primary'>
-              <Icon icon='emojione:pencil' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xem thông tin đề tài' onClick={() => handleOpenInfoModal(params.row.id)}>
-            <IconButton size='small'>
-              <Icon icon='noto-v1:eye-in-speech-bubble' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
-            <IconButton size='small'>
-              <Icon icon='mdi:bin-empty' />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
+
     {
       headerName: 'Trạng thái',
       field: 'text2',
@@ -130,6 +98,35 @@ function TableManagamentTopic(props: any) {
       renderCell: (param) => {
         return <Box>{getCardTopicStatus(param.row.status)}</Box>;
       },
+    },
+    {
+      headerName: 'Tính năng thêm',
+      field: 'none',
+      flex: 0.6,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => (
+        <Box display={'flex'} gap={2}>
+          <Tooltip
+            title='Chỉnh sửa thông tin đề tài'
+            onClick={() => handleOpenEditModal(params.row.id)}
+          >
+            <IconButton size='small' color='primary'>
+              <Icon icon='mage:edit-pen-fill' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Xem thông tin đề tài' onClick={() => handleOpenInfoModal(params.row.id)}>
+            <IconButton size='small'>
+              <Icon icon='icon-park-twotone:view-grid-detail' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
+            <IconButton size='small'>
+              <Icon icon='mdi:bin' />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
     },
     {
       headerName: 'Duyệt đề tài',
@@ -170,6 +167,13 @@ function TableManagamentTopic(props: any) {
 
   const LecturerColumn: GridColDef[] = [
     {
+      headerName: 'STT',
+      field: 'stt',
+      flex: 0.2,
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 1.5,
@@ -182,42 +186,7 @@ function TableManagamentTopic(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    {
-      headerName: 'Ghi chú',
-      field: 'note',
-      flex: 1,
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Tính năng thêm',
-      field: 'none',
-      flex: 0.4,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip title='Chỉnh sửa thông tin đề tài'>
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => handleOpenEditModal(params.row.id)}
-            >
-              <Icon icon='emojione:pencil' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xem thông tin đề tài'>
-            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
-              <Icon icon='noto-v1:eye-in-speech-bubble' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
-            <IconButton size='small'>
-              <Icon icon='mdi:bin-empty' />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
+
     {
       headerName: 'Trạng thái',
       field: 'text2',
@@ -228,22 +197,51 @@ function TableManagamentTopic(props: any) {
         return <Box>{getCardTopicStatus(param.row.status)}</Box>;
       },
     },
+    {
+      headerName: 'Tính năng thêm',
+      field: 'none',
+      flex: 0.7,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => (
+        <Box display={'flex'} gap={2}>
+          <Tooltip title='Chỉnh sửa thông tin đề tài'>
+            <IconButton color='primary' onClick={() => handleOpenEditModal(params.row.id)}>
+              <Icon icon='mage:edit-pen-fill' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Xem thông tin đề tài'>
+            <IconButton onClick={() => handleOpenInfoModal(params.row.id)}>
+              <Icon icon='icon-park-outline:list-view' />
+            </IconButton>
+          </Tooltip>
+          {params.row.status !== 'APPROVED' ? (
+            <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
+              <IconButton>
+                <Icon icon='ic:round-delete' />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+        </Box>
+      ),
+    },
   ];
   return (
     <Box {...rest}>
       {' '}
       <>
         <Table
-          rows={rows}
+          rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
           sx={{
             bgcolor: 'white',
           }}
           minHeight={350}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
-          totalItems={1}
+          totalItems={rows.length}
           totalPages={1}
           page={1}
-          checkboxSelection={true}
           handleChangePage={() => {}}
           disableColumnFilter
           slots={{
@@ -256,7 +254,6 @@ function TableManagamentTopic(props: any) {
           topicId={openDeleteModal.topicId}
         />
         <EditModal
-          // isApprovePermission={isApprovePermission}
           open={openEditModal.isOpen}
           onClose={handleCloseEditModal}
           topicId={openEditModal.topicId}

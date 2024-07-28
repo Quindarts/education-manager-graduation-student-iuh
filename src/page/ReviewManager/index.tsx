@@ -116,7 +116,7 @@ function ReviewManagerPage() {
               currentRole={currentRole}
               rows={convertEvalutationTable(data.evaluations)}
             />
-            <Paper elevation={2} sx={{ px: 2, py: 3 }}>
+            <Paper elevation={0} sx={{ px: 2, py: 3, mt: 4 }}>
               <TitleManager variant='body1'>Tổng điểm: 100</TitleManager>
             </Paper>
           </>

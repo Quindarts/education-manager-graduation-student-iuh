@@ -36,6 +36,7 @@ const ROUTE_LABELS: { [key: string]: string } = {
   '/users/:userId': 'Chi tiết người dùng',
 
   '/profile': 'Thông tin cá nhân',
+  '/profile/update-password': 'Cập nhật mật khẩu',
   '/auth/register': 'Đăng ký',
   '/auth/login': 'Đăng nhập',
   '/auth/role': 'Vai trò',

@@ -82,15 +82,6 @@ function HeaderLecturer() {
           entityUpload={TypeEntityUpload.LECTURER}
           termId={currentTerm.id}
         />
-        <Button
-          size='small'
-          color='warning'
-          type='button'
-          sx={{ color: 'white' }}
-          variant='contained'
-        >
-          <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
-        </Button>
       </Box>
       <AddLecturerModal open={openAddModal} onClose={handleCloseAddModal} />
     </>

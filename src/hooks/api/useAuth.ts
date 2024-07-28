@@ -1,6 +1,6 @@
 import { ErrorResponseType, ResponseType } from './../../types/axios.type';
 import { LoginResponse } from './../../types/entities/user';
-import { getMe, login } from "@/services/apiAuth";
+import { getMe, login, updatePassword } from "@/services/apiAuth";
 import { RootState } from "@/store";
 import { setCurrentRoleRender, setMe } from "@/store/slice/lecturer.slice";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
@@ -28,7 +28,7 @@ export const useAuth = () => {
                 setValueInLocalStorage('accessToken', data.accessToken);
                 setValueInLocalStorage('refreshToken', data.refreshToken);
                 dispatch(setMe({ user: data.user, roles: data.roles }));
-                dispatch(setCurrentMajor({ majorId: data.user.majorId, majorName: data.user.majorName }))
+                dispatch(setCurrentMajor({ majorId: data?.user.majorId, majorName: data?.user.majorName }))
                 navigate("/");
             },
             onError(error: ErrorResponseType) {
@@ -37,14 +37,11 @@ export const useAuth = () => {
         }
         )
     }
-
     //[GET ME]
     const handleGetMe = () => {
         return useQuery(['get-me'], () => getMe(), {
             onSuccess(data: Pick<ResponseType, 'success' | 'lecturer' | 'message' | 'roles'>) {
                 dispatch(setMe({ user: data.lecturer, roles: data.roles }));
-                console.log("🚀 ~ onSuccess ~ data:", data)
-
                 dispatch(setCurrentMajor({ id: data.lecturer.majorId, name: data.lecturer.majorName }))
                 navigate("/");
                 return data.lecturer
@@ -66,9 +63,24 @@ export const useAuth = () => {
         queryClient.clear()
         navigate('/auth/login');
     }
+    const onUpdatePassword = () => {
+        return useMutation(
+            (data: { password: string, newPassword: string }) => updatePassword(data),
+            {
+                onSuccess: () => {
+                    enqueueSnackbar('Cập nhật mật khẩu thành công', { variant: "success" });
+                },
+                onError: (error: any) => {
+                    enqueueSnackbar(error?.message, { variant: "error" });
+                }
+            }
+        )
+    }
+
 
 
     return {
+        onUpdatePassword,
         handleLogin,
         handleGetMe,
         handleLogout,

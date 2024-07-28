@@ -13,8 +13,8 @@ export const getMyNotificationById = (id: string) => {
 }
 export const deleteNotificationLecturer = (id: string) => {
     return axiosConfig.delete<ResponseType, any>(`/api/v1/notification-lecturers/${id}`)
-
 }
+
 export const updateNotificationLecturer = (id: string, data: { message: string, type: string, lecturerId: string }) => {
     return axiosConfig.put<ResponseType, any>(`/api/v1/notification-lecturers/${id}`, data)
 

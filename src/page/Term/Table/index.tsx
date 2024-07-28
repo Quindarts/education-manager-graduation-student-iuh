@@ -13,6 +13,7 @@ import { statusOfDate } from '@/utils/validations/term.validation';
 import EditInstruction from '../Modal/EditInstruction';
 import EditTopicReport from '../Modal/EditTopicReport';
 import EditTermDate from '../Modal/EditTermDate';
+import EditPreviewTopic from '../Modal/EditPreviewTopic';
 
 const checkStatusGroup = (startDate: any, endDate: any) => {
   let data: {
@@ -88,6 +89,22 @@ function TableManagamentTerm(props: any) {
   const handleOpenEditTopicRegister = (termId: any) => {
     setOpenModalEditTopicRegister({ termId: termId, isOpen: true });
   };
+
+  //Handle
+  const [openModalPublicTopicRegister, setOpenModalPublicTopicRegister] = useState({
+    isOpen: false,
+    termId: 0,
+  });
+  const handleClosePublicTopicRegister = () => {
+    setOpenModalPublicTopicRegister({
+      ...openModalPublicTopicRegister,
+      isOpen: false,
+    });
+  };
+  const handleOpenPublicTopicRegister = (termId: any) => {
+    setOpenModalPublicTopicRegister({ termId: termId, isOpen: true });
+  };
+
   //Handle
   const [openModalInstruction, setOpenModalInstruction] = useState({
     isOpen: false,
@@ -220,6 +237,32 @@ function TableManagamentTerm(props: any) {
       },
     },
     {
+      headerName: 'Công bố Đề tài',
+      field: 'startPublicTopicDate',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          <Box display={'flex'} gap={4} alignItems={'center'}>
+            {checkStatusGroup(
+              formatDates(params.row.startPublicTopicDate),
+              formatDates(params.row.endPublicTopicDate),
+            )}
+            <Tooltip title='Cập nhật Công bố Đề tài'>
+              <IconButton
+                onClick={() => handleOpenPublicTopicRegister(params.row.id)}
+                color='primary'
+                size='small'  
+              >
+                <Icon icon='flat-color-icons:info' />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+    {
       headerName: 'Đăng ký đề tài',
       field: 'startChooseTopicDate',
       flex: 1,
@@ -297,7 +340,7 @@ function TableManagamentTerm(props: any) {
       },
     },
     {
-      headerName: 'Công bố kết quả',
+      headerName: 'Công bố KQ',
       field: 'name8',
       flex: 1,
       headerAlign: 'center',
@@ -325,7 +368,7 @@ function TableManagamentTerm(props: any) {
     {
       headerName: '',
       field: 'name9',
-      flex: 1,
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
@@ -364,7 +407,6 @@ function TableManagamentTerm(props: any) {
           bgcolor: 'white',
           height: 600,
         }}
-        
         columns={basicColumns}
         totalItems={1}
         totalPages={1}
@@ -384,6 +426,12 @@ function TableManagamentTerm(props: any) {
         open={openModalEditGroupRegister.isOpen}
         onClose={handleCloseEditGroupRegister}
         termId={openModalEditGroupRegister.termId}
+      />
+      <EditPreviewTopic
+        id={openModalPublicTopicRegister.termId}
+        termId={openModalPublicTopicRegister.termId}
+        open={openModalPublicTopicRegister.isOpen}
+        onClose={handleClosePublicTopicRegister}
       />
       <EditTopicRegister
         id={openModalEditTopicRegister.termId}

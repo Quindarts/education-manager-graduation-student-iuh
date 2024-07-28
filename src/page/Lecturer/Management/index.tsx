@@ -10,12 +10,12 @@ import { useMajor } from '@/hooks/api/useQueryMajor';
 import useParams from '@/hooks/ui/useParams';
 
 function LecturerManagementPage() {
-  const { handleGetAllLecturer } = useLecturer();
+  const { handleGetAllLecturer, paramTotalPage } = useLecturer();
   const { majorStore } = useMajor();
   const [currentLimit, setCurrentLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading, isFetching } = handleGetAllLecturer();
+  const { data, isLoading, isFetching, refetch } = handleGetAllLecturer();
   const { setLimit, setPage, getQueryField } = useParams();
   useEffect(() => {
     setLimit(10);
@@ -24,7 +24,9 @@ function LecturerManagementPage() {
 
   useEffect(() => {
     setLimit(10);
-    setPage(1);
+    if (getQueryField('keywords') === '') {
+      refetch();
+    }
   }, [getQueryField('keywords')]);
 
   const handleChangePage = (value: number) => {
@@ -37,12 +39,12 @@ function LecturerManagementPage() {
       </TitleManager>
       <>
         <HeaderLecturer />
-        {isLoading && !isFetching ? (
+        {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (
           <TableManagamentLecturer
             rows={convertLecturer(data?.lecturers)}
-            totalPage={getQueryField('totalPage')}
+            totalPage={paramTotalPage}
             totalItems={data?.lecturers.length}
             handleChangePage={handleChangePage}
             page={currentPage}

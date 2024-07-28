@@ -1,10 +1,8 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
-import { setParams } from "@/store/slice/lecturer.slice"
 import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
-import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { useTerm } from "./useQueryTerm"
 import { useAuth } from "./useAuth"
@@ -25,7 +23,6 @@ export enum QueryTopic {
 export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
     const topicStore = useSelector((state: any) => state.topicSlice)
-    const dispatch = useDispatch()
 
     const { termStore } = useTerm()
     const { majorStore } = useMajor()
@@ -63,7 +60,6 @@ export const useTopic = () => {
     const handleTopicsByLecturerByTerm = () => {
         return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id], () => getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
             staleTime: Infinity, onSuccess(data) {
-                dispatch(setParams(data.params))
             }
         })
     }
@@ -74,6 +70,8 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+
             },
             onError() {
                 enqueueSnackbar("Tạo đề tài thất bại", { variant: 'error' })
@@ -88,6 +86,10 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+
             },
             onError() {
                 enqueueSnackbar("Cập nhật tài thất bại vui lòng thử lại sau", { variant: 'error' })
@@ -117,6 +119,8 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+
             },
             onError() {
                 enqueueSnackbar("Xóa đề tài thất bại vui lòng thử lại sau", { variant: 'error' })

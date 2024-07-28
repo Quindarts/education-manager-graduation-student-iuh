@@ -24,7 +24,7 @@ const convertTraning = (tran: string) => {
   else return 'Cao đẳng';
 };
 function TableManagamentStudent(props: any) {
-  const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
+  const { rows, totalItems, totalPage, page, handleChangePage } = props;
 
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ studentId: '', isOpen: false });
 
@@ -100,7 +100,7 @@ function TableManagamentStudent(props: any) {
       align: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontWeight={600} color='primary'>
+          <Typography variant='body1' fontWeight={600} >
             {params.row.username}
           </Typography>
         );
@@ -111,6 +111,7 @@ function TableManagamentStudent(props: any) {
       field: 'firstName',
       flex: 0.7,
       headerAlign: 'center',
+      align: 'left',
       renderCell(params) {
         return (
           <Typography variant='body1' color='initial'>
@@ -124,7 +125,7 @@ function TableManagamentStudent(props: any) {
       field: 'lastName',
       flex: 0.5,
       headerAlign: 'center',
-      align: 'center',
+      align: 'left',
       renderCell(params) {
         return (
           <Typography variant='body1' color='initial'>
@@ -138,14 +139,16 @@ function TableManagamentStudent(props: any) {
       headerName: 'Email',
       field: 'email',
       flex: 1,
-      align: 'center',
+      align: 'left',
+
       headerAlign: 'center',
     },
     {
       headerName: 'Giới tính',
       field: 'gender',
       flex: 0.5,
-      align: 'center',
+      align: 'left',
+
       headerAlign: 'center',
       renderCell: (params: any) => {
         return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
@@ -155,7 +158,8 @@ function TableManagamentStudent(props: any) {
       headerName: 'Lớp danh nghĩa',
       field: 'clazzName',
       flex: 0.7,
-      align: 'center',
+      align: 'left',
+
       headerAlign: 'center',
     },
     {

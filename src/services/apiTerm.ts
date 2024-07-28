@@ -8,6 +8,7 @@ export enum TypeTermStatus {
     DISCUSSION = 'discussion',
     REPORT = 'report',
     PUBLIC_RESULT = 'public-result',
+    PUBLIC_TOPIC = "public-topic"
 }
 
 export const getAllTerm = () => {

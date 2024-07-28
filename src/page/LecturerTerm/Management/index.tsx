@@ -1,11 +1,9 @@
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import TableManagamentLecturer from './Table';
 import TitleManager from '@/components/ui/Title';
-import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { convertLecturer } from '@/utils/convertDataTable';
-import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import HeaderLecturerTerm from './Header';
@@ -13,17 +11,17 @@ import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import useParams from '@/hooks/ui/useParams';
 
 function LecturerTermManagement() {
-  const { handleGetAllLecturerTermByParam } = useLecturerTerm();
+  const { handleGetAllLecturerTermByParam, paramTotalPage } = useLecturerTerm();
   const { majorStore } = useMajor();
   const { termStore } = useTerm();
-  const [currentLimit, setCurrentLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading, isFetching } = handleGetAllLecturerTermByParam();
+  const { data, isLoading, isFetching, refetch } = handleGetAllLecturerTermByParam();
 
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
   };
+  
   const { setLimit, setPage, getQueryField } = useParams();
   useEffect(() => {
     setLimit(10);
@@ -33,6 +31,9 @@ function LecturerTermManagement() {
   useEffect(() => {
     setLimit(10);
     setPage(1);
+    if (getQueryField('keywords') === '') {
+      refetch();
+    }
   }, [getQueryField('keywords')]);
 
   return (
@@ -48,7 +49,7 @@ function LecturerTermManagement() {
         ) : (
           <TableManagamentLecturer
             rows={convertLecturer(data?.lecturerTerms)}
-            totalPage={getQueryField('totalPage')}
+            totalPage={paramTotalPage}
             totalItems={data?.lecturerTerms?.length}
             handleChangePage={handleChangePage}
             page={currentPage}

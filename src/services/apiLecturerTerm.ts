@@ -4,17 +4,14 @@ import axiosConfig from './axiosConfig'; // Make sure to adjust the import accor
 
 
 //[Admin role]
-export const getAllLecturerTermByParams = (majorId: string, termId: string, limit: number | string, page: number | string, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string) => {
-    let searchFieldSend = searchField ? searchField : "";
+export const getAllLecturerTermByParams = (termId: string, limit: number | string, page: number | string, searchField: string, keywords: string) => {
+    let searchFieldSend = searchField ? searchField : "username";
     let keywordSend = keywords ? keywords : ""
-    return axiosConfig.get<ResponseType, any>(`/api/v1/lecturer-terms/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&majorId=${majorId}&termId=${termId}`);
+    return axiosConfig.get<ResponseType, any>(`/api/v1/lecturer-terms/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}`);
 }
 
 
-//[GET LIST Major]
-export const getListLecturerTermByMajor: any = async (termId: string, majorId: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/lecturer-terms/list?termId=${termId}&majorId=${majorId}`);
-}
+
 
 export const getListLecturerTermToAdding = async (termId: string, majorId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/lecturer-terms/to-adding?termId=${termId}&majorId=${majorId}`);

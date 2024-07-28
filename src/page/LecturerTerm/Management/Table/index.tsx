@@ -51,7 +51,13 @@ function TableManagamentLecturer(props: any) {
       headerAlign: 'left',
       align: 'left',
     },
-
+    {
+      headerName: 'Chuyên ngành',
+      field: 'majorName',
+      flex: 1,
+      headerAlign: 'left',
+      align: 'left',
+    },
     {
       headerName: 'Giới tính',
       field: 'gender',
@@ -63,16 +69,6 @@ function TableManagamentLecturer(props: any) {
       },
     },
     {
-      headerName: 'SĐT',
-      field: 'phone',
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{params.row.phone}</Typography>;
-      },
-    },
-    {
       headerName: 'Email',
       field: 'email',
       flex: 1.2,
@@ -80,6 +76,16 @@ function TableManagamentLecturer(props: any) {
       align: 'left',
       renderCell: (params: any) => {
         return <Typography variant='body1'>{params.row.email}</Typography>;
+      },
+    },
+    {
+      headerName: 'SĐT',
+      field: 'phone',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => {
+        return <Typography variant='body1'>{params.row.phone}</Typography>;
       },
     },
     {

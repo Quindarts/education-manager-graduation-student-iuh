@@ -40,7 +40,7 @@ function AddModal(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+        <TitleManager  mb={10} variant='h4' textTransform={'uppercase'}>
           Tạo học kì mới
         </TitleManager>
         {isLoading ? (

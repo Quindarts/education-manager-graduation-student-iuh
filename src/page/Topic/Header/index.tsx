@@ -10,16 +10,8 @@ import UpdateQuantityTopicModal from '../Modal/UpdateQuantityTopic';
 
 const SEARCH_DROP_VALUE = [
   {
-    name: 'Không được duyệt',
-    _id: 'REFUSE',
-  },
-  {
-    name: 'Đang chờ',
-    _id: 'PENDING',
-  },
-  {
-    name: 'Đã duyệt',
-    _id: 'ACCEPT',
+    name: 'Tên Đề tài',
+    _id: 'name',
   },
 ];
 function HeaderTopic() {
@@ -43,9 +35,13 @@ function HeaderTopic() {
   return (
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={2}>
-        <Box flex={1} display={'flex'} gap={2} width={'full'}>
-          <Box width={200}>
-            <DropDown placeholder='Tìm kiếm đề tài' options={SEARCH_DROP_VALUE} />
+        <Box  flex={1} display={'flex'} gap={2} width={'full'}>
+          <Box width={150}>
+            <DropDown
+              placeholder='Tìm kiếm đề tài'
+              value={SEARCH_DROP_VALUE[0]?._id}
+              options={SEARCH_DROP_VALUE}
+            />
           </Box>
           <TextField fullWidth size='small' placeholder='Tim kiếm đề tài..' />
         </Box>
@@ -69,21 +65,19 @@ function HeaderTopic() {
           labelToolTip='Tải lên Excel DS Đề tài'
           entityUpload={TypeEntityUpload.TOPIC}
         />
-        <Tooltip onClick={handleOpenChangeQuantityModal} title='Cập nhật số lượng Đề tài'>
-          <Button
-            sx={{ bgcolor: 'grey.800' }}
-            color='primary'
-            type='button'
-            size='small'
-            variant='contained'
-          >
-            <Icon icon='uiw:setting' color='white' width={20} />
-          </Button>
-        </Tooltip>
-
-        {/* <Button color='warning' type='button' size='small' variant='contained'>
-          <Icon icon='carbon:clean' color='white' width={20} /> Làm mới
-        </Button> */}
+        {currentRole.includes('all') && (
+          <Tooltip onClick={handleOpenChangeQuantityModal} title='Cập nhật số lượng Đề tài'>
+            <Button
+              sx={{ bgcolor: 'grey.800' }}
+              color='primary'
+              type='button'
+              size='small'
+              variant='contained'
+            >
+              <Icon icon='uiw:setting' color='white' width={20} />
+            </Button>
+          </Tooltip>
+        )}
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
       <UpdateQuantityTopicModal

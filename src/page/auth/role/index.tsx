@@ -22,7 +22,7 @@ const CARD_ROLE_TYPE = [
   {
     icon: 'ri:admin-line',
     name: 'Quản trị viên',
-    role: EnumRole.HEAD_COURSE,
+    role: EnumRole.ADMIN,
     // numRole: 2,
     desc: 'Quyền quản trị viên quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
   },
@@ -38,7 +38,7 @@ const CARD_ROLE_TYPE = [
   {
     icon: 'grommet-icons:user-admin',
     name: 'Chủ quản môn học',
-    role: EnumRole.ADMIN,
+    role: EnumRole.HEAD_COURSE,
     // numRole: 3,
     desc: 'Trong hệ thống quản lý khóa luận, Chủ quản môn học quản lý người dùng, thiết lập hệ thống, và duy trì hoạt động.',
   },

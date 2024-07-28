@@ -12,46 +12,43 @@ import {
 import { GridExpandMoreIcon } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import React from 'react';
+import TitleManager from '@/components/ui/Title';
 
 function BasicInformationGrStudentPage(props: any) {
   const { groupStudent } = props;
   return (
     <>
-      <Box display='flex' gap={10}>
-        <Paper
-          variant='elevation'
-          sx={{ mt: 8, py: 12, px: 8, flex: 0.8, borderTop: '5px solid #333' }}
+      <Paper variant='elevation' sx={{ mt: 1, py: 12, px: 8 }}>
+        <TitleManager
+          icon='flat-color-icons:info'
+          fontWeight={600}
+          mb={4}
+          textTransform={'uppercase'}
+          variant='h6'
         >
-          <Typography fontWeight={600} color={'text.primary'} mb={2} variant='h6'>
-            <Icon icon='flat-color-icons:info' style={{ margin: ' 0 4px' }} />
-            Thông tin cơ bản
-          </Typography>
-          <Typography color={'text.primary'} variant='body1'>
-            Giảng viên Hướng dẫn :{' '}
-            {groupStudent.lecturerId ? groupStudent.lecturerId : 'Chưa có giảng viên hướng dẫn'}
-          </Typography>
-          <Typography color={'text.primary'} variant='body1'>
-            Ngày tạo nhóm : {dayjs(groupStudent.created_at).format('DD/MM/YYYY')}
-          </Typography>
-        </Paper>
-        <Paper variant='elevation' sx={{ mt: 8, p: 8, flex: 1, borderTop: '5px solid #333' }}>
-          <Typography>Thông báo mới</Typography>
-          <Box>Không có thông báo</Box>
-        </Paper>
-      </Box>
+          Chi tiết nhóm
+        </TitleManager>
+        <Typography color={'text.primary'} variant='body1'>
+          Giảng viên Hướng dẫn :{' '}
+          {groupStudent.lecturerId ? groupStudent.lecturerId : 'Chưa có giảng viên hướng dẫn'}
+        </Typography>
+        <Typography color={'text.primary'} variant='body1'>
+          Ngày tạo nhóm : {dayjs(groupStudent.created_at).format('DD/MM/YYYY')}
+        </Typography>
+      </Paper>
       <Box position={'relative'} my={8}>
         <Box sx={{ position: 'absolute', top: 10, zIndex: 10, left: '-20px' }}>
-          <Icon width={50} color='red' icon='game-icons:achievement' />
+          <Icon width={50} color='#122E69' icon='game-icons:achievement' />
         </Box>
-        <Accordion sx={{ px: 10, borderTop: '5px solid #0052b1' }} defaultExpanded>
+        <Accordion sx={{ px: 10 }} defaultExpanded>
           <AccordionSummary
             expandIcon={<GridExpandMoreIcon color='primary' />}
             aria-controls='panel-topic-content'
             id='panel-topic-header'
           >
-            <Typography variant='h6' fontWeight={600}>
+            <TitleManager variant='h6' textTransform={'uppercase'} fontWeight={600}>
               Thông tin đề tài
-            </Typography>
+            </TitleManager>
           </AccordionSummary>
           <AccordionDetails>
             {!groupStudent.topic ? (
@@ -80,7 +77,7 @@ function BasicInformationGrStudentPage(props: any) {
               </Box>
             ) : (
               <Box pb={8}>
-                <Typography variant='h3' textAlign={'center'} fontWeight={600} color='primary.dark'>
+                <Typography variant='h3' textAlign={'center'} fontWeight={600} color='grey.900'>
                   Tên đề tài: {'  '} {groupStudent?.topic.name}
                 </Typography>
                 <Typography my={4} fontWeight={500} variant='h6'>

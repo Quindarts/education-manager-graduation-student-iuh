@@ -14,6 +14,7 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useAuth } from '@/hooks/api/useAuth';
 import { validateSchemaLecturer } from '@/page/Lecturer/context';
+import { useNavigate } from 'react-router-dom';
 
 const GenderLecturer = [
   {
@@ -51,27 +52,22 @@ function ProfilePage() {
   const { majorStore } = useMajor();
   const { lecturerStore } = useAuth();
   const { handleGetLecturerById, onUpdateLecturer } = useLecturer();
-  const { mutate: updateLecturer, isSuccess } = onUpdateLecturer(
-    lecturerStore.me.id,
-    currentTerm.id,
-    20,
-    1,
-  );
+  const { mutate: updateLecturer, isSuccess } = onUpdateLecturer();
 
   const handleSubmitEditLecturer = (values: any) => {
     updateLecturer(values);
   };
 
+  const navigate = useNavigate();
   return (
     <>
-      <Paper elevation={6} sx={{ width: '90%', mx: 'auto', mt: 8, position: 'relative' }}>
+      <Paper elevation={1} sx={{ width: '100%', mx: 'auto', mt: 8, position: 'relative' }}>
         <Box
           sx={{
             width: '100%',
-            height: '50px',
+            height: '20px',
             borderRadius: '4px 4px 0 0 ',
-            backgroundImage:
-              'url(https://c4.wallpaperflare.com/wallpaper/798/616/951/macos-sierra-wallpaper-preview.jpg)',
+            bgcolor: 'primary.dark',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             position: 'absolute',
@@ -80,9 +76,8 @@ function ProfilePage() {
           }}
         ></Box>
 
-        <Box sx={{ px: 20, pt: '50px', zIndex: 10, position: 'relative' }}>
-          <TitleManager>
-            <Icon width={20} style={{ marginTop: '10px' }} icon='hugeicons:profile' />
+        <Box sx={{ px: 20, pt: '30px', zIndex: 10, position: 'relative' }}>
+          <TitleManager icon='vaadin:user-card' variant='h5' textTransform={'uppercase'}>
             Thông tin cá nhân
           </TitleManager>
           <Box py={10} px={5}>
@@ -92,61 +87,19 @@ function ProfilePage() {
               }}
               validationSchema={validateSchemaLecturer}
               initialValues={{
-                fullName: `${lecturerStore.me.fullName}`,
-                username: `${lecturerStore.me.username}`,
-                email: `${lecturerStore.me.email}`,
-                phone: `${lecturerStore.me.phone}`,
-                gender: `${lecturerStore.me.gender}`,
-                role: `${lecturerStore.me.role}`,
-                degree: `${lecturerStore.me.degree}`,
-                majorId: `${lecturerStore.me.majorId}`,
+                fullName: `${lecturerStore.me.user.fullName}`,
+                username: `${lecturerStore.me.user.username}`,
+                email: `${lecturerStore.me.user.email}`,
+                phone: `${lecturerStore.me.user.phone}`,
+                gender: `${lecturerStore.me.user.gender}`,
+                degree: `${lecturerStore.me.user.degree}`,
+                majorId: `${lecturerStore.me.user.majorId}`,
               }}
             >
               {({ values, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
                 <form onSubmit={handleSubmit}>
                   <Box display={'flex'} gap={20}>
                     <Box flex={1}>
-                      <Box
-                        mx={'auto'}
-                        position={'relative'}
-                        height={200}
-                        width={200}
-                        mb={3}
-                        sx={{ borderRadius: '20%', bgcolor: '#f3f3f9' }}
-                      >
-                        {' '}
-                        <img
-                          style={{ borderRadius: '10%', width: '200px', height: '200px' }}
-                          alt=''
-                          src={'https://img.artpal.com/867752/16-22-10-3-9-27-51m.jpg'}
-                        />
-                        <Box
-                          sx={{
-                            border: '6px solid white',
-                            backgroundColor: 'primary.main',
-                            cursor: 'pointer',
-                          }}
-                          borderRadius={'50%'}
-                          height={50}
-                          width={50}
-                          position={'absolute'}
-                          top={0}
-                          right={'4px'}
-                          color={'white'}
-                          display={'flex'}
-                          alignItems={'center'}
-                          justifyContent={'center'}
-                        >
-                          <label style={{ cursor: 'pointer' }}>
-                            <Icon icon='heroicons:camera-solid' width={16} />
-                            <input
-                              type='file'
-                              style={{ display: 'none' }}
-                              onChange={(event) => {}}
-                            />
-                          </label>
-                        </Box>
-                      </Box>
                       <CustomTextField
                         required
                         value={values.username}
@@ -185,6 +138,16 @@ function ProfilePage() {
                           />
                         </Box>
                       </Box>
+                      <Box width={'full'}>
+                        <DropDown
+                          label='Trình độ'
+                          value={values.degree}
+                          onChange={(e) => {
+                            setFieldValue('degree', e.target.value);
+                          }}
+                          options={DEGREE_DROP_VALUE}
+                        />
+                      </Box>{' '}
                     </Box>
                     <Box flex={1}>
                       <CustomTextField
@@ -220,34 +183,20 @@ function ProfilePage() {
                           options={convertMajorDropDown(majorStore.allMajor)}
                         />
                       </Box>{' '}
-                      <Box mt={8} width={'full'}>
-                        <DropDown
-                          value={`${values.role}`}
-                          disabled
-                          onChange={(e) => {
-                            setFieldValue('role', e.target.value);
-                          }}
-                          label='Vai trò'
-                          options={RoleLecturerDrop}
-                        />
-                      </Box>
-                      <Box mt={8} width={'full'}>
-                        <DropDown
-                          label='Trình độ'
-                          value={values.degree}
-                          onChange={(e) => {
-                            setFieldValue('degree', e.target.value);
-                          }}
-                          options={DEGREE_DROP_VALUE}
-                        />
-                      </Box>{' '}
                     </Box>
                   </Box>
 
                   <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
-                    <Button variant='contained' color='primary' type='submit'>
-                      <Icon icon='material-symbols:save-outline' />
-                      Cập nhật thông tin cá nhân
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      onClick={() => navigate('/profile/update-password')}
+                    >
+                      Đổi mật khẩu <Icon width={20} icon='carbon:password' />
+                    </Button>
+
+                    <Button variant='contained' color='success' type='submit'>
+                      Cập nhật thông tin <Icon width={20} icon='ic:twotone-update' />
                     </Button>
                   </Box>
                 </form>

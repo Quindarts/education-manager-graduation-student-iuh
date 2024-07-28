@@ -41,7 +41,7 @@ export default function AdminSidebar() {
     });
   }, []);
   //Head_course
-  const isHeadCourseRole = lecturerStore.currentRoleRender === RoleCheck.HEAD_COURSE;
+  const isAdminRole = lecturerStore.currentRoleRender === RoleCheck.ADMIN;
   const location = useLocation();
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
@@ -119,7 +119,7 @@ export default function AdminSidebar() {
     isLoading,
     isFetching,
   } = handleGetAllTermByMajor(
-    isHeadCourseRole ? majorStore.currentMajor.id : lecturerStore.me.user.majorId,
+    isAdminRole ? majorStore.currentMajor.id : lecturerStore.me.user.majorId,
   );
 
   useEffect(() => {
@@ -223,10 +223,10 @@ export default function AdminSidebar() {
               </Typography>
               <Box sx={{ mb: 10 }}>
                 <Box sx={{ mb: 4 }}>
-                  {isHeadCourseRole ? (
+                  {isAdminRole ? (
                     <DropDown
                       onChange={(e: any) => {
-                        isHeadCourseRole && setMajorSelectValue(e.target.value);
+                        isAdminRole && setMajorSelectValue(e.target.value);
                       }}
                       defaultValue={majorStore.currentMajor.id}
                       options={convertMajorDropdown(majorStore.allMajor)}
@@ -252,7 +252,7 @@ export default function AdminSidebar() {
                       else dispatch(setCurrentTerm({}));
                     }}
                     value={termStore?.currentTerm?.id ? termStore.currentTerm.id : ''}
-                    options={convertTermDropdown(termStore.allTerm)}
+                    options={convertTermDropdown(termStore?.allTerm)}
                   />
                 )}
               </Box>

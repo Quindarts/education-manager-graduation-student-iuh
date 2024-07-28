@@ -40,7 +40,7 @@ function useParams() {
     }
 
     const getQueryField = (type: QueryType) => {
-        return query.get(type)
+        return query.get(type) ? `${query.get(type)}` : ''
     }
 
     const onSearchChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {

@@ -9,8 +9,8 @@ export const getLecturerByMajorId = (majorId: number) => {
 
 
 //[Admin role]
-export const getAllLecturer = (majorId: string, limit: number | string, page: number | string, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string) => {
-    let searchFieldSend = searchField ? searchField : "";
+export const getAllLecturer = (majorId: string, limit: number | string, page: number | string, searchField: string, keywords: string) => {
+    let searchFieldSend = searchField ? searchField : "username";
     let keywordSend = keywords ? keywords : ""
     return axiosConfig.get<ResponseType, any>(`/api/v1/lecturers/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&majorId=${majorId}`);
 }

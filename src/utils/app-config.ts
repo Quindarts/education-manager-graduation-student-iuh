@@ -70,6 +70,7 @@ export const APP_ROUTES = {
     PROFILE: '/profile',
     LOGIN: '/auth/login',
     ROLE: '/',
+    UPDATE_PASS: '/profile/update-password'
   },
   USER_AUTHORIZATION: {
     MANAGEMENT: "/authorizations",
@@ -101,14 +102,14 @@ export const APP_SIDEBAR = [
     text: 'Trang chính',
     icon: 'ic:baseline-home',
     link: APP_ROUTES.DASHBOARD,
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.LECTURER],
+    roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.LECTURER],
     key: '/',
   },
   {
     text: 'Chuyên Ngành',
     icon: 'simple-icons:gitbook',
     link: [APP_ROUTES.MAJOR.MANAGEMENT],
-    roles: [RoleCheck.HEAD_COURSE],
+    roles: [RoleCheck.ADMIN],
     children: [
       {
         text: 'Danh sách chuyên ngành',
@@ -120,7 +121,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'mage:book-fill',
     text: 'Học kì',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
+    roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
     link: [APP_ROUTES.TERM.MANAGEMENT],
     key: '/terms',
     children: [
@@ -134,7 +135,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'fluent-mdl2:permissions',
     text: 'Phân quyền',
-    roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER],
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT],
     children: [
       {
@@ -146,14 +147,15 @@ export const APP_SIDEBAR = [
   },
   {
     icon: 'mdi:teach-poll',
-    text: 'Giảng viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.ADMIN],
+    text: 'Giảng viên ',
+    roles: [RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.LECTURER.MANAGEMENT],
     children: [
       {
         text: 'Danh sách GV chuyên ngành',
         link: APP_ROUTES.LECTURER.MANAGEMENT,
         key: APP_ROUTES.LECTURER.MANAGEMENT,
+        roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
       },
       {
         text: 'Danh sách GV hướng dẫn',
@@ -163,9 +165,21 @@ export const APP_SIDEBAR = [
     ],
   },
   {
+    icon: 'mdi:teach-poll',
+    text: 'Giảng viên Hướng dẫn',
+    roles: [RoleCheck.HEAD_COURSE],
+    link: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
+  },
+  {
+    icon: 'mdi:teach-poll',
+    text: 'Giảng viên Chuyên ngành',
+    roles: [RoleCheck.ADMIN],
+    link: APP_ROUTES.LECTURER.MANAGEMENT,
+  },
+  {
     icon: 'mdi:account-student',
     text: 'Sinh viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.STUDENT.MANAGEMENT],
     children: [
       {
@@ -178,7 +192,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'material-symbols:topic',
     text: 'Đề tài',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.TOPIC.MANAGEMENT],
     children: [
       {
@@ -204,7 +218,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'fluent-mdl2:review-solid',
     text: 'Đánh giá',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.HEAD_COURSE],
     link: APP_ROUTES.REVIEW.MANAGEMENT,
     key: '/review',
     children: [
@@ -212,13 +226,14 @@ export const APP_SIDEBAR = [
         text: 'Danh sách',
         link: APP_ROUTES.REVIEW.MANAGEMENT,
         key: APP_ROUTES.REVIEW.MANAGEMENT,
+
       },
     ],
   },
   {
     icon: 'icon-park-outline:message',
     text: 'Thông báo',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.NOTIFICATION.MANAGEMENT],
     children: [
       {
@@ -244,7 +259,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'material-symbols:group',
     text: 'Nhóm sinh viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.GROUP_STUDENT.MANAGEMENT],
     children: [
       {
@@ -275,7 +290,7 @@ export const APP_SIDEBAR = [
   {
     icon: 'typcn:group',
     text: 'Nhóm giảng viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
     link: [APP_ROUTES.GROUP_LECTURER.MANAGEMENT],
     children: [
       {

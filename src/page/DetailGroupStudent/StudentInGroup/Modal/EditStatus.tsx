@@ -13,33 +13,12 @@ const DROP_STATUS_STUDENT_TERM_VALUE = [
     name: 'Đang học',
   },
   {
-    _id: 'FAIL_ADVISOR',
-    name: 'Rớt hướng dẫn',
-  },
-  {
-    _id: 'FAIL_REVIEWER',
-    name: 'Rớt phản biện',
-  },
-  {
-    _id: 'FAIL_SESSION_HOST',
-    name: 'Rớt hội đồng',
-  },
-  {
-    _id: 'PASS_ADVISOR',
-    name: 'Đậu hướng dẫn',
-  },
-  {
-    _id: 'PASS_REVIEWER',
-    name: 'Đậu phản biện',
-  },
-  {
     _id: 'PASS_SESSION_HOST',
     name: 'Đậu hội dồng',
   },
 ];
 
 function EditStatusStudentTerm(props: any) {
-
   const { onClose, open, studentId, status } = props;
 
   const [checked, setChecked] = useState(status);
@@ -53,11 +32,11 @@ function EditStatusStudentTerm(props: any) {
   const grStudentId = `${current[current.length - 1]}`;
   const { onUpdateStatusStudentMember } = useMemberGroupStudent();
   const { mutate: updateStatus, isSuccess } = onUpdateStatusStudentMember(grStudentId, studentId);
-  
+
   useEffect(() => {
     onClose();
   }, [isSuccess]);
-  
+
   const handleUpdate = () => {
     updateStatus({
       status: checked,

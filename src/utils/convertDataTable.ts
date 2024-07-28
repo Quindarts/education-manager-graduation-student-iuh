@@ -76,7 +76,7 @@ export const convertEvalutationTable = (evalutation: any[]
     else {
         let newEvalutations: any[] = []
         evalutation.map((Evalutation: any, index: number) => {
-            newEvalutations.push({ id: index, EvalutationId: Evalutation.id, ...Evalutation })
+            newEvalutations.push({ stt: index + 1, id: index, EvalutationId: Evalutation.id, ...Evalutation })
         })
         return newEvalutations
     }

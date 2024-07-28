@@ -19,7 +19,6 @@ export const useMajor = () => {
     const majorStore = useSelector((state: RootState) => state.majorSlice);
     const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar()
-
     //[GET RENDER]
     const handleGetAllMajorsRender = () => {
         return useQuery([QueryKeysMajor.getAllMajor], () => getAllMajor(), {

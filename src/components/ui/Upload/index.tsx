@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from '../Modal';
 import {
   Box,
@@ -17,6 +17,7 @@ import styled from '@emotion/styled';
 import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
+import { useAuth } from '@/hooks/api/useAuth';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -64,6 +65,7 @@ function ModalUpload(props: ModalUploadPropsType) {
   } = props;
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
+  const { lecturerStore } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const {
     importExcel,
@@ -80,6 +82,7 @@ function ModalUpload(props: ModalUploadPropsType) {
     entityUpload,
     termStore.currentTerm.id,
     majorStore.currentMajor.id,
+    lecturerStore.me.user,
     typeEvaluation,
   );
 
@@ -99,16 +102,23 @@ function ModalUpload(props: ModalUploadPropsType) {
   return (
     <Box>
       <Tooltip arrow title={labelToolTip}>
-        <Button size='small' disabled={disabled} onClick={handleOpenUpload} variant='contained' color='primary'>
+        <Button
+          size='small'
+          disabled={disabled}
+          onClick={handleOpenUpload}
+          variant='contained'
+          color='primary'
+        >
           <Icon icon='uiw:file-excel' style={{ marginRight: 2 }} width={20} />
           {label}
         </Button>
       </Tooltip>
-      <Modal maxWidth={'sm'} open={isOpen} onClose={handleCloseUpload}>
+      <Modal maxWidth={'md'} open={isOpen} onClose={handleCloseUpload}>
         <Paper sx={{ px: 10, py: 7 }} elevation={3}>
           <Box display={'flex'} gap={4}>
-            <Icon width={26} icon='vscode-icons:file-type-excel2' />
-            <TitleManager>Tải File Excel</TitleManager>
+            <TitleManager mb={4} variant='h4' textTransform={'uppercase'}>
+              Tải File Excel
+            </TitleManager>
           </Box>
           <Paper elevation={1} sx={{ px: 10, py: 12, mb: 6 }}>
             <Box
@@ -117,60 +127,86 @@ function ModalUpload(props: ModalUploadPropsType) {
                 borderStyle: 'dashed',
               }}
             >
-              <Button
-                component='label'
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
-                  py: 20,
-                }}
-              >
-                <VisuallyHiddenInput type='file' onChange={(e) => importExcel(e)} />
-
-                <Box
-                  bgcolor='rgb(0,82,177,0.2)'
-                  p={10}
-                  borderRadius={'50%'}
-                  width={100}
-                  height={100}
+              {!currentFile ? (
+                <Button
+                  component='label'
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    py: 20,
+                  }}
                 >
-                  <Icon
-                    color='rgb(0,82,177,0.7)'
-                    width={'full'}
-                    height={'full'}
-                    icon='line-md:uploading-loop'
-                  />
+                  <VisuallyHiddenInput type='file' onChange={(e) => importExcel(e)} />
+
+                  <Box
+                    bgcolor='rgb(0,82,177,0.2)'
+                    p={10}
+                    borderRadius={'50%'}
+                    width={100}
+                    height={100}
+                  >
+                    <Icon
+                      color='rgb(0,82,177,0.7)'
+                      width={'full'}
+                      height={'full'}
+                      icon='line-md:uploading-loop'
+                    />
+                  </Box>
+
+                  <Typography
+                    fontWeight={'600'}
+                    textTransform={'uppercase'}
+                    color='grey.600'
+                    mt={6}
+                    variant='h4'
+                  >
+                    <Icon style={{ marginRight: 2 }} icon='fxemoji:warningsign' />
+                    Chưa có file tải lên ngay
+                  </Typography>
+                </Button>
+              ) : (
+                <Box
+                  height={300}
+                  display={'flex'}
+                  flexDirection={'column'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                >
+                  <Icon color='#40bb92' width={150} icon='teenyicons:file-tick-solid' />
+                  <Typography mt={6} variant='h5' color='success.dark'>
+                    <Icon icon='teenyicons:tick-circle-solid' /> Đã tải file lên thành công
+                  </Typography>
                 </Box>
-                <Typography fontWeight={500} color='primary.main' variant='h5'>
-                  <Icon style={{ marginRight: 2 }} icon='fxemoji:warningsign' />
-                  Chưa có file,tải lên ngay !
-                </Typography>
-              </Button>
+              )}
             </Box>
           </Paper>
           <Box>
             {currentFile !== undefined ? (
               <Card sx={{ p: 6, borderRadius: 2, bgcolor: 'rgb(0,82,177,0.1)' }}>
-                <Box gap={2} alignItems={'center'} display={'flex'}>
-                  <Icon width={26} icon='subway:file-13' color='rgb(0,82,177,0.8)' />
+                <Box gap={6} alignItems={'center'} display={'flex'}>
+                  <Icon width={50} icon='vscode-icons:file-type-excel' color='rgb(0,82,177,0.8)' />
                   <Box width={320}>
-                    <Typography variant='body1' color='initial'>
-                      Tên file:{fileName}
+                    <Typography variant='h6' color='primary.dark'>
+                      tên file:{' '}
+                      <Typography component='span' variant='h6' color='grey.800'>
+                        {fileName}
+                      </Typography>
                     </Typography>
-                    <Typography variant='body1' color='initial'>
-                      Kích thước: {totalSize}
+                    <Typography variant='h6' color='primary.dark'>
+                      kích thước:{' '}
+                      <Typography component='span' variant='h6' color='grey.800'>
+                        {totalSize}
+                      </Typography>
                     </Typography>
                   </Box>
-                  <Box>
-                    <Button onClick={() => savedFileToDatabase(currentFile)}>
-                      <Icon width={20} style={{ marginRight: 10 }} icon='iconoir:db-check' />
-                      Lưu vào hệ thống
-                    </Button>
-                  </Box>
+                  <Box></Box>
                 </Box>
+                <Typography mt={8} variant='body1' color='initial'>
+                  Tiến độ lưu: {valueLoading * 100} %
+                </Typography>
                 <LinearProgressWithLabel value={valueLoading * 100} />
                 {valueLoading === 1 && (
                   <Typography textAlign={'end'} variant='h6' fontWeight={700} color='success.main'>
@@ -185,13 +221,18 @@ function ModalUpload(props: ModalUploadPropsType) {
           </Box>
 
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
-            <Button variant='contained' color='warning' onClick={handleClearData}>
-              <Icon icon='pajamas:clear-all' />
-              Làm mới
-            </Button>
             <Button variant='contained' color='primary' onClick={handleCloseUpload}>
               <Icon icon='mdi:close-outline' />
               Thoát
+            </Button>
+            <Button
+              color='success'
+              variant='contained'
+              disabled={currentFile === undefined}
+              onClick={() => savedFileToDatabase(currentFile)}
+            >
+              <Icon width={20} style={{ marginRight: 10 }} icon='iconoir:db-check' />
+              Lưu vào hệ thống
             </Button>
           </Box>
         </Paper>

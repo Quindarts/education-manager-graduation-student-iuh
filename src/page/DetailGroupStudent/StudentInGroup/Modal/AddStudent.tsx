@@ -1,79 +1,152 @@
+import CustomTextField from '@/components/ui/CustomTextField';
 import Modal from '@/components/ui/Modal';
+import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
-import React, { useState } from 'react';
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+import { Autocomplete, Box, Button, Divider, Paper, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import SekeletonUI from '@/components/ui/Sekeleton';
+import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
+import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+const convertToDropValue = (data: any) => {
+  if (!data) {
+    return [];
+  } else
+    return data.map((v: any) => ({ label: `${v.username + ' - ' + v.fullName}`, id: v.studentId }));
 };
-
-const names = ['Lê Minh Quang - mssv: 21089141', 'Lê Văn Long - mssv: 21029291'];
 
 function AddStudentModal(props: any) {
   const { onClose, open, groupStudentId } = props;
-  const [personName, setPersonName] = useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(typeof value === 'string' ? value.split(',') : value);
+  const [currentStudent, setCurrentStudent] = useState<{ label: string; id: string }>({
+    label: '',
+    id: '',
+  });
+
+  const { handleGetStudentNoHaveGroup } = useGroupStudent();
+  const { data, isLoading, isFetching } = handleGetStudentNoHaveGroup();
+
+  const { onAddStudentMember } = useMemberGroupStudent();
+  const { mutate: create, isSuccess: successCreate } = onAddStudentMember(groupStudentId);
+
+  useEffect(() => {
+    onClose();
+  }, [successCreate]);
+
+  useEffect(() => {
+    if (!open) {
+      setCurrentStudent({
+        label: '',
+        id: '',
+      });
+    }
+  }, [open]);
+  const handleSubmit = (currentLecturer: any) => {
+    const dataSend = {
+      studentId: currentLecturer.id,
+    };
+    create(dataSend);
   };
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box m={10}>
-        <Typography mb={4} fontWeight={600} variant='h3'>
-          Thêm sinh viên vào nhóm
-        </Typography>
-        <Box my={10}>
-          <FormControl sx={{ width: '100%' }}>
-            <Select
-              value={personName}
-              onChange={handleChange}
-              input={<OutlinedInput id='select-multiple-chip' />}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {names.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+      <Box py={10} px={10}>
+        <TitleManager mb={8} variant='h5' textTransform={'uppercase'}>
+          Thêm Sinh viên vào nhóm
+        </TitleManager>
+        <Box height={'350px'}>
+          {isLoading || isFetching ? (
+            <SekeletonUI />
+          ) : (
+            <>
+              <Autocomplete
+                disablePortal
+                id='Student-terms-list'
+                options={convertToDropValue(data.students)}
+                onChange={(event: any, newValue: any) => {
+                  setCurrentStudent(newValue);
+                }}
+                renderInput={(params) => (
+                  <>
+                    <CustomTextField
+                      {...params}
+                      placeholder='Nhập vào tên sinh viên'
+                      label='Danh sách sinh viên HD khoa CNTT'
+                    />
+                  </>
+                )}
+              />
+              <Box>
+                <Typography
+                  textTransform={'uppercase'}
+                  mt={20}
+                  mb={4}
+                  variant='body1'
+                  fontWeight={'bold'}
+                >
+                  Thông tin sinh viên
+                </Typography>
+                {!currentStudent || currentStudent?.id === '' ? (
+                  <>
+                    <Typography my={10} textAlign={'center'} variant='body1' color='initial'>
+                      Chưa chọn sinh viên nào...
+                    </Typography>
+                  </>
+                ) : (
+                  <Box>
+                    {data?.students
+                      .filter((st: any) => st.studentId === currentStudent?.id)
+                      .map((Student: any) => (
+                        <Paper
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                            p: 3,
+                            borderRadius: 2,
+                            boxShadow: 1,
+                            mt: 4,
+                          }}
+                        >
+                          <Typography
+                            variant='h6'
+                            component='div'
+                            gutterBottom
+                            sx={{ fontWeight: '500', my: 4 }}
+                          >
+                            {Student.fullName}
+                          </Typography>
+                          <Divider sx={{ width: '100%', mb: 2 }} />
+                          <Box sx={{ my: 6 }}>
+                            <Typography variant='body1' color='text.primary'>
+                              <strong>Mã SV:</strong> {Student.username}
+                            </Typography>
+                          </Box>
+                          <Divider sx={{ width: '100%', mb: 2 }} />
+                          <Typography variant='body2' color='primary.dark'>
+                            {Student.nameSelect}
+                          </Typography>
+                        </Paper>
+                      ))}
+                  </Box>
+                )}
+              </Box>
+            </>
+          )}
         </Box>
-        <Box mt={12} sx={{ display: 'flex', gap: 3 }}>
-          <Button onClick={onClose} sx={{ width: '50%' }} variant='contained' color='primary'>
-            <Icon width={20} style={{ marginRight: 4 }} icon='mdi:cancel-outline' />
+        <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
+          <Button variant='contained' color='primary' onClick={onClose}>
+            <Icon icon='mdi:close-outline' />
             Hủy
           </Button>
-          <Button type='submit' sx={{ width: '50%' }} variant='contained' color={'error'}>
-            <Icon width={20} icon='radix-icons:plus' />
-              Thêm sinh viên
+          <Button
+            variant='contained'
+            color='success'
+            onClick={() => handleSubmit(currentStudent)}
+            type='submit'
+          >
+            <Icon icon='material-symbols:save-outline' />
+            Thêm sinh viên
           </Button>
         </Box>
       </Box>

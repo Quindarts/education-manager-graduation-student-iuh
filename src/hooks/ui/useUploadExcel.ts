@@ -9,6 +9,7 @@ import { QueryKeysLecturer } from '../api/useQueryLecturer';
 import { QueryEvaluation } from '../api/useQueryEvalutaion';
 import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
+import { User } from '@/types/entities/user';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -62,7 +63,7 @@ axiosUpload.interceptors.response.use(
   },
 );
 
-const useUploadExcel = (entityUpload: string, termId: string, majorId: string, typeEvalutaion?: string) => {
+const useUploadExcel = (entityUpload: string, termId: string, majorId: string, me: User, typeEvalutaion?: string) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState<string>('');
@@ -72,7 +73,6 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
 
   //axios
   const [valueLoading, setValueLoading] = useState<any>(0)
-  const [dataResult, setDataResult] = useState()
 
   const getExention = (file: any) => {
     const parts = file.name.split('.');
@@ -134,12 +134,15 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
       .then(async function (response: any) {
         if (response.success) {
 
-          setDataResult(response.lecturer)
           if (entityUpload === TypeEntityUpload.LECTURER) {
             enqueueSnackbar('Lưu danh sách giảng viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer, termId, 20, 1] })
+            queryClient.invalidateQueries(
+              [QueryKeysLecturer.getAllLecturer, majorId,
+                10, 1, 'username', '']
+            );
+
           }
           if (entityUpload === TypeEntityUpload.EVALUATION) {
             enqueueSnackbar('Lưu danh sách tiêu chí từ excel file thành công', {
@@ -151,13 +154,14 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, 10, 1] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, 10, 1, 'username', ''] })
           }
           if (entityUpload === TypeEntityUpload.TOPIC) {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, "e4fe02cb-f2b0-4afa-885d-d1b93130d350"] })
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, majorId] })
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, me.id, termId] })
           }
         }
       })

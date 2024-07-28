@@ -37,7 +37,7 @@ function EditTopicRegister(props: any) {
   useEffect(() => {
     onClose();
   }, [isSuccess]);
-  
+
   useEffect(() => {
     if (data?.termDetail) {
       var checked: boolean = dayjs(data?.termDetail.endDate) <= dayjs() ? false : true;
@@ -47,7 +47,7 @@ function EditTopicRegister(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-        <TitleManager mb={10} mt={4}>
+        <TitleManager textTransform={'uppercase'} mb={10} mt={4}>
           Cập nhật trạng thái đăng kí đề tài
         </TitleManager>
         {loadingDetail || isFetching ? (

@@ -9,10 +9,6 @@ import useSearch from '@/hooks/ui/useParams';
 
 const DROP_SEARCH_VALUE = [
   {
-    _id: ENUM_RENDER_LECTURER.ALL,
-    name: 'Tất cả',
-  },
-  {
     _id: ENUM_RENDER_LECTURER.SEARCH_FULLNAME,
     name: 'Tên giảng viên',
   },
@@ -70,7 +66,7 @@ function HeaderLecturerTerm() {
         </Box>
         <Button color='primary' variant='contained' onClick={handleImport}>
           <Icon icon='fe:import' />
-              Tải dữ liệu GV học kì trước 
+          Tải dữ liệu GV học kì trước
         </Button>
         <Button
           size='small'
@@ -81,15 +77,6 @@ function HeaderLecturerTerm() {
         >
           <Icon icon='lets-icons:add-round' width={20} />
           Thêm giảng viên HD
-        </Button>
-        <Button
-          size='small'
-          color='warning'
-          type='button'
-          sx={{ color: 'white' }}
-          variant='contained'
-        >
-          <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
         </Button>
       </Box>
       <AddLecturerModal open={openAddModal} onClose={handleCloseAddModal} />

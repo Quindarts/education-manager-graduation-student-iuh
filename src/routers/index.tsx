@@ -7,7 +7,6 @@ import AuthLayout from '@/components/shared/layouts/AuthLayout/AuthLayout';
 import RolePage from '@/page/auth/role';
 import Login from '@/page/auth/login';
 import DetailNotificationPage from '@/page/DetailNotification';
-const LoginTemplate = lazy(() => import('@/page/auth/login'));
 const RegisterTemplate = lazy(() => import('@/page/auth/register'));
 const DashboardTemplate = lazy(() => import('@/page/Dashboard/Dashboard'));
 const TermTemplate = lazy(() => import('@/page/Term'));
@@ -23,7 +22,7 @@ const ScoreStudentTemplate = lazy(() => import('@/page/ScoreStudent'));
 const GroupSupportManagementTemplate = lazy(() => import('@/page/GroupSupport/Management'));
 const ScoreGroupSupportTemplate = lazy(() => import('@/page/GroupSupport/ScoreManager'));
 const CreateGroupLecturerTemplate = lazy(() => import('@/page/GroupLecturer/Create'));
-const RoleTemplate = lazy(() => import('@/page/auth/role'));
+const UpdatePassPage = lazy(() => import('@/page/auth/updatePassword'));
 const ProfileTemplate = lazy(() => import('@/page/auth/profile'));
 const MyTopicTemplate = lazy(() => import('@/page/MyTopic'));
 const MyGroupLecturerTemplate = lazy(() => import('@/page/MyGroupLecturer'));
@@ -79,6 +78,7 @@ function Routing() {
         //ROUTE USER
         <Route path={APP_ROUTES.USER.REGISTER} element={<RegisterTemplate />} />
         <Route path={APP_ROUTES.USER.PROFILE} element={<ProfileTemplate />} />
+        <Route path={APP_ROUTES.USER.UPDATE_PASS} element={<UpdatePassPage />} />
         //ROLE PERMISSION
         <Route
           path={APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT}

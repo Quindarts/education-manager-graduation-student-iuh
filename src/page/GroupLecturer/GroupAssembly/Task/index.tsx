@@ -276,14 +276,8 @@ function Task(props: any) {
           >
             <Typography flex={1} variant='body1' color='primary.main' fontWeight={'500'}>
               Số lượng : {'      '}
-              <span style={{ color: 'black' }}> {dataHaveGroup.length} / 5</span>
+              <span style={{ color: 'black' }}> {dataHaveGroup.length}</span>
             </Typography>
-            {/* <Button color='warning' size='small'>
-              Làm mới
-            </Button>
-            <Button color='success' size='small'>
-              Tạo ngẫu nhiên
-            </Button> */}
           </Box>
         </Box>
       </Box>

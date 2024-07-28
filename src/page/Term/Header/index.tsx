@@ -26,9 +26,9 @@ function HeaderTerm() {
           <Icon icon='lets-icons:add-round' width={20} />
           Tạo mới học kì
         </Button>
-        <Button size='small' color='warning' type='button' sx={{ color: 'white' }} variant='contained'>
+        {/* <Button size='small' color='warning' type='button' sx={{ color: 'white' }} variant='contained'>
           <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
-        </Button>
+        </Button> */}
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
     </>

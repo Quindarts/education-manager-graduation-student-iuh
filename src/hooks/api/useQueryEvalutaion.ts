@@ -17,7 +17,7 @@ const useEvaluation = () => {
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
         var permissions: string[] = []
-        if (currentRole === RoleCheck.ADMIN || currentRole === RoleCheck.HEAD_LECTURER) {
+        if (currentRole === RoleCheck.HEAD_COURSE || currentRole === RoleCheck.HEAD_LECTURER) {
             permissions.push('all')
         }
         else {

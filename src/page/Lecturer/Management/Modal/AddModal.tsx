@@ -54,7 +54,7 @@ function AddLecturerModal(props: any) {
   const { currentTerm } = termStore;
 
   const { onCreateLecturer } = useLecturer();
-  const { mutate: createLecturer, isSuccess } = onCreateLecturer(currentTerm.id, 20, 1);
+  const { mutate: createLecturer, isSuccess } = onCreateLecturer();
 
   const handleSubmitCreateLecturer = (values: any) => {
     var dataSend = {
@@ -68,7 +68,6 @@ function AddLecturerModal(props: any) {
       majorId: values.majorId,
       termId: currentTerm.id,
     };
-    alert('hi');
     createLecturer(dataSend);
   };
   useEffect(() => {

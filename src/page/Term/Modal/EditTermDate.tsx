@@ -47,7 +47,7 @@ function EditTermDate(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-        <TitleManager mb={10} mt={4}>
+        <TitleManager  textTransform={'uppercase'} mb={10} mt={4}>
           Cập nhật trạng thái học kì
         </TitleManager>
         {loadingDetail || isFetching ? (

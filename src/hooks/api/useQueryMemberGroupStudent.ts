@@ -46,9 +46,10 @@ const useMemberGroupStudent = () => {
     }
     //[DELETE MEMBER]
     const onAddStudentMember = (id: string) => {
-        return useMutation((id: string) => addMemberInGroup(id), {
+
+        return useMutation((data: { studentId: string, termId?: string }) => addMemberInGroup(id, { ...data, termId: termStore.currentTerm.id }), {
             onSuccess() {
-                enqueueSnackbar('Thêm sinh viên vào nhóm thành công', { variant: 'error' })
+                enqueueSnackbar('Thêm sinh viên vào nhóm thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id] })
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])

@@ -4,7 +4,7 @@ import axiosConfig from "./axiosConfig"
 
 //[Admin role]
 export const getStudentOfSearch: any = (termId: string, majorId: string, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string) => {
-    let searchFieldSend = searchField ? searchField : "";
+    let searchFieldSend = searchField ? searchField : "username";
     let keywordSend = keywords ? keywords : ""
     return axiosConfig.get<ResponseType, any>(`/api/v1/students/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
 }

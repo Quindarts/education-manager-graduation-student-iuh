@@ -22,12 +22,16 @@ function CreateGroupLecturer() {
             <TabList onChange={handleChange} aria-label='lab API tabs example'>
               <Tab
                 sx={{
-                  '&.Mui-selected > .MuiTypography-root': {
-                    color: 'error.main',
+                  '&.Mui-selected': {
+                    bgcolor: 'primary.dark',
+                    ' > .MuiTypography-root': {
+                      color: 'white',
+                      fontWeight: 'bold',
+                    },
                   },
                 }}
                 label={
-                  <TitleManager color={'grey.700'} variant='body1' icon='akar-icons:zoom-fill'>
+                  <TitleManager color={'grey.700'} variant='body1'>
                     Phân công chấm Phản biện
                   </TitleManager>
                 }
@@ -35,12 +39,16 @@ function CreateGroupLecturer() {
               />
               <Tab
                 sx={{
-                  '&.Mui-selected > .MuiTypography-root': {
-                    color: 'error.main',
+                  '&.Mui-selected': {
+                    bgcolor: 'primary.dark',
+                    ' > .MuiTypography-root': {
+                      color: 'white',
+                      fontWeight: 'bold',
+                    },
                   },
                 }}
                 label={
-                  <TitleManager color={'grey.700'} variant='body1' icon='fontisto:room'>
+                  <TitleManager color={'grey.700'} variant='body1'>
                     Phân công chấm Báo cáo
                   </TitleManager>
                 }

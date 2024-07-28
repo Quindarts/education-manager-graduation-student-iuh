@@ -1,13 +1,12 @@
 import { getStudentsNoHaveGroup } from './../../services/apiStudent';
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { assignTopic, createGroupStudent, deleteGroupStudent, getCountOfGroupStudent, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, getMemberInGroupStudent, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
-import { ENUM_RENDER_GROUP_STUDENT, setParams, setTypeRender } from "@/store/slice/groupStudent.slice"
+import { createGroupStudent, deleteGroupStudent, getCountOfGroupStudent, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
+import { setParams, setTypeRender } from "@/store/slice/groupStudent.slice"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { useTerm } from "./useQueryTerm"
-import { setKeywords } from "@/store/slice/lecturer.slice"
 
 export const enum QueryKeysGroupStudent {
     getGroupStudentByTerm = 'getGroupStudentByTerm',
@@ -24,6 +23,7 @@ const useGroupStudent = () => {
     const groupStudentStore = useSelector((state: any) => state.groupStudentSlice)
     const { params, renderUi } = groupStudentStore
     const { termStore } = useTerm()
+    const termId = termStore.currentTerm.id
     const dispatch = useDispatch()
 
 
@@ -38,7 +38,6 @@ const useGroupStudent = () => {
             onSuccess(data: any) {
                 dispatch(setParams(data.params))
                 dispatch(setTypeRender(searchField))
-                dispatch(setKeywords(keywords))
             },
             staleTime: 10000,
         })
@@ -57,7 +56,7 @@ const useGroupStudent = () => {
         return useQuery([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id], () => getCountOfGroupStudent(termStore.currentTerm.id))
     }
     //[GET BY ID]
-    const handleGetGroupStudentById = (id: number | string) => {
+    const handleGetGroupStudentById = (id: string) => {
         return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id), {
             staleTime: 1000,
         })
@@ -77,8 +76,8 @@ const useGroupStudent = () => {
             },
         })
     }
-    const onImportGroupStudent = (termId: string) => {
-        return useMutation((termId: string) => importGroupStudent(termId), {
+    const onImportGroupStudent = () => {
+        return useMutation(() => importGroupStudent(termId), {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Import danh sách nhóm sinh viên thành công', { variant: 'success' })

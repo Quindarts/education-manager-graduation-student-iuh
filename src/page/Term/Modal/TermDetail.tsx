@@ -17,7 +17,7 @@ function TermDetail(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+        <TitleManager textTransform={'uppercase'} mb={10} variant='h4'>
           Thông tin chi tiết Học kì
         </TitleManager>
         {isLoading || isFetching ? (
@@ -39,6 +39,8 @@ function TermDetail(props: any) {
               endReportDate: data?.term?.endReportDate,
               startPublicResultDate: data?.term?.startPublicResultDate,
               endPublicResultDate: data?.term?.endPublicResultDate,
+              startPublicTopicDate: data?.term.startPublicTopicDate,
+              endPublicTopicDate: data?.term.endPublicTopicDate,
             }}
           >
             {({ values, handleSubmit }) => (
@@ -73,6 +75,25 @@ function TermDetail(props: any) {
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
                       label='Ngày đóng đăng ký Nhóm'
                       value={dayjs(values.endChooseGroupDate)}
+                    />
+                  </Box>
+                </Box>
+                <Box my={8} borderRadius={2} p={6} bgcolor={'grey.100'}>
+                  <Box display={'flex'} justifyContent={'space-between'}>
+                    <Typography variant='h5' fontWeight={'bold'}>
+                      Xem Đề tài
+                    </Typography>
+                  </Box>
+                  <Box display={'flex'} gap={8}>
+                    <Calendar
+                      sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
+                      label='Ngày mở xem Đề tài'
+                      value={dayjs(values.startPublicTopicDate)}
+                    />
+                    <Calendar
+                      sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
+                      label='Ngày đóng xem Đề tài'
+                      value={dayjs(values.endPublicTopicDate)}
                     />
                   </Box>
                 </Box>

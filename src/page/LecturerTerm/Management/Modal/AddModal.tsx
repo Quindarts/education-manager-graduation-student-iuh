@@ -10,35 +10,6 @@ import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { checkDegree } from '@/utils/validations/lecturer.validation';
 
-const GenderLecturer = [
-  {
-    _id: EnumGender.FEMALE,
-    name: 'Nữ',
-  },
-  {
-    _id: EnumGender.MALE,
-    name: 'Nam',
-  },
-];
-const RoleLecturerDrop = [
-  {
-    _id: EnumRole.LECTURER,
-    name: 'Giảng viên',
-  },
-  {
-    _id: EnumRole.HEAD_LECTURER,
-    name: 'Trưởng bộ môn',
-  },
-  {
-    _id: EnumRole.HEAD_COURSE,
-    name: 'Quản trị viên',
-  },
-  {
-    _id: EnumRole.ADMIN,
-    name: 'Chủ quản môn học',
-  },
-];
-
 const convertToDropValue = (data: any) => {
   if (!data) {
     return [];
@@ -52,16 +23,11 @@ function AddLecturerModal(props: any) {
   const { handleLecturerTermsToAdd, onCreateLecturerTerm } = useLecturerTerm();
   const { data, isLoading, isSuccess: successData, isFetching } = handleLecturerTermsToAdd();
   const { mutate: create, isSuccess: successCreate } = onCreateLecturerTerm();
-  const [dropLecturer, setDropLecturer] = useState();
   const [currentLecturer, setCurrentLecturer] = useState<{ label: string; id: string }>({
     label: '',
     id: '',
   });
-  useEffect(() => {
-    if (successData) {
-      setDropLecturer(convertToDropValue(data?.lecturerTerms));
-    }
-  }, [successData, isFetching, isLoading]);
+
   const handleSubmitCreateLecturer = (currentLecturer: any) => {
     const dataSend = {
       lecturerId: currentLecturer.id,
@@ -94,7 +60,7 @@ function AddLecturerModal(props: any) {
               <Autocomplete
                 disablePortal
                 id='lecturer-terms-list'
-                options={dropLecturer}
+                options={convertToDropValue(data?.lecturerTerms)}
                 onChange={(event: any, newValue: any) => {
                   setCurrentLecturer(newValue);
                 }}

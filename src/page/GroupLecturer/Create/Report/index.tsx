@@ -34,9 +34,7 @@ function CreateReportGroupPage() {
   const { handleGetListLecturerTerms } = useLecturerTerm();
   const { termStore } = useTerm();
 
-  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms(
-    termStore.currentTerm.id,
-  );
+  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms();
 
   const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer(`${currentGroup}`);
 
@@ -224,11 +222,7 @@ function CreateReportGroupPage() {
                   </Typography>
                 </Box>
                 <Box>
-                  <Chip
-                    sx={{ color: 'white' }}
-                    color='warning'
-                    label={'Chọn để chấm'}
-                  />
+                  <Chip sx={{ color: 'white' }} color='warning' label={'Chọn để chấm'} />
                 </Box>
               </Paper>
             ))}{' '}
