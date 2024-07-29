@@ -1,10 +1,7 @@
 import { getValueFromLocalStorage } from '@/utils/localStorage';
-import axios, { AxiosResponse, ResponseType } from 'axios';
-import { Navigate, redirect } from 'react-router-dom';
-
-// `${process.env.REACT_APP_API_URL}` ||
+import axios from 'axios';
 const axiosConfig = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: `${process.env.REACT_APP_API_SERVER}`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -43,7 +40,7 @@ axiosConfig.interceptors.response.use(
         });
         localStorage.setItem('accessToken', JSON.stringify(result.accessToken));
         originalRequest.headers.Authorization = `Bearer ${result.accessToken}`;
-     
+
         return axiosConfig(originalRequest);
 
       } catch (error: any) {
