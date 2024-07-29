@@ -31,4 +31,3 @@ local
 
 # vercel
 .vercel
-.env
