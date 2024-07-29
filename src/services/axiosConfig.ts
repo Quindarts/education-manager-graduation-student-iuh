@@ -2,9 +2,9 @@ import { env } from '@/utils/env';
 import { getValueFromLocalStorage } from '@/utils/localStorage';
 import axios from 'axios';
 
-alert(env.BASE_URL)
 const axiosConfig = axios.create({
   baseURL: `${env.BASE_URL}`,
+  // baseURL: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
   },
