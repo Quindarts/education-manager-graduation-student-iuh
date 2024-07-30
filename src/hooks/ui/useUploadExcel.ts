@@ -10,6 +10,7 @@ import { QueryEvaluation } from '../api/useQueryEvalutaion';
 import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
 import { User } from '@/types/entities/user';
+import { env } from '@/utils/env';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -123,7 +124,7 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, m
       file: file,
       type: typeEvalutaion
     }
-    return axiosUpload.post(`http://122.248.201.245:5000/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
+    return axiosUpload.post(`${env.BASE_URL}/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
