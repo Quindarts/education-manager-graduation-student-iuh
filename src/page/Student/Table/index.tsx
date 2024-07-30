@@ -1,7 +1,6 @@
 import Table from '@/components/ui/Table/Table';
-import { dummyStudentData } from '@/dummy';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import EditInfoModal from '../Modal/EditInfoModal';
@@ -15,14 +14,6 @@ import ResetPassword from '../Modal/ResetPassword';
 import EditStatusMuiltiStudent from '../Modal/EditStatusMuiltiStudentModal';
 import { CustomToolbar } from './custom';
 
-const TRAINING_DROP_VALUE = [
-  { _id: 'UNIVERSITY', name: 'Đại học' },
-  { _id: 'COLLEGE', name: 'Cao đẳng' },
-];
-const convertTraning = (tran: string) => {
-  if (tran === 'UNIVERSITY') return 'Đại học';
-  else return 'Cao đẳng';
-};
 function TableManagamentStudent(props: any) {
   const { rows, totalItems, totalPage, page, handleChangePage } = props;
 
@@ -100,7 +91,7 @@ function TableManagamentStudent(props: any) {
       align: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontWeight={600} >
+          <Typography variant='body1' fontWeight={600}>
             {params.row.username}
           </Typography>
         );

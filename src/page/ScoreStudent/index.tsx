@@ -1,12 +1,7 @@
 import TitleManager from '@/components/ui/Title';
 
 import { Icon } from '@iconify/react';
-import {
-  Box,
-  CircularProgress,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Box, CircularProgress, Paper, Typography } from '@mui/material';
 
 import React, { useState } from 'react';
 import TableStudentScore from './Table';
@@ -14,7 +9,6 @@ import DropDown from '@/components/ui/Dropdown';
 import { checkTypeEvaluation, ENUM_SCORE_STUDENT } from '@/utils/validations/transcript.validation';
 import useQueryTranscript from '@/hooks/api/useQueryTranscript';
 import { convertListGroupStudentScore } from '@/utils/convertDataTable';
-import TranscriptGroupStudent from './ChangeTranscriptsGroupSection';
 
 function ScoreStudentPage() {
   const [currentDataRow, setCurrentDataRow] = useState(null);
@@ -86,13 +80,7 @@ function ScoreStudentPage() {
               </Box>
             </Box>
           ) : (
-            <>
-              <TranscriptGroupStudent
-                groupStudent={currentDataRow}
-                evaluations={isSuccess ? data.evaluations : []}
-                transcriptType={typeScoreStudent}
-              />
-            </>
+            <></>
           )}
         </Box>
       </Box>

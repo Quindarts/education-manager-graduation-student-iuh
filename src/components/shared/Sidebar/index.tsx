@@ -251,8 +251,8 @@ export default function AdminSidebar() {
                         );
                       else dispatch(setCurrentTerm({}));
                     }}
-                    value={termStore?.currentTerm?.id ? termStore.currentTerm.id : ''}
-                    options={convertTermDropdown(termStore?.allTerm)}
+                    value={termStore.currentTerm?.id ? termStore.currentTerm.id : ''}
+                    options={convertTermDropdown(termStore.allTerm)}
                   />
                 )}
               </Box>

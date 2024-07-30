@@ -1,18 +1,15 @@
 import CustomTextField from '@/components/ui/CustomTextField';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
-import { useTopic } from '@/hooks/api/useQueryTopic';
 import { Icon } from '@iconify/react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React from 'react';
 
 function UpdateQuantityTopicModal(props: any) {
-  const { onClose, open, topicId } = props;
+  const { onClose, open } = props;
   // const { onUpdateQuantityTopicById } = useTopic();
   // const { mutate: UpdateQuantityTopic } = onUpdateQuantityTopicById();
-  const handleSubmit = () => {
-    UpdateQuantityTopic(topicId);
-  };
+  const handleSubmit = () => {};
   return (
     <Modal onClose={onClose} open={open}>
       <Box
@@ -42,11 +39,7 @@ function UpdateQuantityTopicModal(props: any) {
             color='success'
             variant='contained'
           >
-            <Icon
-              width={20}
-              style={{ marginRight: 4 }}
-              icon='grommet-icons:update'
-            />
+            <Icon width={20} style={{ marginRight: 4 }} icon='grommet-icons:update' />
             Cập nhật
           </Button>
         </Box>

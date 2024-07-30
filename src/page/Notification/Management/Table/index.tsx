@@ -1,11 +1,9 @@
 import Table from '@/components/ui/Table/Table';
-import { Icon } from '@iconify/react';
-import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 
 import dayjs from 'dayjs';
-import { Html } from '@mui/icons-material';
 
 function TableManagementNotification(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;

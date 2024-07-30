@@ -30,6 +30,8 @@ const initTermSlice: InitTermSliceType = {
         startDate: '',
         startDateChooseTopic: '',
         startDateSubmitTopic: '',
+        startPublicTopicDate: '',
+        endPublicTopicDate: '',
         updatedAt: '',
         startDateDiscussion: '',
         endDateDiscussion: '',

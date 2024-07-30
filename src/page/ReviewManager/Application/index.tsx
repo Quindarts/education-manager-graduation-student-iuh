@@ -1,12 +1,12 @@
 import UploadFileExcel from '@/components/ui/Upload';
+import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { Box, Button } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 
 function Application() {
-  const [currentData, setCurrentData] = useState([]);
   return (
     <Box my={4} display={'flex'} gap={6}>
-      <UploadFileExcel setCurrentData={setCurrentData} />
+      <UploadFileExcel entityUpload={TypeEntityUpload.EVALUATION} />
       <Button variant='contained' color='warning'>
         Xuất phiếu chấm
       </Button>

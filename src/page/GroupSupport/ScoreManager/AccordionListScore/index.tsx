@@ -56,7 +56,6 @@ function AccordionListScore(props: any) {
   );
   const { mutate: updateTranscript, isSuccess: successUpdate } = onUpdateTranscript(
     student.studentId,
-    'advisor',
   );
   const handleChangeCurrentTranscripts = (
     score: number,
@@ -117,16 +116,7 @@ function AccordionListScore(props: any) {
           ) : (
             <Box display={'flex'} flexDirection={'column'} gap={4}>
               {initTranscripts.newEvaluation.map((evaluation: any, key: number) => (
-                <ScoreInput
-                  handleChangeCurrentTranscripts={handleChangeCurrentTranscripts}
-                  value={evaluation.id}
-                  name={evaluation?.name}
-                  studentId={student.studentId}
-                  scoreMax={evaluation?.scoreMax}
-                  oldScore={evaluation.oldScore ? evaluation.oldScore : ''}
-                  transcriptId={evaluation?.transcriptId}
-                  isExist={evaluation?.isExist}
-                />
+                <></>
               ))}
               <Box my={4} display={'flex'} gap={100} alignSelf={'end'} py={4} px={0}>
                 <Typography fontWeight={'500'} variant='h5' color='error'>

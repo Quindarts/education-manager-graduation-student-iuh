@@ -70,7 +70,7 @@ const useQueryTranscript = () => {
         return useMutation((data: { id: string, score: number }) => updateTranscript(data.id, data.score), {
             onSuccess: () => {
                 enqueueSnackbar('Cập nhật điểm thành công', { variant: "success" })
-                queryClient.invalidateQueries([QueryKeysScoreStudent.getTranscriptsByTypeEvaluation, termStore.currentTerm.id, type, studentId])
+                queryClient.invalidateQueries([QueryKeysScoreStudent.getTranscriptsByTypeEvaluation, termStore.currentTerm.id])
             }
         })
     }

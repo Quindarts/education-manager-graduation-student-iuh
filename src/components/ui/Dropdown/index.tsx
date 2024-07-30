@@ -1,6 +1,5 @@
-import { BaseSelectProps, Box, FormHelperText, InputLabel, MenuItem } from '@mui/material';
+import { BaseSelectProps, Box, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import React from 'react';
-import { Select } from '@mui/material';
 
 interface SelectOption {
   name: string;
@@ -29,6 +28,7 @@ const DropDown: React.FC<SelectPropsType> = (props: SelectPropsType) => {
         </InputLabel>
       )}
       <Select
+        variant='outlined'
         id={id}
         displayEmpty
         fullWidth

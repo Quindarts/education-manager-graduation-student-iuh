@@ -6,8 +6,9 @@ import useGroupStudentSlice from "./slice/groupStudent.slice";
 import useStudentSlice from "./slice/student.slice";
 import useTopicSlice from "./slice/topic.slice";
 import useSidebarSlice from "./slice/sidebar.slice";
+import { Store } from '@reduxjs/toolkit';
 
-export const store = configureStore({
+export const store: Store = configureStore({
     reducer: {
         lecturerSlice: useLecturerReducer,
         majorSlice: useMajorSliceReducer,

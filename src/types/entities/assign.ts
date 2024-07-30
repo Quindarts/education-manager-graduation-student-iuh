@@ -1,5 +1,3 @@
-import Student from './student';
-import Topic from './topic';
 export enum TypeEvalution {
   ADVISOR = 'ADVISOR',
   REVIEWER = 'REVIEWER',

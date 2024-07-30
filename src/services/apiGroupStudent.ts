@@ -59,7 +59,7 @@ export const createGroupStudent: any = (data: { termId: string, studentIds: stri
     return axiosConfig.post(`/api/v1/group-students`, data)
 }
 
-export const deleteGroupStudent: any = (id: string, termId: string) => {
+export const deleteGroupStudent: any = (id: string) => {
     return axiosConfig.delete(`/api/v1/group-students/${id}`)
 }
 

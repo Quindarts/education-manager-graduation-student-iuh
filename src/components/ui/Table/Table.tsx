@@ -11,7 +11,7 @@ interface Props extends DataGridProps {
   page: number;
   totalPages: number;
   totalItems: number;
-  handleChangePage: (page: number) => void;
+  handleChangePage?: (page: number) => void;
   needReset?: boolean;
   onReset?: () => void;
   noData?: React.ReactNode;

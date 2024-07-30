@@ -1,6 +1,6 @@
-import { Term } from "@/dummy/term";
 import { Lecturer, Student } from "@/types/entities";
 import Major from "@/types/entities/major";
+import { Term } from "@/types/entities/term";
 
 
 export const convertTermDropdown = (terms?: Term[]

@@ -36,7 +36,7 @@ function AddEvaluationModal(props: any) {
           }}
           // validationSchema={{}}
         >
-          {({ handleBlur, handleChange, handleSubmit, values, setFieldValue, touched, errors }) => (
+          {({ handleBlur, handleChange, handleSubmit, values, setFieldValue, errors }) => (
             <form onSubmit={handleSubmit}>
               <CustomTextField name='type' label='Loại đánh giá' disabled value={getTypeEvaluation(values.type)} />
               <CustomTextField

@@ -75,7 +75,6 @@ function TableSupportStudent() {
         totalItems={1}
         totalPages={1}
         page={1}
-        handelChangePage={() => {}}
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector

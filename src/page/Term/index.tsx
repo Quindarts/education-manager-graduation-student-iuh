@@ -1,5 +1,5 @@
-import { Box, LinearProgress, Paper, Skeleton } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Paper } from '@mui/material';
+import React from 'react';
 import TableManagamentTerm from './Table';
 import HeaderTerm from './Header';
 import TitleManager from '@/components/ui/Title';

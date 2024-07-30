@@ -1,7 +1,7 @@
 import Table from '@/components/ui/Table/Table';
 import { checkRoleLecturer, checkRoleLecturerColor } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

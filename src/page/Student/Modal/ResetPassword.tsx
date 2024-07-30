@@ -5,7 +5,7 @@ import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
 function ResetPassword(props: any) {
-  const { onClose, open, studentId, username } = props;
+  const { onClose, open, studentId } = props;
   const { onResetPassword } = useStudent();
   const { mutate: reset, isSuccess } = onResetPassword();
   const handleSubmit = () => {

@@ -4,7 +4,7 @@ import TextEditor from '@/components/ui/TextEditor';
 import TitleManager from '@/components/ui/Title';
 import { useAuth } from '@/hooks/api/useAuth';
 import { Icon } from '@iconify/react';
-import { Box, Button, CircularProgress } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validationTopicSchema } from '../Context';

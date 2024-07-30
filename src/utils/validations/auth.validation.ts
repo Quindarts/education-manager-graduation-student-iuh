@@ -1,4 +1,4 @@
-import { IAuth, IRegister } from 'types/auth.type';
+import { IAuth, IRegister } from '@/types/entities/user';
 import * as Yup from 'yup';
 
 export const LoginValidationSchema: Yup.ObjectSchema<IAuth> = Yup.object().shape({

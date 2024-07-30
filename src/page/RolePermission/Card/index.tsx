@@ -1,4 +1,3 @@
-import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import { useRoleManager } from '@/hooks/api/useQueryRole';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
@@ -6,7 +5,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useEffect } from 'react';
 
 function CardRole(props: any) {
-  const { roleAssigned, roleName, currentRole, handleClose, lecturerId } = props;
+  const { roleAssigned, roleName, handleClose, lecturerId } = props;
   const { onAssignRoleToLecturer, onUnAssignRoleToLecturer } = useRoleManager();
   const { mutate: unAssign, isSuccess: successUnAssign } = onUnAssignRoleToLecturer(lecturerId);
   const { mutate: assign, isSuccess: successAssign } = onAssignRoleToLecturer(lecturerId);

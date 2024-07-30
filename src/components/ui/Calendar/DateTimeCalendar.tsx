@@ -14,7 +14,10 @@ interface CalendarPropsType extends DateTimePickerProps<any> {
 }
 const ErrorStyled = styled(ErrorMessage)`
   div {
-    color: 'red!important';
+    color: '#ca4f36';
+    font-size: '12px';
+    margin-top: '6px';
+    margin-left: '16px';
   }
 `;
 function DateTimeCalendar(props: CalendarPropsType) {
@@ -33,7 +36,7 @@ function DateTimeCalendar(props: CalendarPropsType) {
         <DateTimePicker
           {...rest}
           sx={{
-            color:'grey.700', 
+            color: 'grey.700',
             fieldset: {
               border: error ? '1px solid #ca4f36!important' : '',
             },
@@ -43,18 +46,7 @@ function DateTimeCalendar(props: CalendarPropsType) {
             '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' },
           }}
         />
-        {error && (
-          <ErrorStyled
-            style={{
-              color: '#ca4f36',
-              fontSize: '12px',
-              marginTop: '6px',
-              marginLeft: '16px',
-            }}
-            name={`${name}`}
-            component={'span'}
-          />
-        )}
+        {error && <ErrorStyled name={`${name}`} component={'span'} />}
       </Box>
     </LocalizationProvider>
   );

@@ -1,6 +1,6 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider";
 import { assignRoleToLecturer, getAllRoleLecturer, getRoleDetailByLecturerId, RoleBodyRequest, unAssignRoleToLecturer } from "@/services/apiRole";
-import ResponseType from "@/types/axios.type";
+import { ResponseType } from "@/types/axios.type";
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query";
 
@@ -31,7 +31,7 @@ export const useRoleManager = () => {
 
     //[CREATE]
     const onAssignRoleToLecturer = (lecturerId: string) => {
-    
+
         return useMutation((data: RoleBodyRequest) => assignRoleToLecturer(data), {
             onSuccess() {
                 enqueueSnackbar("Phân vai trò thành công", { variant: 'success' })
@@ -68,7 +68,7 @@ export const useRoleManager = () => {
                         queryKey: [QueryKeysLecturer.getRoleDetailByLecturerId, lecturerId]
                     }
                 );
-            
+
             },
             onError(error) {
                 enqueueSnackbar("Xóa vai trò thất bại vui lòng thử lại sau", { variant: 'error' })

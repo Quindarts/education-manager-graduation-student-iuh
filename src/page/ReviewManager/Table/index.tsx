@@ -58,6 +58,54 @@ function TableManagerReviewScore(props: any) {
       </Box>
     ),
   };
+  const allRoleColumns: GridColDef[] = [
+    {
+      headerName: 'STT',
+      field: 'stt',
+      flex: 0.25,
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      headerName: 'Tên tiêu chí',
+      field: 'name',
+      flex: 6,
+      headerAlign: 'center',
+    },
+    {
+      headerName: 'Điểm tối đa',
+      field: 'scoreMax',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
+      headerName: '',
+      field: 'none',
+      flex: 1.5,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => (
+        <Box display={'flex'} gap={2}>
+          <Tooltip title='Sửa tiêu chí'>
+            <IconButton size='small' onClick={() => handleOpenEditEvaluationModal(params.row.id)}>
+              <Icon icon='emojione:pencil' />
+            </IconButton>
+          </Tooltip>
+          <Box></Box>
+          <Tooltip title='Xóa tiêu chí'>
+            <IconButton
+              color='error'
+              size='small'
+              onClick={() => handleOpenDeleteEvaluationModal(params.row.id)}
+            >
+              <Icon icon='mdi:trash' />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
+    },
+  ];
   const basicColumns: GridColDef[] = [
     {
       headerName: 'STT',
@@ -79,7 +127,6 @@ function TableManagerReviewScore(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    FeatureComponent,
   ];
   return (
     <Box>
@@ -89,7 +136,7 @@ function TableManagerReviewScore(props: any) {
           bgcolor: 'white',
         }}
         minHeight={350}
-        columns={basicColumns}
+        columns={currentRole.includes('all') ? allRoleColumns : basicColumns}
         totalItems={rows.length}
         totalPages={1}
         page={1}

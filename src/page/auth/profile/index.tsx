@@ -1,20 +1,17 @@
-import Calendar from '@/components/ui/Calendar';
 import CustomTextField from '@/components/ui/CustomTextField';
 import DropDown from '@/components/ui/Dropdown';
-import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
-import { EnumGender, EnumRole } from '@/types/enum';
+import { EnumGender } from '@/types/enum';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, CircularProgress, Paper } from '@mui/material';
-import { Formik, useFormik } from 'formik';
-import React, { useContext, useEffect, useState } from 'react';
+import { Box, Button, Paper } from '@mui/material';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useAuth } from '@/hooks/api/useAuth';
 import { validateSchemaLecturer } from '@/page/Lecturer/context';
 import { useNavigate } from 'react-router-dom';
+import { Formik } from 'formik';
 
 const GenderLecturer = [
   {
@@ -26,21 +23,6 @@ const GenderLecturer = [
     name: 'Nam',
   },
 ];
-const RoleLecturerDrop = [
-  {
-    _id: EnumRole.LECTURER,
-    name: 'Giảng viên',
-  },
-  {
-    _id: EnumRole.HEAD_LECTURER,
-    name: 'Trưởng bộ môn',
-  },
-  {
-    _id: EnumRole.SUB_HEAD_LECTURER,
-    name: 'Phó bộ môn',
-  },
-];
-
 const DEGREE_DROP_VALUE = [
   { name: 'Tiến sĩ', _id: 'MASTER' },
   { name: 'Thạc sĩ', _id: 'DOCTOR' },
@@ -48,11 +30,10 @@ const DEGREE_DROP_VALUE = [
 
 function ProfilePage() {
   const { termStore } = useTerm();
-  const { currentTerm } = termStore;
   const { majorStore } = useMajor();
   const { lecturerStore } = useAuth();
-  const { handleGetLecturerById, onUpdateLecturer } = useLecturer();
-  const { mutate: updateLecturer, isSuccess } = onUpdateLecturer();
+  const { onUpdateLecturer } = useLecturer();
+  const { mutate: updateLecturer } = onUpdateLecturer();
 
   const handleSubmitEditLecturer = (values: any) => {
     updateLecturer(values);

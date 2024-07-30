@@ -1,5 +1,5 @@
 import CustomTextField from '@/components/ui/CustomTextField';
-import { Box, Button, Chip, LinearProgress, Paper, Typography } from '@mui/material';
+import { Box, Button, Chip, Paper, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import CardLecturer from '../Card/CardLecturer';
 import { Icon } from '@iconify/react';
@@ -27,9 +27,7 @@ function CreateInstructorGroupPage() {
   const { handleGetListLecturerTerms } = useLecturerTerm();
   const { termStore } = useTerm();
 
-  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms(
-    termStore.currentTerm.id,
-  );
+  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms();
 
   const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer('reviewer');
 
@@ -211,7 +209,13 @@ function CreateInstructorGroupPage() {
               </Paper>
             ))}{' '}
             {dataLecturerGradingAssembly?.length === 2 && (
-              <Typography component={'span'} variant='body1' mt={10} fontWeight={'500'} color='error.main'>
+              <Typography
+                component={'span'}
+                variant='body1'
+                mt={10}
+                fontWeight={'500'}
+                color='error.main'
+              >
                 <Icon icon='material-symbols-light:warning-outline' />
                 Đã đạt số lượng thành viên tối đa
               </Typography>

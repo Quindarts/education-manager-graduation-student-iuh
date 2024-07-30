@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Paper } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import TableManagerReviewScore from './Table';
 import { useState } from 'react';
 
