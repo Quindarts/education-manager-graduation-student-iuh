@@ -13,13 +13,13 @@ function HeaderGroupStudent() {
     setOpenAddModal(true);
   };
   return (
-    <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
-      <Box flex={1} display={'flex'} gap={4} width={'full'}>
+    <Box mb={4} display={'flex'} justifyContent={'end'} flexWrap={'wrap'} gap={2}>
+      {/* <Box flex={1} display={'flex'} gap={4} width={'full'}>
         <Box width={200}>
           <DropDown placeholder='Tìm kiếm theo' options={[]} />
         </Box>
         <TextField fullWidth size='small' placeholder='Tim kiếm  nhom sinh viên theo..' />
-      </Box>
+      </Box> */}
       <Button
         size='small'
         onClick={handleOpenModal}
