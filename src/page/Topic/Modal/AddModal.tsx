@@ -28,7 +28,7 @@ function AddModal(props: any) {
   const currentRole = handleUiRender();
 
   return (
-    <Modal maxWidth='lg' open={open} onClose={onClose}>
+    <Modal maxWidth='xl' open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Tạo đề tài mới
@@ -40,7 +40,7 @@ function AddModal(props: any) {
             name: '',
             quantityGroupMax: 5,
             description: '',
-            note: '',
+            expectedResult: '',
             target: '',
             standardOutput: '',
             requireInput: '',
@@ -48,17 +48,6 @@ function AddModal(props: any) {
         >
           {({ handleSubmit, values, errors, touched, handleBlur, handleChange, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              <CustomTextField
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.name && touched.name ? true : false}
-                helperText={errors.name && touched.name ? errors.name : ''}
-                required
-                label='Tên đề tài'
-                name='name'
-                placeholder='Tên đề tài'
-              />
               <CustomTextField
                 value={`${lecturerStore.me.user.fullName}`}
                 required
@@ -83,19 +72,17 @@ function AddModal(props: any) {
                   }
                 />
               )}
-              <Box my={4}>
-                <TextEditor
-                  label='Mô tả'
-                  errors={errors.description && touched.description ? true : false}
-                  value={values.description}
-                  onChange={(value) => {
-                    setFieldValue('description', value);
-                  }}
-                  id='description'
-                  helperText={errors.description && touched.description ? errors.description : ''}
-                  placeholder='Nhập vào mô tả đề tài'
-                />
-              </Box>
+              <CustomTextField
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.name && touched.name ? true : false}
+                helperText={errors.name && touched.name ? errors.name : ''}
+                required
+                label='Tên đề tài'
+                name='name'
+                placeholder='Tên đề tài'
+              />
               <Box my={4}>
                 <TextEditor
                   label='Mục tiêu đề tài'
@@ -109,6 +96,30 @@ function AddModal(props: any) {
                   placeholder='Nhập vào mục tiêu đề tài'
                 />
               </Box>{' '}
+              <Box my={4}>
+                <TextEditor
+                  onChange={(value) => {
+                    setFieldValue('expectedResult', value);
+                  }}
+                  id='expectedResult'
+                  value={values.expectedResult}
+                  label='Dự kiến sản phẩm nghiên cứu của đề tài và khả năng ứng dụng'
+                  placeholder='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
+                />
+              </Box>
+              <Box my={4}>
+                <TextEditor
+                  label='Mô tả'
+                  errors={errors.description && touched.description ? true : false}
+                  value={values.description}
+                  onChange={(value) => {
+                    setFieldValue('description', value);
+                  }}
+                  id='description'
+                  helperText={errors.description && touched.description ? errors.description : ''}
+                  placeholder='Nhập vào mô tả đề tài'
+                />
+              </Box>
               <Box my={4}>
                 <TextEditor
                   label='Yêu cầu đầu vào'
@@ -126,7 +137,7 @@ function AddModal(props: any) {
               </Box>
               <Box my={4}>
                 <TextEditor
-                  label='Chuẩn đầu ra'
+                  label='Yêu cầu đầu ra'
                   errors={errors.standardOutput && touched.standardOutput ? true : false}
                   value={values.standardOutput}
                   onChange={(value) => {
@@ -136,17 +147,7 @@ function AddModal(props: any) {
                   helperText={
                     errors.standardOutput && touched.standardOutput ? errors.standardOutput : ''
                   }
-                  placeholder='Nhập vào chuẩn đầu ra'
-                />
-              </Box>
-              <Box my={4}>
-                <TextEditor
-                  onChange={(value) => {
-                    setFieldValue('note', value);
-                  }}
-                  id='note'
-                  value={values.note}
-                  label='Ghi chú'
+                  placeholder='Nhập vào yêu cầu đầu ra'
                 />
               </Box>
               <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>

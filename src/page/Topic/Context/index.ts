@@ -6,5 +6,7 @@ export const validationTopicSchema = Yup.object().shape({
     description: Yup.string().required("Mô tả đề tài không được trống"),
     target: Yup.string().required("Mục tiêu đề tài không được trống"),
     standardOutput: Yup.string().required("Chuẩn đầu ra không được bỏ trống"),
+    expectedResult: Yup.string().required("Dự kiến sản phẩm nghiên cứu của đề tài không được bỏ trống"),
+
     requireInput: Yup.string().required("Yêu cầu đầu vào không được bỏ trống"),
 })

@@ -46,6 +46,7 @@ function EditModal(props: any) {
               quantityGroupMax: `${topicFetch?.topic?.quantityGroupMax}`,
               description: `${topicFetch?.topic?.description}`,
               note: `${topicFetch?.topic?.note}`,
+              expectedResult: `${topicFetch?.topic?.expectedResult}`,
               target: `${topicFetch?.topic?.target}`,
               standardOutput: `${topicFetch?.topic?.standardOutput}`,
               requireInput: `${topicFetch?.topic?.requireInput}`,
@@ -61,17 +62,6 @@ function EditModal(props: any) {
               setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
-                <CustomTextField
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.name && touched.name ? true : false}
-                  helperText={`${errors.name && touched.name ? errors.name : ''}`}
-                  required
-                  label='Tên đề tài'
-                  name='name'
-                  placeholder='Tên đề tài'
-                />
                 <CustomTextField
                   value={`${lecturerStore.me.user.fullName}`}
                   required
@@ -96,19 +86,17 @@ function EditModal(props: any) {
                     }`}
                   />
                 )}
-                <Box my={4}>
-                  <TextEditor
-                    label='Mô tả'
-                    errors={errors.description && touched.description ? true : false}
-                    value={values.description}
-                    onChange={(value) => {
-                      setFieldValue('description', value);
-                    }}
-                    id='description'
-                    helperText={`${errors.description && touched.description ? errors.description : ''}`}
-                    placeholder='Nhập vào mô tả đề tài'
-                  />
-                </Box>
+                <CustomTextField
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.name && touched.name ? true : false}
+                  helperText={`${errors.name && touched.name ? errors.name : ''}`}
+                  required
+                  label='Tên đề tài'
+                  name='name'
+                  placeholder='Tên đề tài'
+                />
                 <Box my={4}>
                   <TextEditor
                     label='Mục tiêu đề tài'
@@ -121,6 +109,30 @@ function EditModal(props: any) {
                     helperText={`${errors.target && touched.target ? errors.target : ''}`}
                     placeholder='Nhập vào mục tiêu đề tài'
                   />
+                  <Box my={4}>
+                    <TextEditor
+                      onChange={(value) => {
+                        setFieldValue('expectedResult', value);
+                      }}
+                      id='expectedResult'
+                      value={values.expectedResult}
+                      label='Dự kiến sản phẩm nghiên cứu của đề tài và khả năng ứng dụng'
+                      placeholder='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
+                    />
+                  </Box>
+                  <Box my={4}>
+                    <TextEditor
+                      label='Mô tả'
+                      errors={errors.description && touched.description ? true : false}
+                      value={values.description}
+                      onChange={(value) => {
+                        setFieldValue('description', value);
+                      }}
+                      id='description'
+                      helperText={`${errors.description && touched.description ? errors.description : ''}`}
+                      placeholder='Nhập vào mô tả đề tài'
+                    />
+                  </Box>
                 </Box>{' '}
                 <Box my={4}>
                   <TextEditor
@@ -137,7 +149,7 @@ function EditModal(props: any) {
                 </Box>
                 <Box my={4}>
                   <TextEditor
-                    label='Chuẩn đầu ra'
+                    label='Yêu cầu đầu ra'
                     errors={errors.standardOutput && touched.standardOutput ? true : false}
                     value={values.standardOutput}
                     onChange={(value) => {

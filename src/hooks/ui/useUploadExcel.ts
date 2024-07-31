@@ -161,7 +161,7 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, m
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, majorId] })
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId] })
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, me.id, termId] })
           }
         }

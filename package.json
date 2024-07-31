@@ -8,6 +8,8 @@
     "lint": "eslint . --ext .ts,.tsx .",
     "format": "npm run lint  --fix & npm prettier --write 'src/**/*.{ts,tsx}'",
     "check-types": "tsc --pretty",
+    "start:qa": "env-cmd -f .env.qa react-scripts start",
+    "build:qa": "env-cmd -f .env.qa react-scripts build",
     "prepare": "husky install"
   },
   "dependencies": {

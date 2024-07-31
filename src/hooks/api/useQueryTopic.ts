@@ -51,7 +51,7 @@ export const useTopic = () => {
 
     //[GET BY TERM, MAJOR]
     const handleTopicsByTermByMajor = () => {
-        return useQuery([QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id], () => getTopicsByTermByMajor(termStore.currentTerm.id, majorStore.currentMajor.id), {
+        return useQuery([QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id], () => getTopicsByTermByMajor(termStore.currentTerm.id), {
             staleTime: Infinity,
         })
     }
@@ -69,7 +69,7 @@ export const useTopic = () => {
         return useMutation((newTopic: TopicBodyRequestType) => createTopicByToken(newTopic, termStore.currentTerm.id), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
 
             },
@@ -85,7 +85,7 @@ export const useTopic = () => {
         return useMutation((updateTopic: any) => updateTopicById(topicId, updateTopic), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
@@ -103,7 +103,7 @@ export const useTopic = () => {
             {
                 onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
+                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] });
                 },
                 onError() {
@@ -118,7 +118,7 @@ export const useTopic = () => {
         return useMutation((topicId: string) => deleteTopicById(topicId), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id, majorStore.currentMajor.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
 
             },

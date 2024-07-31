@@ -90,6 +90,14 @@ function BasicInformationGrStudentPage(props: any) {
                   />
                   <Typography fontWeight={400} px={2} variant='body1'></Typography>
                 </Typography>
+                <CustomTextField
+                  multiline
+                  disabled
+                  value={groupStudent?.topic?.expectedResult}
+                  maxRows={8}
+                  label='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
+                  placeholder='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
+                />
                 <Typography my={4} fontWeight={500} variant='h6'>
                   Mục tiêu cần đạt được
                   <CustomTextField

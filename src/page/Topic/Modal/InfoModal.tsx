@@ -59,12 +59,13 @@ function InfoModal(props: any) {
               maxRows={8}
               placeholder='Nhập vào Mô tả đề tài'
             />
+
             <CustomTextField
               multiline
-              value={data?.topic?.note}
+              value={data?.topic?.expectedResult}
               maxRows={8}
-              label='Ghi chú đề tài'
-              placeholder='Ghi chú đề tài'
+              label='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
+              placeholder='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
             />
             <CustomTextField
               multiline
@@ -87,7 +88,13 @@ function InfoModal(props: any) {
               value={data?.topic?.standardOutput}
               placeholder='Chuẩn đầu ra'
             />
-
+            <CustomTextField
+              multiline
+              value={data?.topic?.note}
+              maxRows={8}
+              label='Ghi chú đề tài'
+              placeholder='Ghi chú đề tài'
+            />
             <Box mt={10} justifyContent={'end'} gap={8} display={'flex'}>
               <Button variant='contained' color='primary' onClick={onClose}>
                 <Icon icon='mdi:close-outline' />

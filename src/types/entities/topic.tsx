@@ -5,11 +5,12 @@ export interface Topic {
   name: string;
   description: string;
   quantityGroupMax: number;
-  note: string;
+  expectedResult: string;
   target: string;
   standardOutput: string;
   requireInput: string;
   status: string;
+  note: string;
   createdAt?: string;
   updatedAt?: string;
   lecturerTerm: Partial<LecturerTerm>;
@@ -18,5 +19,11 @@ export interface Topic {
 
 export type TopicBodyRequestType = Pick<
   Topic,
-  'name' | 'description' | 'quantityGroupMax' | 'standardOutput' | 'requireInput' | 'target'
+  | 'name'
+  | 'description'
+  | 'quantityGroupMax'
+  | 'standardOutput'
+  | 'requireInput'
+  | 'target'
+  | 'expectedResult'
 >;

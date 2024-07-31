@@ -9,8 +9,8 @@ export const getTopicById = async (topicId: string) => {
 }
 
 //[HEAD LEC]
-export const getTopicsByTermByMajor = async (termId: string, majorId: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/topics?termId=${termId}&majorId=${majorId}`)
+export const getTopicsByTermByMajor = async (termId: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics?termId=${termId}`)
 }
 
 //[HEAD LEC, LEC]
