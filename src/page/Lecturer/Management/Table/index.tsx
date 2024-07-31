@@ -29,7 +29,7 @@ function TableManagamentLecturer(props: any) {
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Mã Giảng Viên',
+      headerName: 'Mã Giảng viên',
       field: 'username',
       flex: 0.6,
       headerAlign: 'center',
@@ -88,7 +88,7 @@ function TableManagamentLecturer(props: any) {
       },
     },
     {
-      headerName: '',
+      headerName: 'Chức năng',
       field: 'updateTing',
       flex: 1,
       headerAlign: 'center',

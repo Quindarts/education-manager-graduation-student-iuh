@@ -13,32 +13,36 @@ export const getTopicsByTermByMajor = async (termId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/topics?termId=${termId}`)
 }
 
+export const updateAllQuantityGroupMax = async (termId: string, quantityGroupMax: number) => {
+    return axiosConfig.put<ResponseType, any>(`/api/v1/topics/quantity-group-max?termId=${termId}`, { quantityGroupMax: quantityGroupMax })
+}
+
 //[HEAD LEC, LEC]
 export const getTopicsByLecturerByTerm = async (lecturerId: string, termId: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/topics?lecturerId=${lecturerId}&termId=${termId}`)
+    return axiosConfig.get<ResponseType, any>(`/ api / v1 / topics ? lecturerId = ${lecturerId} & termId=${termId}`)
 }
 
 //POST [HEAD LEC, LEC]
 export const createTopicByToken = async (topic: TopicBodyRequestType, termId: string) => {
-    return axiosConfig.post<ResponseType, any>(`/api/v1/topics?termId=${termId}`, topic);
+    return axiosConfig.post<ResponseType, any>(`/ api / v1 / topics ? termId = ${termId}`, topic);
 }
 
 //PUT [HEAD LEC, LEC]
 export const updateTopicById = async (topicId: string, topic: TopicBodyRequestType) => {
-    return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}`, topic)
+    return axiosConfig.put<ResponseType, any>(`/ api / v1 / topics / ${topicId}`, topic)
 }
 // {{url}}/api/v1/topics/:id/quantity-group-max
 
 //PUT [HEAD LEC, LEC]
 export const updateQuantityGroupMax = async (topicId: string, topic: TopicBodyRequestType) => {
-    return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}`, topic)
+    return axiosConfig.put<ResponseType, any>(`/ api / v1 / topics / ${topicId}`, topic)
 }
 //PUT  [HEAD LEC]
 export const updateStatusTopicById = async (topicId: string, data: Pick<Topic, 'status' | 'note'>) => {
-    return axiosConfig.put<ResponseType, any>(`/api/v1/topics/${topicId}/status`, data)
+    return axiosConfig.put<ResponseType, any>(`/ api / v1 / topics / ${topicId} / status`, data)
 }
 
 //DELETE  [HEAD LEC, LEC]
 export const deleteTopicById = async (topicId: string) => {
-    return axiosConfig.delete<ResponseType, any>(`/api/v1/topics/${topicId}`)
+    return axiosConfig.delete<ResponseType, any>(`/ api / v1 / topics / ${topicId}`)
 }

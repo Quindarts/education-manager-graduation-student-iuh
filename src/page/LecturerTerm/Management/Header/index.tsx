@@ -66,7 +66,7 @@ function HeaderLecturerTerm() {
         </Box>
         <Button color='primary' variant='contained' onClick={handleImport}>
           <Icon icon='fe:import' />
-          Tải dữ liệu GV học kì trước
+          Tải lên dữ liệu GV chuyên ngành
         </Button>
         <Button
           size='small'

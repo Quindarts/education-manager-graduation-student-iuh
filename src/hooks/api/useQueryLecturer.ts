@@ -10,6 +10,8 @@ import { ResponseType } from '@/types/axios.type';
 import useParams from '../ui/useParams';
 import { setParamTotalPageLectuerMajor } from '@/store/slice/lecturer.slice';
 import { useDispatch } from 'react-redux';
+import { useTerm } from './useQueryTerm';
+import { QueryKeysLecturerTerm } from './useQueryLecturerTerm';
 
 export enum QueryKeysLecturer {
     getAllLecturer = 'getAllLecturer',
@@ -23,9 +25,12 @@ export const useLecturer = () => {
     const lecturerStore = useSelector((state: any) => state.lecturerSlice)
     const { me, currentRoleRender, renderUi, paramTotalPage } = lecturerStore
     const { majorStore } = useMajor()
+    const { termStore } = useTerm()
     const { getQueryField, setTotalPage } = useParams()
     const majorId = majorStore.currentMajor.id
     const dispatch = useDispatch()
+    const termId = termStore.currentTerm.id
+
     // [GET ALL]
     const handleGetAllLecturer = () => {
         return useQuery(
@@ -58,6 +63,10 @@ export const useLecturer = () => {
                     [QueryKeysLecturer.getAllLecturer, majorId,
                     getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')]
                 );
+                queryClient.invalidateQueries(
+                    [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
+                        "10", "1", "", ""]
+                );
             },
             onError() {
                 enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
@@ -76,9 +85,15 @@ export const useLecturer = () => {
                     [QueryKeysLecturer.getAllLecturer, majorId,
                     getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')]
                 );
-                queryClient.invalidateQueries({ queryKey: ['get-me'] });
+                if (lecturerId === me.user.id) {
+                    queryClient.invalidateQueries({ queryKey: ['get-me'] });
+                }
                 queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getLecturerById, id] });
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, 'reviewer'] })
+                queryClient.invalidateQueries(
+                    [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
+                        "10", "1", "", ""]
+                );
             },
             onError() {
                 enqueueSnackbar("Cập nhật giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
@@ -95,6 +110,10 @@ export const useLecturer = () => {
                 queryClient.invalidateQueries(
                     [QueryKeysLecturer.getAllLecturer, majorId,
                     getQueryField('limit'), 1, getQueryField('searchField'), getQueryField('keywords')]
+                );
+                queryClient.invalidateQueries(
+                    [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
+                        "10", "1", "", ""]
                 );
             },
             onError() {

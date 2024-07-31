@@ -1,5 +1,5 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
+import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, updateAllQuantityGroupMax, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
 import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
@@ -112,6 +112,16 @@ export const useTopic = () => {
             }
         )
     }
+    const onUpdateAllQuantityGroupMax = () => {
+        return useMutation((quantity: number) => updateAllQuantityGroupMax(termStore.currentTerm.id, quantity), {
+            onSuccess() {
+                enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
+            },
+            onError() {
+                enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
+            }
+        })
+    }
 
     //[DELETE]
     const onDeleteTopicById = () => {
@@ -137,6 +147,7 @@ export const useTopic = () => {
         onCreateTopicByToken,
         onUpdateTopicById,
         onDeleteTopicById,
+        onUpdateAllQuantityGroupMax,
         onUpdateStatusTopic
     }
 }

@@ -70,7 +70,7 @@ function AddLecturerModal(props: any) {
                     <CustomTextField
                       {...params}
                       placeholder='Nhập vào tên giảng viên'
-                      label='Danh sách giảng viên HD khoa CNTT'
+                      label='DANH SÁCH GV KHOA CÔNG NGHỆ THÔNG TIN'
                     />
                   </>
                 )}

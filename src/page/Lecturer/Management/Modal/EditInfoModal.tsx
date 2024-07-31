@@ -162,6 +162,7 @@ function EditInfoModal(props: any) {
                 <Box mt={8} width={'full'}>
                   <DropDown
                     label='Chuyên ngành'
+                    disabled
                     value={values.majorId}
                     onChange={(e) => {
                       setFieldValue('majorId', e.target.value);

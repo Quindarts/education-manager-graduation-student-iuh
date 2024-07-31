@@ -21,7 +21,7 @@ function LecturerTermManagement() {
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
   };
-  
+
   const { setLimit, setPage, getQueryField } = useParams();
   useEffect(() => {
     setLimit(10);

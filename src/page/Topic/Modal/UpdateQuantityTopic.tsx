@@ -1,15 +1,24 @@
 import CustomTextField from '@/components/ui/CustomTextField';
 import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
+import { useTopic } from '@/hooks/api/useQueryTopic';
 import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function UpdateQuantityTopicModal(props: any) {
   const { onClose, open } = props;
-  // const { onUpdateQuantityTopicById } = useTopic();
-  // const { mutate: UpdateQuantityTopic } = onUpdateQuantityTopicById();
-  const handleSubmit = () => {};
+  const { onUpdateAllQuantityGroupMax } = useTopic();
+  const [quantity, setQuantity] = useState(0);
+  const { mutate: updateQuantity, isSuccess } = onUpdateAllQuantityGroupMax();
+  const handleSubmit = () => {
+    updateQuantity(quantity);
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+    }
+  }, [isSuccess]);
   return (
     <Modal onClose={onClose} open={open}>
       <Box
@@ -25,7 +34,16 @@ function UpdateQuantityTopicModal(props: any) {
           Cập nhật số lượng đề tài tối đa
         </TitleManager>
         <Box width={'100%'}>
-          <CustomTextField type='number' label='Số lượng' />
+          <CustomTextField
+            onChange={(e: any) => {
+              setQuantity(e.target.value);
+            }}
+            onBlur={(e: any) => {
+              setQuantity(e.target.value);
+            }}
+            type='number'
+            label='Số lượng'
+          />
         </Box>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
           <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>
