@@ -23,9 +23,7 @@ export enum QueryTopic {
 export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
     const topicStore = useSelector((state: any) => state.topicSlice)
-
     const { termStore } = useTerm()
-    const { majorStore } = useMajor()
     const { lecturerStore } = useAuth()
 
     const handleUiRender = (): string[] => {
@@ -116,6 +114,7 @@ export const useTopic = () => {
         return useMutation((quantity: number) => updateAllQuantityGroupMax(termStore.currentTerm.id, quantity), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
             },
             onError() {
                 enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })

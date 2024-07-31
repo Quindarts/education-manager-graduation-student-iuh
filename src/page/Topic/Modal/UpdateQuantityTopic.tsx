@@ -11,6 +11,7 @@ function UpdateQuantityTopicModal(props: any) {
   const { onUpdateAllQuantityGroupMax } = useTopic();
   const [quantity, setQuantity] = useState(0);
   const { mutate: updateQuantity, isSuccess } = onUpdateAllQuantityGroupMax();
+
   const handleSubmit = () => {
     updateQuantity(quantity);
   };
@@ -19,6 +20,7 @@ function UpdateQuantityTopicModal(props: any) {
       onClose();
     }
   }, [isSuccess]);
+
   return (
     <Modal onClose={onClose} open={open}>
       <Box
