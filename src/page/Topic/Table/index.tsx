@@ -64,7 +64,7 @@ function TableManagamentTopic(props: any) {
     {
       headerName: 'STT',
       field: 'stt',
-      flex: 0.4,
+      flex: 0.2,
       headerAlign: 'center',
       align: 'center',
     },
@@ -241,16 +241,6 @@ function TableManagamentTopic(props: any) {
         <Table
           rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
           rowHeight={100}
-          componentsProps={{
-            cell: {
-              style: {
-                whiteSpace: 'normal',
-                wordWrap: 'break-word',
-                lineHeight: '1.5em',
-                overflow: 'visible',
-              },
-            },
-          }}
           minHeight={350}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={rows.length}

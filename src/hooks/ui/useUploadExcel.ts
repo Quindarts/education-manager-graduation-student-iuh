@@ -64,7 +64,12 @@ axiosUpload.interceptors.response.use(
   },
 );
 
-const useUploadExcel = (entityUpload: string, termId: string, majorId: string, me: User, typeEvalutaion?: string, handleCloseUpload) => {
+interface UploadHandler {
+  entityUpload: string, termId: string, majorId: string, me: User, typeEvaluation?: string, handleCloseUpload?: () => void;
+}
+
+const useUploadExcel = (props: UploadHandler) => {
+  const { entityUpload, termId, majorId, me, typeEvaluation, handleCloseUpload } = props
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState<string>('');
@@ -122,7 +127,7 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, m
     const bodyRequestEval = {
       termId: termId,
       file: file,
-      type: typeEvalutaion
+      type: typeEvaluation
     }
     return axiosUpload.post(`${env.BASE_URL}/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
       headers: {
@@ -151,7 +156,7 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, m
             enqueueSnackbar('Lưu danh sách tiêu chí từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvalutaion] })
+            queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvaluation] })
             handleCloseUpload()
 
           }

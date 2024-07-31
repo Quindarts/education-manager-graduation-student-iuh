@@ -170,9 +170,9 @@ function Notification() {
             borderRadius={'0 0 8px 8px '}
             bgcolor={'#f6fcff'}
           >
-            <Button size='small' color='warning'>
+            {/* <Button size='small' color='warning'>
               Đánh dấu tất cả là đã đọc
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       )}

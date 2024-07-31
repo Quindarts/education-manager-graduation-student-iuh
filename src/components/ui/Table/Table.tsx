@@ -42,6 +42,16 @@ export default function Table(props: Props) {
       <DataGrid
         disableRowSelectionOnClick
         hideFooter
+        componentsProps={{
+          cell: {
+            style: {
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.5em',
+              overflow: 'visible',
+            },
+          },
+        }}
         slots={{
           noRowsOverlay: () => (
             <Box

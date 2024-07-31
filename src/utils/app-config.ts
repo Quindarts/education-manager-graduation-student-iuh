@@ -217,7 +217,7 @@ export const APP_SIDEBAR = [
   },
   {
     icon: 'fluent-mdl2:review-solid',
-    text: 'Đánh giá',
+    text: 'Tiêu chí Đánh giá',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.HEAD_COURSE],
     link: APP_ROUTES.REVIEW.MANAGEMENT,
     key: '/review',
