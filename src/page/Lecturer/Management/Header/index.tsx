@@ -75,7 +75,7 @@ function HeaderLecturer() {
           variant='contained'
         >
           <Icon icon='lets-icons:add-round' width={20} />
-          Tạo giảng viên
+          Tạo Giảng viên
         </Button>
         <ModalUpload
           label='Tải lên Excel Giảng viên'

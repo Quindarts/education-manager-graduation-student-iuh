@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../Modal';
 import {
   Box,
@@ -67,6 +67,19 @@ function ModalUpload(props: ModalUploadPropsType) {
   const { majorStore } = useMajor();
   const { lecturerStore } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const handleOpenUpload = () => {
+    setIsOpen(true);
+  };
+  const handleCloseUpload = () => {
+    setIsOpen(false);
+    handleClearData();
+  };
+  const handleClearData = () => {
+    setFileName('');
+    setTotalSize('');
+    setValueLoading('');
+    setCurrentFile(undefined);
+  };
   const {
     importExcel,
     valueLoading,
@@ -84,21 +97,9 @@ function ModalUpload(props: ModalUploadPropsType) {
     majorStore.currentMajor.id,
     lecturerStore.me.user,
     typeEvaluation,
+    handleCloseUpload,
   );
 
-  const handleOpenUpload = () => {
-    setIsOpen(true);
-  };
-  const handleCloseUpload = () => {
-    setIsOpen(false);
-    handleClearData();
-  };
-  const handleClearData = () => {
-    setFileName('');
-    setTotalSize('');
-    setValueLoading('');
-    setCurrentFile(undefined);
-  };
   return (
     <Box>
       <Tooltip arrow title={labelToolTip}>
@@ -139,7 +140,12 @@ function ModalUpload(props: ModalUploadPropsType) {
                     py: 20,
                   }}
                 >
-                  <VisuallyHiddenInput type='file' onChange={(e) => importExcel(e)} />
+                  <VisuallyHiddenInput
+                    type='file'
+                    onChange={(e) => {
+                      importExcel(e);
+                    }}
+                  />
 
                   <Box
                     bgcolor='rgb(0,82,177,0.2)'
@@ -177,8 +183,20 @@ function ModalUpload(props: ModalUploadPropsType) {
                 >
                   <Icon color='#40bb92' width={150} icon='teenyicons:file-tick-solid' />
                   <Typography mt={6} variant='h5' color='success.dark'>
-                    <Icon icon='teenyicons:tick-circle-solid' /> Đã tải file lên thành công
+                    <Icon icon='teenyicons:tick-circle-solid' /> Đã tải file lên thành công, Lưu dữ
+                    liệu xuống cơ sở dữ liệu.
                   </Typography>
+                  <Button
+                    color='success'
+                    variant='contained'
+                    disabled={currentFile === undefined}
+                    onClick={() => {
+                      savedFileToDatabase(currentFile);
+                    }}
+                  >
+                    <Icon width={20} style={{ marginRight: 10 }} icon='el:hand-right' />
+                    Lưu vào hệ thống
+                  </Button>
                 </Box>
               )}
             </Box>
@@ -204,6 +222,7 @@ function ModalUpload(props: ModalUploadPropsType) {
                   </Box>
                   <Box></Box>
                 </Box>
+
                 <Typography mt={8} variant='body1' color='initial'>
                   Tiến độ lưu: {valueLoading * 100} %
                 </Typography>
@@ -224,15 +243,6 @@ function ModalUpload(props: ModalUploadPropsType) {
             <Button variant='contained' color='primary' onClick={handleCloseUpload}>
               <Icon icon='mdi:close-outline' />
               Thoát
-            </Button>
-            <Button
-              color='success'
-              variant='contained'
-              disabled={currentFile === undefined}
-              onClick={() => savedFileToDatabase(currentFile)}
-            >
-              <Icon width={20} style={{ marginRight: 10 }} icon='iconoir:db-check' />
-              Lưu vào hệ thống
             </Button>
           </Box>
         </Paper>

@@ -64,7 +64,7 @@ axiosUpload.interceptors.response.use(
   },
 );
 
-const useUploadExcel = (entityUpload: string, termId: string, majorId: string, me: User, typeEvalutaion?: string) => {
+const useUploadExcel = (entityUpload: string, termId: string, majorId: string, me: User, typeEvalutaion?: string, handleCloseUpload) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState<string>('');
@@ -141,8 +141,10 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, m
             });
             queryClient.invalidateQueries(
               [QueryKeysLecturer.getAllLecturer, majorId,
-                10, 1, 'username', '']
+                "10", "1", 'username', '']
             );
+
+            handleCloseUpload()
 
           }
           if (entityUpload === TypeEntityUpload.EVALUATION) {
@@ -150,12 +152,16 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, m
               variant: 'success',
             });
             queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvalutaion] })
+            handleCloseUpload()
+
           }
           if (entityUpload === TypeEntityUpload.STUDENT) {
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, 10, 1, 'username', ''] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, "10", "1", '', ''] })
+            handleCloseUpload()
+
           }
           if (entityUpload === TypeEntityUpload.TOPIC) {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
@@ -163,6 +169,7 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, m
             });
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId] })
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, me.id, termId] })
+            handleCloseUpload()
           }
         }
       })

@@ -35,7 +35,7 @@ function LecturerManagementPage() {
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager mb={8} mt={2}>
-        Danh sách giảng viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
+        Danh sách Giảng viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
       </TitleManager>
       <>
         <HeaderLecturer />

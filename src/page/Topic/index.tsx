@@ -19,7 +19,14 @@ function TopicPage() {
         <SekeletonUI />
       ) : (
         <Box width={'full'} my={4}>
-          <TableManagamentTopic isApprovePermission={true} rows={data?.topics ? data.topics : []} />
+          <TableManagamentTopic
+            isApprovePermission={true}
+            rows={
+              data?.topics
+                ? data.topics.map((topic: any, index: number) => ({ ...topic, stt: index + 1 }))
+                : []
+            }
+          />
         </Box>
       )}
     </Paper>

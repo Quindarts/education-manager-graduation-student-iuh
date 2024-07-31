@@ -68,8 +68,12 @@ export const useLecturer = () => {
                         "10", "1", "", ""]
                 );
             },
-            onError() {
-                enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
+            onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
             },
         },
         );
@@ -95,10 +99,13 @@ export const useLecturer = () => {
                         "10", "1", "", ""]
                 );
             },
-            onError() {
-                enqueueSnackbar("Cập nhật giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
+            onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
             },
-
         })
     }
 

@@ -62,6 +62,13 @@ function TableManagamentTopic(props: any) {
   };
   const HeadLecturerColumn: GridColDef[] = [
     {
+      headerName: 'STT',
+      field: 'stt',
+      flex: 0.4,
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 1.5,
@@ -73,10 +80,9 @@ function TableManagamentTopic(props: any) {
       field: 'target',
       headerAlign: 'center',
       align: 'left',
-
-      flex: 0.8,
+      flex: 0.6,
       renderCell: (params: any) => (
-        <Typography variant='body2' color='initial'>
+        <Typography variant='body1' color='initial'>
           {params.row.lecturerTerm.lecturer.fullName}
         </Typography>
       ),
@@ -234,8 +240,16 @@ function TableManagamentTopic(props: any) {
       <>
         <Table
           rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
-          sx={{
-            bgcolor: 'white',
+          rowHeight={100}
+          componentsProps={{
+            cell: {
+              style: {
+                whiteSpace: 'normal',
+                wordWrap: 'break-word',
+                lineHeight: '1.5em',
+                overflow: 'visible',
+              },
+            },
           }}
           minHeight={350}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
