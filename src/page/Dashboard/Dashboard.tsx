@@ -5,11 +5,8 @@ import { useAuth } from '@/hooks/api/useAuth';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { checkGender } from '@/utils/validations/person.validation';
 import { Icon } from '@iconify/react';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import PromotionTextContent from '@/components/ui/PromotionTextContent';
+import Loading from '@/components/ui/Loading';
 
 export default function Dashboard() {
   const { lecturerStore } = useAuth();

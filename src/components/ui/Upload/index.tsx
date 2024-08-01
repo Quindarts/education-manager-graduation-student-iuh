@@ -91,14 +91,14 @@ function ModalUpload(props: ModalUploadPropsType) {
     setCurrentFile,
     setValueLoading,
     fileName,
-  } = useUploadExcel(
-    entityUpload,
-    termStore.currentTerm.id,
-    majorStore.currentMajor.id,
-    lecturerStore.me.user,
-    typeEvaluation,
-    handleCloseUpload,
-  );
+  } = useUploadExcel({
+    entityUpload: entityUpload,
+    termId: termStore.currentTerm.id,
+    majorId: majorStore.currentMajor.id,
+    me: lecturerStore.me.user,
+    typeEvaluation: typeEvaluation,
+    handleCloseUpload: handleCloseUpload,
+  });
 
   return (
     <Box>

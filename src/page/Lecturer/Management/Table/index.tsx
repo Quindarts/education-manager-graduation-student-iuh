@@ -95,18 +95,18 @@ function TableManagamentLecturer(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip title='Cập nhật thông tin'>
-            <IconButton onClick={() => handleOpenInfoModal(params.row.id)}>
-              <Icon icon='solar:pen-2-bold' />
+          <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Cập nhật thông tin'>
+            <IconButton>
+              <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
           <Box></Box>
-          <Tooltip title='Xem Chi tiết'>
-            <IconButton
-              color='primary'
-              onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
-            >
-              <Icon width={20} icon='fluent:apps-list-detail-20-filled' />
+          <Tooltip
+            onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
+            title='Xem Chi tiết'
+          >
+            <IconButton color='primary'>
+              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
         </Box>

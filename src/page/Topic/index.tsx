@@ -7,8 +7,8 @@ import { useTopic } from '@/hooks/api/useQueryTopic';
 import SekeletonUI from '@/components/ui/Sekeleton';
 
 function TopicPage() {
-  const { handleTopicsByTermByMajor } = useTopic();
-  const { data, isLoading, isFetching } = handleTopicsByTermByMajor();
+  const { handleSearchTopic } = useTopic();
+  const { data, isLoading, isFetching } = handleSearchTopic();
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager icon='quill:list' mb={8} mt={2}>

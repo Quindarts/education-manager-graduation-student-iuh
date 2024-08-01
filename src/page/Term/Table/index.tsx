@@ -253,7 +253,7 @@ function TableManagamentTerm(props: any) {
               <IconButton
                 onClick={() => handleOpenPublicTopicRegister(params.row.id)}
                 color='primary'
-                size='small'  
+                size='small'
               >
                 <Icon icon='flat-color-icons:info' />
               </IconButton>
@@ -373,14 +373,14 @@ function TableManagamentTerm(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={6}>
-          <Tooltip title='Xem thông tin học kì'>
-            <IconButton
-              onClick={() => {
-                handleOpenTermDetail(params.row.id);
-              }}
-              size='small'
-            >
-              <Icon icon='noto-v1:eye-in-speech-bubble' />
+          <Tooltip
+            onClick={() => {
+              handleOpenTermDetail(params.row.id);
+            }}
+            title='Xem thông tin học kì'
+          >
+            <IconButton size='small'>
+              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
           {/* <Tooltip title='Xóa học kì'>

@@ -17,6 +17,7 @@ export const enum QueryKeysGroupStudent {
     getMemberInGroupStudent = "getMemberInGroupStudent",
     getStudentsNohaveGroup = "getStudentsNoHaveGroup",
     getCountOfGroupStudent = "getCountOfGroupStudent",
+    getGroupStudentByLecturerTermId = "getGroupStudentByLecturerTermId"
 }
 const useGroupStudent = () => {
     const { enqueueSnackbar } = useSnackbar()
@@ -52,6 +53,12 @@ const useGroupStudent = () => {
             staleTime: 5000
         })
     }
+    const handleGetGroupStudentByLecturerTermId = (lecturerTermId?: string) => {
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerTermId, lecturerTermId], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id), {
+            staleTime: 5000
+        })
+    }
+
     const handleGetCountOfGroupStudent = () => {
         return useQuery([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id], () => getCountOfGroupStudent(termStore.currentTerm.id))
     }

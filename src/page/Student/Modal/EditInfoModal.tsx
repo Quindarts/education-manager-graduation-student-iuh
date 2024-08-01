@@ -32,7 +32,6 @@ const TRAINING_DROP_VALUE = [
 type EditModalType = { studentId: string };
 
 function EditInfoModal(props: ModalProps & EditModalType) {
-
   const { onClose, open, studentId } = props;
 
   const { handleGetStudentById, onUpdateStudent } = useStudent();
@@ -51,7 +50,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
   }, [isSuccess]);
 
   return (
-    <Modal maxWidth='xs' open={open} onClose={onClose}>
+    <Modal maxWidth='sm' open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Cập nhật thông tin Sinh viên
@@ -110,11 +109,11 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
                 />
                 <Box display={'flex'} gap={8} alignContent={'center'}>
-                  <Box width={'50%'}>
+                  <Box width={'100%'}>
                     <DropDown
                       sx={{ mb: 8 }}
                       label='Giới tính'
-                      value={`${values.gender}`}
+                      value={`${values.gender ? values.gender : ''}`}
                       onChange={(e) => {
                         setFieldValue('gender', e.target.value);
                       }}
@@ -125,12 +124,11 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                     value={values.clazzName}
                     name='clazzName'
                     label='Lớp danh nghĩa'
-                    required
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder='Ví dụ: DHKTPM17C'
                     error={errors.clazzName && touched.clazzName ? true : false}
-                    helperText={`${errors.clazzName && touched.clazzName ? errors.clazzName : ''}`}
+                    helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
                   />
                 </Box>
 

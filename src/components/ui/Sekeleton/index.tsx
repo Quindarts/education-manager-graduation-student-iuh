@@ -6,9 +6,9 @@ function SekeletonUI() {
     <>
       <LinearProgress />
       <Skeleton sx={{ bgColor: 'primary.main' }} width={'full'} height={100} />
-      <Skeleton width={'full'} height={100} />
-      <Skeleton width={'full'} height={100} />
-      <Skeleton width={'full'} height={200} />
+      <Skeleton animation='wave' width={'full'} height={100} />
+      <Skeleton animation='wave' width={'full'} height={100} />
+      <Skeleton animation='wave' width={'full'} height={200} />
     </>
   );
 }

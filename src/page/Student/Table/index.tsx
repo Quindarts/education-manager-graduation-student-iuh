@@ -131,8 +131,14 @@ function TableManagamentStudent(props: any) {
       field: 'email',
       flex: 1,
       align: 'left',
-
       headerAlign: 'center',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {params.row.email ? params.row.email : 'Chưa có thông tin'}
+          </Typography>
+        );
+      },
     },
     {
       headerName: 'Giới tính',
@@ -185,30 +191,26 @@ function TableManagamentStudent(props: any) {
       headerAlign: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip title='Cập nhật thông tin'>
-            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
-              <Icon icon='emojione:pencil' />
+          <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Cập nhật thông tin'>
+            <IconButton size='small'>
+              <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
           <Box></Box>
-          <Tooltip title='Cấp lại mật khẩu'>
-            <IconButton
-              color='primary'
-              size='small'
-              onClick={() =>
-                handleOpenResetPasswordStudentModal(params.row.id, params.row.username)
-              }
-            >
-              <Icon width={20} icon='wpf:password1' />
+          <Tooltip
+            onClick={() => handleOpenResetPasswordStudentModal(params.row.id, params.row.username)}
+            title='Cấp lại mật khẩu'
+          >
+            <IconButton color='primary' size='small'>
+              <Icon icon='carbon:password' width={20} style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xóa sinh viên'>
-            <IconButton
-              color='error'
-              size='small'
-              onClick={() => handleOpenDeleteStudentModal(params.row.id)}
-            >
-              <Icon icon='mdi:trash' />
+          <Tooltip
+            onClick={() => handleOpenDeleteStudentModal(params.row.id)}
+            title='Xóa sinh viên'
+          >
+            <IconButton color='error' size='small'>
+              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>

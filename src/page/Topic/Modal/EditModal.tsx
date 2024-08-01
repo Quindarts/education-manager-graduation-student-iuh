@@ -63,7 +63,7 @@ function EditModal(props: any) {
             }) => (
               <form onSubmit={handleSubmit}>
                 <CustomTextField
-                  value={`${lecturerStore.me.user.fullName}`}
+                  value={`${topicFetch?.topic.lecturerTerm?.lecturer.fullName}`}
                   required
                   disabled
                   label='Giảng viên hướng dẫn'

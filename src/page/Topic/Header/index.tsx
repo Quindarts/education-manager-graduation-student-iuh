@@ -7,6 +7,7 @@ import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import UpdateQuantityTopicModal from '../Modal/UpdateQuantityTopic';
+import useSearch from '@/hooks/ui/useParams';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -32,18 +33,27 @@ function HeaderTopic() {
 
   const { handleUiRender } = useTopic();
   const currentRole = handleUiRender();
+  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused } = useSearch();
   return (
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={2}>
-        <Box  flex={1} display={'flex'} gap={2} width={'full'}>
+        <Box flex={1} display={'flex'} gap={2} width={'full'}>
           <Box width={150}>
             <DropDown
               placeholder='Tìm kiếm đề tài'
-              value={SEARCH_DROP_VALUE[0]?._id}
+              value={'name'}
+              onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={SEARCH_DROP_VALUE}
             />
           </Box>
-          <TextField fullWidth size='small' placeholder='Tim kiếm đề tài..' />
+          <TextField
+            fullWidth
+            size='small'
+            defaultValue={getQueryField('keywords')}
+            onChange={onSearchChange}
+            onBlur={() => handleFocused(false)}
+            placeholder='Tim kiếm đề tài..'
+          />
         </Box>
         {currentRole.includes('crud') && (
           <>

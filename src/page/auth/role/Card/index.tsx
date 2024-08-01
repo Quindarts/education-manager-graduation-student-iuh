@@ -22,7 +22,6 @@ function CardRole({ icon, role, name, desc }: Partial<CardRolePropType>) {
       sx={{
         maxWidth: 275,
         height: 300,
-        cursor: 'pointer',
         transition: 'box-shadow 0.3s ease-in-out',
         '&:hover': {
           boxShadow: '0 4px 20px rgba(195, 220, 249, 0.5)',

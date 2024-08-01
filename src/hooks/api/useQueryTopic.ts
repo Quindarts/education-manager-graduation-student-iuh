@@ -1,5 +1,5 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, updateAllQuantityGroupMax, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
+import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, searchTopics, updateAllQuantityGroupMax, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
 import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
@@ -9,11 +9,13 @@ import { useAuth } from "./useAuth"
 import { RoleCheck } from "@/types/enum"
 import { useMajor } from "./useQueryMajor"
 import { Topic, TopicBodyRequestType } from "@/types/entities/topic"
+import useParams from "../ui/useParams"
 
 export enum QueryTopic {
     //HEAD LECTURER
     getAllTopicByTermMajor = 'getAllTopicByTermMajor',
     getAllTopic = 'getAllTopic',
+    getSearchTopic = "getSearchTopic",
     getTopicById = 'getTopicById',
     //LECTURER
     getAllTopicByLecturerTerm = 'getAllTopicByLecturerTerm'
@@ -25,6 +27,7 @@ export const useTopic = () => {
     const topicStore = useSelector((state: any) => state.topicSlice)
     const { termStore } = useTerm()
     const { lecturerStore } = useAuth()
+    const { getQueryField } = useParams()
 
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
@@ -47,9 +50,16 @@ export const useTopic = () => {
         return useQuery([QueryTopic.getTopicById, topicId], () => getTopicById(topicId))
     }
 
+    const handleSearchTopic = () => {
+        return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('keywords')], () => searchTopics(termStore.currentTerm.id, getQueryField("keywords"), "name"), {
+            staleTime: Infinity,
+        })
+    }
+
+
     //[GET BY TERM, MAJOR]
     const handleTopicsByTermByMajor = () => {
-        return useQuery([QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id], () => getTopicsByTermByMajor(termStore.currentTerm.id), {
+        return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, ''], () => getTopicsByTermByMajor(termStore.currentTerm.id), {
             staleTime: Infinity,
         })
     }
@@ -67,7 +77,7 @@ export const useTopic = () => {
         return useMutation((newTopic: TopicBodyRequestType) => createTopicByToken(newTopic, termStore.currentTerm.id), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, ''] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
 
             },
@@ -83,7 +93,7 @@ export const useTopic = () => {
         return useMutation((updateTopic: any) => updateTopicById(topicId, updateTopic), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, ''] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
@@ -101,7 +111,7 @@ export const useTopic = () => {
             {
                 onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
+                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, ''] })
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] });
                 },
                 onError() {
@@ -114,7 +124,7 @@ export const useTopic = () => {
         return useMutation((quantity: number) => updateAllQuantityGroupMax(termStore.currentTerm.id, quantity), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, ''] })
             },
             onError() {
                 enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
@@ -127,7 +137,7 @@ export const useTopic = () => {
         return useMutation((topicId: string) => deleteTopicById(topicId), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, ''] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
 
             },
@@ -147,6 +157,6 @@ export const useTopic = () => {
         onUpdateTopicById,
         onDeleteTopicById,
         onUpdateAllQuantityGroupMax,
-        onUpdateStatusTopic
+        onUpdateStatusTopic, handleSearchTopic
     }
 }

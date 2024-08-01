@@ -76,7 +76,7 @@ function TableManagamentGroupStudent(props: any) {
       },
     },
     {
-      headerName: '',
+      headerName: 'Chức năng',
       field: 'name8',
       flex: 0.5,
       align: 'center',
@@ -88,7 +88,7 @@ function TableManagamentGroupStudent(props: any) {
               color='primary'
               onClick={() => navigate(`/group-students/detail/${params.row.id}`)}
             >
-              <Icon icon='clarity:file-group-line' />
+              <Icon icon='clarity:file-group-line' style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
           <Tooltip title='Xóa nhóm'>
@@ -96,7 +96,7 @@ function TableManagamentGroupStudent(props: any) {
               color='primary'
               onClick={() => handleOpenModalDelete(params.row.id, params.row.name)}
             >
-              <Icon width={20} icon='uiw:usergroup-delete' />
+              <Icon icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>

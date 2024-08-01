@@ -14,11 +14,13 @@ function MainLayout() {
   const { handleGetMe, lecturerStore } = useAuth();
   const { isLoading, isFetching } = handleGetMe();
   const { isOpen } = useSidebar();
-  
+
   return (
     <>
       {isLoading || isFetching ? (
-        <Loading />
+        <Box>
+          <Loading />
+        </Box>
       ) : (
         <>
           {lecturerStore.currentRoleRender.length > 0 &&

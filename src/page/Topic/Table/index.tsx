@@ -77,19 +77,14 @@ function TableManagamentTopic(props: any) {
     },
     {
       headerName: 'Giảng viên HD',
-      field: 'target',
+      field: 'fullName',
       headerAlign: 'center',
       align: 'left',
       flex: 0.6,
-      renderCell: (params: any) => (
-        <Typography variant='body1' color='initial'>
-          {params.row.lecturerTerm.lecturer.fullName}
-        </Typography>
-      ),
     },
     {
       headerName: 'SL nhóm tối đa',
-      field: 'quantityGroupMax',
+      field: 'quantity_group_max',
       flex: 0.5,
       headerAlign: 'center',
       align: 'center',
@@ -98,7 +93,7 @@ function TableManagamentTopic(props: any) {
     {
       headerName: 'Trạng thái',
       field: 'text2',
-      flex: 0.4,
+      flex: 0.6,
       headerAlign: 'center',
       align: 'center',
       renderCell: (param) => {
@@ -118,17 +113,17 @@ function TableManagamentTopic(props: any) {
             onClick={() => handleOpenEditModal(params.row.id)}
           >
             <IconButton size='small' color='primary'>
-              <Icon icon='mage:edit-pen-fill' />
+              <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
           <Tooltip title='Xem thông tin đề tài' onClick={() => handleOpenInfoModal(params.row.id)}>
             <IconButton size='small'>
-              <Icon icon='icon-park-twotone:view-grid-detail' />
+              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
           <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
             <IconButton size='small'>
-              <Icon icon='mdi:bin' />
+              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -211,20 +206,23 @@ function TableManagamentTopic(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip title='Chỉnh sửa thông tin đề tài'>
-            <IconButton color='primary' onClick={() => handleOpenEditModal(params.row.id)}>
-              <Icon icon='mage:edit-pen-fill' />
+          <Tooltip
+            title='Chỉnh sửa thông tin đề tài'
+            onClick={() => handleOpenEditModal(params.row.id)}
+          >
+            <IconButton color='primary'>
+              <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xem thông tin đề tài'>
-            <IconButton onClick={() => handleOpenInfoModal(params.row.id)}>
-              <Icon icon='icon-park-outline:list-view' />
+          <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Xem thông tin đề tài'>
+            <IconButton>
+              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
           {params.row.status !== 'APPROVED' ? (
             <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
               <IconButton>
-                <Icon icon='ic:round-delete' />
+                <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
               </IconButton>
             </Tooltip>
           ) : (
@@ -240,8 +238,7 @@ function TableManagamentTopic(props: any) {
       <>
         <Table
           rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
-          rowHeight={100}
-          minHeight={350}
+          minHeight={500}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={rows.length}
           totalPages={1}

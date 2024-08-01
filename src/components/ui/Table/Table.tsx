@@ -5,7 +5,6 @@ import React from 'react';
 import Pagination from '@mui/material/Pagination';
 import LinearProgress from '@mui/material/LinearProgress';
 import IconButton from '@mui/material/IconButton';
-import DropDown from '../Dropdown';
 interface Props extends DataGridProps {
   minHeight?: number;
   page: number;
@@ -84,7 +83,6 @@ export default function Table(props: Props) {
         sx={{
           fontSize: 14,
           color: 'grey.700',
-          cursor: 'pointer',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
             outline: 'none !important',
           },

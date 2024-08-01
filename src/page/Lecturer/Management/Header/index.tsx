@@ -53,7 +53,9 @@ function HeaderLecturer() {
         <Box flex={1} display={'flex'} gap={4} width={'full'}>
           <Box width={200}>
             <DropDown
-              value={getQueryField('searchField') ? getQueryField('searchField') : handleDefault}
+              defaultValue={
+                getQueryField('searchField') ? getQueryField('searchField') : 'username'
+              }
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={DROP_SEARCH_VALUE}
             />

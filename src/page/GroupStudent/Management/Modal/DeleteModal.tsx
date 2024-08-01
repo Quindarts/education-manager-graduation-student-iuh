@@ -30,6 +30,7 @@ function DeleteGroupStudentModal(props: any) {
         py={12}
       >
         <Box borderRadius='50%' padding={10} sx={{ background: 'rgba(255,49,111,0.2)' }}>
+          
           <Icon color='#b31d1d82' height={70} width={70} icon='uiw:usergroup-delete' />{' '}
         </Box>
         <Typography variant='h3' mt={10} mb={14}>

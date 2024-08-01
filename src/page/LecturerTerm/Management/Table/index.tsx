@@ -96,12 +96,12 @@ function TableManagamentLecturer(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip title='Gỡ giảng viên khỏi học kì'>
-            <IconButton
-              color='error'
-              onClick={() => handleOpenDeleteModal(params.row.id, params.row.fullName)}
-            >
-              <Icon width={20} icon='material-symbols:digital-out-of-home-rounded' />
+          <Tooltip
+            onClick={() => handleOpenDeleteModal(params.row.id, params.row.fullName)}
+            title='Gỡ giảng viên khỏi học kì'
+          >
+            <IconButton color='error'>
+              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>

@@ -8,6 +8,9 @@ export const getTopicById = async (topicId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/topics/${topicId}`)
 }
 
+export const searchTopics = async (termId: string, keywords: string, searchField: string) => {
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics/query?termId=${termId}&keywords=${keywords}&searchField=${searchField}`)
+}
 //[HEAD LEC]
 export const getTopicsByTermByMajor = async (termId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/topics?termId=${termId}`)
