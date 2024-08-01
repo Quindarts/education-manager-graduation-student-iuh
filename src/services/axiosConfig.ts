@@ -3,7 +3,7 @@ import { getValueFromLocalStorage } from '@/utils/localStorage';
 import axios from 'axios';
 
 const axiosConfig = axios.create({
-  baseURL: `${env.BASE_URL}`,
+  baseURL: `${env.API_URL}`,
   headers: {
     'Content-Type': 'application/json',
   },

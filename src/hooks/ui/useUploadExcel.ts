@@ -129,7 +129,7 @@ const useUploadExcel = (props: UploadHandler) => {
       file: file,
       type: typeEvaluation
     }
-    return axiosUpload.post(`${env.BASE_URL}/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
+    return axiosUpload.post(`${env.API_URL}/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
