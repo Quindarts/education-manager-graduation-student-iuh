@@ -52,7 +52,7 @@ export const useTopic = () => {
 
     const handleSearchTopic = () => {
         return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('keywords')], () => searchTopics(termStore.currentTerm.id, getQueryField("keywords"), "name"), {
-            staleTime: Infinity,
+            staleTime: 1000 * (60 * 3), // 10 min,
         })
     }
 
@@ -60,7 +60,8 @@ export const useTopic = () => {
     //[GET BY TERM, MAJOR]
     const handleTopicsByTermByMajor = () => {
         return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, ''], () => getTopicsByTermByMajor(termStore.currentTerm.id), {
-            staleTime: Infinity,
+            staleTime: 1000 * (60 * 3), // 10 min,
+
         })
     }
 
@@ -79,7 +80,6 @@ export const useTopic = () => {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, ''] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
-
             },
             onError() {
                 enqueueSnackbar("Tạo đề tài thất bại", { variant: 'error' })

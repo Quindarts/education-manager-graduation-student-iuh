@@ -24,3 +24,10 @@ export const updatePassword = async (data: { password: string; newPassword: stri
         data,
     });
 }
+
+export const logout = async () => {
+    return await axiosConfig<AxiosResponse>({
+        url: `/api/v1/lecturers/logout`,
+        method: 'delete',
+    })
+}

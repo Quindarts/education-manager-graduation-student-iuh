@@ -1,6 +1,6 @@
 import { ErrorResponseType, ResponseType } from './../../types/axios.type';
 import { LoginResponse } from './../../types/entities/user';
-import { getMe, login, updatePassword } from "@/services/apiAuth";
+import { getMe, login, logout, updatePassword } from "@/services/apiAuth";
 import { RootState } from "@/store";
 import { setCurrentRoleRender, setMe } from "@/store/slice/lecturer.slice";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
@@ -50,18 +50,22 @@ export const useAuth = () => {
     }
 
     //[LOG OUT]
-    const handleLogout = () => {
-        removeValueInLocalStorage('accessToken');
-        removeValueInLocalStorage('refreshToken');
-        enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
-        dispatch(setMe({}));
-        dispatch(setCurrentMajor({}))
-        dispatch(setAllMajor([]))
-        dispatch(setAllTerm([]));
-        dispatch(setCurrentTerm({}));
-        dispatch(setCurrentRoleRender(''))
-        queryClient.clear()
-        navigate('/auth/login');
+    const handleLogout = async () => {
+        const data = await logout()
+        if (data) {
+            removeValueInLocalStorage('accessToken');
+            removeValueInLocalStorage('refreshToken');
+            enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
+            dispatch(setMe({}));
+            dispatch(setCurrentMajor({}))
+            dispatch(setAllMajor([]))
+            dispatch(setAllTerm([]));
+            dispatch(setCurrentTerm({}));
+            dispatch(setCurrentRoleRender(''))
+            queryClient.clear()
+            navigate('/auth/login');
+        }
+
     }
     const onUpdatePassword = () => {
         return useMutation(

@@ -11,8 +11,8 @@ function PromotionTextContent() {
       display={'flex'}
       width={'100%'}
     >
-      <img height={200} width={200} src='/public/images/workers.webp' />
-      <TitleManager mb={10} color={'grey.400'} textTransform={'uppercase'} variant='h1'>
+      <img height={200} width={200} src='/images/undraw_calculator_re_alsc.webp' />
+      <TitleManager mt={10} color={'grey.400'} textTransform={'uppercase'} variant='h6'>
         Tính năng này đang được phát triển
       </TitleManager>
     </Box>

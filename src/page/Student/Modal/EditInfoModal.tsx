@@ -65,7 +65,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
             initialValues={{
               username: `${data?.student?.username}`,
               fullName: `${data?.student?.fullName}`,
-              email: `${data?.student?.email}`,
+              email: `${data?.student?.email ? data.student.email : ''}`,
               phone: `${data?.student?.phone}`,
               dateOfBirth: data?.student.dateOfBirth ? dayjs(data?.student.dateOfBirth) : null,
               clazzName: `${data?.student?.clazzName}`,

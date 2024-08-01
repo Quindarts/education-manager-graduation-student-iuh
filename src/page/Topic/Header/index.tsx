@@ -37,26 +37,33 @@ function HeaderTopic() {
   return (
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={2}>
-        <Box flex={1} display={'flex'} gap={2} width={'full'}>
-          <Box width={150}>
-            <DropDown
-              placeholder='Tìm kiếm đề tài'
-              value={'name'}
-              onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
-              options={SEARCH_DROP_VALUE}
+        {currentRole.includes('all') && (
+          <Box flex={1} display={'flex'} gap={2} width={''}>
+            <Box width={150}>
+              <DropDown
+                placeholder='Tìm kiếm đề tài'
+                value={'name'}
+                onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
+                options={SEARCH_DROP_VALUE}
+              />
+            </Box>
+            <TextField
+              fullWidth
+              size='small'
+              defaultValue={getQueryField('keywords')}
+              onChange={onSearchChange}
+              onBlur={() => handleFocused(false)}
+              placeholder='Tim kiếm đề tài..'
             />
           </Box>
-          <TextField
-            fullWidth
-            size='small'
-            defaultValue={getQueryField('keywords')}
-            onChange={onSearchChange}
-            onBlur={() => handleFocused(false)}
-            placeholder='Tim kiếm đề tài..'
-          />
-        </Box>
+        )}
         {currentRole.includes('crud') && (
-          <>
+          <Box
+            width={currentRole.includes('all') ? 'auto' : '100%'}
+            justifyContent={'end'}
+            gap={2}
+            display={'flex'}
+          >
             <Button
               onClick={handleOpenModal}
               size='small'
@@ -67,14 +74,14 @@ function HeaderTopic() {
               <Icon icon='lets-icons:add-round' width={20} />
               Tạo mới đề tài
             </Button>
-          </>
+            <ModalUpload
+              label=''
+              labelToolTip='Tải lên Excel DS Đề tài'
+              entityUpload={TypeEntityUpload.TOPIC}
+            />
+          </Box>
         )}
 
-        <ModalUpload
-          label=''
-          labelToolTip='Tải lên Excel DS Đề tài'
-          entityUpload={TypeEntityUpload.TOPIC}
-        />
         {currentRole.includes('all') && (
           <Tooltip onClick={handleOpenChangeQuantityModal} title='Cập nhật số lượng Đề tài'>
             <Button

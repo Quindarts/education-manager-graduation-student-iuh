@@ -21,13 +21,14 @@ function TabPanelUI(props: any) {
     <Box sx={{ width: '100%', typography: 'h4' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'primary.main' }}>
-          <TabList onChange={handleChange} aria-label='lab API tabs example'>
-            <Tab label='Thông tin chung' value='1' />
-            <Tab label='Danh sách giảng viên' value='2' />
+          <TabList onChange={handleChange}>
+            <Tab label='Danh sách giảng viên' value='1' />
+
+            <Tab label='Thông tin thêm' value='2' />
           </TabList>
         </Box>
 
-        <TabPanel value={'1'}>
+        <TabPanel value={'2'}>
           {type === 'REVIEWER' ? (
             <Paper elevation={2} sx={{ px: 10, py: 6 }}>
               <Typography variant='h6' color='primary'>
@@ -132,7 +133,7 @@ function TabPanelUI(props: any) {
             </Paper>
           )}
         </TabPanel>
-        <TabPanel value={'2'}>
+        <TabPanel value={'1'}>
           <TableManagementGroupLecturer groupType={type} rows={groupLecturer.members} />
         </TabPanel>
       </TabContext>

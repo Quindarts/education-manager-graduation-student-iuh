@@ -174,7 +174,7 @@ function TableManagamentTerm(props: any) {
     {
       headerName: 'Tên Học Kỳ',
       field: 'name',
-      flex: 1.4,
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
     },
@@ -186,9 +186,9 @@ function TableManagamentTerm(props: any) {
     //   align: 'center',
     // },
     {
-      headerName: 'Ngày Bắt đầu   -  Ngày kết thúc',
+      headerName: 'Ngày bắt đầu   -  kết thúc',
       field: 'startDate',
-      flex: 2,
+      flex: 1.5,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
@@ -223,12 +223,11 @@ function TableManagamentTerm(props: any) {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
             {checkStatusGroup(params.row.startChooseGroupDate, params.row.endChooseGroupDate)}
-            <Tooltip title='Cập nhật đăng ký nhóm'>
-              <IconButton
-                onClick={() => handleOpenEditGroupRegister(params.row.id)}
-                color='primary'
-                size='small'
-              >
+            <Tooltip
+              onClick={() => handleOpenEditGroupRegister(params.row.id)}
+              title='Cập nhật đăng ký nhóm'
+            >
+              <IconButton color='primary' size='small'>
                 <Icon icon='flat-color-icons:info' />
               </IconButton>
             </Tooltip>
@@ -249,12 +248,11 @@ function TableManagamentTerm(props: any) {
               formatDates(params.row.startPublicTopicDate),
               formatDates(params.row.endPublicTopicDate),
             )}
-            <Tooltip title='Cập nhật Công bố Đề tài'>
-              <IconButton
-                onClick={() => handleOpenPublicTopicRegister(params.row.id)}
-                color='primary'
-                size='small'
-              >
+            <Tooltip
+              onClick={() => handleOpenPublicTopicRegister(params.row.id)}
+              title='Cập nhật Công bố Đề tài'
+            >
+              <IconButton color='primary' size='small'>
                 <Icon icon='flat-color-icons:info' />
               </IconButton>
             </Tooltip>
@@ -275,12 +273,11 @@ function TableManagamentTerm(props: any) {
               formatDates(params.row.startChooseTopicDate),
               formatDates(params.row.endChooseTopicDate),
             )}
-            <Tooltip title='Cập nhật đăng ký Đề tài'>
-              <IconButton
-                onClick={() => handleOpenEditTopicRegister(params.row.id)}
-                color='primary'
-                size='small'
-              >
+            <Tooltip
+              onClick={() => handleOpenEditTopicRegister(params.row.id)}
+              title='Cập nhật đăng ký Đề tài'
+            >
+              <IconButton color='primary' size='small'>
                 <Icon icon='flat-color-icons:info' />
               </IconButton>
             </Tooltip>
@@ -301,7 +298,10 @@ function TableManagamentTerm(props: any) {
               formatDates(params.row.startDiscussionDate),
               formatDates(params.row.endDiscussionDate),
             )}
-            <Tooltip title='Cập nhật Phản biện'>
+            <Tooltip
+              onClick={() => handleOpenEditTopicRegister(params.row.id)}
+              title='Cập nhật Phản biện'
+            >
               <IconButton
                 onClick={() => handleOpenInstruction(params.row.id)}
                 color='primary'
@@ -352,7 +352,10 @@ function TableManagamentTerm(props: any) {
               formatDates(params.row.startPublicResultDate),
               formatDates(params.row.endPublicResultDate),
             )}
-            <Tooltip title='Cập nhật công bố kết quả'>
+            <Tooltip
+              onClick={() => handleOpenPublicResult(params.row.id)}
+              title='Cập nhật công bố kết quả'
+            >
               <IconButton
                 onClick={() => handleOpenPublicResult(params.row.id)}
                 color='primary'
@@ -405,10 +408,11 @@ function TableManagamentTerm(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
-          height: 600,
+       
         }}
+        minHeight={350}
         columns={basicColumns}
-        totalItems={1}
+        totalItems={rows.length}
         totalPages={1}
         page={1}
         handleChangePage={() => {}}

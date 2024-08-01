@@ -85,13 +85,10 @@ function RolePage() {
           right={0}
         >
           <Paper>
-            <Typography m={5} variant='h5' fontWeight={500} color='primary'>
-              Chào mừng trở lại, vui lòng chọn vai trò{' '}
-            </Typography>
             <Box
               sx={{
-                width: 1000,
-                height: 500,
+                py: 10,
+                px: 10,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

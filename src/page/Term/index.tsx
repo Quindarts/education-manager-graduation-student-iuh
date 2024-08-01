@@ -14,7 +14,7 @@ function TermPage() {
   return (
     <>
       <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-        <TitleManager icon='quill:list' mb={8} mt={2}>
+        <TitleManager icon='quill:list' mb={0} mt={2}>
           Danh sách học kì {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
         </TitleManager>
         <HeaderTerm />

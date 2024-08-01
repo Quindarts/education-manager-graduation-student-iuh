@@ -105,6 +105,10 @@ function AddModal(props: any) {
                   value={values.expectedResult}
                   label='Dự kiến sản phẩm nghiên cứu của đề tài và khả năng ứng dụng'
                   placeholder='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
+                  errors={errors.expectedResult && touched.expectedResult ? true : false}
+                  helperText={
+                    errors.expectedResult && touched.expectedResult ? errors.expectedResult : ''
+                  }
                 />
               </Box>
               <Box my={4}>

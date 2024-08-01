@@ -10,7 +10,6 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validateSchemaLecturer } from '../../context';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 
 const GenderLecturer = [
@@ -82,10 +81,9 @@ function EditInfoModal(props: any) {
             initialValues={{
               fullName: `${data?.lecturer?.fullName}`,
               username: `${data?.lecturer?.username}`,
-              email: `${data?.lecturer?.email}`,
               phone: `${data?.lecturer?.phone}`,
               gender: `${data?.lecturer?.gender}`,
-              // role: `${data?.lecturer.role}`,
+              email: `${data?.lecturer?.email ? data.lecturer.email : ''}`,
               degree: `${data?.lecturer?.degree}`,
               majorId: `${data?.lecturer?.majorId}`,
             }}

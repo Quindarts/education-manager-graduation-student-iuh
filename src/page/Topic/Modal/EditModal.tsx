@@ -160,16 +160,6 @@ function EditModal(props: any) {
                     placeholder='Nhập vào chuẩn đầu ra'
                   />
                 </Box>
-                <Box my={4}>
-                  <TextEditor
-                    onChange={(value) => {
-                      setFieldValue('note', value);
-                    }}
-                    id='note'
-                    value={values.note}
-                    label='Ghi chú'
-                  />
-                </Box>
                 <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
                   <Button variant='contained' color='primary' onClick={onClose}>
                     <Icon icon='mdi:close-outline' />

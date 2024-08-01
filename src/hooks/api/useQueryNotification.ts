@@ -22,12 +22,14 @@ export const useNotification = () => {
     //[GET ALL]
     const handleGetAllNotificationsOfLecturer = () => {
         return useQuery([QueryKeysNotification.getNotificationsOfLecturer], () => getNotificationsOfLecturer(), {
-            staleTime: 5000,
+            refetchInterval: 1000 * (60 * 3),
+            staleTime: 1000 * (60 * 3), // 10 min,
         });
     };
 
     const handleGetNotificationById = (id: string) => {
         return useQuery([QueryKeysNotification.getNotificationById, id], () => getMyNotificationById(id), {
+            staleTime: 1000 * (60 * 60), // 10 min,
         })
     }
     const handleGetMyNotification = () => {

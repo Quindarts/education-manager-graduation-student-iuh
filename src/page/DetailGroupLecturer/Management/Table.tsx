@@ -119,21 +119,11 @@ function TableManagementGroupLecturer(props: any) {
     {
       headerName: '',
       field: 'name8',
-      flex: 1,
+      flex: 0.5,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip title='Mời rời nhóm'>
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => handleOpenLeaveGroupModal(params.row.id)}
-            >
-              <Icon icon='pepicons-print:leave-circle' width={20} />
-            </IconButton>
-          </Tooltip>
-        </Box>
+        <Button onClick={() => handleOpenLeaveGroupModal(params.row.id)}>Rời nhóm</Button>
       ),
     },
   ];
@@ -160,9 +150,8 @@ function TableManagementGroupLecturer(props: any) {
             rows={rows}
             sx={{
               bgcolor: 'white',
-              height: 250,
             }}
-            minHeight={250}
+            minHeight={400}
             columns={currentRole.includes('all') ? HeadLecturerColumns : LecturerColumns}
             totalItems={1}
             totalPages={1}

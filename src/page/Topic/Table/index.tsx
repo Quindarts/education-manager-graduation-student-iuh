@@ -89,7 +89,6 @@ function TableManagamentTopic(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-
     {
       headerName: 'Trạng thái',
       field: 'text2',
@@ -182,7 +181,7 @@ function TableManagamentTopic(props: any) {
     },
     {
       headerName: 'SL nhóm tối đa',
-      field: 'quantityGroupMax',
+      field: 'quantity_group_max',
       flex: 0.5,
       headerAlign: 'center',
       align: 'center',
