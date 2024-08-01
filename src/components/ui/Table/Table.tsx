@@ -68,7 +68,7 @@ export default function Table(props: Props) {
                   style={{ opacity: 0.7 }}
                   width={200}
                   height={200}
-                  src='/images/nodata.png'
+                  src='/images/nodata.webp'
                   alt='nodata'
                 />
               </Box>

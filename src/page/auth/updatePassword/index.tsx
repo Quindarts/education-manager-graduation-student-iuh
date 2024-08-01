@@ -59,7 +59,6 @@ function UpdatePassword() {
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((show: boolean) => !show);
 
   const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
-
   return (
     <Box>
       <Card sx={{ width: 600, m: 'auto', my: 20 }}>

@@ -13,5 +13,9 @@ export default defineConfig({
   server: {
     port: 5000,
     host: true
-  }
+  },
+  build: {
+    minify: "esbuild", // Sử dụng 'esbuild' để minify JavaScript
+    cssCodeSplit: true, // Tách riêng CSS thành các tệp riêng
+  },
 });

@@ -63,7 +63,7 @@ function Navbar() {
         >
           <Icon width={30} icon={isOpen ? 'grommet-icons:previous' : 'ep:menu'} />
         </Box>
-        <img width={100} src='/images/logo-light.png' />
+        <img width={100} src='/images/logo-light.webp' />
         <Box>
           <Typography
             fontWeight={'bold'}

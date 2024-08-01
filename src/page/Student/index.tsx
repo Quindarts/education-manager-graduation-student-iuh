@@ -40,7 +40,7 @@ function StudentPage() {
         Danh sách sinh viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
       </TitleManager>
       <HeaderStudent />
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <SekeletonUI />
       ) : (
         <>

@@ -35,6 +35,10 @@ function LecturerTermManagement() {
       refetch();
     }
   }, [getQueryField('keywords')]);
+  console.log(
+    "🚀 ~ LecturetPage ~ ('isLoading' + isLoading + 'isFeth' + isFetching:",
+    'isLoading' + isLoading + 'isFeth' + isFetching,
+  );
 
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
@@ -44,7 +48,7 @@ function LecturerTermManagement() {
       </TitleManager>
       <>
         <HeaderLecturerTerm />
-        {isLoading && !isFetching ? (
+        {isLoading ? (
           <SekeletonUI />
         ) : (
           <TableManagamentLecturer

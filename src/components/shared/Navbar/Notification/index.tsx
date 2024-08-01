@@ -108,7 +108,7 @@ function Notification() {
             ) : data?.notificationLecturers.length === 0 ? (
               <Box width={'100%'}>
                 <Box textAlign={'center'} m={'auto'} p='auto' width={240}>
-                  <img width={100} src='/public/images/bell-alarm.png' alt='' />
+                  <img width={100} src='/public/images/bell-alarm.webp' alt='' />
                   <Typography
                     variant='h6'
                     fontWeight={'500'}

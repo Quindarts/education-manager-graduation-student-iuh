@@ -4,7 +4,6 @@ import Container from '@mui/material/Container';
 import { color } from '@/theme/variables/palette';
 
 function AuthLayout() {
-  
   return (
     <Container
       maxWidth={false}
@@ -28,7 +27,7 @@ function AuthLayout() {
       ></Box>
       <Box
         sx={{
-          backgroundImage: 'url(/images/auth-bg.jpg)',
+          backgroundImage: 'url(/images/auth-bg.webp)',
           width: '100%',
           height: '380px',
           backgroundSize: 'cover',

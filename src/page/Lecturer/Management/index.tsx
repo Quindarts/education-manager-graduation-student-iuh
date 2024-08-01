@@ -32,6 +32,7 @@ function LecturerManagementPage() {
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
   };
+
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       <TitleManager mb={8} mt={2}>
@@ -39,7 +40,7 @@ function LecturerManagementPage() {
       </TitleManager>
       <>
         <HeaderLecturer />
-        {isLoading || isFetching ? (
+        {isLoading ? (
           <SekeletonUI />
         ) : (
           <TableManagamentLecturer

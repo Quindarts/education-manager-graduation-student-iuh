@@ -44,7 +44,7 @@ export default function Login() {
                 justifyItems: 'center',
               }}
             >
-              <img width={150} height={60} src='/images/logo-light.png' alt='logo_app' />
+              <img width={150} height={60} src='/images/logo-light.webp' alt='logo_app' />
               <Typography
                 mt={10}
                 variant='h3'
