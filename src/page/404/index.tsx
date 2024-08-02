@@ -1,14 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  Container,
-  Typography,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Button,
-  ListItemIcon,
-} from '@mui/material';
+import { Typography, Box, List, ListItem, ListItemText, Button, ListItemIcon } from '@mui/material';
 import { Icon } from '@iconify/react';
 
 const TextStyled = styled(Box)`

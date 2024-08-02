@@ -10,6 +10,7 @@ import RefuseTopicModal from '../Modal/RefuseTopicModal';
 import EditModal from '../Modal/EditModal';
 import { CustomToolbar } from './custom';
 import DeleteModal from '../Modal/DeleteModal';
+import { useTerm } from '@/hooks/api/useQueryTerm';
 
 function TableManagamentTopic(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, isApprovePermission, ...rest } =

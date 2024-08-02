@@ -234,6 +234,7 @@ export default function AdminSidebar() {
                   ) : (
                     <TitleManager mb={10} color={'grey.900'} fontWeight={500} textAlign={'center'}>
                       {lecturerStore.me.user.majorName}
+                      
                     </TitleManager>
                   )}
                 </Box>

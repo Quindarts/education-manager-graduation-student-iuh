@@ -8,6 +8,7 @@ export interface InitTermSliceType {
     partCurrentTerm: {
         isInTerm: boolean,
         isChooseGroup: boolean,
+        isPublicTopic: boolean,
         isChooseTopic: boolean,
         isDiscussion: boolean,
         isReport: boolean,
@@ -40,12 +41,13 @@ const initTermSlice: InitTermSliceType = {
     },
     allTerm: [],
     partCurrentTerm: {
-        isInTerm: true,
-        isChooseGroup: true,
-        isChooseTopic: true,
-        isDiscussion: true,
-        isReport: true,
-        isPublicResult: true
+        isInTerm: false,
+        isChooseGroup: false,
+        isPublicTopic: false,
+        isChooseTopic: false,
+        isDiscussion: false,
+        isReport: false,
+        isPublicResult: false
     }
 }
 const checkedValidDistanceDate = (endDate: string) => {
@@ -56,13 +58,15 @@ export const useTermSlice = createSlice({
     initialState: initTermSlice,
     reducers: {
         setCurrentTerm: (state: Omit<InitTermSliceType, 'allTerm'>, { payload }: PayloadAction<any>) => {
+            alert('re-rf')
             state.currentTerm = payload
-            state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.startDate)
-            state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.startChooseGroupDate)
-            state.partCurrentTerm.isChooseTopic = checkedValidDistanceDate(payload.startChooseTopicDate)
-            state.partCurrentTerm.isDiscussion = checkedValidDistanceDate(payload.startDiscussionDate)
-            state.partCurrentTerm.isReport = checkedValidDistanceDate(payload.startReportDate)
-            state.partCurrentTerm.isPublicResult = checkedValidDistanceDate(payload.startPublicResultDate)
+            state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.endDate)
+            state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.endChooseGroupDate)
+            state.partCurrentTerm.isPublicTopic = checkedValidDistanceDate(payload.endPublicTopicDate)
+            state.partCurrentTerm.isChooseTopic = checkedValidDistanceDate(payload.endChooseTopicDate)
+            state.partCurrentTerm.isDiscussion = checkedValidDistanceDate(payload.endDiscussionDate)
+            state.partCurrentTerm.isReport = checkedValidDistanceDate(payload.endReportDate)
+            state.partCurrentTerm.isPublicResult = checkedValidDistanceDate(payload.endPublicResultDate)
         },
         setAllTerm: (state: Pick<InitTermSliceType, 'allTerm'>, { payload }: PayloadAction<any>) => {
             state.allTerm = payload

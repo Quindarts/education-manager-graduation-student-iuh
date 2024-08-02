@@ -9,6 +9,8 @@ import { useSnackbar } from 'notistack';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { useMajor } from './useQueryMajor';
 import { Term } from '@/types/entities/term';
+import { useAuth } from './useAuth';
+import { RoleCheck } from '@/types/enum';
 
 export enum TermQueryKey {
     allTerm = 'allTerm',
@@ -21,9 +23,9 @@ export function useTerm() {
 
     const termStore = useSelector((state: RootState) => state.termSlice);
     const { majorStore } = useMajor()
+    const { lecturerStore } = useAuth()
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
-
 
     //[GET ALL]
     const handleGetAllTerm = () => {
@@ -86,12 +88,12 @@ export function useTerm() {
         return useMutation((data: Pick<Term, 'startDate' | 'endDate'>) => updateTermWithType(termId, type, data), {
             onSuccess() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
-                queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorStore.currentMajor.id] });
+                // const isAdminRole = lecturerStore.currentRoleRender === RoleCheck.ADMIN;
+                // if (!isAdminRole) {
+                //     queryClient.invalidateQueries({ queryKey: [TermQueryKey.currentTerm, lecturerStore.me.user.majorId] });
+                // }
+                queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor,] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, type, termId] });
-
-                if (termStore.currentTerm.id === termId) {
-                    queryClient.invalidateQueries({ queryKey: [TermQueryKey.currentTerm] });
-                }
             },
             onError() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });
