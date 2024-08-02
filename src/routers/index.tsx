@@ -7,6 +7,7 @@ import AuthLayout from '@/components/shared/layouts/AuthLayout/AuthLayout';
 import RolePage from '@/page/auth/role';
 import Login from '@/page/auth/login';
 import DetailNotificationPage from '@/page/DetailNotification';
+import NotFoundPage from '@/page/404';
 const RegisterTemplate = lazy(() => import('@/page/auth/register'));
 const DashboardTemplate = lazy(() => import('@/page/Dashboard/Dashboard'));
 const TermTemplate = lazy(() => import('@/page/Term'));
@@ -112,7 +113,7 @@ function Routing() {
         <Route index path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
         <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />
       </Route>
-      <Route path='*' element={<h1>404</h1>} />
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
 }
