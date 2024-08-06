@@ -9,11 +9,13 @@ import DropDown from '@/components/ui/Dropdown';
 import { checkTypeEvaluation, ENUM_SCORE_STUDENT } from '@/utils/validations/transcript.validation';
 import useQueryTranscript from '@/hooks/api/useQueryTranscript';
 import { convertListGroupStudentScore } from '@/utils/convertDataTable';
+import TranscriptOfGroupStudent from './Transcript';
 
 function ScoreStudentPage() {
   const [currentDataRow, setCurrentDataRow] = useState(null);
   const [currentRowSelectId, setCurrentRowSelectId] = useState('');
   const [typeScoreStudent, setTypeScoreStudent] = useState<string>(`${ENUM_SCORE_STUDENT[0]?._id}`);
+  
   const { hanleGetEvalutaionsForScoring, handleGetUnTranscriptGroupStudentsByType } =
     useQueryTranscript();
 
@@ -26,27 +28,8 @@ function ScoreStudentPage() {
     setCurrentDataRow(params.row);
     setCurrentRowSelectId(params.id);
   };
-
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={2}>
-      <Box>
-        <Box mb={10} display={'flex'} gap={10}>
-          <TitleManager icon='quill:list' mb={8} mt={2}>
-            Chấm điểm Sinh viên
-          </TitleManager>
-          <Box width={180}>
-            <DropDown
-              onChange={(e: any) => {
-                setTypeScoreStudent(e.target.value);
-                setCurrentRowSelectId('');
-                setCurrentDataRow(null);
-              }}
-              value={typeScoreStudent}
-              options={ENUM_SCORE_STUDENT}
-            />
-          </Box>
-        </Box>
-      </Box>
       <Box display='flex' gap={10} pb={4}>
         <Box
           sx={{
@@ -55,6 +38,22 @@ function ScoreStudentPage() {
           }}
           width={420}
         >
+          <Box mb={10} display={'flex'} gap={10}>
+            <TitleManager icon='quill:list' mb={8} mt={2}>
+              Chấm điểm Sinh viên
+            </TitleManager>
+            <Box width={180}>
+              <DropDown
+                onChange={(e: any) => {
+                  setTypeScoreStudent(e.target.value);
+                  setCurrentRowSelectId('');
+                  setCurrentDataRow(null);
+                }}
+                value={typeScoreStudent}
+                options={ENUM_SCORE_STUDENT}
+              />
+            </Box>
+          </Box>
           <Box display={'flex'} justifyContent={'space-between'}>
             {loadingGrStudent ? (
               <Box mx='auto' mt='50%'>
@@ -80,7 +79,13 @@ function ScoreStudentPage() {
               </Box>
             </Box>
           ) : (
-            <></>
+            <>
+              <TranscriptOfGroupStudent
+                groupStudent={currentDataRow}
+                evaluations={isSuccess ? data.evaluations : []}
+                transcriptType={typeScoreStudent}
+              />
+            </>
           )}
         </Box>
       </Box>

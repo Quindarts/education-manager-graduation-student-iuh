@@ -1,15 +1,16 @@
 import Modal from '@/components/ui/Modal';
+import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import { useStudent } from '@/hooks/api/useQueryStudent';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
 function ResetPassword(props: any) {
-  const { onClose, open, studentId, name } = props;
-  const { onResetPassword } = useStudent();
+  const { onClose, open, lecturerId, name } = props;
+  const { onResetPassword } = useLecturer();
   const { mutate: reset, isSuccess } = onResetPassword();
   const handleSubmit = () => {
-    reset(studentId);
+    reset(lecturerId);
   };
   useEffect(() => {
     if (isSuccess) {
@@ -31,7 +32,7 @@ function ResetPassword(props: any) {
           <Icon color='#094f7482' height={70} width={70} icon='teenyicons:key-outline' />{' '}
         </Box>
         <Typography variant='h3' mt={10} mb={14}>
-          Cấp lại mật khẩu cho sinh viên {name} ?
+          Cấp lại mật khẩu cho giảng viên {name} ?
         </Typography>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
           <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>

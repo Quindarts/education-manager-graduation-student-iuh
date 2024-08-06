@@ -62,11 +62,8 @@ function RolePage() {
   const { data: dataTermFecth, isSuccess: successTerm } = handleGetAllTermByMajor(
     data?.lecturer.majorId,
   );
-
   if (successTerm) dispatch(setAllTerm(dataTermFecth.terms));
-
   const accessToken: string = getValueFromLocalStorage('accessToken') || '';
-
   return (
     <>
       {!accessToken ? (

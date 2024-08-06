@@ -31,3 +31,10 @@ export const logout = async () => {
         method: 'delete',
     })
 }
+export const forgotPass = async (username: string) => {
+    return await axiosConfig<AxiosResponse>({
+        url: `/api/v1/lecturers/forgot-password`,
+        method: 'post',
+        data: { username: username }
+    })
+}

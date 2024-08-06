@@ -7,13 +7,13 @@ import EditInfoModal from '../Modal/EditInfoModal';
 import { useNavigate } from 'react-router-dom';
 import { checkGender } from '@/utils/validations/person.validation';
 import DeleteModal from '../Modal/DeleteModal';
+import ResetPassword from '../Modal/ResetPassword';
 
 function TableManagamentLecturer(props: any) {
   const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
   const navigate = useNavigate();
 
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
-
   const handleCloseEditInfoModal = () => {
     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
   };
@@ -22,11 +22,27 @@ function TableManagamentLecturer(props: any) {
   };
 
   const [openDeleteModal, setOpenDeleteModal] = useState({ lecturerId: '', isOpen: false });
-
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal({ ...openDeleteModal, isOpen: false });
   };
 
+  const [openResetPasswordStudentModal, setOpenResetPasswordStudentModal] = useState({
+    lecturerId: '',
+    name: '',
+    username: '',
+    isOpen: false,
+  });
+
+  const handleCloseResetPasswordStudentModal = () => {
+    setOpenResetPasswordStudentModal({ ...openResetPasswordStudentModal, isOpen: false });
+  };
+  const handleOpenResetPasswordStudentModal = (
+    lecturerId: string,
+    name: string,
+    username: string,
+  ) => {
+    setOpenResetPasswordStudentModal({ lecturerId, name, username, isOpen: true });
+  };
   const basicColumns: GridColDef[] = [
     {
       headerName: 'Mã Giảng viên',
@@ -95,6 +111,20 @@ function TableManagamentLecturer(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
+          <Tooltip
+            onClick={() =>
+              handleOpenResetPasswordStudentModal(
+                params.row.id,
+                params.row.fullName,
+                params.row.username,
+              )
+            }
+            title='Cấp lại mật khẩu'
+          >
+            <IconButton color='primary' size='small'>
+              <Icon icon='carbon:password' width={20} style={{ color: '#0288d1' }} />
+            </IconButton>
+          </Tooltip>
           <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Cập nhật thông tin'>
             <IconButton>
               <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
@@ -154,6 +184,13 @@ function TableManagamentLecturer(props: any) {
         lecturerId={openDeleteModal.lecturerId}
         open={openDeleteModal.isOpen}
         onClose={handleCloseDeleteModal}
+      />
+      <ResetPassword
+        name={openResetPasswordStudentModal.name}
+        lecturerId={openResetPasswordStudentModal.lecturerId}
+        open={openResetPasswordStudentModal.isOpen}
+        onClose={handleCloseResetPasswordStudentModal}
+        username={openResetPasswordStudentModal.username}
       />
     </>
   );

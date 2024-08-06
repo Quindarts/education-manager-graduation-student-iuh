@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 function EditStatus(props: any) {
-  const { onClose, open, studentId, status } = props;
+  const { onClose, open, studentId, name, status } = props;
 
   const { onLockOnlyStudent } = useStudent();
   const { mutate: locked, isSuccess } = onLockOnlyStudent(studentId);
@@ -18,7 +18,7 @@ function EditStatus(props: any) {
     <Modal open={open} onClose={onClose}>
       <Box m={10}>
         <Typography mb={4} fontWeight={600} variant='h3'>
-          {status ? 'Đóng tài khoản Sinh viên ?' : 'Mở tài khoản Sinh viên ?'}
+          {status ? 'Đóng tài khoản Sinh viên ' : 'Mở tài khoản Sinh viên '} {' ' + name + ' ?'}
         </Typography>
 
         <Box mt={12} sx={{ display: 'flex', gap: 3 }}>

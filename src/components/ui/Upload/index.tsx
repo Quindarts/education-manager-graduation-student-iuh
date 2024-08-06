@@ -10,14 +10,18 @@ import {
   Skeleton,
   Tooltip,
   Typography,
+  Fab,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import TitleManager from '../Title';
 import styled from '@emotion/styled';
-import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useAuth } from '@/hooks/api/useAuth';
+import LecturerExcelDemo from './Demo/Lecturer';
+import StudentExcelDemo from './Demo/Student';
+import TopicExcelDemo from './Demo/Topic';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -55,6 +59,17 @@ interface ModalUploadPropsType {
   labelToolTip?: string;
 }
 
+const checkModel = (entityUpload: string) => {
+  if (entityUpload === TypeEntityUpload.LECTURER) {
+    return <LecturerExcelDemo />;
+  }
+  if (entityUpload === TypeEntityUpload.STUDENT) {
+    return <StudentExcelDemo />;
+  }
+  if (entityUpload === TypeEntityUpload.TOPIC) {
+    return <TopicExcelDemo />;
+  }
+};
 function ModalUpload(props: ModalUploadPropsType) {
   const {
     entityUpload,
@@ -82,6 +97,7 @@ function ModalUpload(props: ModalUploadPropsType) {
   };
   const {
     importExcel,
+    // exportExcel,
     valueLoading,
     totalSize,
     currentFile,
@@ -114,7 +130,7 @@ function ModalUpload(props: ModalUploadPropsType) {
           {label}
         </Button>
       </Tooltip>
-      <Modal maxWidth={'md'} open={isOpen} onClose={handleCloseUpload}>
+      <Modal maxWidth={'lg'} open={isOpen} onClose={handleCloseUpload}>
         <Paper sx={{ px: 10, py: 7 }} elevation={3}>
           <Box display={'flex'} gap={4}>
             <TitleManager mb={4} variant='h4' textTransform={'uppercase'}>
@@ -201,6 +217,7 @@ function ModalUpload(props: ModalUploadPropsType) {
               )}
             </Box>
           </Paper>
+
           <Box>
             {currentFile !== undefined ? (
               <Card sx={{ p: 6, borderRadius: 2, bgcolor: 'rgb(0,82,177,0.1)' }}>
@@ -238,7 +255,12 @@ function ModalUpload(props: ModalUploadPropsType) {
               <Skeleton />
             )}
           </Box>
-
+          <Box my={10}>
+            <TitleManager fontWeight={400} component={'i'} color={'error.main'}>
+              Chú thích*: Mẫu Excel bao gồm các cột:{' '}
+            </TitleManager>
+            <Box mt={4}>{checkModel(entityUpload)}</Box>
+          </Box>
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={handleCloseUpload}>
               <Icon icon='mdi:close-outline' />

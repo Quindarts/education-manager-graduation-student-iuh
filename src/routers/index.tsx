@@ -8,6 +8,8 @@ import RolePage from '@/page/auth/role';
 import Login from '@/page/auth/login';
 import DetailNotificationPage from '@/page/DetailNotification';
 import NotFoundPage from '@/page/404';
+import ForgotPassword from '@/page/auth/forgot';
+const DetailGroupSupportPage = lazy(() => import('@/page/DetailGroupSupport'));
 const RegisterTemplate = lazy(() => import('@/page/auth/register'));
 const DashboardTemplate = lazy(() => import('@/page/Dashboard/Dashboard'));
 const TermTemplate = lazy(() => import('@/page/Term'));
@@ -74,6 +76,7 @@ function Routing() {
           path={APP_ROUTES.GROUP_SUPPORT.MANAGEMENT}
           element={<GroupSupportManagementTemplate />}
         />
+        <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL} element={<DetailGroupSupportPage />} />
         <Route path={APP_ROUTES.GROUP_SUPPORT.SCORE} element={<ScoreGroupSupportTemplate />} />
         {/* <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL_SCORE_GROUP} element={<GroupSupportManagementTemplate />} /> */}
         //ROUTE USER
@@ -112,6 +115,7 @@ function Routing() {
       <Route path='/auth' element={<AuthLayout />}>
         <Route index path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
         <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />
+        <Route path={APP_ROUTES.USER.FORGOT} element={<ForgotPassword />} />
       </Route>
       <Route path='*' element={<NotFoundPage />} />
     </Routes>

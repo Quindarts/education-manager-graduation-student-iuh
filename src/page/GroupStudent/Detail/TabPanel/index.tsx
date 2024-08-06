@@ -6,11 +6,13 @@ import TabList from '@mui/lab/TabList';
 import { TabPanel } from '@mui/lab';
 import BasicInformationGrStudentPage from '@/page/DetailGroupStudent/BasicInformation';
 import StudentInGroupPage from '@/page/DetailGroupStudent/StudentInGroup';
+import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
 function TabPanelUI(props: any) {
   const { groupStudent } = props;
   const [value, setValue] = React.useState('1');
-
+  const { handleUiRender } = useGroupStudent();
+  const currentRole = handleUiRender();
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -24,13 +26,12 @@ function TabPanelUI(props: any) {
             <Tab label='Danh sách sinh viên' value='2' />
           </TabList>
         </Box>
-
-        <TabPanel value={'1'}>
-          <BasicInformationGrStudentPage groupStudent={groupStudent} />
-        </TabPanel>
-        <TabPanel value={'2'}>
-          <StudentInGroupPage />
-        </TabPanel>
+          <TabPanel value={'1'}>
+            <BasicInformationGrStudentPage groupStudent={groupStudent} />
+          </TabPanel>
+          <TabPanel value={'2'}>
+            <StudentInGroupPage />
+          </TabPanel>
       </TabContext>
     </Box>
   );

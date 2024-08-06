@@ -13,13 +13,14 @@ import { Icon } from '@iconify/react';
 import { useAuth } from '@/hooks/api/useAuth';
 import { CircularProgress } from '@mui/material';
 import { IAuth } from '@/types/entities/user';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const { handleLogin } = useAuth();
   const { mutate: mutateLogin, isLoading } = handleLogin();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
-
+  const navigate = useNavigate();
   const formik = useFormik<IAuth>({
     initialValues: {
       username: '',
@@ -112,6 +113,21 @@ export default function Login() {
                   ),
                 }}
               />
+              <Typography
+                variant='body1'
+                mb={4}
+                onClick={() => navigate('/auth/forgot-password')}
+                sx={{
+                  '&:hover': {
+                    color: 'primary.dark',
+                    cursor: 'pointer',
+                  },
+                }}
+                color='initial'
+                textAlign={'end'}
+              >
+                Quên mật khẩu ?
+              </Typography>
               <Button variant='contained' type='submit' fullWidth color='primary'>
                 Đăng nhập
                 {isLoading && (

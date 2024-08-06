@@ -10,6 +10,9 @@ interface ScoreInputPropsType {
 }
 function ScoreInput(props: ScoreInputPropsType) {
   const { scoreMax, evaluationId, handleChangeScore, studentId, oldScore } = props;
+  console.log('🚀 ~ ScoreInput ~ oldScore:', oldScore);
+  console.log('🚀 ~ ScoreInput ~ evaluationId:', evaluationId);
+  console.log('🚀 ~ ScoreInput ~ studentId:', studentId);
   const [errorMess, setErrorMess] = useState('');
   const [score, setScore] = useState(`${oldScore}`);
 
@@ -39,6 +42,7 @@ function ScoreInput(props: ScoreInputPropsType) {
           padding: '2px 4px',
           width: 50,
           fontSize: 16,
+          color: 'red',
         }}
         onChange={(e) => {
           handleSetPoint(e.target.value);

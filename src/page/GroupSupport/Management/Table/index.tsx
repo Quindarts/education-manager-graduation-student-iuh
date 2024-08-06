@@ -35,6 +35,28 @@ function TableManagamentGroupStudent(props: any) {
         return <Typography>{params.row.numOfMembers}</Typography>;
       },
     },
+    {
+      headerName: 'Chức năng',
+      field: 'name2',
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params: any) => {
+        return (
+          <Typography
+            sx={{
+              '&:hover': {
+                color: 'primary.dark',
+                cursor: 'pointer',
+              },
+            }}
+            onClick={() => navigate(`/group-supports/detail/${params.row.id}`)}
+          >
+            Xem chi tiết
+          </Typography>
+        );
+      },
+    },
   ];
   return (
     <Box>

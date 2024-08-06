@@ -11,12 +11,8 @@ export const getEvaluationsForScoring: any = (termId: string, type: string) => {
     return axiosConfig.get(`/api/v1/evaluations/scores?termId=${termId}&type=${type}`)
 }
 
-export const createTranscript: any = (data: BodyEvaluation) => {
-    return axiosConfig.post("/api/v1/transcripts", data)
-}
-
-export const updateTranscript: any = (id: string, score: number) => {
-    return axiosConfig.put(`/api/v1/transcripts/${id}`, { score: score })
+export const updateTranscript: any = (transcripts: BodyEvaluation[]) => {
+    return axiosConfig.put(`/api/v1/transcripts/list`, { transcripts: transcripts })
 }
 
 export const getUnTranscriptGroupStudentsByType: any = (termId: string, type: string) => {

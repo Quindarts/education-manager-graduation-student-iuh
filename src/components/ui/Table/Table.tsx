@@ -36,6 +36,7 @@ export default function Table(props: Props) {
       sx={{
         width: '100%',
         minHeight,
+        
       }}
     >
       <DataGrid
@@ -81,7 +82,11 @@ export default function Table(props: Props) {
           loadingOverlay: () => <LinearProgress />,
         }}
         sx={{
-          fontSize: 14,
+          fontSize: {
+            xs: 12,
+            md: 12,
+            xl: 14,
+          },
           color: 'grey.700',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
             outline: 'none !important',

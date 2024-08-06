@@ -31,17 +31,20 @@ export const useTopic = () => {
 
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
+        // const isOpenUpdate = termStore.partCurrentTerm.isChooseTopic
         var permissions: string[] = []
+        // if (isOpenUpdate) {
+        // permissions.push('active')
         if (currentRole === RoleCheck.HEAD_LECTURER) {
             permissions.push('all')
             permissions.push('crud')
         }
-        else if (currentRole === RoleCheck.LECTURER) {
-            permissions.push('crud')
-        }
-        else {
-            permissions.push('readOnly')
-        }
+        else (currentRole === RoleCheck.LECTURER)
+        permissions.push('crud')
+        // }
+        // else {
+        // permissions.push('unactive')
+        // }
         return permissions
     }
 

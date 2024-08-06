@@ -37,7 +37,7 @@ function TableManagerReviewScore(props: any) {
     {
       headerName: 'STT',
       field: 'stt',
-      flex: 0.25,
+      flex: 0.4,
       align: 'center',
       headerAlign: 'center',
     },

@@ -7,6 +7,7 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import { useAuth } from '@/hooks/api/useAuth';
 
 function GroupSupportManagement() {
   const [view, setView] = React.useState('table');
@@ -14,8 +15,11 @@ function GroupSupportManagement() {
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
     setView(nextView);
   };
+  const { lecturerStore } = useAuth();
   const { handleGetGroupStudentByLecturerByTerm } = useGroupStudent();
-  const { data, isFetching, isLoading } = handleGetGroupStudentByLecturerByTerm();
+  const { data, isFetching, isLoading } = handleGetGroupStudentByLecturerByTerm(
+    lecturerStore.me.user.id,
+  );
 
   return (
     <Paper sx={{ py: 20, px: 10 }} elevation={1}>
@@ -25,8 +29,7 @@ function GroupSupportManagement() {
         </TitleManager>
       </Box>
 
-      <HeaderGroupStudent />
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <SekeletonUI />
       ) : (
         <>

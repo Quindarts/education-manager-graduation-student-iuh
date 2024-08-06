@@ -58,7 +58,6 @@ export const useTermSlice = createSlice({
     initialState: initTermSlice,
     reducers: {
         setCurrentTerm: (state: Omit<InitTermSliceType, 'allTerm'>, { payload }: PayloadAction<any>) => {
-            alert('re-rf')
             state.currentTerm = payload
             state.partCurrentTerm.isInTerm = checkedValidDistanceDate(payload.endDate)
             state.partCurrentTerm.isChooseGroup = checkedValidDistanceDate(payload.endChooseGroupDate)

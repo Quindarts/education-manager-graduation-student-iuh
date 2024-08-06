@@ -59,6 +59,7 @@ export const APP_ROUTES = {
   GROUP_SUPPORT: {
     MANAGEMENT: "/group-supports",
     SCORE: '/group-supports/score',
+    DETAIL: '/group-supports/detail/:group_id',
     DETAIL_SCORE_GROUP: '/group-supports/score/group_student_id'
   },
   FILE_UPLOADED: '/files',
@@ -70,7 +71,8 @@ export const APP_ROUTES = {
     PROFILE: '/profile',
     LOGIN: '/auth/login',
     ROLE: '/',
-    UPDATE_PASS: '/profile/update-password'
+    UPDATE_PASS: '/profile/update-password',
+    FORGOT: '/auth/forgot-password'
   },
   USER_AUTHORIZATION: {
     MANAGEMENT: "/authorizations",

@@ -1,6 +1,6 @@
 import { ErrorResponseType, ResponseType } from './../../types/axios.type';
 import { LoginResponse } from './../../types/entities/user';
-import { getMe, login, logout, updatePassword } from "@/services/apiAuth";
+import { forgotPass, getMe, login, logout, updatePassword } from "@/services/apiAuth";
 import { RootState } from "@/store";
 import { setCurrentRoleRender, setMe } from "@/store/slice/lecturer.slice";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
@@ -48,7 +48,6 @@ export const useAuth = () => {
             },
         })
     }
-
     //[LOG OUT]
     const handleLogout = async () => {
         const data = await logout()
@@ -73,6 +72,8 @@ export const useAuth = () => {
             {
                 onSuccess: () => {
                     enqueueSnackbar('Cập nhật mật khẩu thành công', { variant: "success" });
+                    navigate('/profile')
+
                 },
                 onError: (error: any) => {
                     enqueueSnackbar(error?.message, { variant: "error" });
@@ -80,10 +81,21 @@ export const useAuth = () => {
             }
         )
     }
-
+    const onForgotPassword = () => {
+        return useMutation((username: string) => forgotPass(username), {
+            onSuccess: () => {
+                enqueueSnackbar('Mật khẩu mới đã gửi về email của bạn.', { variant: "success" });
+                navigate('/auth/login')
+            },
+            onError: (error: any) => {
+                enqueueSnackbar(error?.message, { variant: "error" });
+            }
+        })
+    }
 
 
     return {
+        onForgotPassword,
         onUpdatePassword,
         handleLogin,
         handleGetMe,

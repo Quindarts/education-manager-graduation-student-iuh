@@ -1,5 +1,5 @@
 import UploadFileExcel from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { TypeEntityUpload } from '@/hooks/ui/useExcel';
 import { Box, Button } from '@mui/material';
 import React from 'react';
 

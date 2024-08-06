@@ -36,4 +36,6 @@ export const deleteLecturerById = (lecturerId: string) => {
     return axiosConfig.delete<ResponseType, any>(`/api/v1/lecturers/${lecturerId}`)
 }
 
-
+export const resetPassword = (lecturerId: string) => {
+    return axiosConfig.post<ResponseType, any>(`/api/v1/lecturers/reset-password`, { id: lecturerId })
+}

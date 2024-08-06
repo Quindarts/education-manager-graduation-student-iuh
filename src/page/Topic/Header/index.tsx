@@ -4,7 +4,7 @@ import { Box, Button, TextField, Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { TypeEntityUpload } from '@/hooks/ui/useExcel';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import UpdateQuantityTopicModal from '../Modal/UpdateQuantityTopic';
 import useSearch from '@/hooks/ui/useParams';

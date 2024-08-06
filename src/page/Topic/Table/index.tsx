@@ -11,11 +11,12 @@ import EditModal from '../Modal/EditModal';
 import { CustomToolbar } from './custom';
 import DeleteModal from '../Modal/DeleteModal';
 import { useTerm } from '@/hooks/api/useQueryTerm';
+import { useTopic } from '@/hooks/api/useQueryTopic';
 
 function TableManagamentTopic(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, isApprovePermission, ...rest } =
     props;
-
+  const { handleUiRender } = useTopic();
   //handle
   const [openInfoModal, setOpenEditInfoModal] = useState({ topicId: '', isOpen: false });
   const handleCloseInfoModal = () => {
@@ -81,12 +82,12 @@ function TableManagamentTopic(props: any) {
       field: 'fullName',
       headerAlign: 'center',
       align: 'left',
-      flex: 0.6,
+      flex: 0.8,
     },
     {
       headerName: 'SL nhóm tối đa',
-      field: 'quantity_group_max',
-      flex: 0.5,
+      field: 'quantityGroupMax',
+      flex: 0.4,
       headerAlign: 'center',
       align: 'center',
     },
@@ -132,19 +133,26 @@ function TableManagamentTopic(props: any) {
     {
       headerName: 'Duyệt đề tài',
       field: 'status',
-      flex: 0.7,
+      flex: 0.8,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
         return (
           <>
             {params.row.status === 'PENDING' && (
-              <Box display={'flex'} gap={4}>
+              <Box display={'flex'} gap={2}>
                 <Button
                   size='small'
                   onClick={() => handleOpenAcceptModal(params.row.id)}
                   color='success'
                   variant='outlined'
+                  sx={{
+                    fontSize: {
+                      md: 12,
+                      lg: 12,
+                    },
+                    px: 0,
+                  }}
                 >
                   <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
                   Duyệt
@@ -182,7 +190,7 @@ function TableManagamentTopic(props: any) {
     },
     {
       headerName: 'SL nhóm tối đa',
-      field: 'quantity_group_max',
+      field: 'quantityGroupMax',
       flex: 0.5,
       headerAlign: 'center',
       align: 'center',
@@ -206,20 +214,22 @@ function TableManagamentTopic(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip
-            title='Chỉnh sửa thông tin đề tài'
-            onClick={() => handleOpenEditModal(params.row.id)}
-          >
-            <IconButton color='primary'>
-              <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
-            </IconButton>
-          </Tooltip>
+          {params.row.status !== 'APPROVED' && (
+            <Tooltip
+              title='Chỉnh sửa thông tin đề tài'
+              onClick={() => handleOpenEditModal(params.row.id)}
+            >
+              <IconButton color='primary'>
+                <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Xem thông tin đề tài'>
             <IconButton>
               <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
-          {params.row.status !== 'APPROVED' ? (
+          {params.row.status !== 'APPROVED' && handleUiRender().includes('crud') ? (
             <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
               <IconButton>
                 <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
@@ -232,13 +242,15 @@ function TableManagamentTopic(props: any) {
       ),
     },
   ];
+
   return (
     <Box {...rest}>
       {' '}
       <>
         <Table
           rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
-          minHeight={500}
+          // minHeight={500}
+          rowHeight={100}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={rows.length}
           totalPages={1}

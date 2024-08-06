@@ -44,13 +44,6 @@ function InfoModal(props: any) {
                   placeholder='tên giảng viên'
                 />
               </Box>
-              <Box flex={1}>
-                <CustomTextField
-                  label='Trạng thái đề tài'
-                  value={data?.topic?.status}
-                  placeholder='tên giảng viên'
-                />
-              </Box>
             </Box>
             <CustomTextField
               label='Mô tả đề tài'

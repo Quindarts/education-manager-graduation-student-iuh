@@ -5,7 +5,7 @@ import { useState } from 'react';
 import DropDown from '@/components/ui/Dropdown';
 import TitleManager from '@/components/ui/Title';
 import ModalUpload from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { TypeEntityUpload } from '@/hooks/ui/useExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import SekeletonUI from '@/components/ui/Sekeleton';

@@ -29,6 +29,7 @@ const ROUTE_LABELS: { [key: string]: string } = {
   '/reviews': 'Quản lý Tiêu chí đánh giá',
 
   '/group-supports': 'Quản lý Nhóm hướng dẫn',
+  '/group-supports/detail': 'Chi tiết nhóm hướng dẫn',
   '/group-supports/score': 'Điểm Nhóm hướng dẫn',
   '/group-supports/score/group_student_id': 'Chi tiết điểm nhóm',
   '/files': 'Tệp đã tải lên',

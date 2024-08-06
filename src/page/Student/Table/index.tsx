@@ -8,7 +8,7 @@ import EditStatus from '../Modal/EditStatus';
 import DeleteModal from '../Modal/DeleteModal';
 import { checkGender } from '@/utils/validations/person.validation';
 import ModalUpload from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
+import { TypeEntityUpload } from '@/hooks/ui/useExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import ResetPassword from '../Modal/ResetPassword';
 import EditStatusMuiltiStudent from '../Modal/EditStatusMuiltiStudentModal';
@@ -17,19 +17,24 @@ import { CustomToolbar } from './custom';
 function TableManagamentStudent(props: any) {
   const { rows, totalItems, totalPage, page, handleChangePage } = props;
 
-  const [openEditInfoModal, setOpenEditInfoModal] = useState({ studentId: '', isOpen: false });
+  const [openEditInfoModal, setOpenEditInfoModal] = useState({
+    studentId: '',
+    name: '',
+    isOpen: false,
+  });
 
   const { termStore } = useTerm();
 
   const handleCloseEditInfoModal = () => {
     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
   };
-  const handleOpenInfoModal = (studentId: string) => {
-    setOpenEditInfoModal({ studentId, isOpen: true });
+  const handleOpenInfoModal = (studentId: string, name: string) => {
+    setOpenEditInfoModal({ studentId, name, isOpen: true });
   };
 
   const [openEditStatusStudentModal, setOpenEditStatusStudentModal] = useState({
     studentId: '',
+    name: '',
     status: true,
     isOpen: false,
   });
@@ -37,13 +42,14 @@ function TableManagamentStudent(props: any) {
   const handleCloseEditStatusStudentModal = () => {
     setOpenEditStatusStudentModal({ ...openEditStatusStudentModal, isOpen: false });
   };
-  const handleOpenStatusStudentModal = (studentId: string, status: boolean) => {
-    setOpenEditStatusStudentModal({ studentId, status, isOpen: true });
+  const handleOpenStatusStudentModal = (studentId: string, name: string, status: boolean) => {
+    setOpenEditStatusStudentModal({ studentId, status, name, isOpen: true });
   };
 
   //
   const [openResetPasswordStudentModal, setOpenResetPasswordStudentModal] = useState({
     studentId: '',
+    name: '',
     username: '',
     isOpen: false,
   });
@@ -51,20 +57,25 @@ function TableManagamentStudent(props: any) {
   const handleCloseResetPasswordStudentModal = () => {
     setOpenResetPasswordStudentModal({ ...openResetPasswordStudentModal, isOpen: false });
   };
-  const handleOpenResetPasswordStudentModal = (studentId: string, username: string) => {
-    setOpenResetPasswordStudentModal({ studentId, username, isOpen: true });
+  const handleOpenResetPasswordStudentModal = (
+    studentId: string,
+    name: string,
+    username: string,
+  ) => {
+    setOpenResetPasswordStudentModal({ studentId, name, username, isOpen: true });
   };
 
   const [openDeleteStudentModal, setOpenDeleteStudentModal] = useState({
     studentId: '',
+    name: '',
     isOpen: false,
   });
 
   const handleCloseDeleteStudentModal = () => {
     setOpenDeleteStudentModal({ ...openDeleteStudentModal, isOpen: false });
   };
-  const handleOpenDeleteStudentModal = (studentId: string) => {
-    setOpenDeleteStudentModal({ studentId, isOpen: true });
+  const handleOpenDeleteStudentModal = (studentId: string, name: string) => {
+    setOpenDeleteStudentModal({ studentId, name, isOpen: true });
   };
 
   const [openEditStatusMultiStudent, setOpenEditStatusMultiStudent] = useState<{
@@ -170,7 +181,9 @@ function TableManagamentStudent(props: any) {
           <Button
             variant='contained'
             sx={{ py: 0, fontSize: 12 }}
-            onClick={() => handleOpenStatusStudentModal(params.row.id, params.row.isActive)}
+            onClick={() =>
+              handleOpenStatusStudentModal(params.row.id, params.row.fullName, params.row.isActive)
+            }
             color={params.row.isActive ? 'success' : 'error'}
           >
             {' '}
@@ -191,14 +204,23 @@ function TableManagamentStudent(props: any) {
       headerAlign: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Cập nhật thông tin'>
+          <Tooltip
+            onClick={() => handleOpenInfoModal(params.row.id, params.row.fullName)}
+            title='Cập nhật thông tin'
+          >
             <IconButton size='small'>
               <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
           <Box></Box>
           <Tooltip
-            onClick={() => handleOpenResetPasswordStudentModal(params.row.id, params.row.username)}
+            onClick={() =>
+              handleOpenResetPasswordStudentModal(
+                params.row.id,
+                params.row.fullName,
+                params.row.username,
+              )
+            }
             title='Cấp lại mật khẩu'
           >
             <IconButton color='primary' size='small'>
@@ -206,7 +228,7 @@ function TableManagamentStudent(props: any) {
             </IconButton>
           </Tooltip>
           <Tooltip
-            onClick={() => handleOpenDeleteStudentModal(params.row.id)}
+            onClick={() => handleOpenDeleteStudentModal(params.row.id, params.row.fullName)}
             title='Xóa sinh viên'
           >
             <IconButton color='error' size='small'>
@@ -263,6 +285,7 @@ function TableManagamentStudent(props: any) {
         />
       </Box>
       <ResetPassword
+        name={openResetPasswordStudentModal.name}
         studentId={openResetPasswordStudentModal.studentId}
         open={openResetPasswordStudentModal.isOpen}
         onClose={handleCloseResetPasswordStudentModal}
@@ -274,12 +297,14 @@ function TableManagamentStudent(props: any) {
         onClose={handleCloseEditInfoModal}
       />
       <EditStatus
+        name={openEditStatusStudentModal.name}
         status={openEditStatusStudentModal.status}
         open={openEditStatusStudentModal.isOpen}
         onClose={handleCloseEditStatusStudentModal}
         studentId={openEditStatusStudentModal.studentId}
       />
       <DeleteModal
+        name={openDeleteStudentModal.name}
         open={openDeleteStudentModal.isOpen}
         onClose={handleCloseDeleteStudentModal}
         studentId={openDeleteStudentModal.studentId}

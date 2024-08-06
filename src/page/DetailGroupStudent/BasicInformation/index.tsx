@@ -30,7 +30,7 @@ function BasicInformationGrStudentPage(props: any) {
         </TitleManager>
         <Typography color={'text.primary'} variant='body1'>
           Giảng viên Hướng dẫn :{' '}
-          {groupStudent.lecturerId ? groupStudent.lecturerId : 'Chưa có giảng viên hướng dẫn'}
+          {groupStudent.lecturerName ? groupStudent.lecturerName : 'Chưa có giảng viên hướng dẫn'}
         </Typography>
         <Typography color={'text.primary'} variant='body1'>
           Ngày tạo nhóm : {dayjs(groupStudent.created_at).format('DD/MM/YYYY')}
@@ -51,7 +51,7 @@ function BasicInformationGrStudentPage(props: any) {
             </TitleManager>
           </AccordionSummary>
           <AccordionDetails>
-            {!groupStudent.topic ? (
+            {!groupStudent.topicId ? (
               <Box
                 mx={'auto'}
                 display={'flex'}
@@ -67,7 +67,7 @@ function BasicInformationGrStudentPage(props: any) {
                     style={{ opacity: 0.7 }}
                     width={200}
                     height={200}
-                    src='/images/nodata.png'
+                    src='/images/nodata.webp'
                     alt='nodata'
                   />
                 </Box>
@@ -78,53 +78,53 @@ function BasicInformationGrStudentPage(props: any) {
             ) : (
               <Box pb={8}>
                 <Typography variant='h3' textAlign={'center'} fontWeight={600} color='grey.900'>
-                  Tên đề tài: {'  '} {groupStudent?.topic.name}
+                  Tên đề tài: {'  '} {groupStudent.topicName}
                 </Typography>
-                <Typography my={4} fontWeight={500} variant='h6'>
+                <Typography my={4} fontWeight={600} variant='h6'>
                   Mô tả
                   <CustomTextField
                     disabled
                     multiline
-                    value={groupStudent?.topic.description}
+                    value={groupStudent.topicDescription}
                     maxRows={8}
                   />
-                  <Typography fontWeight={400} px={2} variant='body1'></Typography>
+                  <Typography fontWeight={600} px={2} variant='body1'></Typography>
                 </Typography>
                 <CustomTextField
                   multiline
                   disabled
-                  value={groupStudent?.topic?.expectedResult}
+                  value={groupStudent?.topicExpectedResult}
                   maxRows={8}
                   label='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
                   placeholder='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
                 />
-                <Typography my={4} fontWeight={500} variant='h6'>
+                <Typography my={4} fontWeight={600} variant='h6'>
                   Mục tiêu cần đạt được
                   <CustomTextField
                     disabled
                     multiline
-                    value={groupStudent?.topic.target}
+                    value={groupStudent.topicTarget}
                     maxRows={8}
                   />
                 </Typography>
-                <Typography my={4} fontWeight={500} variant='h6'>
+                <Typography my={4} fontWeight={600} variant='h6'>
                   Yêu cầu đầu vào
                   <CustomTextField
                     disabled
                     multiline
-                    value={groupStudent?.topic.require_input}
+                    value={groupStudent.topicRequireInput}
                     maxRows={8}
                   />
                 </Typography>
-                <Typography my={4} fontWeight={500} variant='h6'>
+                <Typography my={4} fontWeight={600} variant='h6'>
                   Chuẩn đầu ra
                   <CustomTextField
                     disabled
                     multiline
-                    value={groupStudent?.topic.standard_output}
+                    value={groupStudent.topicStandardOutput}
                     maxRows={12}
                   />
-                  <Typography fontWeight={400} px={2} variant='body1'></Typography>
+                  <Typography fontWeight={600} px={2} variant='body1'></Typography>
                 </Typography>
               </Box>
             )}

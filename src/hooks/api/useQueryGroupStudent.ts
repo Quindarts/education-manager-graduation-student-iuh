@@ -7,6 +7,8 @@ import { useMutation, useQuery } from "react-query"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { useTerm } from "./useQueryTerm"
+import { useAuth } from './useAuth';
+import { RoleCheck } from '@/types/enum';
 
 export const enum QueryKeysGroupStudent {
     getGroupStudentByTerm = 'getGroupStudentByTerm',
@@ -26,7 +28,23 @@ const useGroupStudent = () => {
     const { termStore } = useTerm()
     const termId = termStore.currentTerm.id
     const dispatch = useDispatch()
+    const { lecturerStore } = useAuth()
 
+    const handleUiRender = (): string[] => {
+        const currentRole = lecturerStore.currentRoleRender;
+        var permissions: string[] = []
+        if (currentRole === RoleCheck.HEAD_LECTURER) {
+            permissions.push('all')
+            permissions.push('crud')
+        }
+        else if (currentRole === RoleCheck.LECTURER) {
+            permissions.push('readOnly')
+        }
+        else {
+            permissions.push('readOnly')
+        }
+        return permissions
+    }
 
     const handleManagerRenderActionGroupStudent = (limit: number, page: number, searchField: string,
         keywords: string | number) => {
@@ -48,9 +66,9 @@ const useGroupStudent = () => {
         return useQuery([QueryKeysGroupStudent.getGroupStudentByTerm, termStore.currentTerm.id, 10, 1], () => getGroupStudentByTerm(termStore.currentTerm.id, 10, 1))
     }
     //[GET BY TERM]
-    const handleGetGroupStudentByLecturerByTerm = (termId?: string,) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerSupport, termStore.currentTerm.id], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id), {
-            staleTime: 5000
+    const handleGetGroupStudentByLecturerByTerm = (lecturerId: string) => {
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerSupport, termStore.currentTerm.id, lecturerId], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id, lecturerId), {
+            staleTime: 10000
         })
     }
     const handleGetGroupStudentByLecturerTermId = (lecturerTermId?: string) => {
@@ -109,6 +127,7 @@ const useGroupStudent = () => {
     return {
         params,
         renderUi,
+        handleUiRender,
         handleManagerRenderActionGroupStudent,
         handleGetCountOfGroupStudent,
         handleGetStudentNoHaveGroup,

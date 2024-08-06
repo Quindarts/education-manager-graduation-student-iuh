@@ -103,7 +103,6 @@ function EditInfoModal(props: any) {
                   name='username'
                   label='Mã giảng viên'
                   placeholder='Mã Giảng viên'
-                  disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.username && touched.username ? true : false}

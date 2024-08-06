@@ -91,7 +91,6 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   required
                   value={values.username}
                   placeholder='Ví dụ: 20189141'
-                  disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.username && touched.username ? true : false}

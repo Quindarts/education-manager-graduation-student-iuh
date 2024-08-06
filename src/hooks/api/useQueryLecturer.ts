@@ -1,5 +1,5 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider';
-import { createLecturer, deleteLecturerById, getAllLecturer, getLecturerById, updateLecturerById } from "@/services/apiLecturer"
+import { createLecturer, deleteLecturerById, getAllLecturer, getLecturerById, resetPassword, updateLecturerById } from "@/services/apiLecturer"
 import { useSnackbar } from 'notistack';
 import { useMutation, useQuery } from "react-query"
 import { useSelector } from 'react-redux';
@@ -78,7 +78,22 @@ export const useLecturer = () => {
         },
         );
     }
+    //[UPDATE]
+    const onResetPassword = () => {
+        return useMutation((lecturerId: string) => resetPassword(lecturerId), {
+            onSuccess() {
+                enqueueSnackbar("Reset mật khẩu giảng viên thành công", { variant: 'success' })
+            },
+            onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+            },
 
+        })
+    }
     //[UPDATE]
     const onUpdateLecturer = (id?: string) => {
         const lecturerId = id ? id : me.user.id
@@ -134,6 +149,7 @@ export const useLecturer = () => {
         renderUi,
         paramTotalPage: paramTotalPage.lecturerMajor,
         onCreateLecturer,
+        onResetPassword,
         onDeleteLecturer,
         onUpdateLecturer,
         handleGetLecturerById,

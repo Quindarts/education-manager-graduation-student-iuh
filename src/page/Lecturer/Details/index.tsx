@@ -15,12 +15,12 @@ function DetailsLecturerPage() {
   const { handleGetLecturerById } = useLecturer();
   const { data, isLoading } = handleGetLecturerById(`${lecturer_id}`);
   return (
-    <Paper sx={{ px: 20, py: 10, minHeight: '60vh' }} elevation={2}>
+    <Paper sx={{ px: 10, py: 10, minHeight: '60vh' }} elevation={2}>
       {isLoading ? (
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>Thông tin {checkRoleLecturer(data.lecturer.role)}</TitleManager>
+          <TitleManager textTransform={'uppercase'}>Thông tin giảng viên</TitleManager>
           <Box mt={20} display={'flex'} gap={8}>
             <Box>
               <Avatar sx={{ width: 80, height: 80 }} />

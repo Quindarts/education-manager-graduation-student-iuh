@@ -11,6 +11,11 @@ import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
 import { User } from '@/types/entities/user';
 import { env } from '@/utils/env';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
+
+
+
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -86,8 +91,17 @@ const useUploadExcel = (props: UploadHandler) => {
     return EXTENSIONS.includes(extension);
   };
 
-  const importExcel = async (e: any) => {
+  // const exportExcel = () => {
+  //   const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  //   const fileExtension = '.xlsx';
+  //   const ws = XLSX.utils.json_to_sheet(csvData);
+  //   const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+  //   const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  //   const data = new Blob([excelBuffer], { type: fileType });
+  //   FileSaver.saveAs(data, fileName + fileExtension);
 
+  // }
+  const importExcel = async (e: any) => {
     //read file
     const file = e.target.files[0];
     setFileName(file.name);
@@ -185,6 +199,7 @@ const useUploadExcel = (props: UploadHandler) => {
       })
   }
   return {
+    // exportExcel,
     importExcel,
     setFileName,
     setTotalSize,
