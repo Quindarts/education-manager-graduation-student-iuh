@@ -9,6 +9,7 @@ import Login from '@/page/auth/login';
 import DetailNotificationPage from '@/page/DetailNotification';
 import NotFoundPage from '@/page/404';
 import ForgotPassword from '@/page/auth/forgot';
+import GuidePage from '@/page/Guide';
 const DetailGroupSupportPage = lazy(() => import('@/page/DetailGroupSupport'));
 const RegisterTemplate = lazy(() => import('@/page/auth/register'));
 const DashboardTemplate = lazy(() => import('@/page/Dashboard/Dashboard'));
@@ -117,6 +118,7 @@ function Routing() {
         <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />
         <Route path={APP_ROUTES.USER.FORGOT} element={<ForgotPassword />} />
       </Route>
+      <Route path={APP_ROUTES.GUIDE} element={<GuidePage />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );

@@ -2,7 +2,7 @@ import { RoleCheck } from "@/types/enum";
 
 export const APP_ROUTES = {
   DASHBOARD: '/',
-
+  GUIDE: '/user-guide',
   MAJOR: {
     MANAGEMENT: '/majors',
     CREATE: '/majors/create',
