@@ -15,6 +15,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import Feature1 from './Tab/Feature1';
 
 const drawerWidth = 240;
 
@@ -177,6 +178,7 @@ const GuidePage: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>Mô tả chi tiết về {LIST_FEATURE[selectedSubTab].title}.</Typography>
+              <Feature1 />
             </AccordionDetails>
           </Accordion>
         )}
