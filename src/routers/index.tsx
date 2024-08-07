@@ -24,7 +24,6 @@ const GroupStudentManagementTemplate = lazy(() => import('@/page/GroupStudent/Ma
 const GroupStudentDetailTemplate = lazy(() => import('@/page/GroupStudent/Detail'));
 const ScoreStudentTemplate = lazy(() => import('@/page/ScoreStudent'));
 const GroupSupportManagementTemplate = lazy(() => import('@/page/GroupSupport/Management'));
-const ScoreGroupSupportTemplate = lazy(() => import('@/page/GroupSupport/ScoreManager'));
 const CreateGroupLecturerTemplate = lazy(() => import('@/page/GroupLecturer/Create'));
 const UpdatePassPage = lazy(() => import('@/page/auth/updatePassword'));
 const ProfileTemplate = lazy(() => import('@/page/auth/profile'));
@@ -78,7 +77,7 @@ function Routing() {
           element={<GroupSupportManagementTemplate />}
         />
         <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL} element={<DetailGroupSupportPage />} />
-        <Route path={APP_ROUTES.GROUP_SUPPORT.SCORE} element={<ScoreGroupSupportTemplate />} />
+        {/* <Route path={APP_ROUTES.GROUP_SUPPORT.SCORE} element={<ScoreGroupSupportTemplate />} /> */}
         {/* <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL_SCORE_GROUP} element={<GroupSupportManagementTemplate />} /> */}
         //ROUTE USER
         <Route path={APP_ROUTES.USER.REGISTER} element={<RegisterTemplate />} />
