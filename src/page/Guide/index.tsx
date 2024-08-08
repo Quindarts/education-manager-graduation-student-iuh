@@ -16,23 +16,35 @@ import {
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import Feature1 from './Tab/Feature1';
+import Feature2 from './Tab/Feature2';
+import Feature3 from './Tab/Feature3';
+import Feature4 from './Tab/Feature4';
+import Feature5 from './Tab/Feature5';
+import Feature6 from './Tab/Feature6';
+import Feature7 from './Tab/Feature7';
+import Feature8 from './Tab/Feature8';
+import Feature9 from './Tab/Feature9';
+import Feature10 from './Tab/Feature10';
+import Feature11 from './Tab/Feature11';
+import Feature12 from './Tab/Feature12';
+import Feature13 from './Tab/Feature13';
 
 const drawerWidth = 240;
 
 const LIST_FEATURE = [
-  { title: 'Quản lý học kì', id: 'feature1' },
-  { title: 'Quản lý chuyên ngành', id: 'feature2' },
-  { title: 'Quản lý sinh viên', id: 'feature3' },
-  { title: 'Quản lý giảng viên chuyên ngành', id: 'feature4' },
-  { title: 'Quản lý giảng viên hướng dẫn', id: 'feature5' },
-  { title: 'Quản lý tiêu chí đánh giá', id: 'feature6' },
-  { title: 'Quản lý đề tài', id: 'feature7' },
-  { title: 'Quản lý nhóm sinh viên', id: 'feature8' },
-  { title: 'Quản lý sinh viên', id: 'feature9' },
-  { title: 'Quản lý nhóm giảng viên', id: 'feature10' },
-  { title: 'Quản lý phân công chấm điểm', id: 'feature11' },
-  { title: 'Quản lý chấm điểm & bảng điểm', id: 'feature12' },
-  { title: 'Thống kê', id: 'feature13' },
+  { title: 'Quản lý học kì', id: 'feature1', feature: <Feature1 /> },
+  { title: 'Quản lý chuyên ngành', id: 'feature2', feature: <Feature2 /> },
+  { title: 'Quản lý sinh viên', id: 'feature3', feature: <Feature3 /> },
+  { title: 'Quản lý giảng viên chuyên ngành', id: 'feature4', feature: <Feature4 /> },
+  { title: 'Quản lý giảng viên hướng dẫn', id: 'feature5', feature: <Feature5 /> },
+  { title: 'Quản lý tiêu chí đánh giá', id: 'feature6', feature: <Feature6 /> },
+  { title: 'Quản lý đề tài', id: 'feature7', feature: <Feature7 /> },
+  { title: 'Quản lý nhóm sinh viên', id: 'feature8', feature: <Feature8 /> },
+  // { title: 'Quản lý sinh viên', id: 'feature9', feature: <Feature9 /> },
+  { title: 'Quản lý nhóm giảng viên', id: 'feature10', feature: <Feature10 /> },
+  { title: 'Quản lý phân công chấm điểm', id: 'feature11', feature: <Feature11 /> },
+  { title: 'Quản lý chấm điểm & bảng điểm', id: 'feature12', feature: <Feature12 /> },
+  { title: 'Thống kê', id: 'feature13', feature: <Feature13 /> },
 ];
 
 const GuidePage: React.FC = () => {
@@ -163,24 +175,14 @@ const GuidePage: React.FC = () => {
           padding: 3,
         }}
       >
-        <Typography variant='h4' gutterBottom>
+        <Typography variant='h3' mx={4} my={6} fontWeight={'700'} color='grey.900' gutterBottom>
           Hướng Dẫn Sử Dụng Phần Mềm
         </Typography>
 
         {selectedMainTab === 'features' && selectedSubTab !== null && (
-          <Accordion sx={{ marginBottom: 2 }}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls={`panel${selectedSubTab}-content`}
-              id={`panel${selectedSubTab}-header`}
-            >
-              <Typography>{LIST_FEATURE[selectedSubTab].title}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>Mô tả chi tiết về {LIST_FEATURE[selectedSubTab].title}.</Typography>
-              <Feature1 />
-            </AccordionDetails>
-          </Accordion>
+          <Box bgcolor='rgb(255, 255, 255)' mt={6} mx={10}>
+            {LIST_FEATURE[selectedSubTab].feature}
+          </Box>
         )}
 
         {selectedMainTab === 'description' && (
