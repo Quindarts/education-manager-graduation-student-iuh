@@ -13,9 +13,9 @@ export const getTypeEvaluation = (typeEvaluation: string) => {
 export const getFileNameExportEvaluation = (typeEvaluation: string) => {
     switch (typeEvaluation) {
         case 'ADVISOR':
-            return 'GVHD_PhieuChamDiem_CuoiKy_KLTN';
+            return 'HD_PhieuChamDiem_CuoiKy_KLTN';
         case 'REVIEWER':
-            return 'GVPB_PhieuChamDiem_CuoiKy_KLTN';
+            return ' PB_PhieuChamDiem_CuoiKy_KLTN';
         case 'REPORT':
             return 'Hoidong_PhieuChamDiem_CuoiKy_KLTN';
     }

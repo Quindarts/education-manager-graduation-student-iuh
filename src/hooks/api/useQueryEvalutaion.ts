@@ -28,7 +28,7 @@ const useEvaluation = () => {
 
     const handleGetEvalutationByType = (termId?: string, type?: TypeEvaluation) => {
         return useQuery([QueryEvaluation.getEvaluationByType, termId, type], () => getEvaluationByTermByType(termId, type), {
-            staleTime: 1000
+            staleTime: 1000 * (60 * 20)
         })
     }
     const handleGetEvaluationById = (evaluationId?: string) => {

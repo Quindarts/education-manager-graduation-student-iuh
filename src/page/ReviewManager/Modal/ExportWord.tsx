@@ -26,10 +26,13 @@ import docTranscriptReviewer from '@/components/iframe/PageWord/docUtils/docTran
 import docTranscriptCouncil from '@/components/iframe/PageWord/docUtils/docTranscriptCouncil';
 import SheetTranscriptReviewer from '@/components/iframe/PageWord/SheetTranscriptReviewer';
 import BaseExportDataOfLecturer from '@/components/iframe/BaseText/BaseExportDataOfLecturer';
+import { useGlobalContextReview } from '../Context';
 
 function ExportWordModal(props: ExportWordModalProps) {
   const { open, onClose, typeReport, evaluations, permissions } = props;
   const [fileName, setFileName] = useState(getFileNameExportEvaluation(typeReport));
+  const { topic, lecturerSupportName, groupStudentName, lecturerToScoreName, groupMember } =
+    useGlobalContextReview();
 
   useEffect(() => {
     setFileName(getFileNameExportEvaluation(typeReport));
@@ -38,13 +41,34 @@ function ExportWordModal(props: ExportWordModalProps) {
   const { onExportDocxFile } = useDocx();
   const handleSubmit = () => {
     if (typeReport === 'ADVISOR')
-      return onExportDocxFile(`${fileName}`, docTranscriptAdvisor(evaluations));
+      return onExportDocxFile(
+        `${fileName}` + `${groupStudentName ? '_' + groupStudentName : ''}`,
+        docTranscriptAdvisor(
+          evaluations,
+          topic,
+          lecturerSupportName,
+          groupStudentName,
+          lecturerToScoreName,
+          groupMember,
+        ),
+      );
     else if (typeReport === 'REPORT')
-      return onExportDocxFile(`${fileName}`, docTranscriptCouncil(evaluations));
+      return onExportDocxFile(
+        `${fileName}` + `${groupStudentName ? '_' + groupStudentName : ''}`,
+        docTranscriptCouncil(evaluations),
+      );
     else if (typeReport === 'REVIEWER')
-      return onExportDocxFile(`${fileName}`, docTranscriptReviewer(evaluations));
+      return onExportDocxFile(
+        `${fileName}` + `${groupStudentName ? '_' + groupStudentName : ''}`,
+        docTranscriptReviewer(evaluations),
+      );
     return;
   };
+
+  const { onClearData } = useGlobalContextReview();
+  useEffect(() => {
+    onClearData();
+  }, [open]);
   return (
     <Modal maxWidth='lg' open={open} onClose={onClose}>
       <Box px={6} sx={{ height: '94vh' }} py={6}>
@@ -54,7 +78,16 @@ function ExportWordModal(props: ExportWordModalProps) {
         </TitleManager>
         <Box sx={{ display: 'flex', gap: 10, px: 10, py: 6 }}>
           <Box width={'calc(50%)'}>
-            {typeReport === 'ADVISOR' && <SheetTranscriptAdvisor evaluations={evaluations} />}
+            {typeReport === 'ADVISOR' && (
+              <SheetTranscriptAdvisor
+                lecturerSupportName={lecturerSupportName}
+                groupStudentName={groupStudentName}
+                lecturerToScoreName={lecturerToScoreName}
+                groupMember={groupMember}
+                topic={topic}
+                evaluations={evaluations}
+              />
+            )}
             {typeReport === 'REVIEWER' && <SheetTranscriptReviewer evaluations={evaluations} />}
             {typeReport === 'REPORT' && <SheetTranscriptCouncil evaluations={evaluations} />}
           </Box>
@@ -62,7 +95,7 @@ function ExportWordModal(props: ExportWordModalProps) {
             <TitleManager>Tải xuống phiếu chấm</TitleManager>
             <Formik
               initialValues={{
-                fileName: fileName,
+                fileName: fileName + `${groupStudentName ? '_' + groupStudentName : ''}`,
               }}
               onSubmit={() => {}}
             >
@@ -76,7 +109,9 @@ function ExportWordModal(props: ExportWordModalProps) {
                           setFileName(e.target.value);
                         }}
                         onBlur={handleBlur}
-                        value={`${values.fileName}`}
+                        value={
+                          `${values.fileName}` + `${groupStudentName ? '_' + groupStudentName : ''}`
+                        }
                         label='Tên file'
                       />
                     </Box>
