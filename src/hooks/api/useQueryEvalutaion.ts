@@ -21,7 +21,7 @@ const useEvaluation = () => {
             permissions.push('all')
         }
         else {
-            permissions.push('readOnly')
+            permissions.push('crud')
         }
         return permissions
     }

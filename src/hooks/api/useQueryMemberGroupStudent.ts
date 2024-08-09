@@ -14,7 +14,9 @@ const useMemberGroupStudent = () => {
     const { termStore } = useTerm()
     //[GET MEMBER]
     const handleGetMemberInGroupStudent = (id: string) => {
-        return useQuery([QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id], () => getMemberInGroupStudent(id))
+        return useQuery([QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id], () => getMemberInGroupStudent(id), {
+            enabled: !!id
+        })
     }
     //[UPDATE]
     const onUpdateStatusStudentMember = (id: string, studentId: string) => {

@@ -9,6 +9,7 @@ interface ExportWordModalProps {
   termId: string;
   typeReport: string;
   evaluations: any;
+  permissions: any[];
 }
 import useDocx from '@/hooks/ui/useDocx';
 import { Icon } from '@iconify/react';
@@ -24,9 +25,10 @@ import docTranscriptAdvisor from '@/components/iframe/PageWord/docUtils/docTrans
 import docTranscriptReviewer from '@/components/iframe/PageWord/docUtils/docTranscriptReviewer';
 import docTranscriptCouncil from '@/components/iframe/PageWord/docUtils/docTranscriptCouncil';
 import SheetTranscriptReviewer from '@/components/iframe/PageWord/SheetTranscriptReviewer';
+import BaseExportDataOfLecturer from '@/components/iframe/BaseText/BaseExportDataOfLecturer';
 
 function ExportWordModal(props: ExportWordModalProps) {
-  const { open, onClose, typeReport, evaluations } = props;
+  const { open, onClose, typeReport, evaluations, permissions } = props;
   const [fileName, setFileName] = useState(getFileNameExportEvaluation(typeReport));
 
   useEffect(() => {
@@ -51,12 +53,12 @@ function ExportWordModal(props: ExportWordModalProps) {
           Xuất phiếu Chấm điểm {getTypeEvaluation(typeReport)}
         </TitleManager>
         <Box sx={{ display: 'flex', gap: 10, px: 10, py: 6 }}>
-          <Box flex={1.2}>
+          <Box width={'calc(50%)'}>
             {typeReport === 'ADVISOR' && <SheetTranscriptAdvisor evaluations={evaluations} />}
             {typeReport === 'REVIEWER' && <SheetTranscriptReviewer evaluations={evaluations} />}
             {typeReport === 'REPORT' && <SheetTranscriptCouncil evaluations={evaluations} />}
           </Box>
-          <Paper elevation={2} sx={{ flex: 1, p: 10, height: 200 }}>
+          <Paper elevation={2} sx={{ width: '50%', p: 10, minHeight: 200 }}>
             <TitleManager>Tải xuống phiếu chấm</TitleManager>
             <Formik
               initialValues={{
@@ -78,7 +80,7 @@ function ExportWordModal(props: ExportWordModalProps) {
                         label='Tên file'
                       />
                     </Box>
-
+                    <Box>{permissions.includes('crud') && <BaseExportDataOfLecturer />}</Box>
                     <Box mt={4}>
                       <Button
                         variant='contained'

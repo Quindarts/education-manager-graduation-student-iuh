@@ -1,18 +1,22 @@
 import { Box, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from './style';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
+import { useAuth } from '@/hooks/api/useAuth';
+import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 
 function SheetTranscriptAdvisor(props: any) {
   const { evaluations } = props;
+  const { handleUiRender } = useEvaluation();
+  
   return (
     <Paper sx={{ p: 4, overflowY: 'auto', height: 650 }} elevation={3}>
-      <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
+      {/* <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
         <Typography textAlign={'center'} variant='body2' color='initial'>
           <b>INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY</b>
           <br /> FACULTY OF INFORMATION TECHNOLOGY <br />
           =======//======
         </Typography>
-      </Box>
+      </Box> */}
       <Box>
         <Typography textAlign={'center'} my={3} variant='body1' fontWeight={800} color='initial'>
           CAPSTONE PROJECT EVALUATION FORM
@@ -31,9 +35,11 @@ function SheetTranscriptAdvisor(props: any) {
         <Typography my={3} variant='body1' color='initial'>
           3. Team:
           <br />
-          First student full name: ............................  Student code 1:............................
+          First student full name: ............................ Student code
+          1:............................
           <br />
-          Second student full name:............................  Student code 2:............................
+          Second student full name:............................ Student code
+          2:............................
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
           4. Evaluator's full name:
@@ -86,10 +92,7 @@ function SheetTranscriptAdvisor(props: any) {
             Other comments:
           </Typography>
           <Typography variant='body1' color='initial'>
-          ....................................................................................................................................................................................
-          ....................................................................................................................................................................................
-          ....................................................................................................................................................................................
-
+            ................................................................................................................
           </Typography>
           <Box display={'flex'} justifyContent={'end'}>
             <Typography component={'i'} textAlign={'center'} my={3} variant='body2' color='initial'>

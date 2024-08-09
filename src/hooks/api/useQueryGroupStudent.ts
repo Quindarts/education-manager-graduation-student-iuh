@@ -84,6 +84,7 @@ const useGroupStudent = () => {
     const handleGetGroupStudentById = (id: string) => {
         return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id), {
             staleTime: 1000,
+            enabled: !!id
         })
     }
     const handleGetStudentNoHaveGroup = () => {
