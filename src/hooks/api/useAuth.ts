@@ -62,9 +62,9 @@ export const useAuth = () => {
             dispatch(setAllTerm([]));
             dispatch(setCurrentTerm({}));
             dispatch(setCurrentRoleRender(''))
-            // dispatch(setParamTotalPageLectuerMajor(0))
-            // dispatch(setParamTotalPageLectuerTerm(0))
-            // dispatch(setParamTotalPage(0))
+            dispatch(setParamTotalPageLectuerMajor(0))
+            dispatch(setParamTotalPageLectuerTerm(0))
+            dispatch(setParamTotalPage(0))
 
             queryClient.clear()
             navigate('/auth/login');
