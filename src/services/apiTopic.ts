@@ -8,8 +8,10 @@ export const getTopicById = async (topicId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/topics/${topicId}`)
 }
 
-export const searchTopics = async (termId: string, keywords: string, searchField: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/topics/query?termId=${termId}&keywords=${keywords}&searchField=${searchField}`)
+export const searchTopics = async (termId: string, keywords: string, searchField: string, limit: number | string, page: number | string) => {
+    let searchFieldSend = searchField ? searchField : "name";
+    let keywordSend = keywords ? keywords : ""
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics/query?termId=${termId}&keywords=${keywordSend}&searchField=${searchFieldSend}&limit=${limit}&page=${page}`)
 }
 //[HEAD LEC]
 export const getTopicsByTermByMajor = async (termId: string) => {

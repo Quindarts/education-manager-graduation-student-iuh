@@ -186,7 +186,7 @@ const useUploadExcel = (props: UploadHandler) => {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, ''] });
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", ''] });
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, me.id, termId] })
             handleCloseUpload()
           }

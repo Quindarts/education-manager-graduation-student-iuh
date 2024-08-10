@@ -15,19 +15,20 @@ import {
   ListItemText,
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
-import Feature1 from './Tab/Feature1';
-import Feature2 from './Tab/Feature2';
-import Feature3 from './Tab/Feature3';
-import Feature4 from './Tab/Feature4';
-import Feature5 from './Tab/Feature5';
-import Feature6 from './Tab/Feature6';
-import Feature7 from './Tab/Feature7';
-import Feature8 from './Tab/Feature8';
-import Feature9 from './Tab/Feature9';
-import Feature10 from './Tab/Feature10';
-import Feature11 from './Tab/Feature11';
-import Feature12 from './Tab/Feature12';
-import Feature13 from './Tab/Feature13';
+import Feature1 from './FeatureTab/Feature1';
+import Feature2 from './FeatureTab/Feature2';
+import Feature3 from './FeatureTab/Feature3';
+import Feature4 from './FeatureTab/Feature4';
+import Feature5 from './FeatureTab/Feature5';
+import Feature6 from './FeatureTab/Feature6';
+import Feature7 from './FeatureTab/Feature7';
+import Feature8 from './FeatureTab/Feature8';
+import Feature9 from './FeatureTab/Feature9';
+import Feature10 from './FeatureTab/Feature10';
+import Feature11 from './FeatureTab/Feature11';
+import Feature12 from './FeatureTab/Feature12';
+import Feature13 from './FeatureTab/Feature13';
+import FeatureSection from './MainTab/Features';
 
 const drawerWidth = 240;
 
@@ -178,7 +179,7 @@ const GuidePage: React.FC = () => {
         <Typography variant='h3' mx={4} my={6} fontWeight={'700'} color='grey.900' gutterBottom>
           Hướng Dẫn Sử Dụng Phần Mềm
         </Typography>
-
+        {selectedMainTab === 'features' && selectedSubTab == null && <FeatureSection />}
         {selectedMainTab === 'features' && selectedSubTab !== null && (
           <Box bgcolor='rgb(255, 255, 255)' mt={6} mx={10}>
             {LIST_FEATURE[selectedSubTab].feature}

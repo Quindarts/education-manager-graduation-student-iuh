@@ -340,6 +340,11 @@ export const APP_PROFILE_MENU = [
     link: '/auth/role',
   },
   {
+    text: 'Hướng dẫn sử dụng',
+    icon: 'hugeicons:user-switch',
+    link: '/user-guide',
+  },
+  {
     text: 'Đăng xuất',
     icon: 'ri:logout-box-r-line',
     link: '/auth/login',
