@@ -30,7 +30,6 @@ export const useStudent = () => {
     const dispatch = useDispatch()
     //[GET ALL]
     const handleGetAllStudent = () => {
-
         return useQuery
             ([QueryStudent.getAllStudent, termId, majorId,
             getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],
