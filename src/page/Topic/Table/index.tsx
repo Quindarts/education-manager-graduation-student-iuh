@@ -14,7 +14,7 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 
 function TableManagamentTopic(props: any) {
-  const { rows, totalItems, totalPages, page, handelChangePage, isApprovePermission, ...rest } =
+  const { rows, totalItems, totalPages, page, handleChangePage, isApprovePermission, ...rest } =
     props;
   const { handleUiRender } = useTopic();
   //handle
@@ -253,9 +253,9 @@ function TableManagamentTopic(props: any) {
           rowHeight={100}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={rows.length}
-          totalPages={1}
-          page={1}
-          handleChangePage={() => {}}
+          totalPages={totalPages}
+          page={page}
+          handleChangePage={handleChangePage}
           disableColumnFilter
           slots={{
             toolbar: CustomToolbar,

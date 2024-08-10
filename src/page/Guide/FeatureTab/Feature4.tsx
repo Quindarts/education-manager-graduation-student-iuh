@@ -88,14 +88,15 @@ function Feature4() {
             <img width='100%' src='/images/hdsd/f_4_2.webp' alt='quan-ly-khoa-luan-iuh-hoc-ki-ui' />
           </Box>
         </Box>
+
+        <Typography paragraph>
+          <strong>Bước 2: Cập nhật thông tin và lưu.</strong>
+        </Typography>
         <Box sx={{ width: '100%', mb: 4 }}>
           <Box sx={{ width: '80%', mx: 'auto' }}>
             <img width='100%' src='/images/hdsd/f_4_5.webp' alt='quan-ly-khoa-luan-iuh-hoc-ki-ui' />
           </Box>
         </Box>
-        <Typography paragraph>
-          <strong>Bước 2: Cập nhật thông tin và lưu.</strong>
-        </Typography>
         <Typography paragraph>Có thể sửa các mục:</Typography>
         <Typography paragraph>- Họ và tên</Typography>
         <Typography paragraph>- Giới tính</Typography>
@@ -152,9 +153,33 @@ function Feature4() {
           <Box sx={{ width: '80%', mx: 'auto' }}>
             <img width='100%' src='/images/hdsd/f_4_1.webp' alt='quan-ly-khoa-luan-iuh-hoc-ki-ui' />
           </Box>
+          <Typography paragraph>
+            Bước 1: Nhấn vào khu vực có biểu tượng{' '}
+            <span style={{ color: '#2F5496' }}>
+              <strong>“Mũi tên”.</strong>
+            </span>{' '}
+          </Typography>
+          <Typography paragraph>
+            Bước 2: Chọn file{' '}
+            <span style={{ color: '#537F35' }}>
+              <strong>Excel</strong>
+            </span>{' '}
+            chứa danh sách{' '}
+            <span style={{ color: '#C45511' }}>
+              <strong>“giảng viên”</strong>
+            </span>
+            mà bạn muốn tạo.
+          </Typography>
           <Box sx={{ width: '80%', mx: 'auto' }}>
-        <img width='100%' src='/images/hdsd/f_4_8.webp' alt='quan-ly-khoa-luan-iuh-hoc-ki-ui' />
-      </Box>
+            <img width='100%' src='/images/hdsd/f_4_8.webp' alt='quan-ly-khoa-luan-iuh-hoc-ki-ui' />
+          </Box>
+          <Typography paragraph>
+            Bước 3: Nhấn nút{' '}
+            <span style={{ color: '#537F35' }}>
+              <strong>Lưu vào hệ thống</strong>
+            </span>{' '}
+            để hoàn tất tải dữ liệu giảng viên chuyên ngành.
+          </Typography>
         </Box>
       </Box>
     </Box>
