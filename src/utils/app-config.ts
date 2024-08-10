@@ -341,7 +341,7 @@ export const APP_PROFILE_MENU = [
   },
   {
     text: 'Hướng dẫn sử dụng',
-    icon: 'hugeicons:user-switch',
+    icon: 'ic:baseline-help',
     link: '/user-guide',
   },
   {
