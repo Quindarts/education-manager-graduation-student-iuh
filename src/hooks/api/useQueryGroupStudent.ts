@@ -1,6 +1,6 @@
 import { getStudentsNoHaveGroup } from './../../services/apiStudent';
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { createGroupStudent, deleteGroupStudent, getCountOfGroupStudent, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
+import { assignTopic, createGroupStudent, deleteGroupStudent, getCountOfGroupStudent, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, importGroupStudent, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
 import { setParams, setTypeRender } from "@/store/slice/groupStudent.slice"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux"
 import { useTerm } from "./useQueryTerm"
 import { useAuth } from './useAuth';
 import { RoleCheck } from '@/types/enum';
+import { QueryTopic } from './useQueryTopic';
+import useParams from '../ui/useParams';
 
 export const enum QueryKeysGroupStudent {
     getGroupStudentByTerm = 'getGroupStudentByTerm',
@@ -29,6 +31,8 @@ const useGroupStudent = () => {
     const termId = termStore.currentTerm.id
     const dispatch = useDispatch()
     const { lecturerStore } = useAuth()
+    const { getQueryField } = useParams()
+
 
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
@@ -76,7 +80,25 @@ const useGroupStudent = () => {
             staleTime: 5000
         })
     }
-
+    const onAssignTopicGroupStudent = (topicId: string) => {
+        return useMutation((id: string) => assignTopic(id, topicId), {
+            onSuccess(data: any) {
+                if (data.success) {
+                    enqueueSnackbar('Phân nhóm sinh viên cho đề tài thành công', { variant: 'success' })
+                    queryClient.invalidateQueries([QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                }
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
+            }
+        })
+    }
     const handleGetCountOfGroupStudent = () => {
         return useQuery([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id], () => getCountOfGroupStudent(termStore.currentTerm.id))
     }
@@ -99,7 +121,9 @@ const useGroupStudent = () => {
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
                 }
-            },
+            }, onError() {
+                enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'error' })
+            }
         })
     }
     const onImportGroupStudent = () => {
@@ -109,6 +133,8 @@ const useGroupStudent = () => {
                     enqueueSnackbar('Import danh sách nhóm sinh viên thành công', { variant: 'success' })
                     queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
                 }
+            }, onError() {
+                enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'error' })
             }
         })
     }
@@ -122,6 +148,12 @@ const useGroupStudent = () => {
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
                 }
+            }, onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
+
             }
         })
     }
@@ -138,6 +170,7 @@ const useGroupStudent = () => {
         onDeleteGroupStudent,
         onCreateGroupStudent,
         onImportGroupStudent,
+        onAssignTopicGroupStudent
     }
 }
 export default useGroupStudent

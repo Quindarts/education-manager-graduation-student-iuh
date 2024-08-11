@@ -1,22 +1,29 @@
 import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
 import { Box, Button, TextField, Tooltip } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useExcel';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import UpdateQuantityTopicModal from '../Modal/UpdateQuantityTopic';
 import useSearch from '@/hooks/ui/useParams';
+import { ArrowDropDownIcon } from '@mui/x-date-pickers';
+import SplitButton from '@/components/ui/SplitButton';
 
 const SEARCH_DROP_VALUE = [
   {
     name: 'Tên Đề tài',
     _id: 'name',
   },
+  {
+    name: 'Tên Giảng viên HD',
+    _id: 'lecturerName',
+  },
 ];
 function HeaderTopic() {
   const [openAddModal, setOpenAddModal] = useState(false);
+
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
   };
@@ -33,29 +40,51 @@ function HeaderTopic() {
 
   const { handleUiRender } = useTopic();
   const currentRole = handleUiRender();
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused } = useSearch();
+  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
+    useSearch();
+
+  const [sort, setSort] = useState('ASC');
+
+  const optionSort = ['Tăng dần', 'Giảm dần'];
+  const handleClick = (index: number) => {
+    if (index === 0) setSort('ASC');
+    else if (index === 1) setSort('DESC');
+  };
+  useEffect(() => {
+    setTypeSort(sort);
+  }, [sort]);
   return (
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={2}>
         {currentRole.includes('all') && (
-          <Box flex={1} display={'flex'} gap={2} width={''}>
-            <Box width={150}>
-              <DropDown
-                placeholder='Tìm kiếm đề tài'
-                value={'name'}
-                onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
-                options={SEARCH_DROP_VALUE}
+          <>
+            <Box flex={1} display={'flex'} gap={2} width={''}>
+              <Box width={180}>
+                <DropDown
+                  placeholder='Tìm kiếm đề tài'
+                  value={getQueryField('searchField') ? getQueryField('searchField') : 'name'}
+                  onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
+                  options={SEARCH_DROP_VALUE}
+                />
+              </Box>
+
+              <TextField
+                fullWidth
+                size='small'
+                defaultValue={getQueryField('keywords')}
+                onChange={onSearchChange}
+                onBlur={() => handleFocused(false)}
+                placeholder='Tim kiếm đề tài theo tên đề tài, tên giảng viên'
+              />
+            </Box>{' '}
+            <Box>
+              <SplitButton
+                icon='flowbite:sort-outline'
+                options={optionSort}
+                handleClick={handleClick}
               />
             </Box>
-            <TextField
-              fullWidth
-              size='small'
-              defaultValue={getQueryField('keywords')}
-              onChange={onSearchChange}
-              onBlur={() => handleFocused(false)}
-              placeholder='Tim kiếm đề tài..'
-            />
-          </Box>
+          </>
         )}
         {currentRole.includes('crud') && (
           <Box

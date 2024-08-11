@@ -2,6 +2,13 @@ import { Student } from "@/types/entities";
 import axiosConfig from "./axiosConfig"
 
 
+//[GET]
+export const getStudentsAssignTopic: any = (termId: string, keywords: string, searchField: string) => {
+    const searchFieldSender = searchField ? searchField : 'studentName'
+    const keywordsSender = keywords ? keywords : ""
+    return axiosConfig.get(`/api/v1/students/search?termId=${termId}&keywords=${keywordsSender}&searchField=${searchFieldSender}`)
+}
+
 //[Admin role]
 export const getStudentOfSearch: any = (termId: string, majorId: string, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string) => {
     let searchFieldSend = searchField ? searchField : "username";

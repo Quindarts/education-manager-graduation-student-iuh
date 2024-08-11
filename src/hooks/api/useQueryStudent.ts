@@ -1,5 +1,5 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider'
-import { createStudent, deleteStudent, getStudentById, getStudentOfSearch, lockOnlyStudent, resetPasswordStudent, updateStudent } from '@/services/apiStudent'
+import { createStudent, deleteStudent, getStudentById, getStudentOfSearch, getStudentsAssignTopic, lockOnlyStudent, resetPasswordStudent, updateStudent } from '@/services/apiStudent'
 import { useSnackbar } from 'notistack'
 import { useMutation, useQuery } from 'react-query'
 import { useSelector } from 'react-redux'
@@ -13,6 +13,7 @@ import { setParamTotalPage } from '@/store/slice/student.slice'
 
 export enum QueryStudent {
     getAllStudent = 'getAllStudent',
+    getStudentsAssignTopic = "getStudentsAssignTopic",
     getStudentById = 'getStudentById',
     searchStudentByField = 'searchStudentByField',
     managerActionStudent = 'managerActionStudent'
@@ -29,6 +30,14 @@ export const useStudent = () => {
     const { getQueryField, setTotalPage } = useParams()
     const dispatch = useDispatch()
     //[GET ALL]
+    const handleGetStudentsAssignTopic = (keywords: string, searchField: string) => {
+        return useQuery([QueryStudent.getStudentsAssignTopic, termId, keywords, searchField], () => getStudentsAssignTopic(termId, keywords, searchField), {
+            staleTime: 1000 * (60 * 10), // 10 min,
+            refetchInterval: 1000 * (60 * 20),
+            keepPreviousData: true,
+            enabled: keywords !== ''
+        })
+    }
     const handleGetAllStudent = () => {
         return useQuery
             ([QueryStudent.getAllStudent, termId, majorId,
@@ -136,6 +145,8 @@ export const useStudent = () => {
         handleGetStudentById,
         onUpdateStudent,
         onCreateStudent,
-        handleGetAllStudent, onDeleteStudent
+        handleGetAllStudent,
+        handleGetStudentsAssignTopic,
+        onDeleteStudent
     }
 }

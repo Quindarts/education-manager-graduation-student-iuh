@@ -10,8 +10,8 @@ import RefuseTopicModal from '../Modal/RefuseTopicModal';
 import EditModal from '../Modal/EditModal';
 import { CustomToolbar } from './custom';
 import DeleteModal from '../Modal/DeleteModal';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useTopic } from '@/hooks/api/useQueryTopic';
+import AddGroupStudentToTopicModal from '../Modal/AddGroupStudentToTopic';
 
 function TableManagamentTopic(props: any) {
   const { rows, totalItems, totalPages, page, handleChangePage, isApprovePermission, ...rest } =
@@ -24,6 +24,15 @@ function TableManagamentTopic(props: any) {
   };
   const handleOpenInfoModal = (topicId: string) => {
     setOpenEditInfoModal({ topicId, isOpen: true });
+  };
+
+  //handle
+  const [openAddGroupStudent, setOpenAddGroupStudent] = useState({ topic: {}, isOpen: false });
+  const handleCloseAddGroupStudent = () => {
+    setOpenAddGroupStudent({ ...openAddGroupStudent, isOpen: false });
+  };
+  const handleOpenAddGroupStudent = (topic: any) => {
+    setOpenAddGroupStudent({ topic, isOpen: true });
   };
 
   //handle
@@ -63,13 +72,6 @@ function TableManagamentTopic(props: any) {
     setOpenEditModal({ topicId, isOpen: true });
   };
   const HeadLecturerColumn: GridColDef[] = [
-    {
-      headerName: 'STT',
-      field: 'stt',
-      flex: 0.2,
-      headerAlign: 'center',
-      align: 'center',
-    },
     {
       headerName: 'Tên Đề tài',
       field: 'name',
@@ -139,7 +141,7 @@ function TableManagamentTopic(props: any) {
       renderCell: (params: any) => {
         return (
           <>
-            {params.row.status === 'PENDING' && (
+            {params.row.status === 'PENDING' ? (
               <Box display={'flex'} gap={2}>
                 <Button
                   size='small'
@@ -167,6 +169,18 @@ function TableManagamentTopic(props: any) {
                   Từ chối
                 </Button>
               </Box>
+            ) : (
+              <>
+                {params.row.status === 'APPROVED' && (
+                  <Button
+                    onClick={() => handleOpenAddGroupStudent(params.row)}
+                    variant='outlined'
+                    color='warning'
+                  >
+                    + Gán đề tài
+                  </Button>
+                )}
+              </>
             )}
           </>
         );
@@ -265,6 +279,11 @@ function TableManagamentTopic(props: any) {
           open={openDeleteModal.isOpen}
           onClose={handleCloseDeleteModal}
           topicId={openDeleteModal.topicId}
+        />
+        <AddGroupStudentToTopicModal
+          open={openAddGroupStudent.isOpen}
+          onClose={handleCloseAddGroupStudent}
+          topic={openAddGroupStudent.topic}
         />
         <EditModal
           open={openEditModal.isOpen}
