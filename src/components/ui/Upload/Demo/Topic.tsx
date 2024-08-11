@@ -22,17 +22,17 @@ function TopicExcelDemo() {
               Tên đề tài
             </TableCell>
             <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>
-              MỤC TIÊU ĐỀ TÀI
+              Mục tiêu đề tài
             </TableCell>
             <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>
-              DỰ KIẾN SẢN PHẨM NGHIÊN CỨU CỦA ĐỀ TÀI VÀ KHẢ NĂNG ỨNG DỤNG
+              Dự kiến sản phẩm nghiên cứu của đề tài và khả năng ứng dụng
             </TableCell>
             <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>Mô tả</TableCell>
             <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>
               Yêu cầu đầu vào
             </TableCell>
             <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>
-              Yêu cầu đầu ra (Output Standards)
+              Yêu cầu đầu ra
             </TableCell>
           </TableRow>
         </TableHead>
