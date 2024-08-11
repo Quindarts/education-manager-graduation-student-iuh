@@ -11,7 +11,8 @@ function TopicPage() {
   const { handleSearchTopic, paramTotalPage } = useTopic();
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, isFetching, refetch } = handleSearchTopic();
-  const { setLimit, setPage, getQueryField } = useParams();
+  const { setLimit, setPage, setTypeSort, getQueryField } = useParams();
+
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
   };

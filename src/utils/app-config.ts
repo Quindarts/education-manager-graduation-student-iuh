@@ -106,7 +106,7 @@ export const APP_SIDEBAR = [
     icon: 'ic:baseline-home',
     link: APP_ROUTES.DASHBOARD,
     roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.LECTURER],
-    key: '/',
+    key: APP_ROUTES.DASHBOARD,
   },
   {
     text: 'Chuyên Ngành',

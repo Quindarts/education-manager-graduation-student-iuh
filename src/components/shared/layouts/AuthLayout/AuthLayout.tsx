@@ -45,12 +45,6 @@ function AuthLayout() {
             background: `linear-gradient(to right bottom, ${color.dark_indigo}, ${color.indigo})`,
           }}
         ></Box>
-        <Box
-          component='img'
-          src='/images/shape.svg'
-          alt='Shape'
-          sx={{ position: 'absolute', width: '100%', bottom: '0px' }}
-        />
       </Box>
 
       <Container

@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TableManagamentGroupStudent from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderGroupStudent from './Header';
@@ -16,13 +16,15 @@ function GroupStudentManagement() {
   const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_GROUP_STUDENT>(
     ENUM_RENDER_GROUP_STUDENT.ALL,
   );
-  const { data, isLoading, isFetching } = handleManagerRenderActionGroupStudent(
+  const { data, isLoading, isFetching, refetch } = handleManagerRenderActionGroupStudent(
     currentLimit,
     currentPage,
     typeSearch,
     keywords,
   );
-
+  useEffect(() => {
+    refetch();
+  }, []);
   const handleChangePage = (value: string | Number) => {
     setCurrentPage(value);
   };

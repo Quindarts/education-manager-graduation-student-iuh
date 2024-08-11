@@ -8,10 +8,16 @@ export const getTopicById = async (topicId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/topics/${topicId}`)
 }
 
-export const searchTopics = async (termId: string, keywords: string, searchField: string, limit: number | string, page: number | string) => {
+
+export const assignTopic = async (id: string, topicId: string) => {
+    return axiosConfig.post(`/api/v1/group-students/${id}/assign-topic`, { topicId: topicId })
+}
+
+export const searchTopics = async (termId: string, searchField: string, keywords: string, sort: string, limit: number | string, page: number | string) => {
     let searchFieldSend = searchField ? searchField : "name";
     let keywordSend = keywords ? keywords : ""
-    return axiosConfig.get<ResponseType, any>(`/api/v1/topics/query?termId=${termId}&keywords=${keywordSend}&searchField=${searchFieldSend}&limit=${limit}&page=${page}`)
+    let sortSend = sort ? sort : "ASC"
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics/query?termId=${termId}&keywords=${keywordSend}&searchField=${searchFieldSend}&limit=${limit}&page=${page}&sort=${sortSend}`)
 }
 //[HEAD LEC]
 export const getTopicsByTermByMajor = async (termId: string) => {
