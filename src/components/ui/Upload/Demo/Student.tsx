@@ -19,7 +19,7 @@ function StudentExcelDemo() {
           <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>
             Số điện thoại
           </TableCell>
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>Mã lớp</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>Lớp học</TableCell>
         </TableRow>
       </TableHead>
     </Table>
