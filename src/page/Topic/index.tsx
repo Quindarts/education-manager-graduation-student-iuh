@@ -1,28 +1,46 @@
 import { Box, Paper } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import TableManagamentTopic from './Table';
 import HeaderTopic from './Header';
 import TitleManager from '@/components/ui/Title';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import useParams from '@/hooks/ui/useParams';
+import { useDispatch } from 'react-redux';
+import { setParamTotalPage } from '@/store/slice/topic.slice';
 
 function TopicPage() {
   const { handleSearchTopic, paramTotalPage } = useTopic();
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentLimit, seiCurrentLimit] = useState(10);
   const { data, isLoading, isFetching, refetch } = handleSearchTopic();
-  const { setLimit, setPage, setTypeSort, getQueryField } = useParams();
+  const { setLimit, setPage, getQueryField, setTotalPage } = useParams();
+  const dispatch = useDispatch();
 
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
   };
+  const handleChangeLimit = (value: number) => {
+    seiCurrentLimit(value);
+  };
   useEffect(() => {
-    setLimit(10);
+    setLimit(currentLimit);
     setPage(currentPage);
   }, [currentPage]);
 
   useEffect(() => {
-    setLimit(10);
+    setLimit(currentLimit);
+    refetch();
+  }, [currentLimit]);
+  useEffect(() => {
+    if (data !== null) {
+      const total = data ? data.params.totalPage : 0;
+      dispatch(setParamTotalPage(total));
+      setTotalPage(total);
+    }
+  }, [data]);
+  useEffect(() => {
+    setLimit(currentLimit);
     setPage(1);
     if (getQueryField('keywords') === '') {
       refetch();
@@ -41,12 +59,12 @@ function TopicPage() {
           <TableManagamentTopic
             isApprovePermission={true}
             rows={
-              data?.topics
-                ? data.topics.map((topic: any, index: number) => ({ ...topic, stt: index + 1 }))
-                : []
+              data?.topics ? data.topics.map((topic: any, index: number) => ({ ...topic })) : []
             }
+            handleChangeLimit={handleChangeLimit}
             handleChangePage={handleChangePage}
             page={currentPage}
+            limit={currentLimit}
             totalPages={paramTotalPage}
           />
         </Box>

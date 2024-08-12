@@ -59,6 +59,7 @@ export const useTopic = () => {
                 setTotalPage(total)
             },
             staleTime: 1000 * (60 * 3), // 10 min,
+            refetchOnMount: true,
             refetchInterval: 1000 * (60 * 20),
             keepPreviousData: true,
         })

@@ -1,18 +1,22 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { DataGrid, DataGridProps } from '@mui/x-data-grid';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import LinearProgress from '@mui/material/LinearProgress';
 import IconButton from '@mui/material/IconButton';
+import DropDown from '../Dropdown';
 interface Props extends DataGridProps {
   minHeight?: number;
   page: number;
   totalPages: number;
   totalItems: number;
+  limit: number;
   handleChangePage?: (page: number) => void;
   needReset?: boolean;
+  isLimit?: boolean;
   onReset?: () => void;
+  handleChangeLimit?: (limit: number) => void;
   noData?: React.ReactNode;
 }
 
@@ -24,19 +28,20 @@ export default function Table(props: Props) {
     totalPages,
     totalItems,
     needReset,
+    limit,
+    isLimit,
     handleChangePage,
+    handleChangeLimit,
     onReset,
     noData,
     ...rest
   } = props;
-
   return (
     <Box
       style={{ minWidth: 0 }}
       sx={{
         width: '100%',
         minHeight,
-        
       }}
     >
       <DataGrid
@@ -127,17 +132,22 @@ export default function Table(props: Props) {
       />
       <Box display='flex' alignItems='center' justifyContent='space-between' mr={2} mt={4}>
         <Box display='flex' alignItems='center'>
-          {/* <Box width={190}>
-            <DropDown
-              value={5}
-              options={[
-                { _id: '5', name: 'Hiển thị 5 dòng' },
-                { _id: '10', name: 'Hiển thị 10 dòng' },
-                { _id: '15', name: 'Hiển thị 15 dòng' },
-                { _id: '20', name: 'Hiển thị 20 dòng' },
-              ]}
-            />
-          </Box> */}
+          {isLimit && (
+            <Box width={190}>
+              <DropDown
+                onChange={(e: any) => {
+                  handleChangeLimit(e.target.value);
+                }}
+                value={limit}
+                options={[
+                  { _id: '10', name: 'Hiển thị 10 dòng' },
+                  { _id: '15', name: 'Hiển thị 15 dòng' },
+                  { _id: '20', name: 'Hiển thị 20 dòng' },
+                  { _id: '30', name: 'Hiển thị 30 dòng' },
+                ]}
+              />
+            </Box>
+          )}
           <Typography variant='body1' sx={{ mx: 2 }} display='flex'>
             Tổng số dòng:{'  '}
             <Typography variant='body1' fontWeight={600}>

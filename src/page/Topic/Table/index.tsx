@@ -14,8 +14,17 @@ import { useTopic } from '@/hooks/api/useQueryTopic';
 import AddGroupStudentToTopicModal from '../Modal/AddGroupStudentToTopic';
 
 function TableManagamentTopic(props: any) {
-  const { rows, totalItems, totalPages, page, handleChangePage, isApprovePermission, ...rest } =
-    props;
+  const {
+    rows,
+    totalItems,
+    limit,
+    totalPages,
+    page,
+    handleChangePage,
+    handleChangeLimit,
+    isApprovePermission,
+    ...rest
+  } = props;
   const { handleUiRender } = useTopic();
   //handle
   const [openInfoModal, setOpenEditInfoModal] = useState({ topicId: '', isOpen: false });
@@ -75,7 +84,7 @@ function TableManagamentTopic(props: any) {
     {
       headerName: 'Tên Đề tài',
       field: 'name',
-      flex: 1.5,
+      flex: 2,
       headerAlign: 'center',
       align: 'left',
     },
@@ -84,14 +93,21 @@ function TableManagamentTopic(props: any) {
       field: 'fullName',
       headerAlign: 'center',
       align: 'left',
-      flex: 0.8,
+      flex: 0.6,
     },
     {
-      headerName: 'SL nhóm tối đa',
+      headerName: 'SL nhóm đề tài',
       field: 'quantityGroupMax',
-      flex: 0.4,
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (param) => {
+        return (
+          <Box>
+            {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
+          </Box>
+        );
+      },
     },
     {
       headerName: 'Trạng thái',
@@ -135,7 +151,7 @@ function TableManagamentTopic(props: any) {
     {
       headerName: 'Duyệt đề tài',
       field: 'status',
-      flex: 0.8,
+      flex: 0.7,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
@@ -203,11 +219,18 @@ function TableManagamentTopic(props: any) {
       headerAlign: 'center',
     },
     {
-      headerName: 'SL nhóm tối đa',
+      headerName: 'SL nhóm đề tài',
       field: 'quantityGroupMax',
       flex: 0.5,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (param) => {
+        return (
+          <Box>
+            {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
+          </Box>
+        );
+      },
     },
 
     {
@@ -262,6 +285,7 @@ function TableManagamentTopic(props: any) {
       {' '}
       <>
         <Table
+          isLimit={isApprovePermission}
           rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
           // minHeight={500}
           rowHeight={100}
@@ -269,11 +293,13 @@ function TableManagamentTopic(props: any) {
           totalItems={rows.length}
           totalPages={totalPages}
           page={page}
+          handleChangeLimit={handleChangeLimit}
           handleChangePage={handleChangePage}
           disableColumnFilter
           slots={{
             toolbar: CustomToolbar,
           }}
+          limit={limit}
         />
         <DeleteModal
           open={openDeleteModal.isOpen}
