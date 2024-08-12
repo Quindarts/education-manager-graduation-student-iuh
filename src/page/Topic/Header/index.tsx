@@ -79,7 +79,7 @@ function HeaderTopic() {
             </Box>{' '}
             <Box>
               <SplitButton
-                icon='flowbite:sort-outline'
+                icon='bx:sort'
                 options={optionSort}
                 handleClick={handleClick}
               />

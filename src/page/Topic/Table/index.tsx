@@ -287,7 +287,9 @@ function TableManagamentTopic(props: any) {
         <Table
           isLimit={isApprovePermission}
           rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
-          // minHeight={500}
+          sx={{
+            minHeight: 500,
+          }}
           rowHeight={100}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={rows.length}
@@ -296,9 +298,6 @@ function TableManagamentTopic(props: any) {
           handleChangeLimit={handleChangeLimit}
           handleChangePage={handleChangePage}
           disableColumnFilter
-          slots={{
-            toolbar: CustomToolbar,
-          }}
           limit={limit}
         />
         <DeleteModal

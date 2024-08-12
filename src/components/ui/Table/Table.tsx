@@ -11,7 +11,7 @@ interface Props extends DataGridProps {
   page: number;
   totalPages: number;
   totalItems: number;
-  limit: number;
+  limit?: number;
   handleChangePage?: (page: number) => void;
   needReset?: boolean;
   isLimit?: boolean;

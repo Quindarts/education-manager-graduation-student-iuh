@@ -89,6 +89,7 @@ const useGroupStudent = () => {
                     queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                    queryClient.invalidateQueries([QueryTopic.getGroupByTopic, termStore.currentTerm.id, topicId])
                 }
             },
             onError(err: any) {

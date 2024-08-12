@@ -64,7 +64,7 @@ function useParams() {
                 replace: true,
             });
         }
-    }, 300)
+    }, 700)
 
 
     const setLimit = (limit?: number) => {

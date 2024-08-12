@@ -283,11 +283,11 @@ export const APP_SIDEBAR = [
         link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
         key: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
       },
-      {
-        text: 'Chấm điểm hướng dẫn',
-        link: APP_ROUTES.GROUP_SUPPORT.SCORE,
-        key: APP_ROUTES.GROUP_SUPPORT.SCORE,
-      },
+      // {
+      //   text: 'Chấm điểm hướng dẫn',
+      //   link: APP_ROUTES.GROUP_SUPPORT.SCORE,
+      //   key: APP_ROUTES.GROUP_SUPPORT.SCORE,
+      // },
     ],
   },
   {

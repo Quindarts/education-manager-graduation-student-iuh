@@ -162,16 +162,6 @@ function TableManagamentLecturer(props: any) {
           disableColumnFilter
           disableColumnSelector
           minHeight={400}
-          // noData={
-          //   rows.length <= 0 ? (
-          //     <Button color='primary' variant='contained' onClick={handleImport}>
-          //       <Icon icon='fe:import' />
-          //       Tải dữ liệu giảng viên lên học kì mới.
-          //     </Button>
-          //   ) : (
-          //     <></>
-          //   )
-          // }
         />
       </Box>
       <EditInfoModal

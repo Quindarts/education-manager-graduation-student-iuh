@@ -44,7 +44,12 @@ export default function SplitButton(props: any) {
   return (
     <Box width={'100%'}>
       <ButtonGroup variant='contained' ref={anchorRef} aria-label='Button group with a nested menu'>
-        <Button variant='outlined' size='small' onClick={handleToggle}>
+        <Button
+          variant='outlined'
+          sx={{ color: 'black', bgcolor: 'white', border: '1px solid #909090', height: 37 }}
+          size='small'
+          onClick={handleToggle}
+        >
           {icon && <Icon icon={icon} style={{ marginRight: 2 }} width={16} />}
           {options[selectedIndex]}
           <ArrowDropDownIcon />

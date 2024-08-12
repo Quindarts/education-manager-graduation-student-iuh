@@ -10,7 +10,6 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validateSchemaStudent } from '../Context';
 import CustomTextField from '@/components/ui/CustomTextField';
-import dayjs from 'dayjs';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { ModalProps } from '@/types/ui/Modal';
 const GenderStudent = [
@@ -63,12 +62,11 @@ function EditInfoModal(props: ModalProps & EditModalType) {
           <Formik
             validationSchema={validateSchemaStudent}
             initialValues={{
-              username: `${data?.student?.username}`,
-              fullName: `${data?.student?.fullName}`,
+              username: `${data?.student?.username ? data?.student?.username : ''}`,
+              fullName: `${data?.student?.fullName ? data?.student?.fullName : ''}`,
               email: `${data?.student?.email ? data.student.email : ''}`,
-              phone: `${data?.student?.phone}`,
-              dateOfBirth: data?.student.dateOfBirth ? dayjs(data?.student.dateOfBirth) : null,
-              clazzName: `${data?.student?.clazzName}`,
+              phone: `${data?.student?.phone ? data?.student?.phone : ''}`,
+              clazzName: `${data?.student?.clazzName ? data?.student?.clazzName : 'DH'}`,
               gender: `${data?.student?.gender}`,
               majorId: `${data?.student?.majorId}`,
               typeTraining: `${data?.student?.typeTraining}`,
@@ -108,7 +106,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
                 />
                 <Box display={'flex'} gap={8} alignContent={'center'}>
-                  <Box width={'100%'}>
+                  <Box width={120}>
                     <DropDown
                       sx={{ mb: 8 }}
                       label='Giới tính'
@@ -119,16 +117,19 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                       options={GenderStudent}
                     />
                   </Box>
-                  <CustomTextField
-                    value={values.clazzName}
-                    name='clazzName'
-                    label='Lớp danh nghĩa'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder='Ví dụ: DHKTPM17C'
-                    error={errors.clazzName && touched.clazzName ? true : false}
-                    helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
-                  />
+                  <Box width={'100%'}>
+                    <CustomTextField
+                      fullWidth
+                      value={values.clazzName}
+                      name='clazzName'
+                      label='Lớp danh nghĩa'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder='Ví dụ: DHKTPM17C'
+                      error={errors.clazzName && touched.clazzName ? true : false}
+                      helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
+                    />
+                  </Box>
                 </Box>
 
                 <CustomTextField

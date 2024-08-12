@@ -91,8 +91,9 @@ function AddModal(props: any) {
                 helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
               />
               <Box display={'flex'} gap={8} alignContent={'center'}>
-                <Box width={'100%'}>
+                <Box width={120}>
                   <DropDown
+
                     sx={{ mb: 8 }}
                     label='Giới tính'
                     value={`${values.gender ? values.gender : ''}`}
@@ -102,16 +103,18 @@ function AddModal(props: any) {
                     options={GenderStudent}
                   />
                 </Box>
-                <CustomTextField
-                  value={values.clazzName}
-                  name='clazzName'
-                  label='Lớp danh nghĩa'
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder='Ví dụ: DHKTPM17C'
-                  error={errors.clazzName && touched.clazzName ? true : false}
-                  helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
-                />
+                <Box width={'100%'}>
+                  <CustomTextField
+                    value={values.clazzName}
+                    name='clazzName'
+                    label='Lớp danh nghĩa'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder='Ví dụ: DHKTPM17C'
+                    error={errors.clazzName && touched.clazzName ? true : false}
+                    helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
+                  />
+                </Box>
               </Box>
 
               <CustomTextField

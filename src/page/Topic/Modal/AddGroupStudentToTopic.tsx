@@ -1,5 +1,8 @@
 import Modal from '@/components/ui/Modal';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Autocomplete,
   Box,
   Button,
@@ -12,12 +15,14 @@ import React, { useEffect, useState } from 'react';
 import TitleManager from '@/components/ui/Title';
 import { getCardTopicStatus } from '@/utils/validations/topic.validation';
 import CustomTextField from '@/components/ui/CustomTextField';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DropDown from '@/components/ui/Dropdown';
 import useDebounce from '@/hooks/ui/useDebounce';
 import { useStudent } from '@/hooks/api/useQueryStudent';
 import { Icon } from '@iconify/react';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
+import { useTopic } from '@/hooks/api/useQueryTopic';
+import { GridExpandMoreIcon } from '@mui/x-data-grid';
 
 const DROP_VALUE = [
   {
@@ -37,6 +42,12 @@ function AddGroupStudentToTopicModal(props: any) {
   const [students, setStudents] = useState([]);
   const { handleGetStudentsAssignTopic } = useStudent();
   const { onAssignTopicGroupStudent } = useGroupStudent();
+  const { hanldeGetGroupsByTopic } = useTopic();
+  const {
+    data: groupFetch,
+    isLoading: loadingGroups,
+    isSuccess: successGroup,
+  } = hanldeGetGroupsByTopic(topic.id);
   const { mutate: assign, isSuccess: successAssign } = onAssignTopicGroupStudent(topic.id);
   const {
     data: fetchStudents,
@@ -69,7 +80,9 @@ function AddGroupStudentToTopicModal(props: any) {
     setStudents([]);
     setKeywords('');
   }, [open]);
-
+  const onClear = () => {
+    setStudents([]);
+  };
   const navigate = useNavigate();
   return (
     <Modal maxWidth='xl' open={open} onClose={onClose}>
@@ -277,6 +290,7 @@ function AddGroupStudentToTopicModal(props: any) {
                 Thông tin đề tài
               </TitleManager>
               <Box
+                id='De-tai'
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -326,7 +340,7 @@ function AddGroupStudentToTopicModal(props: any) {
                 </Box>
               </Box>
             </>
-            <Box>
+            <Paper sx={{ px: 10, py: 4, mt: 4, minHeight: 300 }}>
               <TitleManager
                 mt={10}
                 color={'grey.700'}
@@ -337,52 +351,252 @@ function AddGroupStudentToTopicModal(props: any) {
                 Thông tin nhóm sinh viên được phân
               </TitleManager>
               <Box>
-                {students.length < 1 ? (
+                {loadingGroups ? (
                   <Box
-                    alignItems={'center'}
-                    flexDirection={'column'}
-                    justifyContent={'center'}
                     display={'flex'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    height={500}
                   >
-                    <img width={200} src='/images/nodata.webp' />
-                    Chưa chọn nhóm sinh viên nào...
+                    <CircularProgress />
                   </Box>
                 ) : (
-                  <Box bgcolor={'grey.50'} py={10} px={4}>
-                    <Typography
-                      variant='body1'
-                      sx={{ fontWeight: 'bold', my: 4 }}
-                      color='primary.dark'
-                    >
-                      {students[0].groupName}
-                    </Typography>
-                    <Box display={'flex'} gap={10}>
-                      {students.map((std) => (
-                        <Box>
-                          <Typography variant='h6' component='div' gutterBottom>
-                            {std.studentName}
-                          </Typography>
-                          <Box display={'flex'} gap={10}>
-                            <Typography mb={2} variant='body1' color='text.primary'>
-                              <strong>Mã sinh viên </strong> {std.username}
-                            </Typography>
+                  <>
+                    {successGroup &&
+                    groupFetch?.groupStudents &&
+                    groupFetch?.groupStudents.length < 1 ? (
+                      <Box gap={10} display={'flex'}>
+                        <Box width={'50%'} id='to-assign-section'>
+                          {students && students.length > 1 ? (
+                            <>
+                              <Box
+                                height={150}
+                                bgcolor={'white'}
+                                border={'2px solid #f3f3f3'}
+                                borderRadius={4}
+                              >
+                                <Typography
+                                  variant='body1'
+                                  sx={{ fontWeight: '500', px: 10, py: 4, bgcolor: 'error.dark' }}
+                                  color='white'
+                                >
+                                  {students[0].groupName}
+                                </Typography>
+                                <Box px={10} display={'flex'} gap={10}>
+                                  {students?.map((std) => (
+                                    <Box>
+                                      <Typography variant='h6' component='div' gutterBottom>
+                                        {std.studentName}
+                                      </Typography>
+                                      <Box display={'flex'} gap={10}>
+                                        <Typography mb={2} variant='body1' color='text.primary'>
+                                          <strong>Mã sinh viên </strong> {std.username}
+                                        </Typography>
+                                      </Box>
+                                    </Box>
+                                  ))}
+                                </Box>
+                              </Box>
+                            </>
+                          ) : (
+                            <Box
+                              width={'100%'}
+                              minHeight={140}
+                              alignItems={'center'}
+                              flexDirection={'column'}
+                              justifyContent={'center'}
+                              display={'flex'}
+                              fontSize={14}
+                            >
+                              <Icon
+                                icon='ic:round-group-add'
+                                width={120}
+                                style={{ color: '#f9eded' }}
+                              />
+                              Chọn nhóm sinh viên muốn phân mới
+                            </Box>
+                          )}
+                          <Box mt={2}>
+                            <Button
+                              sx={{ mt: 4, mx: 2 }}
+                              size='small'
+                              disabled={students && students.length < 1}
+                              onClick={hanldeSubmit}
+                              variant='contained'
+                              color='error'
+                            >
+                              {' '}
+                              <Icon icon='icon-park-outline:add-two' style={{ marginRight: 2 }} />
+                              Gán đề tài
+                            </Button>
+                            <Button
+                              onClick={onClear}
+                              variant='contained'
+                              color='primary'
+                              sx={{ mt: 4, ml: 2 }}
+                              size='small'
+                            >
+                              <Icon icon='iconamoon:close-fill' style={{ marginRight: 1 }} />
+                              Hủy
+                            </Button>
                           </Box>
                         </Box>
-                      ))}
-                    </Box>
-                  </Box>
+                        <Box
+                          alignItems={'center'}
+                          flexDirection={'column'}
+                          justifyContent={'center'}
+                          display={'flex'}
+                        >
+                          <img width={100} src='/images/nodata.webp' />
+                          Danh sách nhóm sinh viên được phân trống
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Box gap={10} display={'flex'}>
+                        <Box width={'50%'} id='to-assign-section'>
+                          {students && students.length > 1 ? (
+                            <>
+                              <Box
+                                height={150}
+                                bgcolor={'white'}
+                                border={'2px solid #f3f3f3'}
+                                borderRadius={4}
+                              >
+                                <Typography
+                                  variant='body1'
+                                  sx={{ fontWeight: '500', px: 10, py: 4, bgcolor: 'error.dark' }}
+                                  color='white'
+                                >
+                                  {students[0].groupName}
+                                </Typography>
+                                <Box px={10} display={'flex'} gap={10}>
+                                  {students?.map((std) => (
+                                    <Box>
+                                      <Typography variant='h6' component='div' gutterBottom>
+                                        {std.studentName}
+                                      </Typography>
+                                      <Box display={'flex'} gap={10}>
+                                        <Typography mb={2} variant='body1' color='text.primary'>
+                                          <strong>Mã sinh viên </strong> {std.username}
+                                        </Typography>
+                                      </Box>
+                                    </Box>
+                                  ))}
+                                </Box>
+                              </Box>
+                            </>
+                          ) : (
+                            <Box
+                              width={'100%'}
+                              alignItems={'center'}
+                              flexDirection={'column'}
+                              justifyContent={'center'}
+                              display={'flex'}
+                              fontSize={14}
+                            >
+                              <Icon
+                                icon='icon-park-outline:hand-left'
+                                width={100}
+                                style={{ color: '#f9eded' }}
+                              />
+                              Chọn nhóm sinh viên muốn phân mới
+                            </Box>
+                          )}
+                          <Box>
+                            <Button
+                              sx={{ mt: 4, mx: 2 }}
+                              size='small'
+                              disabled={students && students.length < 1}
+                              onClick={hanldeSubmit}
+                              variant='contained'
+                              color='error'
+                            >
+                              {' '}
+                              <Icon icon='icon-park-outline:add-two' style={{ marginRight: 2 }} />
+                              Gán đề tài
+                            </Button>
+                            <Button
+                              onClick={onClear}
+                              variant='contained'
+                              color='primary'
+                              sx={{ mt: 4, ml: 2 }}
+                              disabled={students && students.length < 1}
+                              size='small'
+                            >
+                              <Icon icon='iconamoon:close-fill' style={{ marginRight: 1 }} />
+                              Hủy gán
+                            </Button>
+                          </Box>
+                        </Box>
+
+                        <Box id='have-group-section'>
+                          {groupFetch?.groupStudents.map((group) => (
+                            <Box width={350} my={2}>
+                              <Accordion
+                                disableGutters
+                                sx={{
+                                  p: 0,
+
+                                  '&.Mui-expanded': {
+                                    minHeight: 0,
+                                    margin: 0,
+                                  },
+                                }}
+                              >
+                                <AccordionSummary
+                                  expandIcon={<GridExpandMoreIcon sx={{ color: '#fffff' }} />}
+                                  sx={{
+                                    bgcolor: '#848484',
+                                    '&.Mui-expanded': {
+                                      minHeight: 0,
+                                      margin: 0,
+                                    },
+                                  }}
+                                >
+                                  <Box
+                                    width={'100%'}
+                                    justifyContent={'space-between'}
+                                    display={'flex'}
+                                  >
+                                    <Typography color='white'>{group.name}</Typography>
+                                  </Box>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                  <Box display={'flex'} justifyContent={'space-between'}>
+                                    <Box pl={4} mb={4}>
+                                      {group.members.map((std: any) => (
+                                        <Typography variant='body1'>
+                                          {std.fullName} - {std.username}
+                                        </Typography>
+                                      ))}
+                                      <Link
+                                        style={{ fontSize: 12 }}
+                                        to={`/group-students/detail/${group.id}`}
+                                      >
+                                        Xem chi tiết
+                                      </Link>
+                                    </Box>
+                                    <Box flexDirection={'column'} display={'flex'}>
+                                      <Button sx={{ mr: 2 }} color='error'>
+                                        <Icon
+                                          icon='zondicons:close-solid'
+                                          style={{ color: '#e24646', marginRight: 2 }}
+                                        />
+                                        {'  '}Hủy gán
+                                      </Button>
+                                    </Box>
+                                  </Box>
+                                </AccordionDetails>
+                              </Accordion>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+                    )}{' '}
+                  </>
                 )}
               </Box>
-              <Box display={'flex'} gap={4} justifyContent={'end'} mt={20}>
-                <Button onClick={hanldeSubmit} variant='contained' color='error'>
-                  {' '}
-                  Gán đề tài cho nhóm sinh viên
-                </Button>
-                <Button variant='contained' onClick={onClose}>
-                  Thoát
-                </Button>
-              </Box>
-            </Box>
+            </Paper>
           </Box>
         </Box>
       </Paper>

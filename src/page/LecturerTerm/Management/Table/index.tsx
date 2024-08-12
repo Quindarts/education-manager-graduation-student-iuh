@@ -5,6 +5,8 @@ import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { checkGender } from '@/utils/validations/person.validation';
 import DeleteModal from '../Modal/DeleteModal';
+import EditInfoModal from '../Modal/EditInfoModal';
+import { useNavigate } from 'react-router-dom';
 
 function TableManagamentLecturer(props: any) {
   const { rows, totalItems, totalPage, page, handleChangePage } = props;
@@ -21,6 +23,9 @@ function TableManagamentLecturer(props: any) {
   const handleOpenDeleteModal = (lecturerId: string, name: string) => {
     setOpenDeleteModal({ lecturerId, name, isOpen: true });
   };
+
+  const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
+  const navigate = useNavigate();
 
   const basicColumns: GridColDef[] = [
     {
@@ -102,6 +107,14 @@ function TableManagamentLecturer(props: any) {
           >
             <IconButton color='error'>
               <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
+            title='Xem Chi tiết'
+          >
+            <IconButton color='primary'>
+              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
         </Box>

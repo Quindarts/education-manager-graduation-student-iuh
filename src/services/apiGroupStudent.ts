@@ -17,6 +17,11 @@ export const searchGroupStudentAdmin: any = (termId: string, limit: number, page
     return axiosConfig.get(`/api/v1/groupStudents/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}`);
 }
 
+export const getGroupByTopic: any = (termId: string, topicId: string) => {
+    return axiosConfig.get(`/api/v1/group-students/topic?termId=${termId}&topicId=${topicId}`);
+}
+
+
 //[GET]
 export const getGroupStudentByTerm: any = (termId: string, limit: number, page: number) => {
     return axiosConfig.get(`/api/v1/group-students?termId=${termId}&page=${page}&limit=${limit}`)

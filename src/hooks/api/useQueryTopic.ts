@@ -12,6 +12,7 @@ import { Topic, TopicBodyRequestType } from "@/types/entities/topic"
 import useParams from "../ui/useParams"
 import { setParamTotalPage } from "@/store/slice/topic.slice"
 import { useDispatch } from "react-redux"
+import { getGroupByTopic } from "@/services/apiGroupStudent"
 
 export enum QueryTopic {
     //HEAD LECTURER
@@ -19,6 +20,7 @@ export enum QueryTopic {
     getAllTopic = 'getAllTopic',
     getSearchTopic = "getSearchTopic",
     getTopicById = 'getTopicById',
+    getGroupByTopic = "getGroupByTopic",
     //LECTURER
     getAllTopicByLecturerTerm = 'getAllTopicByLecturerTerm'
 }
@@ -48,6 +50,12 @@ export const useTopic = () => {
     const handleTopicById = (topicId: string) => {
         return useQuery([QueryTopic.getTopicById, topicId], () => getTopicById(topicId))
     }
+    const hanldeGetGroupsByTopic = (topicId: string) => {
+        return useQuery([QueryTopic.getGroupByTopic, termStore.currentTerm.id, topicId], () => getGroupByTopic(termStore.currentTerm.id, topicId), {
+            enabled: !!topicId
+        })
+
+    }
 
     const handleSearchTopic = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
@@ -75,7 +83,7 @@ export const useTopic = () => {
 
     //[GET BY TERM, LECTURER]
     const handleTopicsByLecturerByTerm = () => {
-        return useQuery([QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id], () => getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
+        return useQuery([QueryTopic.getAllTopicByLecturerTerm, termStore.currentTerm.id, lecturerStore.me.user.id], () => getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
             staleTime: Infinity, onSuccess(data) {
             }
         })
@@ -166,6 +174,6 @@ export const useTopic = () => {
         onUpdateTopicById,
         onDeleteTopicById,
         onUpdateAllQuantityGroupMax,
-        onUpdateStatusTopic, handleSearchTopic
+        onUpdateStatusTopic, handleSearchTopic, hanldeGetGroupsByTopic
     }
 }

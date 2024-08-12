@@ -30,7 +30,7 @@ export const updateAllQuantityGroupMax = async (termId: string, quantityGroupMax
 
 //[HEAD LEC, LEC]
 export const getTopicsByLecturerByTerm = async (lecturerId: string, termId: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/topics?lecturerId=${lecturerId}&termId=${termId}`)
+    return axiosConfig.get<ResponseType, any>(`/api/v1/topics/lecturer/${lecturerId}?termId=${termId}`)
 }
 
 //POST [HEAD LEC, LEC]
