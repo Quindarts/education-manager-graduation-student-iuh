@@ -367,7 +367,7 @@ function AddGroupStudentToTopicModal(props: any) {
                     groupFetch?.groupStudents.length < 1 ? (
                       <Box gap={10} display={'flex'}>
                         <Box width={'50%'} id='to-assign-section'>
-                          {students && students.length > 1 ? (
+                          {students && students.length > 0 ? (
                             <>
                               <Box
                                 height={150}
@@ -454,7 +454,7 @@ function AddGroupStudentToTopicModal(props: any) {
                     ) : (
                       <Box gap={10} display={'flex'}>
                         <Box width={'50%'} id='to-assign-section'>
-                          {students && students.length > 1 ? (
+                          {students && students.length > 0 ? (
                             <>
                               <Box
                                 height={150}
