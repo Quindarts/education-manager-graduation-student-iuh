@@ -27,11 +27,12 @@ export const useLecturerTerm = () => {
     const { paramTotalPage } = lecturerStore
 
     const { enqueueSnackbar } = useSnackbar();
-    const { getQueryField, setTotalPage } = useParams()
-
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
 
     // [GET ALL]
     const handleGetAllLecturerTermByParam = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery(
             [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
             getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],

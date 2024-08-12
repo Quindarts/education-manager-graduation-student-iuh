@@ -8,7 +8,7 @@ import { SnackbarProvider } from 'notistack';
 import { themeSnackbar } from './theme/ThemeSnackbar.js';
 import { Zoom } from '@mui/material';
 import ReactQueryClientProvider from './providers/ReactQueryClientProvider.jsx';
-// import { ReactQueryDevtools } from 'react-query/devtools';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
 import store from './store/index.js';
 
@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         >
           <ReactQueryClientProvider>
             <App />
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+            <ReactQueryDevtools initialIsOpen={false} />
           </ReactQueryClientProvider>
         </SnackbarProvider>
       </Provider>

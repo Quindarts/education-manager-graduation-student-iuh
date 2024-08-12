@@ -29,7 +29,7 @@ export const useTopic = () => {
     const topicStore = useSelector((state: any) => state.topicSlice)
     const { termStore } = useTerm()
     const { lecturerStore } = useAuth()
-    const { getQueryField, setTotalPage } = useParams()
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
     const dispatch = useDispatch()
     const { paramTotalPage } = topicStore
     const handleUiRender = (): string[] => {
@@ -50,6 +50,8 @@ export const useTopic = () => {
     }
 
     const handleSearchTopic = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')], () => searchTopics(termStore.currentTerm.id, getQueryField('searchField'), getQueryField("keywords"), getQueryField("sort"), getQueryField('limit'), getQueryField('page')), {
             onSuccess(data) {
                 const total = data.params ? data.params.totalPage : 0

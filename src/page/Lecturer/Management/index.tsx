@@ -18,12 +18,13 @@ function LecturerManagementPage() {
   const { data, isLoading, isFetching, refetch } = handleGetAllLecturer();
   const { setLimit, setPage, getQueryField } = useParams();
   useEffect(() => {
-    setLimit(10);
+    setLimit(currentLimit);
     setPage(currentPage);
+    refetch();
   }, [currentPage]);
 
   useEffect(() => {
-    setLimit(10);
+    setLimit(currentLimit);
     if (getQueryField('keywords') === '') {
       refetch();
     }

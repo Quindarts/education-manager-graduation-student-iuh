@@ -30,6 +30,7 @@ export default function AdminSidebar() {
   const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
   const { isOpen, handleToggleSidebar } = useSidebar();
   const { lecturerStore } = useAuth();
+
   useLayoutEffect(() => {
     APP_SIDEBAR.map((item: any) => {
       item.roles.forEach((role: string) => {
@@ -80,12 +81,6 @@ export default function AdminSidebar() {
       }
     });
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (isOpen === true) {
-      setActiveItemIndexes([]);
-    }
-  }, [isOpen]);
 
   const handleClickSidebarItem = (indexNumber: number) => {
     if (activeItemIndexes.includes(indexNumber)) {
@@ -144,17 +139,80 @@ export default function AdminSidebar() {
         },
       }}
     >
+      {isMobile ||
+        (isOpen && (
+          <Box
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            textTransform={'uppercase'}
+            flexDirection={'column'}
+            sx={{
+              background: 'linear-gradient(135deg, #083880, #001f3f, #00274d, #003366)',
+            }}
+            borderBottom={'2px solid #1467db'}
+            height={200}
+          >
+            <Box sx={{ mb: 10 }}>
+              <Typography
+                textAlign={'center'}
+                variant='body1'
+                color={'grey.100'}
+                fontWeight={500}
+                sx={{
+                  opacity: 0.7,
+                  mb: 10,
+                }}
+              >
+                Danh mục quản lý
+              </Typography>
+              <Box sx={{ my: 10 }}>
+                {isAdminRole ? (
+                  <DropDown
+                    onChange={(e: any) => {
+                      isAdminRole && setMajorSelectValue(e.target.value);
+                    }}
+                    defaultValue={majorStore.currentMajor.id}
+                    options={convertMajorDropdown(majorStore.allMajor)}
+                  />
+                ) : (
+                  <TitleManager mb={10} color={'grey.300'} fontWeight={500} textAlign={'center'}>
+                    {lecturerStore.me.user.majorName}
+                  </TitleManager>
+                )}
+              </Box>
+
+              {isFetching ? (
+                <></>
+              ) : (
+                <DropDown
+                  onChange={(e: any) => {
+                    if (termStore.allTerm)
+                      dispatch(
+                        setCurrentTerm(
+                          termStore.allTerm.filter((term: any) => term.id === e.target.value)[0],
+                        ),
+                      );
+                    else dispatch(setCurrentTerm({}));
+                  }}
+                  value={termStore.currentTerm?.id ? termStore.currentTerm.id : ''}
+                  options={convertTermDropdown(termStore.allTerm)}
+                />
+              )}
+            </Box>
+          </Box>
+        ))}
       <Drawer
         variant={isMobile ? 'temporary' : 'permanent'}
         open={isOpen}
         onClose={handleToggleSidebar}
         sx={{
           flexShrink: 0,
-          height: isMobile ? '100%' : 'calc(100vh - 70px)',
+          height: isMobile ? '100%' : 'calc(100% - 200px)',
           ['& .MuiDrawer-paper']: {
             width: isMobile ? 250 : '100%',
             border: 'none',
-            height: '100%',
+            height: 'calc(100%)',
             boxSizing: 'border-box',
             overflowX: 'hidden',
             overflowY: 'hidden',
@@ -171,7 +229,7 @@ export default function AdminSidebar() {
             },
 
             '&::-webkit-scrollbar-thumb': {
-              bgcolor: 'grey.400',
+              bgcolor: 'grey.700',
             },
             '.Mui-expanded ': {
               margin: 0,
@@ -195,70 +253,6 @@ export default function AdminSidebar() {
           },
         }}
       >
-        {isMobile ||
-          (isOpen && (
-            <Box
-              display={'flex'}
-              alignItems={'center'}
-              justifyContent={'center'}
-              textTransform={'uppercase'}
-              flexDirection={'column'}
-            >
-              <Typography
-                variant='h6'
-                fontWeight={500}
-                pt={{
-                  xs: 10,
-                  md: 20,
-                }}
-                pb={{
-                  xs: 0,
-                  md: 8,
-                }}
-                sx={{
-                  opacity: 0.7,
-                }}
-              >
-                Danh mục quản lý
-              </Typography>
-              <Box sx={{ mb: 10 }}>
-                <Box sx={{ mb: 4 }}>
-                  {isAdminRole ? (
-                    <DropDown
-                      onChange={(e: any) => {
-                        isAdminRole && setMajorSelectValue(e.target.value);
-                      }}
-                      defaultValue={majorStore.currentMajor.id}
-                      options={convertMajorDropdown(majorStore.allMajor)}
-                    />
-                  ) : (
-                    <TitleManager mb={10} color={'grey.900'} fontWeight={500} textAlign={'center'}>
-                      {lecturerStore.me.user.majorName}
-                      
-                    </TitleManager>
-                  )}
-                </Box>
-
-                {isFetching ? (
-                  <></>
-                ) : (
-                  <DropDown
-                    onChange={(e: any) => {
-                      if (termStore.allTerm)
-                        dispatch(
-                          setCurrentTerm(
-                            termStore.allTerm.filter((term: any) => term.id === e.target.value)[0],
-                          ),
-                        );
-                      else dispatch(setCurrentTerm({}));
-                    }}
-                    value={termStore.currentTerm?.id ? termStore.currentTerm.id : ''}
-                    options={convertTermDropdown(termStore.allTerm)}
-                  />
-                )}
-              </Box>
-            </Box>
-          ))}
         {currentSidebarRole.map((item: any, itemIndex: number) => (
           <>
             <Accordion
@@ -266,6 +260,9 @@ export default function AdminSidebar() {
               onChange={() => handleClickSidebarItem(itemIndex)}
               key={itemIndex}
               title={item.text}
+              onClick={() => {
+                if (!item.children) navigate(item.link);
+              }}
               sx={{
                 bgcolor: 'primary.dark',
                 boxShadow: 'none',
@@ -313,8 +310,8 @@ export default function AdminSidebar() {
                     color: 'white',
                   },
                   '&.active': {
-                    color: 'white',
-                    bgcolor: '#333',
+                    color: '#0859db',
+                    bgcolor: '#06275c',
                     '& svg': {
                       color: 'white',
                     },
@@ -349,8 +346,9 @@ export default function AdminSidebar() {
               {item?.children && isOpen && (
                 <AccordionDetails
                   sx={{
-                    padding: 0,
+                    paddingY: 4,
                     cursor: 'pointer',
+                    bgcolor: '#065693',
                   }}
                 >
                   {isOpen &&
@@ -371,8 +369,9 @@ export default function AdminSidebar() {
                             transform: 'translateY(-50%)',
                             transition: '0.3s all',
                           },
+                          borderRadius: 2,
                           '&:hover': {
-                            bgcolor: 'rgba(162, 203, 251, 0.4)',
+                            bgcolor: 'rgba(15, 124, 249, 0.4)',
                             '& .MuiTypography-root': {
                               color: 'white',
                             },
@@ -388,10 +387,10 @@ export default function AdminSidebar() {
                             py: 6,
                             textWrap: 'nowrap',
                             '&.active': {
-                              color: 'grey.600',
-                              bgcolor: '#787878',
+                              bgcolor: 'rgba(15, 124, 249, 0.8)',
+                              borderRadius: 2,
                               '& svg': {
-                                color: 'white',
+                                color: '#333',
                               },
                             },
                           }}
@@ -401,7 +400,7 @@ export default function AdminSidebar() {
                             navigate(submenuItem.link);
                           }}
                         >
-                          {submenuItem.text}
+                          - {submenuItem.text}
                         </Typography>
                       </Box>
                     ))}

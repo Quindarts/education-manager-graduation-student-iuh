@@ -27,7 +27,7 @@ export const useStudent = () => {
     const { majorStore } = useMajor()
     const majorId = majorStore.currentMajor.id
     const termId = termStore.currentTerm.id
-    const { getQueryField, setTotalPage } = useParams()
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
     const dispatch = useDispatch()
     //[GET ALL]
     const handleGetStudentsAssignTopic = (keywords: string, searchField: string) => {
@@ -39,6 +39,8 @@ export const useStudent = () => {
         })
     }
     const handleGetAllStudent = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery
             ([QueryStudent.getAllStudent, termId, majorId,
             getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],

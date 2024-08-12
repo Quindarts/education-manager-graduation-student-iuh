@@ -26,13 +26,16 @@ export const useLecturer = () => {
     const { me, currentRoleRender, renderUi, paramTotalPage } = lecturerStore
     const { majorStore } = useMajor()
     const { termStore } = useTerm()
-    const { getQueryField, setTotalPage } = useParams()
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
     const majorId = majorStore.currentMajor.id
     const dispatch = useDispatch()
     const termId = termStore.currentTerm.id
 
     // [GET ALL]
     const handleGetAllLecturer = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
+
         return useQuery(
             [QueryKeysLecturer.getAllLecturer, majorId,
             getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],
