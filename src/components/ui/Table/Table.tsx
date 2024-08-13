@@ -15,6 +15,7 @@ interface Props extends DataGridProps {
   handleChangePage?: (page: number) => void;
   needReset?: boolean;
   isLimit?: boolean;
+  slots?: any;
   onReset?: () => void;
   handleChangeLimit?: (limit: number) => void;
   noData?: React.ReactNode;
@@ -34,6 +35,7 @@ export default function Table(props: Props) {
     handleChangeLimit,
     onReset,
     noData,
+    slots,
     ...rest
   } = props;
   return (
@@ -58,6 +60,7 @@ export default function Table(props: Props) {
           },
         }}
         slots={{
+          ...slots,
           noRowsOverlay: () => (
             <Box
               mx={'auto'}

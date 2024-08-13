@@ -206,13 +206,6 @@ function TableManagamentTopic(props: any) {
 
   const LecturerColumn: GridColDef[] = [
     {
-      headerName: 'STT',
-      field: 'stt',
-      flex: 0.2,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 1.5,
@@ -289,6 +282,9 @@ function TableManagamentTopic(props: any) {
           rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
           sx={{
             minHeight: 500,
+          }}
+          slots={{
+            toolbar: CustomToolbar,
           }}
           rowHeight={100}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}

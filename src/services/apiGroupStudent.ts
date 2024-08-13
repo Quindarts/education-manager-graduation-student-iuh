@@ -58,6 +58,10 @@ export const importGroupStudent: any = (termId: string) => {
 export const assignTopic: any = (id: string, topicId: string) => {
     return axiosConfig.put(`/api/v1/group-students/${id}/assign-topic`, { topicId: topicId })
 }
+//[PUT REMOVE ASSIGN]
+export const removeAssign: any = (id: string, topicId: string) => {
+    return axiosConfig.put(`/api/v1/group-students/${id}/remove-topic`, { topicId: topicId })
+}
 
 
 //[CREATE GROUP STUDENT] BE FIX

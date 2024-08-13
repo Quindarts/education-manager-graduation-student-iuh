@@ -41,27 +41,33 @@ function AddGroupStudentToTopicModal(props: any) {
   const keysend = useDebounce(keywords, 500);
   const [students, setStudents] = useState([]);
   const { handleGetStudentsAssignTopic } = useStudent();
-  const { onAssignTopicGroupStudent } = useGroupStudent();
+  const { onAssignTopicGroupStudent, onUnAssignTopicGroupStudent } = useGroupStudent();
   const { hanldeGetGroupsByTopic } = useTopic();
+
+  //[GET DATA]
   const {
     data: groupFetch,
     isLoading: loadingGroups,
     isSuccess: successGroup,
   } = hanldeGetGroupsByTopic(topic.id);
-  const { mutate: assign, isSuccess: successAssign } = onAssignTopicGroupStudent(topic.id);
   const {
     data: fetchStudents,
     isLoading: loadingStudents,
     isFetching: fetchingStudents,
   } = handleGetStudentsAssignTopic(keysend, searchField);
+
+  //[CHANGE]
+  const { mutate: assign, isSuccess: successAssign } = onAssignTopicGroupStudent(topic.id);
+  const { mutate: unAssign, isSuccess: successUnAssign } = onUnAssignTopicGroupStudent(topic.id);
+
+  //Hanlde submit code
   const hanldeSubmit = () => {
     assign(students[0]?.groupId);
   };
-  useEffect(() => {
-    if (successAssign === true) {
-      onClose();
-    }
-  }, [successAssign]);
+  const handleUnAssign = (groupId: string) => {
+    unAssign(groupId);
+  
+  };
 
   const handleStudents = (std: any) => {
     let data = [];
@@ -577,7 +583,11 @@ function AddGroupStudentToTopicModal(props: any) {
                                       </Link>
                                     </Box>
                                     <Box flexDirection={'column'} display={'flex'}>
-                                      <Button sx={{ mr: 2 }} color='error'>
+                                      <Button
+                                        onClick={() => handleUnAssign(group.id)}
+                                        sx={{ mr: 2 }}
+                                        color='error'
+                                      >
                                         <Icon
                                           icon='zondicons:close-solid'
                                           style={{ color: '#e24646', marginRight: 2 }}

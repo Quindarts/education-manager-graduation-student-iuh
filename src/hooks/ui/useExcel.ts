@@ -162,9 +162,7 @@ const useUploadExcel = (props: UploadHandler) => {
               [QueryKeysLecturer.getAllLecturer, majorId,
                 "10", "1", 'username', '']
             );
-
             handleCloseUpload()
-
           }
           if (entityUpload === TypeEntityUpload.EVALUATION) {
             enqueueSnackbar('Lưu danh sách tiêu chí từ excel file thành công', {
@@ -172,7 +170,6 @@ const useUploadExcel = (props: UploadHandler) => {
             });
             queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvaluation] })
             handleCloseUpload()
-
           }
           if (entityUpload === TypeEntityUpload.STUDENT) {
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
