@@ -1,7 +1,7 @@
 import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
 import { Avatar, Box, Paper, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import TabPanelUI from './TabPanel';
 import { useParams } from 'react-router-dom';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
@@ -13,7 +13,10 @@ function DetailsLecturerPage() {
   const { lecturer_id } = useParams();
   // alert(lecturer_id);
   const { handleGetLecturerById } = useLecturer();
-  const { data, isLoading } = handleGetLecturerById(`${lecturer_id}`);
+  const { data, isLoading, refetch } = handleGetLecturerById(`${lecturer_id}`);
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <Paper sx={{ px: 10, py: 10, minHeight: '60vh' }} elevation={2}>
       {isLoading ? (
@@ -46,8 +49,7 @@ function DetailsLecturerPage() {
                 </Box>
                 <Box fontWeight={500} display={'flex'} gap={4}>
                   <Icon width={24} icon='material-symbols-light:date-range-outline' />
-                  <Typography variant='h6' fontWeight={500} color='grey.600'>
-                  </Typography>
+                  <Typography variant='h6' fontWeight={500} color='grey.600'></Typography>
                 </Box>
                 <Box fontWeight={500} display={'flex'} gap={4}>
                   <Icon width={24} icon='bi:gender-trans' />
