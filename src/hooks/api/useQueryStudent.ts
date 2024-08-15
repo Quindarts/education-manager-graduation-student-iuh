@@ -1,5 +1,4 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider'
-import { createStudent, deleteStudent, getStudentById, getStudentOfSearch, getStudentsAssignTopic, lockOnlyStudent, resetPasswordStudent, updateStudent } from '@/services/apiStudent'
 import { useSnackbar } from 'notistack'
 import { useMutation, useQuery } from 'react-query'
 import { useSelector } from 'react-redux'
@@ -10,41 +9,51 @@ import { ResponseType } from '@/types/axios.type'
 import { Student } from '@/types/entities'
 import { useDispatch } from 'react-redux'
 import { setParamTotalPage } from '@/store/slice/student.slice'
-
+import * as StudentServices from "@/services/apiStudent"
+//[KEYS]
 export enum QueryStudent {
     getAllStudent = 'getAllStudent',
     getStudentsAssignTopic = "getStudentsAssignTopic",
     getStudentById = 'getStudentById',
     searchStudentByField = 'searchStudentByField',
-    managerActionStudent = 'managerActionStudent'
+    managerActionStudent = 'managerActionStudent',
+    getCountOfStudent = "getCountOfStudent"
 }
 export const useStudent = () => {
-    const { enqueueSnackbar } = useSnackbar()
-    const studentStore = useSelector((state: any) => state.studentSlice)
-    const { paramTotalPage } = studentStore
 
+    //[REDUX]
+    const studentStore = useSelector((state: any) => state.studentSlice)
     const { termStore } = useTerm()
     const { majorStore } = useMajor()
+    const dispatch = useDispatch()
+
+    //[PARAMS URL]
+    const { paramTotalPage } = studentStore
     const majorId = majorStore.currentMajor.id
     const termId = termStore.currentTerm.id
     const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
-    const dispatch = useDispatch()
-    //[GET ALL]
+
+    //[OTHER]
+    const { enqueueSnackbar } = useSnackbar()
+
+    //[GET]
     const handleGetStudentsAssignTopic = (keywords: string, searchField: string) => {
-        return useQuery([QueryStudent.getStudentsAssignTopic, termId, keywords, searchField], () => getStudentsAssignTopic(termId, keywords, searchField), {
+        return useQuery([QueryStudent.getStudentsAssignTopic, termId, keywords, searchField], () => StudentServices.getStudentsAssignTopic(termId, keywords, searchField), {
             staleTime: 1000 * (60 * 10), // 10 min,
             refetchInterval: 1000 * (60 * 20),
             keepPreviousData: true,
             enabled: keywords !== ''
         })
     }
+
+    //[GET]
     const handleGetAllStudent = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
         getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery
             ([QueryStudent.getAllStudent, termId, majorId,
             getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],
-                () => getStudentOfSearch(termId, majorId, getQueryField('limit'),
+                () => StudentServices.getStudentOfSearch(termId, majorId, getQueryField('limit'),
                     getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')),
                 {
                     onSuccess(data: any) {
@@ -58,17 +67,25 @@ export const useStudent = () => {
                 })
     }
 
+    const handleGetCountOfStudent = () => {
+        return useQuery([QueryStudent.getCountOfStudent], () => StudentServices.getCountOfStudent(termId), {
+            staleTime: 1000 * (60 * 10),
+            refetchInterval: 100 * (60 * 20),
+            enabled: !!termId
+        })
+    }
+
     //[GET BY ID]
     const handleGetStudentById = (id: string) => {
-        return useQuery([QueryStudent.getStudentById, id], () => getStudentById(id), {
+        return useQuery([QueryStudent.getStudentById, id], () => StudentServices.getStudentById(id), {
             enabled: !!id,
             cacheTime: 1000 * (60 * 1)
         })
     }
 
-    //[UPDATE]
+    //[PUT]
     const onUpdateStudent = (id: string) => {
-        return useMutation((data: Partial<Student>) => updateStudent(id, data), {
+        return useMutation((data: Partial<Student>) => StudentServices.updateStudent(id, data), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.student)
                     enqueueSnackbar('Cập nhật sinh viên thành công', { variant: 'success' })
@@ -81,8 +98,10 @@ export const useStudent = () => {
             }
         })
     }
+
+    //[PUT]
     const onLockOnlyStudent = (id: string) => {
-        return useMutation((status: boolean) => lockOnlyStudent(id, status), {
+        return useMutation((status: boolean) => StudentServices.lockOnlyStudent(id, status), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar(`sinh viên thành công!`, { variant: 'success' })
@@ -92,8 +111,10 @@ export const useStudent = () => {
             }
         })
     }
+
+    //[POST]
     const onCreateStudent = () => {
-        return useMutation((data: Partial<Student>) => createStudent(data), {
+        return useMutation((data: Partial<Student>) => StudentServices.createStudent(data), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar('Tạo sinh viên thành công', { variant: 'success' })
@@ -107,8 +128,10 @@ export const useStudent = () => {
             }
         })
     }
+
+    //[DELETE]
     const onDeleteStudent = () => {
-        return useMutation((id: string) => deleteStudent(id), {
+        return useMutation((id: string) => StudentServices.deleteStudent(id), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar("Xóa sinh viên ra khỏi học kì.", { variant: 'success' })
@@ -123,8 +146,9 @@ export const useStudent = () => {
         })
     }
 
+    //[PUT]
     const onResetPassword = () => {
-        return useMutation((username: string) => resetPasswordStudent(username), {
+        return useMutation((username: string) => StudentServices.resetPasswordStudent(username), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar('Cấp lại mật khẩu thành công', { variant: 'success' })
@@ -142,13 +166,14 @@ export const useStudent = () => {
     return {
         paramTotalPage,
         studentStore,
-        onResetPassword,
-        onLockOnlyStudent,
         handleGetStudentById,
-        onUpdateStudent,
-        onCreateStudent,
         handleGetAllStudent,
         handleGetStudentsAssignTopic,
-        onDeleteStudent
+        handleGetCountOfStudent,
+        onDeleteStudent,
+        onUpdateStudent,
+        onCreateStudent,
+        onResetPassword,
+        onLockOnlyStudent,
     }
 }

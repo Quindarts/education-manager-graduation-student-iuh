@@ -80,6 +80,7 @@ function TableManagamentTopic(props: any) {
   const handleOpenEditModal = (topicId: string) => {
     setOpenEditModal({ topicId, isOpen: true });
   };
+  
   const HeadLecturerColumn: GridColDef[] = [
     {
       headerName: 'Tên Đề tài',
@@ -279,7 +280,7 @@ function TableManagamentTopic(props: any) {
       <>
         <Table
           isLimit={isApprovePermission}
-          rows={rows.map((row: any, index: number) => ({ ...row, stt: index + 1 }))}
+          rows={rows.map((row: any, index: number) => ({ ...row}))}
           sx={{
             minHeight: 500,
           }}

@@ -1,5 +1,4 @@
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { createTopicByToken, deleteTopicById, getTopicById, getTopicsByLecturerByTerm, getTopicsByTermByMajor, searchTopics, updateAllQuantityGroupMax, updateStatusTopicById, updateTopicById } from "@/services/apiTopic"
 import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
@@ -7,37 +6,55 @@ import { useSelector } from "react-redux"
 import { useTerm } from "./useQueryTerm"
 import { useAuth } from "./useAuth"
 import { RoleCheck } from "@/types/enum"
-import { useMajor } from "./useQueryMajor"
 import { Topic, TopicBodyRequestType } from "@/types/entities/topic"
 import useParams from "../ui/useParams"
 import { setParamTotalPage } from "@/store/slice/topic.slice"
 import { useDispatch } from "react-redux"
 import { getGroupByTopic } from "@/services/apiGroupStudent"
+import * as TopicServices from "@/services/apiTopic"
 
 export enum QueryTopic {
+
     //HEAD LECTURER
     getAllTopicByTermMajor = 'getAllTopicByTermMajor',
     getAllTopic = 'getAllTopic',
     getSearchTopic = "getSearchTopic",
     getTopicById = 'getTopicById',
     getGroupByTopic = "getGroupByTopic",
+    getCountOfTopic = "getCountOfTopic",
+
     //LECTURER
     getAllTopicByLecturerTerm = 'getAllTopicByLecturerTerm'
 }
-//crud, all, readOnly
-
 export const useTopic = () => {
-    const { enqueueSnackbar } = useSnackbar()
-    const topicStore = useSelector((state: any) => state.topicSlice)
+
+    //[REDUX]
     const { termStore } = useTerm()
     const { lecturerStore } = useAuth()
-    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
-    const dispatch = useDispatch()
+    const topicStore = useSelector((state: any) => state.topicSlice)
     const { paramTotalPage } = topicStore
+    const termId = termStore.currentTerm.id
+
+    const dispatch = useDispatch()
+
+    //[PARAMS URL] 
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
+
+    //[OTHER]
+    const { enqueueSnackbar } = useSnackbar()
+
+    const handleGetCountOfTopic = () => {
+        return useQuery([QueryTopic.getCountOfTopic], () => TopicServices.getCountOfTopic(termId)), {
+            staleTime: 1000 * (60 * 20), // 10 min,
+            refetchOnMount: true,
+            refetchInterval: 1000 * (60 * 20),
+        }
+    }
+
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
         var permissions: string[] = []
-        if (currentRole === RoleCheck.HEAD_LECTURER) {
+        if (currentRole === RoleCheck.HEAD_LECTURER || currentRole === RoleCheck.HEAD_COURSE) {
             permissions.push('all')
             permissions.push('crud')
         }
@@ -48,7 +65,7 @@ export const useTopic = () => {
 
     //[GET BY ID]
     const handleTopicById = (topicId: string) => {
-        return useQuery([QueryTopic.getTopicById, topicId], () => getTopicById(topicId))
+        return useQuery([QueryTopic.getTopicById, topicId], () => TopicServices.getTopicById(topicId))
     }
     const hanldeGetGroupsByTopic = (topicId: string) => {
         return useQuery([QueryTopic.getGroupByTopic, termStore.currentTerm.id, topicId], () => getGroupByTopic(termStore.currentTerm.id, topicId), {
@@ -60,7 +77,22 @@ export const useTopic = () => {
     const handleSearchTopic = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
         getQueryField('page') ? getQueryField('page') : setPage(1)
-        return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')], () => searchTopics(termStore.currentTerm.id, getQueryField('searchField'), getQueryField("keywords"), getQueryField("sort"), getQueryField('limit'), getQueryField('page')), {
+        return useQuery([
+            QueryTopic.getSearchTopic,
+            termStore.currentTerm.id,
+            getQueryField('limit'),
+            getQueryField('page'),
+            getQueryField('searchField'),
+            getQueryField('sort'),
+            getQueryField('keywords')],
+            () => TopicServices.searchTopics
+                (
+                    termStore.currentTerm.id,
+                    getQueryField('searchField'),
+                    getQueryField("keywords"),
+                    getQueryField("sort"),
+                    getQueryField('limit'),
+                    getQueryField('page')), {
             onSuccess(data) {
                 const total = data.params ? data.params.totalPage : 0
                 dispatch(setParamTotalPage(total))
@@ -76,14 +108,14 @@ export const useTopic = () => {
 
     //[GET BY TERM, MAJOR]
     const handleTopicsByTermByMajor = () => {
-        return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, ''], () => getTopicsByTermByMajor(termStore.currentTerm.id), {
+        return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, ''], () => TopicServices.getTopicsByTermByMajor(termStore.currentTerm.id), {
             staleTime: 1000 * (60 * 3), // 10 min,
         })
     }
 
     //[GET BY TERM, LECTURER]
     const handleTopicsByLecturerByTerm = () => {
-        return useQuery([QueryTopic.getAllTopicByLecturerTerm, termStore.currentTerm.id, lecturerStore.me.user.id], () => getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
+        return useQuery([QueryTopic.getAllTopicByLecturerTerm, termStore.currentTerm.id, lecturerStore.me.user.id], () => TopicServices.getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
             staleTime: Infinity, onSuccess(data) {
             }
         })
@@ -91,7 +123,7 @@ export const useTopic = () => {
 
     //[CREATE]
     const onCreateTopicByToken = () => {
-        return useMutation((newTopic: TopicBodyRequestType) => createTopicByToken(newTopic, termStore.currentTerm.id), {
+        return useMutation((newTopic: TopicBodyRequestType) => TopicServices.createTopicByToken(newTopic, termStore.currentTerm.id), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
@@ -106,7 +138,7 @@ export const useTopic = () => {
 
     //[UPDATE]
     const onUpdateTopicById = (topicId: string) => {
-        return useMutation((updateTopic: any) => updateTopicById(topicId, updateTopic), {
+        return useMutation((updateTopic: any) => TopicServices.updateTopicById(topicId, updateTopic), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
@@ -123,7 +155,7 @@ export const useTopic = () => {
 
     //[UPDATE STATUS]
     const onUpdateStatusTopic = (topicId: string) => {
-        return useMutation((data: Pick<Topic, 'status' | 'note'>) => updateStatusTopicById(topicId, data),
+        return useMutation((data: Pick<Topic, 'status' | 'note'>) => TopicServices.updateStatusTopicById(topicId, data),
             {
                 onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
@@ -137,7 +169,7 @@ export const useTopic = () => {
         )
     }
     const onUpdateAllQuantityGroupMax = () => {
-        return useMutation((quantity: number) => updateAllQuantityGroupMax(termStore.currentTerm.id, quantity), {
+        return useMutation((quantity: number) => TopicServices.updateAllQuantityGroupMax(termStore.currentTerm.id, quantity), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
@@ -150,7 +182,7 @@ export const useTopic = () => {
 
     //[DELETE]
     const onDeleteTopicById = () => {
-        return useMutation((topicId: string) => deleteTopicById(topicId), {
+        return useMutation((topicId: string) => TopicServices.deleteTopicById(topicId), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })

@@ -7,9 +7,6 @@ import EditInfoModal from '../Modal/EditInfoModal';
 import EditStatus from '../Modal/EditStatus';
 import DeleteModal from '../Modal/DeleteModal';
 import { checkGender } from '@/utils/validations/person.validation';
-import ModalUpload from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useExcel';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import ResetPassword from '../Modal/ResetPassword';
 import EditStatusMuiltiStudent from '../Modal/EditStatusMuiltiStudentModal';
 import { CustomToolbar } from './custom';
@@ -22,8 +19,6 @@ function TableManagamentStudent(props: any) {
     name: '',
     isOpen: false,
   });
-
-  const { termStore } = useTerm();
 
   const handleCloseEditInfoModal = () => {
     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
@@ -140,12 +135,12 @@ function TableManagamentStudent(props: any) {
     {
       headerName: 'Email',
       field: 'email',
-      flex: 1,
+      flex: 1.2,
       align: 'left',
       headerAlign: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' color='initial'>
+          <Typography variant='body1' fontSize='13px' color='grey.900'>
             {params.row.email ? params.row.email : 'Chưa có thông tin'}
           </Typography>
         );
@@ -268,7 +263,6 @@ function TableManagamentStudent(props: any) {
           handleChangePage={handleChangePage}
           disableColumnMenu
           disableColumnFilter
-          checkboxSelection
           slots={{
             toolbar: CustomToolbar,
           }}
@@ -276,12 +270,6 @@ function TableManagamentStudent(props: any) {
             setRowSelectionModel(newRowSelectionModel);
           }}
           rowSelectionModel={rowSelectionModel}
-          noData={
-            <ModalUpload
-              entityUpload={TypeEntityUpload.STUDENT}
-              termId={termStore.currentTerm.id}
-            />
-          }
         />
       </Box>
       <ResetPassword

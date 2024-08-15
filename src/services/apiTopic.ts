@@ -2,12 +2,15 @@ import { Topic, TopicBodyRequestType } from "@/types/entities/topic";
 import axiosConfig from "./axiosConfig";
 import { ResponseType } from "@/types/axios.type";
 
+//[GET] TOPIC
+export const getCountOfTopic = (termId: string) => {
+    return axiosConfig.get(`/api/v1/topics/count?termId=${termId}`)
+}
 
 //[HEAD LEC, LEC]
 export const getTopicById = async (topicId: string) => {
     return axiosConfig.get<ResponseType, any>(`/api/v1/topics/${topicId}`)
 }
-
 
 export const assignTopic = async (id: string, topicId: string) => {
     return axiosConfig.post(`/api/v1/group-students/${id}/assign-topic`, { topicId: topicId })

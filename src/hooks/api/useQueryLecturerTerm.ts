@@ -1,4 +1,3 @@
-import { createLecturerTerm, deleteLecturerTermById, getAllLecturerTermByParams, getListLecturerTerm, getListLecturerTermToAdding, importLecturerTerm } from "@/services/apiLecturerTerm"
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm";
 import { useSnackbar } from "notistack";
@@ -10,33 +9,55 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { useDispatch } from "react-redux";
 import { setParamTotalPageLectuerTerm } from "@/store/slice/lecturer.slice";
+import * as LecturerTermServices from "@/services/apiLecturerTerm"
 
 export enum QueryKeysLecturerTerm {
     listLecturerTerms = 'listLecturerTerms',
     lecturerTermsToAdd = 'lecturerTermsToAdd',
-    getAllLectuerTermByParams = 'getAllLectuerTermByParams'
+    getAllLectuerTermByParams = 'getAllLectuerTermByParams',
+    getCountOfLecturerTerm = "getCountOfLecturerTerm"
 }
+
 export const useLecturerTerm = () => {
+    //[REDUX]
     const lecturerStore = useSelector((state: RootState) => state.lecturerSlice);
     const { termStore } = useTerm();
     const { majorStore } = useMajor()
     const termId = termStore.currentTerm.id
     const majorId = majorStore.currentMajor.id
-
     const dispatch = useDispatch()
-    const { paramTotalPage } = lecturerStore
 
-    const { enqueueSnackbar } = useSnackbar();
+    //[PARAMS URL] 
+    const { paramTotalPage } = lecturerStore
     const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
+
+    //[OTHER]
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handleGetCountOfLecturerTerm = () => {
+        return useQuery(
+            [QueryKeysLecturerTerm.getCountOfLecturerTerm, termId],
+            () => LecturerTermServices.getCountOfLecturerTerm(termId), {
+            staleTime: 1000 * 60 * 20,
+            enabled: !!termId
+        }
+        )
+    }
 
     // [GET ALL]
     const handleGetAllLecturerTermByParam = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
         getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery(
-            [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
-            getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],
-            () => getAllLecturerTermByParams(termId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')),
+            [
+                QueryKeysLecturerTerm.getAllLectuerTermByParams,
+                termId,
+                getQueryField('limit'),
+                getQueryField('page'),
+                getQueryField('searchField'),
+                getQueryField('keywords')
+            ],
+            () => LecturerTermServices.getAllLecturerTermByParams(termId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')),
             {
                 onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params' | 'lecturerTerms'>) {
                     const total = data.params ? data.params.totalPage : 0
@@ -51,13 +72,13 @@ export const useLecturerTerm = () => {
 
     //[GET LIST LECTURER]
     const handleGetListLecturerTerms = () => {
-        return useQuery([QueryKeysLecturerTerm.listLecturerTerms, termId], () => getListLecturerTerm(termId), {
+        return useQuery([QueryKeysLecturerTerm.listLecturerTerms, termId], () => LecturerTermServices.getListLecturerTerm(termId), {
 
         })
     }
 
     const onDeleteLecturerTerm = () => {
-        return useMutation((lecturerId: string) => deleteLecturerTermById(lecturerId, termStore.currentTerm.id), {
+        return useMutation((lecturerId: string) => LecturerTermServices.deleteLecturerTermById(lecturerId, termStore.currentTerm.id), {
             onSuccess: (data: Pick<ResponseType, 'success' | 'message'>) => {
                 if (data.success === true) {
                     enqueueSnackbar(data.message, { variant: "success" });
@@ -72,14 +93,14 @@ export const useLecturerTerm = () => {
         })
     }
     const handleLecturerTermsToAdd = () => {
-        return useQuery([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorId], () => getListLecturerTermToAdding(termId, majorId), {
+        return useQuery([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorId], () => LecturerTermServices.getListLecturerTermToAdding(termId, majorId), {
             enabled: !!termId && !!majorId,
             cacheTime: 1000 * (60 * 1)
         })
     }
 
     const onCreateLecturerTerm = () => {
-        return useMutation((data: { lecturerId: string, termId: string }) => createLecturerTerm(data), {
+        return useMutation((data: { lecturerId: string, termId: string }) => LecturerTermServices.createLecturerTerm(data), {
             onSuccess(data: any) {
                 if (data.success === true) {
                     enqueueSnackbar(data.message, { variant: "success" });
@@ -97,7 +118,7 @@ export const useLecturerTerm = () => {
     }
     //[IMPORT]
     const onImportLecturerTerm = () => {
-        return useMutation(() => importLecturerTerm(termStore.currentTerm.id, majorStore.currentMajor.id), {
+        return useMutation(() => LecturerTermServices.importLecturerTerm(termStore.currentTerm.id, majorStore.currentMajor.id), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
                 if (data.success) {
                     enqueueSnackbar("Cập nhật danh sách giảng viên thành công", { variant: 'success' })
@@ -118,6 +139,7 @@ export const useLecturerTerm = () => {
     return {
         paramTotalPage: paramTotalPage.lecturerTerm,
         handleGetAllLecturerTermByParam,
+        handleGetCountOfLecturerTerm,
         handleGetListLecturerTerms,
         handleLecturerTermsToAdd,
         onImportLecturerTerm,

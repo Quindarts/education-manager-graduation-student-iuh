@@ -10,7 +10,10 @@ export const getAllLecturerTermByParams = (termId: string, limit: number | strin
     return axiosConfig.get<ResponseType, any>(`/api/v1/lecturer-terms/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}`);
 }
 
-
+//[GET] 
+export const getCountOfLecturerTerm = (termId: string) => {
+    return axiosConfig.get(`/api/v1/lecturer-terms/count?termId=${termId}`)
+}
 
 
 export const getListLecturerTermToAdding = async (termId: string, majorId: string) => {

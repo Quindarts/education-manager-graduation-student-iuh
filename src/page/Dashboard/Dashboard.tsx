@@ -1,66 +1,50 @@
-import { Avatar, Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import React from 'react';
-import TitleManager from '@/components/ui/Title';
 import { useAuth } from '@/hooks/api/useAuth';
-import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
-import { checkGender } from '@/utils/validations/person.validation';
-import { Icon } from '@iconify/react';
+
 import PromotionTextContent from '@/components/ui/PromotionTextContent';
-import Loading from '@/components/ui/Loading';
+import StatisticManager from './Statistic';
+import CalendarSection from './Calendar';
+import { useStudent } from '@/hooks/api/useQueryStudent';
 
 export default function Dashboard() {
   const { lecturerStore } = useAuth();
+  const { handleGetCountOfStudent } = useStudent();
+  const { data: fetchCountStudent } = handleGetCountOfStudent();
+  
   return (
-    <Paper sx={{ px: 20, py: 10, minHeight: '60vh' }} elevation={2}>
+    <Box sx={{ px: 10, bgcolor: 'white', py: 2, minHeight: '60vh' }}>
       <>
-        <TitleManager>Thông tin {checkRoleLecturer(lecturerStore.currentRoleRender)}</TitleManager>
-        <Box mt={20} display={'flex'} gap={8}>
+        <Box mt={8} display={'flex'} gap={8}>
           <Box>
-            <Avatar sx={{ width: 80, height: 80 }} />
-          </Box>
-          <Box>
-            <Typography fontWeight={700} color='text.primary' component={'h3'} variant='h1'>
-              {lecturerStore.me.user.fullName}
+            <Typography fontWeight={700} color='text.primary' component={'h5'} variant='h4'>
+              Tổng quan dữ liệu trang Quản lý Khóa luận Tốt nghiệp Học kì I 2024 - 2025
             </Typography>
-            <Box mt={10} display={'flex'} justifyContent={'space-evenly'} gap={10}>
-              <Box fontWeight={500} display={'flex'} gap={4}>
-                <Typography variant='h6' fontWeight={500} color='grey.600'>
-                  <Icon width={24} icon='solar:phone-outline' />
-                </Typography>
-                <Typography variant='h6' fontWeight={500} color='grey.600'>
-                  {lecturerStore.me.user.phone}
-                </Typography>
-              </Box>
-              <Box fontWeight={500} display={'flex'} gap={4}>
-                <Icon width={24} icon='material-symbols:mail-outline' />
-                <Typography variant='h6' fontWeight={500} color='grey.600'>
-                  {lecturerStore.me.user.email}
-                </Typography>
-              </Box>
-              <Box fontWeight={500} display={'flex'} gap={4}>
-                <Icon width={24} icon='material-symbols-light:date-range-outline' />
-                <Typography variant='h6' fontWeight={500} color='grey.600'></Typography>
-              </Box>
-              <Box fontWeight={500} display={'flex'} gap={4}>
-                <Icon width={24} icon='bi:gender-trans' />
-                <Typography variant='h6' fontWeight={500} color='grey.600'>
-                  {checkGender(lecturerStore.me.user.gender)}
-                </Typography>
-              </Box>
-            </Box>
           </Box>
         </Box>
         <Box my={10}>
-          <TitleManager>Tổng quan</TitleManager>
-          <Box my={10}></Box>
-          <TitleManager>Tổng số khóa luận</TitleManager>
-          <Box my={10}></Box>
-
-          <TitleManager>Sinh viên tham gia</TitleManager>
-          <Box my={10}></Box>
-          <PromotionTextContent />
+          <Box my={4}>
+            <StatisticManager />
+          </Box>
+          <Box id='calendar' gap={8} display={'flex'} my={10}>
+            <Paper sx={{ px: 10, py: 4, width: '100%' }}>
+              {' '}
+              <Typography mb={6} mt={10} variant='h6' fontWeight={'bold'} color='grey.700'>
+                Sự kiện
+              </Typography>
+              <Box>
+                <PromotionTextContent />
+              </Box>
+            </Paper>
+            <Paper sx={{ px: 10, py: 4, width: '40%' }}>
+              <Typography mb={6} mt={10} variant='h6' fontWeight={'bold'} color='grey.700'>
+                Lịch làm việc của tôi{' '}
+              </Typography>
+              <CalendarSection />
+            </Paper>
+          </Box>
         </Box>
       </>
-    </Paper>
+    </Box>
   );
 }

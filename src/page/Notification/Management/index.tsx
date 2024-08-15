@@ -15,8 +15,8 @@ function NotificationManagementPage() {
   const handleCloseModal = () => {
     setOpenAddModal(false);
   };
-  const { handleGetAllNotificationsOfLecturer } = useNotification();
-  const { data, isFetching, isLoading } = handleGetAllNotificationsOfLecturer();
+  const { handleGetMyNotification } = useNotification();
+  const { data, isFetching, isLoading } = handleGetMyNotification();
   return (
     <>
       <Paper sx={{ py: 10, px: 10 }} elevation={1}>
@@ -33,7 +33,7 @@ function NotificationManagementPage() {
           <SekeletonUI />
         ) : (
           <Box width={'full'} my={4}>
-            <TableManagementNotification rows={data?.notificationLecturers} />
+            <TableManagementNotification rows={data?.notifications} />
           </Box>
         )}  
         <>

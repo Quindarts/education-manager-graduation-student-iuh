@@ -4,6 +4,12 @@ enum TypeGroupLecturer {
     SESSION_HOST = "session_host",
     REVIEWER = 'reviewer'
 }
+
+//[GET] GROUP LECTURER
+export const getCountOfGroupLecturer = (termId: string) => {
+    return axiosConfig.get(`/api/v1/group-lecturers/count?termId=${termId}`)
+}
+
 //[GET]
 export const getGroupLecturerByType: any = async (term_id: string, type: TypeGroupLecturer) => {
     return axiosConfig.get(`/api/v1/group-lecturers?termId=${term_id}&type=${type}&limit=40&page=1`)

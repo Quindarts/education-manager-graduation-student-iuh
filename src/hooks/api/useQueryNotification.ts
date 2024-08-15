@@ -2,7 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 
 
 import { enqueueSnackbar, useSnackbar } from 'notistack';
-import { createAllNotificationLecturerTerms, createAllNotificationStudentTerms, createNotificationOfLecturerId, deleteNotificationLecturer, getMyNotification, getMyNotificationById, getNotificationsOfLecturer, upateReadStatusNotification, updateNotificationLecturer } from '@/services/apiNotification';
+import { createAllNotificationLecturerTerms, createAllNotificationStudentTerms, createNotificationOfLecturerId, deleteNotificationLecturer, getMyNotification, getMyNotificationById, getNotificationsOfLecturer, upateReadStatusNotification, updateNotificationLecturer } from '@/services/apiNotifications';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { useTerm } from './useQueryTerm';
 

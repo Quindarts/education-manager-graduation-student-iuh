@@ -42,7 +42,7 @@ function Notification() {
         <Badge
           badgeContent={
             data
-              ? data?.notificationLecturers.filter((noti: any) => noti.isRead === false).length
+              ? data?.notifications.filter((noti: any) => noti.isRead === false).length
               : 0
           }
           color='error'
@@ -95,14 +95,14 @@ function Notification() {
             </Typography>
             <Box borderRadius={1} alignSelf={'center'} px={4} py={2}>
               <Typography fontWeight={500} variant='body2' color='white'>
-                {data ? data?.notificationLecturers.length : 0} Thông báo
+                {data ? data?.notifications.length : 0} Thông báo
               </Typography>
             </Box>
           </Box>
           <Box sx={{ overflowY: 'auto', height: '80%', px: 2 }}>
             {isLoading || isFetching ? (
               <CircularProgress />
-            ) : data?.notificationLecturers.length === 0 ? (
+            ) : data?.notifications.length === 0 ? (
               <Box width={'100%'}>
                 <Box textAlign={'center'} m={'auto'} p='auto' width={240}>
                   <img width={100} src='/public/images/bell-alarm.webp' alt='' />
@@ -118,7 +118,7 @@ function Notification() {
               </Box>
             ) : (
               <>
-                {data?.notificationLecturers.map((noti: any) => (
+                {data?.notifications.map((noti: any) => (
                   <Paper
                     sx={{
                       my: 2,

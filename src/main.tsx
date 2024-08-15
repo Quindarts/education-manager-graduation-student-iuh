@@ -8,9 +8,10 @@ import { SnackbarProvider } from 'notistack';
 import { themeSnackbar } from './theme/ThemeSnackbar.js';
 import { Zoom } from '@mui/material';
 import ReactQueryClientProvider from './providers/ReactQueryClientProvider.jsx';
-// import { ReactQueryDevtools } from 'react-query/devtools';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
 import store from './store/index.js';
+import { env } from './utils/env.js';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <MUIThemeProvider>
@@ -25,7 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         >
           <ReactQueryClientProvider>
             <App />
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+            {env.NODE_ENV === 'local' && <ReactQueryDevtools initialIsOpen={false} />}
           </ReactQueryClientProvider>
         </SnackbarProvider>
       </Provider>

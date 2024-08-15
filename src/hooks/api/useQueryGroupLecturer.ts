@@ -1,27 +1,44 @@
-import { getGroupLecturerByLecturerId } from './../../services/apiGroupLecturer';
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { createGroupLecturer, getGroupLecturerById, getGroupLecturerByType, getLecturerNoGroupByTypeGroup } from "@/services/apiGroupLecturer"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
 import { useAuth } from './useAuth';
 import { RoleCheck } from '@/types/enum';
+import * as GroupLecturerServices from "@/services/apiGroupLecturer"
 
 export enum QueryKeysGroupLecturer {
     getAllGroupLecturerByTypeGroup = 'getAllGroupLecturerByTypeGroup',
     getLecturerNoGroupByTypeGroup = 'getLecturerNoGroupByTypeGroup',
     getGroupLecturerByLecturerId = "getGroupLecturerByLecturerId",
-    createGroupLecturer = 'createGroupLecturer',
+    getCountOfGroupLecturer = "getCountOfGroupLecturer",
     getGroupLecturerById = "getGroupLecturerById",
+    managerActionGroupLecturer = 'managerActionGroupLecturer',
+    createGroupLecturer = 'createGroupLecturer',
     searchGroupLecturerByField = 'searchGroupLecturerByField',
-    managerActionGroupLecturer = 'managerActionGroupLecturer'
 }
 
 export const useGroupLecturer = () => {
-    const { enqueueSnackbar } = useSnackbar()
+
+    //[REDUX]
     const { termStore } = useTerm()
     const { lecturerStore } = useAuth()
+    const termId = termStore.currentTerm.id
 
+    //[OTHER]
+    const { enqueueSnackbar } = useSnackbar()
+
+    //[GET]
+    const handleGetCountOfGroupLecturer = () => {
+        return useQuery(
+            [QueryKeysGroupLecturer.getCountOfGroupLecturer, termId],
+            () => GroupLecturerServices.getCountOfGroupLecturer(termId),
+            {
+                staleTime: 1000 * 60 * 20,
+            }
+        )
+    }
+
+    //[UI]
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
         var permissions: string[] = []
@@ -37,27 +54,34 @@ export const useGroupLecturer = () => {
         }
         return permissions
     }
+
+    //[GET]
     const handleGetAllGroupLecturerByTypeGroup = (type: string) => {
         const termId = termStore.currentTerm.id
-        return useQuery([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId], () => getGroupLecturerByType(termId, type))
-    }
-    const handleGetLecturerNoGroupByTypeGroup = (type: string) => {
-        const termId = termStore.currentTerm.id
-        return useQuery([QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termId], () => getLecturerNoGroupByTypeGroup(type, termId))
+        return useQuery([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId], () => GroupLecturerServices.getGroupLecturerByType(termId, type))
     }
 
+    //[GET]
+    const handleGetLecturerNoGroupByTypeGroup = (type: string) => {
+        const termId = termStore.currentTerm.id
+        return useQuery([QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termId], () => GroupLecturerServices.getLecturerNoGroupByTypeGroup(type, termId))
+    }
+
+    //[GET]
     const handleGetGroupLecturerByLecturerId = (type: string) => {
         const termId = termStore.currentTerm.id
         const lecturerId = lecturerStore.me.user.id
-        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, type, termId, lecturerId], () => getGroupLecturerByLecturerId(type, termId, lecturerId))
+        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, type, termId, lecturerId], () => GroupLecturerServices.getGroupLecturerByLecturerId(type, termId, lecturerId))
     }
 
+    //[GET]
     const handleGetGroupLecturerById = (id: string) => {
-        return useQuery([QueryKeysGroupLecturer.getGroupLecturerById, id], () => getGroupLecturerById(id))
-
+        return useQuery([QueryKeysGroupLecturer.getGroupLecturerById, id], () => GroupLecturerServices.getGroupLecturerById(id))
     }
+
+    //[POST]
     const onCreateGroupLecturer = (type: string) => {
-        return useMutation((data: any) => createGroupLecturer(type, data), {
+        return useMutation((data: any) => GroupLecturerServices.createGroupLecturer(type, data), {
             onSuccess: () => {
                 enqueueSnackbar('Tạo nhóm Giảng viên thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termStore.currentTerm.id] })
@@ -71,12 +95,13 @@ export const useGroupLecturer = () => {
 
 
     return {
+        handleGetCountOfGroupLecturer,
         handleGetLecturerNoGroupByTypeGroup,
-        onCreateGroupLecturer,
         handleGetAllGroupLecturerByTypeGroup,
         handleGetGroupLecturerById,
         handleGetGroupLecturerByLecturerId,
-        handleUiRender
+        handleUiRender,
+        onCreateGroupLecturer,
     }
 
 }

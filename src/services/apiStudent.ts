@@ -1,6 +1,10 @@
 import { Student } from "@/types/entities";
 import axiosConfig from "./axiosConfig"
 
+//[GET] STUDENT
+export const getCountOfStudent: any = (termId: string) => {
+    return axiosConfig.get(`/api/v1/students/count?termId=${termId}`)
+}
 
 //[GET]
 export const getStudentsAssignTopic: any = (termId: string, keywords: string, searchField: string) => {
