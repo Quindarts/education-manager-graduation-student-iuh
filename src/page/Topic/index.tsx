@@ -12,7 +12,7 @@ import { setParamTotalPage } from '@/store/slice/topic.slice';
 function TopicPage() {
   const { handleSearchTopic, paramTotalPage } = useTopic();
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentLimit, seiCurrentLimit] = useState(10);
+  const [currentLimit, setCurrentLimit] = useState(10);
   const { data, isLoading, isFetching, refetch } = handleSearchTopic();
   const { setLimit, setPage, getQueryField, setTotalPage } = useParams();
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function TopicPage() {
     setCurrentPage(value);
   };
   const handleChangeLimit = (value: number) => {
-    seiCurrentLimit(value);
+    setCurrentLimit(value);
   };
   useEffect(() => {
     setLimit(currentLimit);
@@ -65,7 +65,7 @@ function TopicPage() {
             handleChangePage={handleChangePage}
             page={currentPage}
             limit={currentLimit}
-            totalPages={paramTotalPage}
+            totalPage={paramTotalPage}
           />
         </Box>
       )}

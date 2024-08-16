@@ -7,6 +7,7 @@ import useStudentSlice from "./slice/student.slice";
 import useTopicSlice from "./slice/topic.slice";
 import useSidebarSlice from "./slice/sidebar.slice";
 import { Store } from '@reduxjs/toolkit';
+import useNotificationSlice from "./slice/notification.slice";
 
 export const store: Store = configureStore({
     reducer: {
@@ -16,7 +17,8 @@ export const store: Store = configureStore({
         groupStudentSlice: useGroupStudentSlice,
         studentSlice: useStudentSlice,
         topicSlice: useTopicSlice,
-        sidebarSlice: useSidebarSlice
+        sidebarSlice: useSidebarSlice,
+        notificationSlice: useNotificationSlice
     },
 });
 

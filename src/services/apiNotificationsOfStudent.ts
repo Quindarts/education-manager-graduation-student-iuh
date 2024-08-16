@@ -1,7 +1,7 @@
 import { ResponseType } from "@/types/axios.type"
 import axiosConfig from "./axiosConfig"
 
-const URL = "/api/v1/notifications-students"
+const URL = "/api/v1/notification-students"
 
 //[GET] Get my notification
 export const getMyNotification = () => {
@@ -19,7 +19,7 @@ export const createNotificationOfStudentId = (data: { title: string, content: st
 
 //[POST] [ADMIN, HEAD_Student, HEAD_COURSE] Create notification to all StudentTerm
 export const createAllNotificationStudentTerms = (title: string, content: string, termId: string) => {
-    return axiosConfig.post<ResponseType, any>(`${URL}/terms?termId=${termId}`, { title: title, content: content, termId: termId })
+    return axiosConfig.post<ResponseType, any>(`${URL}/terms`, { title: title, content: content, termId: termId })
 }
 
 //[PUT] Update read status

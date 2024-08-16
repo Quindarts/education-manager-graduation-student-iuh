@@ -1,51 +1,84 @@
 import { useMutation, useQuery } from 'react-query';
-
-
-import { enqueueSnackbar, useSnackbar } from 'notistack';
-import { createAllNotificationLecturerTerms, createAllNotificationStudentTerms, createNotificationOfLecturerId, deleteNotificationLecturer, getMyNotification, getMyNotificationById, getNotificationsOfLecturer, upateReadStatusNotification, updateNotificationLecturer } from '@/services/apiNotifications';
+import { useSnackbar } from 'notistack';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { useTerm } from './useQueryTerm';
+import useParams from '../ui/useParams';
+import * as NotificationServices from "@/services/apiNotifications"
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setParamTotalPage } from '@/store/slice/notification.slice';
 
 export enum QueryKeysNotification {
-    //Lecturer
-    getNotificationsOfLecturer = 'getNotificationsOfLecturer',
-    getNotificationById = 'getNotificationById',
-    getMyNotification = 'getMyNotification',
-    //Student
-    getAllNotificationStudentTerms = 'getAllNotificationStudentTerms'
+    getNotificationsOfFilter = "getNotificationsOfFilter",
+    getNotificationById = "getNotificationById",
 }
 
 export const useNotification = () => {
+    //[REDUX]
     const { termStore } = useTerm()
-    const { enqueueSnackbar } = useSnackbar();
+    const termId = termStore.currentTerm.id
+    const notificationStore = useSelector((state: any) => state.notificationSlice)
+    const { paramTotalPage } = notificationStore
+    const dispatch = useDispatch()
 
-    //[GET ALL]
-    const handleGetAllNotificationsOfLecturer = () => {
-        return useQuery([QueryKeysNotification.getNotificationsOfLecturer], () => getNotificationsOfLecturer(), {
-            refetchInterval: 1000 * (60 * 3),
-            staleTime: 1000 * (60 * 3), // 10 min,
-        });
-    };
+    //[PARAMS URL] 
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
+
+    //[OTHER]
+    const { enqueueSnackbar } = useSnackbar()
+
+    const handleGetNotificationOfFilter = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
+        return useQuery([QueryKeysNotification.getNotificationsOfFilter,
+        getQueryField('limit'),
+        getQueryField('page'),
+        getQueryField("searchField"),
+        getQueryField('keywords')
+        ],
+            () => NotificationServices.getNotificationsOfFilter(
+                getQueryField("limit"),
+                getQueryField("page"),
+                getQueryField("searchField"),
+                getQueryField("keywords")
+            ),
+            {
+                onSuccess(data) {
+                    const total = data.params ? data.params.totalPage : 0
+                    dispatch(setParamTotalPage(total))
+                    setTotalPage(total)
+                },
+                staleTime: 1000 * (60 * 3), // 10 min,
+                refetchOnMount: true,
+                refetchInterval: 1000 * (60 * 20),
+                keepPreviousData: true,
+            }
+        )
+    }
 
     const handleGetNotificationById = (id: string) => {
-        return useQuery([QueryKeysNotification.getNotificationById, id], () => getMyNotificationById(id), {
-            staleTime: 1000 * (60 * 60), // 10 min,
-        })
-    }
-    const handleGetMyNotification = () => {
-        return useQuery([QueryKeysNotification.getMyNotification], () => getMyNotification(), {
-            staleTime: 5000,
+        return useQuery([QueryKeysNotification.getNotificationById, id], () => NotificationServices.getNotificationById(id), {
+            staleTime: 1000 * (20 * 60), // 10 min,
+            enabled: !!id
         })
     }
 
     //[CREATE]
-    const onCreateNotification = () => {
-        return useMutation((data: { message: string; type: string; lecturerId: string; }) => createNotificationOfLecturerId(data), {
+    const onCreateManyNotifications = () => {
+        return useMutation((data: any) => NotificationServices.createNotifications(data.title, data.content, termId), {
             onSuccess: (data: any) => {
                 if (data.success) {
                     enqueueSnackbar('Thêm thông báo thành công', { variant: 'success' });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getNotificationsOfLecturer] });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getMyNotification] });
+                    queryClient.invalidateQueries({
+                        queryKey:
+                            [QueryKeysNotification.getNotificationsOfFilter,
+                                "10",
+                                "1",
+                                "",
+                                ""
+                            ]
+                    });
+
                 }
             },
             onError: () => {
@@ -54,61 +87,21 @@ export const useNotification = () => {
         });
     };
 
-    const onCreateAllNotificationLecturerTerms = () => {
-        return useMutation((message: string) => createAllNotificationLecturerTerms(message, termStore.currentTerm.id), {
-            onSuccess: (data: any) => {
-                if (data.success) {
-                    enqueueSnackbar(data.message, { variant: 'success' });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getNotificationsOfLecturer] });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getMyNotification] });
-
-                }
-            },
-            onError: () => {
-                enqueueSnackbar('Gửi thông báo thất bại', { variant: 'error' });
-            }
-        }
-        );
-    };
-
-    const onCreateAllNotificationStudentTerms = () => {
-        return useMutation((message: string) => createAllNotificationStudentTerms(message, termStore.currentTerm.id), {
-            onSuccess: (data: any) => {
-                if (data.success) {
-                    enqueueSnackbar(data.message, { variant: 'success' });
-                }
-            },
-            onError: () => {
-                enqueueSnackbar('Gửi thông báo thất bại', { variant: 'error' });
-            }
-        }
-        );
-    };
-
     //[UPDATE]
     const onUpdateNotification = (id: string) => {
-        return useMutation((data: { message: string; type: string; lecturerId: string; }) => updateNotificationLecturer(id, data), {
+        return useMutation((data: { title: string, content: string }) => NotificationServices.updateNotification(id, data.title, data.content), {
             onSuccess: (data: any) => {
                 if (data.success) {
                     enqueueSnackbar('Cập nhật thông báo thành công', { variant: 'success' });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getNotificationById, id] });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getNotificationsOfLecturer] });
-                }
-            },
-            onError: () => {
-                enqueueSnackbar('Cập nhật thông báo thất bại', { variant: 'error' });
-            }
-        });
-    };
-
-    //[UPDATE]
-    const onReadOfNotification = (id: string) => {
-        return useMutation(() => upateReadStatusNotification(id), {
-            onSuccess: (data: any) => {
-                if (data.success) {
-                    enqueueSnackbar('Đã xem', { variant: 'success' });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getNotificationById, id] });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getMyNotification] });
+                    queryClient.invalidateQueries({
+                        queryKey:
+                            [QueryKeysNotification.getNotificationsOfFilter,
+                                "10",
+                                "1",
+                                "",
+                                ""
+                            ]
+                    });
                 }
             },
             onError: () => {
@@ -118,12 +111,20 @@ export const useNotification = () => {
     };
 
     //[DELETE]
-    const onDeleteNotification = () => {
-        return useMutation((id: string) => deleteNotificationLecturer(id), {
+    const onDeleteNotificationById = () => {
+        return useMutation((id: string) => NotificationServices.deleteNotifications(id), {
             onSuccess: (data: any) => {
                 if (data.success) {
                     enqueueSnackbar('Xóa thông báo thành công', { variant: 'success' });
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysNotification.getNotificationsOfLecturer] });
+                    queryClient.invalidateQueries({
+                        queryKey:
+                            [QueryKeysNotification.getNotificationsOfFilter,
+                                "10",
+                                "1",
+                                "",
+                                ""
+                            ]
+                    });
                 }
             },
             onError: () => {
@@ -133,14 +134,11 @@ export const useNotification = () => {
     };
 
     return {
-        handleGetAllNotificationsOfLecturer,
-        onCreateNotification,
-        onUpdateNotification,
-        onDeleteNotification,
-        onCreateAllNotificationStudentTerms,
-        handleGetMyNotification,
-        onCreateAllNotificationLecturerTerms,
+        paramTotalPage,
+        handleGetNotificationOfFilter,
         handleGetNotificationById,
-        onReadOfNotification,
+        onCreateManyNotifications,
+        onUpdateNotification,
+        onDeleteNotificationById
     };
 }

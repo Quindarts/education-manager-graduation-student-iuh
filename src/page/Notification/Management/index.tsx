@@ -1,44 +1,74 @@
 import TitleManager from '@/components/ui/Title';
-import { Box, Button, Paper } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import TableManagementNotification from './Table';
-import { Icon } from '@iconify/react';
-import AddNotificationModal from './Modal/AddModal';
 import { useNotification } from '@/hooks/api/useQueryNotification';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import HeaderNotification from './Header';
+import useParams from '@/hooks/ui/useParams';
+import { useDispatch } from 'react-redux';
+import { setParamTotalPage } from '@/store/slice/notification.slice';
 
 function NotificationManagementPage() {
-  const [openAddModal, setOpenAddModal] = useState(false);
-  const handleOpenAddModal = () => {
-    setOpenAddModal(true);
+  const [currentLimit, setCurrentLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { handleGetNotificationOfFilter, paramTotalPage } = useNotification();
+  const { data, isFetching, isLoading, refetch } = handleGetNotificationOfFilter();
+  const dispatch = useDispatch();
+
+  //[]
+  const { getQueryField, setPage, setLimit, setTotalPage } = useParams();
+
+  const handleChangePage = (value: number) => {
+    setCurrentPage(value);
   };
-  const handleCloseModal = () => {
-    setOpenAddModal(false);
+  const handleChangeLimit = (value: number) => {
+    setCurrentLimit(value);
   };
-  const { handleGetMyNotification } = useNotification();
-  const { data, isFetching, isLoading } = handleGetMyNotification();
+  useEffect(() => {
+    setLimit(currentLimit);
+    setPage(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    setLimit(currentLimit);
+    refetch();
+  }, [currentLimit]);
+  useEffect(() => {
+    if (data !== null) {
+      const total = data ? data.params.totalPage : 0;
+      dispatch(setParamTotalPage(total));
+      setTotalPage(total);
+    }
+  }, [data]);
+  useEffect(() => {
+    setLimit(currentLimit);
+    setPage(1);
+    if (getQueryField('keywords') === '') {
+      refetch();
+    }
+  }, [getQueryField('keywords')]);
   return (
     <>
       <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <TitleManager icon='basil:notification-on-outline' mb={4} mt={2}>
-            Danh sách thông báo
-          </TitleManager>
-          <Button onClick={handleOpenAddModal} color='error' variant='contained' size='small'>
-            <Icon width={16} icon='material-symbols:add' />
-            Thêm thông báo mới{' '}
-          </Button>
-        </Box>
-        {isLoading || isFetching ? (
+        <TitleManager icon='basil:notification-on-outline' mb={6} mt={2}>
+          Danh sách thông báo
+        </TitleManager>
+        <HeaderNotification />
+        {isLoading ? (
           <SekeletonUI />
         ) : (
           <Box width={'full'} my={4}>
-            <TableManagementNotification rows={data?.notifications} />
+            <TableManagementNotification
+              limit={currentLimit}
+              page={currentPage}
+              totalPage={paramTotalPage}
+              rows={data?.notifications ? data.notifications : []}
+              handleChangePage={handleChangePage}
+              handleChangeLimit={handleChangeLimit}
+            />
           </Box>
-        )}  
-        <>
-          <AddNotificationModal open={openAddModal} onClose={handleCloseModal} />
-        </>
+        )}
       </Paper>
     </>
   );

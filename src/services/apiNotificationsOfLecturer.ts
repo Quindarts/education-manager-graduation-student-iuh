@@ -1,7 +1,7 @@
 import { ResponseType } from "@/types/axios.type"
 import axiosConfig from "./axiosConfig"
 
-const URL = "/api/v1/notifications-lecturers"
+const URL = "/api/v1/notification-lecturers"
 
 //[GET] Get my notification
 export const getMyNotification = () => {

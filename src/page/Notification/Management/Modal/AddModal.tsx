@@ -5,11 +5,14 @@ import TextEditor from '@/components/ui/TextEditor';
 import TitleManager from '@/components/ui/Title';
 import { useAuth } from '@/hooks/api/useAuth';
 import { useNotification } from '@/hooks/api/useQueryNotification';
+import { useNotificationLecturer } from '@/hooks/api/useQueryNotificationLecturer';
+import { useNotificationStudent } from '@/hooks/api/useQueryNotificationStudent';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import { Formik } from 'formik';
 import { useEffect } from 'react';
+import { string } from 'yup';
 
 const DROP_ENUM_ROLE_NOTI = [
   {
@@ -58,59 +61,56 @@ function getNameById(id: string) {
   return item ? item.name : null;
 }
 
-const handleMessageSending = (
-  role: string,
-  roleIsGived: string,
-  messageName: string,
-  messageContent: string,
-) => {
-  const convertToMess =
-    '<h5>' +
-    role +
-    ' ' +
-    getNameById(roleIsGived) +
-    ' </h5> ' +
-    '<br/>' +
-    ' <h3> Tiêu đề: ' + 
-    messageName +
-    ' </h3> ' +
-    '<br/>' +
-    ' <h4> Nội dung cụ thể: </h4>' +
-    messageContent;
-  return convertToMess;
-};
 function AddNotificationModal(props: any) {
   const { open, onClose, termId, type } = props;
   const { lecturerStore } = useAuth();
-  const { onCreateAllNotificationStudentTerms, onCreateAllNotificationLecturerTerms } =
-    useNotification();
-  const { mutate: createManyStudents, isSuccess: successStudents } =
+
+  //[Student Handler]
+  const { onCreateAllNotificationStudentTerms, onCreateNotificationOfStudentId } =
+    useNotificationStudent();
+
+  const { mutate: createManyStudents, isSuccess: successManyStudent } =
     onCreateAllNotificationStudentTerms();
-  const { mutate: createManyLecturers, isSuccess: successLecturers } =
+
+  const { mutate: createOnlyStudent, isSuccess: successOnlyStudent } =
+    onCreateNotificationOfStudentId();
+
+  //[Lecturer Handler]
+  const { onCreateAllNotificationLecturerTerms, onCreateNotificationOfLecturerId } =
+    useNotificationLecturer();
+
+  const { mutate: createManyLecturers, isSuccess: successManyLecturer } =
     onCreateAllNotificationLecturerTerms();
 
+  const { mutate: createOnlyLecturer, isSuccess: successOnlyLecturer } =
+    onCreateNotificationOfLecturerId();
+
+  //[On submit]
   const handleSubmit = (values: any) => {
-    const message = handleMessageSending(
-      values.role,
-      values.typeRoleSended,
-      values.messageName,
-      values.messageContent,
-    );
+    let dataSend = {
+      title: values.title,
+      content: values.content,
+    };
+
     if (values.typeQuantitySended === 'many' && values.typeRoleSended === 'students') {
-      createManyStudents(message);
+      createManyStudents(dataSend);
     } else if (values.typeQuantitySended === 'many' && values.typeRoleSended === 'lecturers') {
-      createManyLecturers(message);
+      createManyLecturers(dataSend);
     }
   };
   useEffect(() => {
-    if (successLecturers || successStudents) {
+    if (
+      successManyLecturer === true ||
+      successManyStudent === true ||
+      successOnlyLecturer === true ||
+      successOnlyStudent === true
+    )
       onClose();
-    }
-  }, [successLecturers, successStudents]);
+  }, [successManyLecturer, successManyStudent, successOnlyLecturer, successOnlyStudent]);
 
   return (
     <Modal maxWidth='lg' open={open} onClose={onClose}>
-      <Box px={6} py={6}>
+      <Box px={6} py={2}>
         <TitleManager
           textTransform={'uppercase'}
           icon='material-symbols:circle-notifications-rounded'
@@ -127,8 +127,8 @@ function AddNotificationModal(props: any) {
             name: `${lecturerStore.me.user.fullName}`,
             typeQuantitySended: 'many',
             typeRoleSended: 'students',
-            messageName: '',
-            messageContent: '',
+            title: '',
+            content: '',
             role: `${checkRoleLecturer(lecturerStore.currentRoleRender)}`,
           }}
         >
@@ -159,11 +159,12 @@ function AddNotificationModal(props: any) {
                   />
                 </Box>
               </Box>
-              <Box bgcolor={'grey.50'} px={10} pb={4}>
+              <Paper sx={{ px: 10, py: 6, mb: 20 }}>
                 <TitleManager
                   variant='body1'
+                  color={'grey.700'}
                   textTransform={'uppercase'}
-                  icon='ph:user-list'
+                  icon='ph:user'
                   mb={6}
                 >
                   Người nhận
@@ -193,28 +194,30 @@ function AddNotificationModal(props: any) {
                   </Box>
                 </Box>
                 <CustomTextField
-                  name='messageName'
+                  name='title'
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  error={errors.messageName ? true : false}
-                  helperText={errors.messageName}
+                  error={errors.title ? true : false}
+                  helperText={errors.title}
                   label='Tiêu đề thông báo'
                   placeholder='Tên thông báo '
-                  id='messageName'
-                  value={values.messageName}
+                  id='title'
+                  value={values.title}
                 />
-                <TextEditor
-                  label='Nội dung thông báo'
-                  errors={errors.messageContent ? true : false}
-                  placeholder='Nhập vào nội dung thông báo'
-                  value={values.messageContent}
-                  onChange={(value) => {
-                    setFieldValue('messageContent', value);
-                  }}
-                  id='messageContent'
-                  helperText={errors.messageContent}
-                />
-              </Box>
+                <Box>
+                  <TextEditor
+                    label='Nội dung thông báo'
+                    errors={errors.content ? true : false}
+                    placeholder='Nhập vào nội dung thông báo'
+                    value={values.content}
+                    onChange={(value) => {
+                      setFieldValue('content', value);
+                    }}
+                    id='content'
+                    helperText={errors.content}
+                  />
+                </Box>
+              </Paper>
 
               <Box mt={4} justifyContent={'end'} gap={4} display={'flex'}>
                 <Button variant='contained' color='primary' onClick={onClose}>

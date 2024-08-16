@@ -8,10 +8,11 @@ import { Button, CircularProgress, Paper } from '@mui/material';
 import { useNotification } from '@/hooks/api/useQueryNotification';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { useNotificationLecturer } from '@/hooks/api/useQueryNotificationLecturer';
 
 function Notification() {
   const { handleActive, active, menuRef } = usePopup();
-  const { handleGetMyNotification } = useNotification();
+  const { handleGetMyNotification } = useNotificationLecturer();
   const { data, isLoading, isFetching } = handleGetMyNotification();
   const navigate = useNavigate();
   const handleNavigate = (id: string) => {
@@ -40,11 +41,7 @@ function Notification() {
         color='info'
       >
         <Badge
-          badgeContent={
-            data
-              ? data?.notifications.filter((noti: any) => noti.isRead === false).length
-              : 0
-          }
+          
           color='error'
           sx={{
             height: '100%',
@@ -95,14 +92,14 @@ function Notification() {
             </Typography>
             <Box borderRadius={1} alignSelf={'center'} px={4} py={2}>
               <Typography fontWeight={500} variant='body2' color='white'>
-                {data ? data?.notifications.length : 0} Thông báo
+                {/* {data ? data?.notifications.length : 0} Thông báo */}
               </Typography>
             </Box>
           </Box>
           <Box sx={{ overflowY: 'auto', height: '80%', px: 2 }}>
             {isLoading || isFetching ? (
               <CircularProgress />
-            ) : data?.notifications.length === 0 ? (
+            ) : true ? (
               <Box width={'100%'}>
                 <Box textAlign={'center'} m={'auto'} p='auto' width={240}>
                   <img width={100} src='/public/images/bell-alarm.webp' alt='' />
@@ -118,7 +115,7 @@ function Notification() {
               </Box>
             ) : (
               <>
-                {data?.notifications.map((noti: any) => (
+                {/* {data?.notifications.map((noti: any) => (
                   <Paper
                     sx={{
                       my: 2,
@@ -163,7 +160,7 @@ function Notification() {
                       </>
                     </Box>
                   </Paper>
-                ))}
+                ))} */}
               </>
             )}
           </Box>

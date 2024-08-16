@@ -1,13 +1,15 @@
 import Table from '@/components/ui/Table/Table';
-import { Box, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 
 import dayjs from 'dayjs';
+import { CustomToolbar } from './custom';
+import { Icon } from '@iconify/react';
 
 function TableManagementNotification(props: any) {
-  const { rows, totalItems, totalPages, page, handelChangePage, ...rest } = props;
-
+  const { rows, totalItems, limit, totalPage, page, handleChangePage, handleChangeLimit, ...rest } =
+    props;
   //Handle
   const [openModalEditNotification, setOpenModalEditNotification] = useState({
     isOpen: false,
@@ -48,22 +50,28 @@ function TableManagementNotification(props: any) {
   const basicColumns: GridColDef[] = [
     {
       headerName: 'Ngày Tạo',
-      field: 'created_at',
-      flex: 0.8,
+      field: 'createdAt',
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
         return (
           <>
-            <Typography>{dayjs(params.row.created_at).format('DD/MM/YYYY hh:ss')}</Typography>
+            <Typography>{dayjs(params.row.created_at).format('DD/MM/YYYY')}</Typography>
           </>
         );
       },
     },
-
     {
-      headerName: 'Nội dung',
-      field: 'message',
+      headerName: 'Người tạo',
+      field: 'senderName',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'left',
+    },
+    {
+      headerName: 'Tiêu đề thông báo',
+      field: 'title',
       flex: 5,
       headerAlign: 'center',
       align: 'left',
@@ -73,40 +81,30 @@ function TableManagementNotification(props: any) {
             <Typography
               variant='body1'
               color='initial'
-              dangerouslySetInnerHTML={{ __html: params.row.message }}
+              dangerouslySetInnerHTML={{ __html: params.row.title }}
             />
           </Box>
         );
       },
     },
     {
-      headerName: '',
+      headerName: 'Chức năng',
       field: 'name9',
-      flex: 1,
+      flex: 1.2,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={6}>
-          {/* <Tooltip title='Cập nhật thông báo'>
-            <IconButton
-              //   onClick={() => {
-              //     handleOpenModalEditNotification(params.row.id);
-              //   }}
-              size='small'
-            >
-              <Icon icon='lucide:edit' />
+          <Tooltip title='Xem chi tiết'>
+            <IconButton size='large'>
+              <Icon width={26} icon='flat-color-icons:view-details' />
             </IconButton>
-          </Tooltip> */}
-          {/* <Tooltip title='Xóa thông báo'>
-            <IconButton
-              //   onClick={() => {
-              //     handleOpenModalDeleteNotification(params.row.id);
-              //   }}
-              size='small'
-            >
-              <Icon icon='ic:baseline-delete' />
+          </Tooltip>
+          <Tooltip title='Xóa thông báo'>
+            <IconButton size='large'>
+              <Icon width={26} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
-          </Tooltip> */}
+          </Tooltip>
         </Box>
       ),
     },
@@ -117,19 +115,25 @@ function TableManagementNotification(props: any) {
       <Table
         rows={rows}
         sx={{
-          bgcolor: 'white',
-          // height: 500,
+          minHeight: 500,
         }}
-        rowHeight={200}
+        slots={{
+          toolbar: CustomToolbar,
+        }}
+        rowHeight={80}
         columns={basicColumns}
-        totalItems={1}
-        totalPages={1}
-        page={1}
-        handleChangePage={() => {}}
-        disableColumnMenu
+        totalItems={rows.length}
+        totalPages={totalPage}
+        page={page}
+        limit={limit}
+        isLimit={true}
+        handleChangeLimit={handleChangeLimit}
+        handleChangePage={handleChangePage}
         disableColumnFilter
-        disableColumnSelector
       />
+      <>
+      
+      </>
     </Box>
   );
 }

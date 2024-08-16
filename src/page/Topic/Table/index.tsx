@@ -18,7 +18,7 @@ function TableManagamentTopic(props: any) {
     rows,
     totalItems,
     limit,
-    totalPages,
+    totalPage,
     page,
     handleChangePage,
     handleChangeLimit,
@@ -290,7 +290,7 @@ function TableManagamentTopic(props: any) {
           rowHeight={100}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={rows.length}
-          totalPages={totalPages}
+          totalPages={totalPage}
           page={page}
           handleChangeLimit={handleChangeLimit}
           handleChangePage={handleChangePage}

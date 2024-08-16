@@ -65,7 +65,7 @@ export const useAuth = () => {
             dispatch(setParamTotalPageLectuerMajor(0))
             dispatch(setParamTotalPageLectuerTerm(0))
             dispatch(setParamTotalPage(0))
-
+            
             queryClient.clear()
             navigate('/auth/login');
         }
