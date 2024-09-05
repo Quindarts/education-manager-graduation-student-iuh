@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import TableManagamentTopic from './Table';
 import HeaderTopic from './Header';
@@ -10,19 +10,25 @@ import { useDispatch } from 'react-redux';
 import { setParamTotalPage } from '@/store/slice/topic.slice';
 
 function TopicPage() {
-  const { handleSearchTopic, paramTotalPage } = useTopic();
+  const dispatch = useDispatch();
+  const { handleSearchTopic, paramTotalPage, handleGetCountOfTopic } = useTopic();
+
+  //[FETCH]
+  const { data, isLoading, refetch } = handleSearchTopic();
+  const { data: countFetch, isSuccess: countSuccess } = handleGetCountOfTopic();
+
+  //[PARAMS]
   const [currentPage, setCurrentPage] = useState(1);
   const [currentLimit, setCurrentLimit] = useState(10);
-  const { data, isLoading, isFetching, refetch } = handleSearchTopic();
   const { setLimit, setPage, getQueryField, setTotalPage } = useParams();
-  const dispatch = useDispatch();
-
+  //[CHANGE PARAMS]
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
   };
   const handleChangeLimit = (value: number) => {
     setCurrentLimit(value);
   };
+
   useEffect(() => {
     setLimit(currentLimit);
     setPage(currentPage);
@@ -39,6 +45,7 @@ function TopicPage() {
       setTotalPage(total);
     }
   }, [data]);
+  
   useEffect(() => {
     setLimit(currentLimit);
     setPage(1);
@@ -47,15 +54,19 @@ function TopicPage() {
     }
   }, [getQueryField('keywords')]);
   return (
-    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-      <TitleManager icon='quill:list' mb={8} mt={2}>
-        Danh sách đề tài
-      </TitleManager>
+    <Paper sx={{ py: 10, px: 10 }} elevation={0}>
+      <Box justifyContent={'space-between'} display={'flex'} mb={8} mt={2}>
+        <TitleManager icon='quill:list'>Danh sách đề tài</TitleManager>
+        <Typography variant='h5' fontWeight={700} mt={4} color='#636363'>
+          Số đề tài: {countSuccess && countFetch?.count}
+        </Typography>
+      </Box>
+
       <HeaderTopic />
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <SekeletonUI />
       ) : (
-        <Box width={'full'} my={4}>
+        <Box width={'100%'} my={4}>
           <TableManagamentTopic
             isApprovePermission={true}
             rows={

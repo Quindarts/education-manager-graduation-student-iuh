@@ -77,7 +77,7 @@ function AddLecturerModal(props: any) {
     <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box py={10} px={10}>
         <TitleManager mb={8} variant='h5' textTransform={'uppercase'}>
-          Tạo thông tin Giảng viên
+          Thêm giảng viên
         </TitleManager>
 
         <Formik
@@ -225,7 +225,7 @@ function AddLecturerModal(props: any) {
                 </Button>
                 <Button variant='contained' color='success' type='submit'>
                   <Icon icon='material-symbols:save-outline' />
-                  Tạo giảng viên
+                  Lưu
                 </Button>
               </Box>
             </form>

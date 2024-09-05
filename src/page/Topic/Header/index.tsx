@@ -4,12 +4,13 @@ import { Box, Button, TextField, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useExcel';
+import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import UpdateQuantityTopicModal from '../Modal/UpdateQuantityTopic';
 import useSearch from '@/hooks/ui/useParams';
 import { ArrowDropDownIcon } from '@mui/x-date-pickers';
 import SplitButton from '@/components/ui/SplitButton';
+import ExportExcelButton from '@/components/ui/Export';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -38,7 +39,7 @@ function HeaderTopic() {
     setOpenChangeQuantityModal(true);
   };
 
-  const { handleUiRender } = useTopic();
+  const { handleUiRender, handleGetTopicToExport } = useTopic();
   const currentRole = handleUiRender();
   const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
     useSearch();
@@ -53,19 +54,28 @@ function HeaderTopic() {
   useEffect(() => {
     setTypeSort(sort);
   }, [sort]);
+  const { data, isSuccess: successTopics, refetch } = handleGetTopicToExport();
+
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <>
       <Box display={'flex'} flexWrap={'wrap'} gap={2}>
         {currentRole.includes('all') && (
           <>
-            <Box flex={1} display={'flex'} gap={2} width={''}>
-              <Box width={180}>
+            <Box flex={1} display={'flex'} gap={0} width={''}>
+              <Box display={'flex'} gap={2}>
                 <DropDown
-                  placeholder='Tìm kiếm đề tài'
-                  value={getQueryField('searchField') ? getQueryField('searchField') : 'name'}
+                  value={
+                    getQueryField('searchField') ? getQueryField('searchField') : 'lecturerName'
+                  }
                   onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
                   options={SEARCH_DROP_VALUE}
                 />
+                <Box width={124}>
+                  <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
+                </Box>
               </Box>
 
               <TextField
@@ -77,13 +87,6 @@ function HeaderTopic() {
                 placeholder='Tim kiếm đề tài theo tên đề tài, tên giảng viên'
               />
             </Box>{' '}
-            <Box>
-              <SplitButton
-                icon='bx:sort'
-                options={optionSort}
-                handleClick={handleClick}
-              />
-            </Box>
           </>
         )}
         {currentRole.includes('crud') && (
@@ -93,36 +96,49 @@ function HeaderTopic() {
             gap={2}
             display={'flex'}
           >
-            <Button
-              onClick={handleOpenModal}
-              size='small'
-              color='error'
-              type='button'
-              variant='contained'
-            >
-              <Icon icon='lets-icons:add-round' width={20} />
-              Tạo mới đề tài
-            </Button>
+            <Tooltip onClick={handleOpenModal} title='Thêm đề tài'>
+              <Button
+                onClick={handleOpenModal}
+                size='small'
+                color='error'
+                type='button'
+                variant='contained'
+              >
+                <Icon icon='lets-icons:add-round' width={20} />
+              </Button>
+            </Tooltip>
             <ModalUpload
               label=''
-              labelToolTip='Tải lên Excel DS Đề tài'
+              labelToolTip='Thêm đề tài bằng file excel'
               entityUpload={TypeEntityUpload.TOPIC}
             />
           </Box>
         )}
 
         {currentRole.includes('all') && (
-          <Tooltip onClick={handleOpenChangeQuantityModal} title='Cập nhật số lượng Đề tài'>
-            <Button
-              sx={{ bgcolor: 'grey.800' }}
-              color='primary'
-              type='button'
-              size='small'
-              variant='contained'
+          <>
+            {successTopics && (
+              <ExportExcelButton
+                data={data.topics}
+                entity='topic'
+                labelTooltip='Tải danh sách đề tài'
+              />
+            )}
+            <Tooltip
+              onClick={handleOpenChangeQuantityModal}
+              title='Cập nhật số lượng của toàn bộ đề tài'
             >
-              <Icon icon='uiw:setting' color='white' width={20} />
-            </Button>
-          </Tooltip>
+              <Button
+                sx={{ bgcolor: 'grey.800' }}
+                color='primary'
+                type='button'
+                size='small'
+                variant='contained'
+              >
+                <Icon icon='uiw:setting' color='white' width={20} />
+              </Button>
+            </Tooltip>{' '}
+          </>
         )}
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />

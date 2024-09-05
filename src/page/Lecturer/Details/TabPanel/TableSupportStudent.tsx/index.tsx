@@ -64,6 +64,7 @@ function TableDetailGroupStudentOfLecturer(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
+          minHeight:350
         }}
         columns={basicColumns}
         totalItems={1}
@@ -71,6 +72,7 @@ function TableDetailGroupStudentOfLecturer(props: any) {
         page={1}
         handleChangePage={() => {}}
         disableColumnMenu
+        disableDensitySelector
         disableColumnFilter
         disableColumnSelector
       />

@@ -15,7 +15,7 @@ function CreateGroupLecturer() {
   };
 
   return (
-    <Paper sx={{ py: 6, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 6, px: 10 }} elevation={0}>
       <Box sx={{ width: '100%', typography: 'body1' }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -23,9 +23,9 @@ function CreateGroupLecturer() {
               <Tab
                 sx={{
                   '&.Mui-selected': {
-                    bgcolor: 'primary.dark',
+                    bgcolor: 'rgb(0, 82, 177,0.1)',
                     ' > .MuiTypography-root': {
-                      color: 'white',
+                      color: 'primary.dark',
                       fontWeight: 'bold',
                     },
                   },
@@ -40,9 +40,9 @@ function CreateGroupLecturer() {
               <Tab
                 sx={{
                   '&.Mui-selected': {
-                    bgcolor: 'primary.dark',
+                    bgcolor: 'rgb(0, 82, 177,0.1)',
                     ' > .MuiTypography-root': {
-                      color: 'white',
+                      color: 'primary.dark',
                       fontWeight: 'bold',
                     },
                   },

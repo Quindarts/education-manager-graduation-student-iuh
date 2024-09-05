@@ -17,9 +17,11 @@ const useMemberGroupLecturer = () => {
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, 'reviewer'] })
 
             },
-            onError: () => {
-                enqueueSnackbar('Tạo nhóm giảng viên thất bại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -32,8 +34,11 @@ const useMemberGroupLecturer = () => {
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, 'reviewer', termId] })
 
             },
-            onError: () => {
-                enqueueSnackbar('Tạo nhóm giảng viên thất bại', { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }

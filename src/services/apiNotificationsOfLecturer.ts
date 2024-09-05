@@ -4,16 +4,16 @@ import axiosConfig from "./axiosConfig"
 const URL = "/api/v1/notification-lecturers"
 
 //[GET] Get my notification
-export const getMyNotification = () => {
-    return axiosConfig.get<ResponseType, any>(`${URL}/me`)
+export const getMyNotification = (limit: string) => {
+    return axiosConfig.get<ResponseType, any>(`${URL}/me?limit=${limit}`)
 }
 //[GET] Get notification by id
-export const getNotificationsOfLecturer = () => {
-    return axiosConfig.get<ResponseType, any>(`${URL}`)
+export const getNotificationsOfLecturer = (id: string) => {
+    return axiosConfig.get<ResponseType, any>(`${URL}/${id}`)
 }
 
 //[POST] [ADMIN, HEAD_LECTURER, HEAD_COURSE] Create notification lecturer
-export const createNotificationOfLecturerId = (data: { title: string, content: string, lecturerId: string }) => {
+export const createNotificationOfLecturerIds = (data: { title: string, content: string, lecturerIds: string[] }) => {
     return axiosConfig.post<ResponseType, any>(`${URL}`, data)
 }
 //[POST] [ADMIN, HEAD_LECTURER, HEAD_COURSE] Create notification to all lecturerTerm
@@ -26,4 +26,7 @@ export const upateReadStatusNotification = (id: string) => {
     return axiosConfig.put<ResponseType, any>(`${URL}/${id}/read`)
 }
 
-
+//[GROUP_LECTURER]
+export const createNotificationOfGroupLecturer = (data: { title: string, content: string, groupLecturerIds: string[] }) => {
+    return axiosConfig.post<ResponseType, any>(`${URL}/group-lecturer`, data)
+}

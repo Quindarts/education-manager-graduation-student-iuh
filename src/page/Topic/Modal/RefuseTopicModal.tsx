@@ -6,7 +6,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 
 function RefuseTopicModal(props: any) {
-  const { onClose, open, topicId } = props;
+  const { onClose, open, name, topicId } = props;
   const { onUpdateStatusTopic } = useTopic();
   const [note, setNote] = useState(
     'Xin lỗi, đề tài của bạn không đủ điều kiện để được phép duyệt.',
@@ -32,8 +32,8 @@ function RefuseTopicModal(props: any) {
         <Box borderRadius='50%' padding={6} sx={{ background: 'rgba(255, 49, 49, 0.2)' }}>
           <Icon color='#9B0F0FD4' height={70} width={70} icon='healthicons:refused' />
         </Box>
-        <Typography variant='h3' mt={10} mb={14}>
-          Bạn có chắc chắn từ chối đề tài này ?
+        <Typography variant='h5' textAlign={'center'} textTransform={'lowercase'} mt={10} mb={14}>
+          Bạn có chắc chắn từ chối đề tài {name}?
         </Typography>
         <Box width={'100%'}>
           <CustomTextField

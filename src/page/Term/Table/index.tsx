@@ -178,13 +178,7 @@ function TableManagamentTerm(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    // {
-    //   headerName: 'Chuyên ngành',
-    //   field: 'majorId',
-    //   flex: 1.4,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    // },
+
     {
       headerName: 'Ngày bắt đầu   -  kết thúc',
       field: 'startDate',
@@ -369,9 +363,9 @@ function TableManagamentTerm(props: any) {
       },
     },
     {
-      headerName: '',
-      field: 'name9',
-      flex: 0.5,
+      headerName: 'Chức năng',
+      field: 'feature',
+      flex: 0.8,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
@@ -408,7 +402,6 @@ function TableManagamentTerm(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
-       
         }}
         minHeight={350}
         columns={basicColumns}
@@ -416,9 +409,7 @@ function TableManagamentTerm(props: any) {
         totalPages={1}
         page={1}
         handleChangePage={() => {}}
-        disableColumnMenu
         disableColumnFilter
-        disableColumnSelector
       />
       <EditTermDate
         termId={openModalEditTermDate.termId}

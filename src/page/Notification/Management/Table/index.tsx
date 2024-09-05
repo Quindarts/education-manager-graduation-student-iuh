@@ -6,6 +6,9 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import { CustomToolbar } from './custom';
 import { Icon } from '@iconify/react';
+import DeleteNotificationModal from '../Modal/DeleteModal';
+import InfoNotificationModal from '../Modal/InfoModal';
+import { checkUser } from '@/utils/validations/auth.validation';
 
 function TableManagementNotification(props: any) {
   const { rows, totalItems, limit, totalPage, page, handleChangePage, handleChangeLimit, ...rest } =
@@ -15,16 +18,32 @@ function TableManagementNotification(props: any) {
     isOpen: false,
     notificationId: 0,
   });
-
   const handleCloseModalEditNotification = () => {
     setOpenModalEditNotification({
       ...openModalEditNotification,
       isOpen: false,
     });
   };
-
   const handleOpenModalEditNotification = (notificationId: any) => {
     setOpenModalEditNotification({
+      notificationId,
+      isOpen: true,
+    });
+  };
+
+  const [openModalInfoNotification, setOpenModalInfoNotification] = useState({
+    isOpen: false,
+    notificationId: 0,
+  });
+  const handleCloseModalInfoNotification = () => {
+    setOpenModalInfoNotification({
+      ...openModalInfoNotification,
+      isOpen: false,
+    });
+  };
+
+  const handleOpenModalInfoNotification = (notificationId: any) => {
+    setOpenModalInfoNotification({
       notificationId,
       isOpen: true,
     });
@@ -47,6 +66,7 @@ function TableManagementNotification(props: any) {
       isOpen: true,
     });
   };
+
   const basicColumns: GridColDef[] = [
     {
       headerName: 'Ngày Tạo',
@@ -62,13 +82,7 @@ function TableManagementNotification(props: any) {
         );
       },
     },
-    {
-      headerName: 'Người tạo',
-      field: 'senderName',
-      flex: 1,
-      headerAlign: 'center',
-      align: 'left',
-    },
+
     {
       headerName: 'Tiêu đề thông báo',
       field: 'title',
@@ -80,9 +94,40 @@ function TableManagementNotification(props: any) {
           <Box>
             <Typography
               variant='body1'
+              fontWeight={'bold'}
               color='initial'
               dangerouslySetInnerHTML={{ __html: params.row.title }}
             />
+          </Box>
+        );
+      },
+    },
+    {
+      headerName: 'Người gửi',
+      field: 'senderName',
+      flex: 1.5,
+      headerAlign: 'center',
+      align: 'left',
+      renderCell: (params) => {
+        return (
+          <>
+            <Typography color={'grey.900'}>{params.value}</Typography>
+          </>
+        );
+      },
+    },
+    {
+      headerName: 'Người nhận',
+      field: 'type',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'left',
+      renderCell(params) {
+        return (
+          <Box>
+            <Typography variant='body1' color='initial'>
+              {checkUser(params.row.type)}
+            </Typography>
           </Box>
         );
       },
@@ -95,14 +140,20 @@ function TableManagementNotification(props: any) {
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={6}>
-          <Tooltip title='Xem chi tiết'>
+          <Tooltip
+            onClick={() => handleOpenModalInfoNotification(params.row.id)}
+            title='Xem chi tiết'
+          >
             <IconButton size='large'>
-              <Icon width={26} icon='flat-color-icons:view-details' />
+              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xóa thông báo'>
+          <Tooltip
+            onClick={() => handleOpenModalDeleteNotification(params.row.id)}
+            title='Xóa thông báo'
+          >
             <IconButton size='large'>
-              <Icon width={26} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -132,7 +183,16 @@ function TableManagementNotification(props: any) {
         disableColumnFilter
       />
       <>
-      
+        <DeleteNotificationModal
+          open={openModalDeleteNotification.isOpen}
+          onClose={handleCloseModalDeleteNotification}
+          notifyId={openModalDeleteNotification.notificationId}
+        />
+        <InfoNotificationModal
+          open={openModalInfoNotification.isOpen}
+          onClose={handleCloseModalInfoNotification}
+          notifyId={openModalInfoNotification.notificationId}
+        />
       </>
     </Box>
   );

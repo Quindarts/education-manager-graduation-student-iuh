@@ -1,4 +1,4 @@
-import { createAssignByType, getGroupStudentNoAssign } from "@/services/apiAssign"
+import { createAssignByType, getExportAssignGroup, getGroupStudentNoAssign } from "@/services/apiAssign"
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
 import { useSnackbar } from "notistack"
@@ -6,8 +6,8 @@ import { queryClient } from "@/providers/ReactQueryClientProvider"
 
 
 export enum QueryKeysAssign {
-    getGroupStudentNoAssignByType = 'getGroupStudentNoAssignByType'
-
+    getGroupStudentNoAssignByType = 'getGroupStudentNoAssignByType',
+    getExportAssignGroup = "getExportAssignGroup"
 }
 const useAssign = () => {
     const { enqueueSnackbar } = useSnackbar()
@@ -29,7 +29,15 @@ const useAssign = () => {
             }
         })
     }
-    return { handletGetGroupStudentNoAssignByType, onCreateAssignByType }
+    const handleGetExportAssignGroup = () => {
+        return useQuery([QueryKeysAssign.getExportAssignGroup, termStore.currentTerm.id], () => getExportAssignGroup(termStore.currentTerm.id))
+    }
+
+    return {
+        handletGetGroupStudentNoAssignByType,
+        handleGetExportAssignGroup,
+        onCreateAssignByType
+    }
 }
 
 export default useAssign    

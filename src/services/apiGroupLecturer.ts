@@ -14,14 +14,17 @@ export const getCountOfGroupLecturer = (termId: string) => {
 export const getGroupLecturerByType: any = async (term_id: string, type: TypeGroupLecturer) => {
     return axiosConfig.get(`/api/v1/group-lecturers?termId=${term_id}&type=${type}&limit=40&page=1`)
 }
+export const searchGroupLecturerByName: any = async (termId: string, name: string) => {
+    return axiosConfig.get(`/api/v1/group-lecturers/search?termId=${termId}&name=${name}`)
+}
 
 //[GET] 
 export const getLecturerNoGroupByTypeGroup: any = async (type: string, termId: string) => {
     return axiosConfig.get(`/api/v1/group-lecturers/${type}/no-group?termId=${termId}`)
 }
 //[GET] 
-export const getGroupLecturerByLecturerId: any = async (type: string, termId: string, lecturerId: string) => {
-    return axiosConfig.get(`/api/v1/group-lecturers/${type}/lecturers?lecturerId=${lecturerId}&termId=${termId}`)
+export const getGroupLecturerByLecturerId: any = async (termId: string, lecturerId: string) => {
+    return axiosConfig.get(`/api/v1/group-lecturers/lecturer?lecturerId=${lecturerId}&termId=${termId}`)
 }
 
 //[GET]

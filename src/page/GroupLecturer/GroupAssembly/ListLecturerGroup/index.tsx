@@ -2,7 +2,7 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 import TitleManager from '@/components/ui/Title';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { Box, Link, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const checkedTyperLecturer = (key: string) => {
   switch (key) {
@@ -23,7 +23,11 @@ function ListLecturerStudent(props: any) {
     setCurrentTeam({ id: team.groupLecturerId, team: team });
   };
   const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
-  const { data, isLoading, isFetching } = handleGetAllGroupLecturerByTypeGroup(checkedTyper);
+  const { data, isLoading, refetch } = handleGetAllGroupLecturerByTypeGroup(checkedTyper);
+
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <Box my={10} borderRadius={4} bgcolor={'white'} py={16} px={8}>
       <Box>
@@ -32,7 +36,7 @@ function ListLecturerStudent(props: any) {
         </TitleManager>
       </Box>
 
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <SekeletonUI />
       ) : (
         <Box display={'flex'} flexWrap={'wrap'} p={4} gap={10}>

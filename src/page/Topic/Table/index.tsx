@@ -45,30 +45,42 @@ function TableManagamentTopic(props: any) {
   };
 
   //handle
-  const [openDeleteModal, setOpenEditDeleteModal] = useState({ topicId: '', isOpen: false });
+  const [openDeleteModal, setOpenEditDeleteModal] = useState({
+    topicId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseDeleteModal = () => {
     setOpenEditDeleteModal({ ...openDeleteModal, isOpen: false });
   };
-  const handleOpenDeleteModal = (topicId: string) => {
-    setOpenEditDeleteModal({ topicId, isOpen: true });
+  const handleOpenDeleteModal = (topicId: string, name: string) => {
+    setOpenEditDeleteModal({ topicId, name, isOpen: true });
   };
 
   //handle
-  const [openAcceptModal, setOpenEditAcceptModal] = useState({ topicId: '', isOpen: false });
+  const [openAcceptModal, setOpenEditAcceptModal] = useState({
+    topicId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseAcceptModal = () => {
     setOpenEditAcceptModal({ ...openAcceptModal, isOpen: false });
   };
-  const handleOpenAcceptModal = (topicId: string) => {
-    setOpenEditAcceptModal({ topicId, isOpen: true });
+  const handleOpenAcceptModal = (topicId: string, name: string) => {
+    setOpenEditAcceptModal({ topicId, name, isOpen: true });
   };
 
   //handle
-  const [openRefuseModal, setOpenEditRefuseModal] = useState({ topicId: '', isOpen: false });
+  const [openRefuseModal, setOpenEditRefuseModal] = useState({
+    topicId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseRefuseModal = () => {
     setOpenEditRefuseModal({ ...openRefuseModal, isOpen: false });
   };
-  const handleOpenRefuseModal = (topicId: string) => {
-    setOpenEditRefuseModal({ topicId, isOpen: true });
+  const handleOpenRefuseModal = (topicId: string, name: string) => {
+    setOpenEditRefuseModal({ topicId, name, isOpen: true });
   };
 
   //handle
@@ -80,24 +92,38 @@ function TableManagamentTopic(props: any) {
   const handleOpenEditModal = (topicId: string) => {
     setOpenEditModal({ topicId, isOpen: true });
   };
-  
+
   const HeadLecturerColumn: GridColDef[] = [
+    {
+      headerName: 'Mã đề tài',
+      field: 'key',
+      headerAlign: 'center',
+      align: 'center',
+      flex: 0.4,
+    },
     {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 2,
       headerAlign: 'center',
       align: 'left',
+      renderCell(params) {
+        return (
+          <Typography variant='h6' textTransform={'lowercase'} color='initial'>
+            {params.row.name}
+          </Typography>
+        );
+      },
     },
     {
       headerName: 'Giảng viên HD',
       field: 'fullName',
       headerAlign: 'center',
       align: 'left',
-      flex: 0.6,
+      flex: 0.8,
     },
     {
-      headerName: 'SL nhóm đề tài',
+      headerName: 'SL nhóm',
       field: 'quantityGroupMax',
       flex: 0.5,
       headerAlign: 'center',
@@ -121,7 +147,55 @@ function TableManagamentTopic(props: any) {
       },
     },
     {
-      headerName: 'Tính năng thêm',
+      headerName: 'Duyệt đề tài',
+      field: 'status',
+      flex: 0.7,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => {
+        return (
+          <>
+            {params.row.status === 'PENDING' ? (
+              <Box display={'flex'} gap={2}>
+                <Button
+                  size='small'
+                  onClick={() => handleOpenAcceptModal(params.row.id, params.row.name)}
+                  color='success'
+                  sx={{
+                    fontSize: {
+                      md: 12,
+                      lg: 12,
+                    },
+                    px: 0,
+                  }}
+                >
+                  <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
+                  Duyệt
+                </Button>
+                <Button
+                  size='small'
+                  onClick={() => handleOpenRefuseModal(params.row.id, params.row.name)}
+                  color='error'
+                >
+                  <Icon style={{ marginRight: 1 }} icon='lets-icons:cancel-fill' />
+                  Từ chối
+                </Button>
+              </Box>
+            ) : (
+              <>
+                {params.row.status === 'APPROVED' && (
+                  <Button size='small' onClick={() => handleOpenAddGroupStudent(params.row)}>
+                    Gán/xem đề tài
+                  </Button>
+                )}
+              </>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      headerName: 'Chức năng ',
       field: 'none',
       flex: 0.6,
       headerAlign: 'center',
@@ -141,7 +215,10 @@ function TableManagamentTopic(props: any) {
               <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
+          <Tooltip
+            title='Xóa đề tài'
+            onClick={() => handleOpenDeleteModal(params.row.id, params.row.name)}
+          >
             <IconButton size='small'>
               <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
@@ -149,63 +226,16 @@ function TableManagamentTopic(props: any) {
         </Box>
       ),
     },
-    {
-      headerName: 'Duyệt đề tài',
-      field: 'status',
-      flex: 0.7,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return (
-          <>
-            {params.row.status === 'PENDING' ? (
-              <Box display={'flex'} gap={2}>
-                <Button
-                  size='small'
-                  onClick={() => handleOpenAcceptModal(params.row.id)}
-                  color='success'
-                  variant='outlined'
-                  sx={{
-                    fontSize: {
-                      md: 12,
-                      lg: 12,
-                    },
-                    px: 0,
-                  }}
-                >
-                  <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
-                  Duyệt
-                </Button>
-                <Button
-                  size='small'
-                  onClick={() => handleOpenRefuseModal(params.row.id)}
-                  color='error'
-                  variant='outlined'
-                >
-                  <Icon style={{ marginRight: 1 }} icon='lets-icons:cancel-fill' />
-                  Từ chối
-                </Button>
-              </Box>
-            ) : (
-              <>
-                {params.row.status === 'APPROVED' && (
-                  <Button
-                    onClick={() => handleOpenAddGroupStudent(params.row)}
-                    variant='outlined'
-                    color='warning'
-                  >
-                    + Gán đề tài
-                  </Button>
-                )}
-              </>
-            )}
-          </>
-        );
-      },
-    },
   ];
 
   const LecturerColumn: GridColDef[] = [
+    {
+      headerName: 'Mã đề tài',
+      field: 'key',
+      headerAlign: 'center',
+      align: 'center',
+      flex: 0.4,
+    },
     {
       headerName: 'Tên Đề tài',
       field: 'name',
@@ -238,7 +268,7 @@ function TableManagamentTopic(props: any) {
       },
     },
     {
-      headerName: 'Tính năng thêm',
+      headerName: 'Chức năng',
       field: 'none',
       flex: 0.7,
       headerAlign: 'center',
@@ -261,7 +291,10 @@ function TableManagamentTopic(props: any) {
             </IconButton>
           </Tooltip>
           {params.row.status !== 'APPROVED' && handleUiRender().includes('crud') ? (
-            <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
+            <Tooltip
+              title='Xóa đề tài'
+              onClick={() => handleOpenDeleteModal(params.row.id, params.row.name)}
+            >
               <IconButton>
                 <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
               </IconButton>
@@ -275,19 +308,15 @@ function TableManagamentTopic(props: any) {
   ];
 
   return (
-    <Box {...rest}>
-      {' '}
+    <>
       <>
         <Table
           isLimit={isApprovePermission}
-          rows={rows.map((row: any, index: number) => ({ ...row}))}
+          rows={rows.map((row: any, index: number) => ({ ...row }))}
           sx={{
             minHeight: 500,
           }}
-          slots={{
-            toolbar: CustomToolbar,
-          }}
-          rowHeight={100}
+          rowHeight={75}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
           totalItems={rows.length}
           totalPages={totalPage}
@@ -299,6 +328,7 @@ function TableManagamentTopic(props: any) {
         />
         <DeleteModal
           open={openDeleteModal.isOpen}
+          name={openDeleteModal.name}
           onClose={handleCloseDeleteModal}
           topicId={openDeleteModal.topicId}
         />
@@ -323,19 +353,21 @@ function TableManagamentTopic(props: any) {
             <AcceptTopicModal
               key={openAcceptModal.topicId}
               open={openAcceptModal.isOpen}
+              name={openAcceptModal.name}
               onClose={handleCloseAcceptModal}
               topicId={openAcceptModal.topicId}
             />
             <RefuseTopicModal
               key={openAcceptModal.topicId}
               open={openRefuseModal.isOpen}
+              name={openRefuseModal.name}
               onClose={handleCloseRefuseModal}
               topicId={openRefuseModal.topicId}
             />
           </>
         )}
       </>
-    </Box>
+    </>
   );
 }
 

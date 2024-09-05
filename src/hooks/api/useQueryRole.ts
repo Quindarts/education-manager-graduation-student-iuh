@@ -46,9 +46,12 @@ export const useRoleManager = () => {
                     }
                 );
             },
-            onError(error) {
-                enqueueSnackbar("Phân vai trò thất bại", { variant: 'error' })
-            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
+            }
         },
         );
     }
@@ -70,8 +73,11 @@ export const useRoleManager = () => {
                 );
 
             },
-            onError(error) {
-                enqueueSnackbar("Xóa vai trò thất bại vui lòng thử lại sau", { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }

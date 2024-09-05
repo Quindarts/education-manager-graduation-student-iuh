@@ -57,6 +57,7 @@ function GroupReportPage() {
       listGroupStudentId: groupStudents.map((grStudent) => grStudent.id),
     });
   };
+
   useEffect(() => {
     if (activeStep === 2 && successCreate === true) handleNext();
   }, [successCreate]);
@@ -98,7 +99,7 @@ function GroupReportPage() {
     },
   ];
   return (
-    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box sx={{ maxWidth: 'full' }}>
         <Stepper activeStep={activeStep} orientation='vertical'>
           {steps.map((step, index) => (

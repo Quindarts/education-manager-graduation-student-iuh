@@ -2,33 +2,30 @@ import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
 import { Avatar, Box, Paper, Typography } from '@mui/material';
 import React from 'react';
-import TabPanelUI from './TabPanel';
 import { useParams } from 'react-router-dom';
-import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import SekeletonUI from '@/components/ui/Sekeleton';
-import { formatDates } from '@/utils/formatDate';
 import { checkGender } from '@/utils/validations/person.validation';
-import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
+import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
+import TabPanelUI from './TabPanel';
 
 function DetailsLecturerPage() {
-  const { lecturer_id } = useParams();
-  // alert(lecturer_id);
-  const { handleGetLecturerById } = useLecturer();
-  const { data, isLoading } = handleGetLecturerById(`${lecturer_id}`);
+  const { id } = useParams();
+  const { handleGetLecturerTermById } = useLecturerTerm();
+  const { data, isLoading } = handleGetLecturerTermById(`${id}`);
   return (
-    <Paper sx={{ px: 20, py: 10, minHeight: '60vh' }} elevation={2}>
+    <Paper sx={{ px: 10, py: 10, minHeight: '60vh' }} elevation={0}>
       {isLoading ? (
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>Thông tin {checkRoleLecturer(data.lecturer.role)}</TitleManager>
-          <Box mt={20} display={'flex'} gap={8}>
+          <TitleManager textTransform={'uppercase'}>Thông tin giảng viên</TitleManager>
+          <Box mt={10} display={'flex'} gap={8}>
             <Box>
               <Avatar sx={{ width: 80, height: 80 }} />
             </Box>
             <Box>
               <Typography fontWeight={700} color='text.primary' component={'h3'} variant='h1'>
-                {data.lecturer.fullName}
+                {data.lecturerTerm.fullName}
               </Typography>
               <Box mt={10} display={'flex'} justifyContent={'space-evenly'} gap={10}>
                 <Box fontWeight={500} display={'flex'} gap={4}>
@@ -36,35 +33,34 @@ function DetailsLecturerPage() {
                     <Icon width={24} icon='solar:phone-outline' />
                   </Typography>
                   <Typography variant='h6' fontWeight={500} color='grey.600'>
-                    {data.lecturer.phone}
+                    {data.lecturerTerm.phone}
                   </Typography>
                 </Box>
                 <Box fontWeight={500} display={'flex'} gap={4}>
                   <Icon width={24} icon='material-symbols:mail-outline' />
                   <Typography variant='h6' fontWeight={500} color='grey.600'>
-                    {data.lecturer.email}
+                    {data.lecturerTerm.email}
                   </Typography>
                 </Box>
                 <Box fontWeight={500} display={'flex'} gap={4}>
                   <Icon width={24} icon='material-symbols-light:date-range-outline' />
-                  <Typography variant='h6' fontWeight={500} color='grey.600'>
-                  </Typography>
+                  <Typography variant='h6' fontWeight={500} color='grey.600'></Typography>
                 </Box>
                 <Box fontWeight={500} display={'flex'} gap={4}>
                   <Icon width={24} icon='bi:gender-trans' />
                   <Typography variant='h6' fontWeight={500} color='grey.600'>
-                    {checkGender(data.lecturer.gender)}
+                    {checkGender(data.lecturerTerm.gender)}
                   </Typography>
                 </Box>
               </Box>
             </Box>
           </Box>
-          <Box my={10}>
-            <TabPanelUI />
+          <Box my={4}>
+            <TabPanelUI lecturerId={data.lecturerTerm.lecturerId}/>
           </Box>
         </>
       )}
-    </Paper>
+    </Paper>  
   );
 }
 

@@ -12,6 +12,8 @@ import { validateSchemaStudent } from '../Context';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { ModalProps } from '@/types/ui/Modal';
+import Calendar from '@/components/ui/Calendar';
+import dayjs from 'dayjs';
 const GenderStudent = [
   {
     _id: EnumGender.FEMALE,
@@ -49,7 +51,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
   }, [isSuccess]);
 
   return (
-    <Modal maxWidth='sm' open={open} onClose={onClose}>
+    <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Cập nhật thông tin Sinh viên
@@ -66,6 +68,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
               fullName: `${data?.student?.fullName ? data?.student?.fullName : ''}`,
               email: `${data?.student?.email ? data.student.email : ''}`,
               phone: `${data?.student?.phone ? data?.student?.phone : ''}`,
+              dateOfBirth: data?.student?.dateOfBirth ? dayjs(data?.student?.dateOfBirth) : null,
               clazzName: `${data?.student?.clazzName ? data?.student?.clazzName : 'DH'}`,
               gender: `${data?.student?.gender}`,
               majorId: `${data?.student?.majorId}`,
@@ -83,34 +86,41 @@ function EditInfoModal(props: ModalProps & EditModalType) {
               setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
-                <CustomTextField
-                  label='Mã sinh viên'
-                  name='username'
-                  required
-                  value={values.username}
-                  placeholder='Ví dụ: 20189141'
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.username && touched.username ? true : false}
-                  helperText={`${errors.username && touched.username ? errors.username : ''}`}
-                />
-                <CustomTextField
-                  value={values.fullName}
-                  name='fullName'
-                  label='Họ và tên'
-                  required
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder='Họ và tên'
-                  error={errors.fullName && touched.fullName ? true : false}
-                  helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
-                />
+                <Box gap={8} display={'flex'}>
+                  <Box width={200}>
+                    <CustomTextField
+                      label='Mã sinh viên'
+                      name='username'
+                      required
+                      value={values.username}
+                      placeholder='Ví dụ: 20189141'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={errors.username && touched.username ? true : false}
+                      helperText={`${errors.username && touched.username ? errors.username : ''}`}
+                    />
+                  </Box>
+                  <Box width={'100%'}>
+                    <CustomTextField
+                      value={values.fullName}
+                      name='fullName'
+                      label='Họ và tên'
+                      required
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder='Họ và tên'
+                      error={errors.fullName && touched.fullName ? true : false}
+                      helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
+                    />
+                  </Box>
+                </Box>
+
                 <Box display={'flex'} gap={8} alignContent={'center'}>
-                  <Box width={120}>
+                  <Box width={200}>
                     <DropDown
                       sx={{ mb: 8 }}
                       label='Giới tính'
-                      value={`${values.gender ? values.gender : ''}`}
+                      value={`${values.gender}`}
                       onChange={(e) => {
                         setFieldValue('gender', e.target.value);
                       }}
@@ -118,25 +128,32 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                     />
                   </Box>
                   <Box width={'100%'}>
-                    <CustomTextField
-                      fullWidth
-                      value={values.clazzName}
-                      name='clazzName'
-                      label='Lớp danh nghĩa'
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder='Ví dụ: DHKTPM17C'
-                      error={errors.clazzName && touched.clazzName ? true : false}
-                      helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
+                    <Calendar
+                      onChange={(value) => {
+                        setFieldValue('dateOfBirth', value);
+                      }}
+                      format='DD/MM/YYYY'
+                      name='dateOfBirth'
+                      value={values.dateOfBirth}
+                      sx={{ width: '100%', mb: 8 }}
+                      label='Ngày sinh'
                     />
                   </Box>
                 </Box>
-
+                <CustomTextField
+                  value={values.clazzName}
+                  name='clazzName'
+                  label='Lớp danh nghĩa'
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder='Ví dụ: DHKTPM17C'
+                  error={errors.clazzName && touched.clazzName ? true : false}
+                  helperText={`${errors.clazzName && touched.clazzName ? errors.clazzName : ''}`}
+                />
                 <CustomTextField
                   value={values.email}
                   name='email'
                   label='Email'
-                  required
                   placeholder='Nhập vào email'
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -147,7 +164,6 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   name='phone'
                   value={values.phone}
                   label='Số điện thoại'
-                  required
                   placeholder='Nhập vào số điện thoại'
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -158,6 +174,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   <DropDown
                     label='Chuyên ngành'
                     value={values.majorId}
+                    disabled
                     onChange={(e) => {
                       setFieldValue('majorId', e.target.value);
                     }}
@@ -180,7 +197,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
                     <Icon icon='material-symbols:save-outline' />
-                    Lưu thông tin
+                    Lưu 
                   </Button>
                 </Box>
               </form>

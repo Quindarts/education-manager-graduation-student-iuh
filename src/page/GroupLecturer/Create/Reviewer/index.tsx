@@ -8,6 +8,7 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import { ENUM_STATUS_LECTURER } from '@/utils/validations/groupLecturer.validation';
+import TitleManager from '@/components/ui/Title';
 
 const convertLecturerGroup = (data: any[]) => {
   if (!data) {
@@ -103,11 +104,11 @@ function CreateInstructorGroupPage() {
         }}
         elevation={1}
       >
-        <Box px={10} bgcolor={'grey.200'} py={4} mb={4}>
-          <Typography mb={4} variant='h6' color='primary'>
-            <Icon icon='ic:baseline-list' />
+        <Box px={10} bgcolor={'grey.50'} py={4} mb={4}>
+          <TitleManager fontWeight={'500'} mb={4} icon='ic:baseline-list'>
             Danh sách giảng viên trống lịch
-          </Typography>
+          </TitleManager>
+
           <Box bgcolor='white'>
             <CustomTextField placeholder='Tim kiem giang vien' />
           </Box>
@@ -151,10 +152,10 @@ function CreateInstructorGroupPage() {
           Tạo nhóm chấm phản biện
         </Typography>
         {dataLecturerGradingAssembly && dataLecturerGradingAssembly.length < 1 ? (
-          <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
+          <Box display={'flex'} flexDirection={'column'} height={500}>
             <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
               <Typography color='grey.500' variant='h6' mt={20}>
-                Vui lòng kéo thả giảng viên...
+                Để chọn giảng viên cần tạo nhóm, vui lòng kéo thả vào bảng này
               </Typography>
               <Icon color='#dfdfdf' width={100} icon='icon-park-solid:hand-left' />
             </Box>
@@ -217,26 +218,32 @@ function CreateInstructorGroupPage() {
                 color='error.main'
               >
                 <Icon icon='material-symbols-light:warning-outline' />
-                Đã đạt số lượng thành viên tối đa
+                Chú thích*: Nhóm đã đủ số lượng thành viên
               </Typography>
             )}
-            <Typography variant='body1' mt={6} color='primary'>
-              Số lượng thành viên:{' '}
-              <Typography component={'span'} variant='body1' mt={10} color='initial'>
-                {dataLecturerGradingAssembly?.length} /2
-              </Typography>
-            </Typography>
-            <Box display={'flex'} justifyContent={'end'} mr={4} mt={10}>
-              <Button
-                disabled={dataLecturerGradingAssembly && dataLecturerGradingAssembly?.length > 2}
-                color='success'
-                variant='contained'
-                onClick={handleCreateGroup}
-              >
-                <Icon icon='dashicons:saved' />
-                Tạo nhóm
-              </Button>
-            </Box>
+            {dataLecturerGradingAssembly?.length > 0 && (
+              <>
+                <Typography variant='body1' mt={6} color='primary'>
+                  Số lượng thành viên:{' '}
+                  <Typography component={'span'} variant='body1' mt={10} color='initial'>
+                    {dataLecturerGradingAssembly?.length} /2
+                  </Typography>
+                </Typography>
+                <Box display={'flex'} justifyContent={'end'} mr={4} mt={10}>
+                  <Button
+                    disabled={
+                      dataLecturerGradingAssembly && dataLecturerGradingAssembly?.length > 2
+                    }
+                    color='success'
+                    variant='contained'
+                    onClick={handleCreateGroup}
+                  >
+                    <Icon icon='dashicons:saved' />
+                    Tạo nhóm
+                  </Button>
+                </Box>
+              </>
+            )}
           </Box>
         )}
       </Paper>

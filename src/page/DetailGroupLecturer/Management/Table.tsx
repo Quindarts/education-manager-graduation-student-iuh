@@ -160,6 +160,7 @@ function TableManagementGroupLecturer(props: any) {
             disableColumnMenu
             disableColumnFilter
             disableColumnSelector
+            disableDensitySelector
           />
         </Box>
         {/* )} */}

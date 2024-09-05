@@ -21,12 +21,15 @@ const ReviewManagerTemplate = lazy(() => import('@/page/ReviewManager'));
 const GroupGradingAssemblyTemplate = lazy(() => import('@/page/GroupLecturer/GroupAssembly'));
 const LecturerManagementTemplate = lazy(() => import('@/page/Lecturer/Management'));
 const DetailsLecturerTemplate = lazy(() => import('@/page/Lecturer/Details'));
+const DetailLecturerTermTemplate = lazy(() => import('@/page/LecturerTerm/Details'));
+
 const GroupStudentManagementTemplate = lazy(() => import('@/page/GroupStudent/Management'));
 const GroupStudentDetailTemplate = lazy(() => import('@/page/GroupStudent/Detail'));
 const ScoreStudentTemplate = lazy(() => import('@/page/ScoreStudent'));
 const GroupSupportManagementTemplate = lazy(() => import('@/page/GroupSupport/Management'));
 const CreateGroupLecturerTemplate = lazy(() => import('@/page/GroupLecturer/Create'));
 const UpdatePassPage = lazy(() => import('@/page/auth/updatePassword'));
+const CreateNotificationPage = lazy(() => import('@/page/Notification/Create'));
 const ProfileTemplate = lazy(() => import('@/page/auth/profile'));
 const MyTopicTemplate = lazy(() => import('@/page/MyTopic'));
 const MyGroupLecturerTemplate = lazy(() => import('@/page/MyGroupLecturer'));
@@ -55,8 +58,7 @@ function Routing() {
           path={APP_ROUTES.LECTURER_TERM.MANAGEMENT}
           element={<LecturerTermManagementTemplate />}
         />
-
-        <Route path={APP_ROUTES.LECTURER_TERM.DETAILS} element={<DetailsLecturerTemplate />} />
+        <Route path={APP_ROUTES.LECTURER_TERM.DETAILS} element={<DetailLecturerTermTemplate />} />
         //ROUTE STUDENT
         <Route path={APP_ROUTES.STUDENT.MANAGEMENT} element={<StudentTemplate />} />
         //ROUTE USER
@@ -109,6 +111,7 @@ function Routing() {
           path={APP_ROUTES.NOTIFICATION.MANAGEMENT}
           element={<NotificationManagementTemplate />}
         />
+        <Route path={APP_ROUTES.NOTIFICATION.CREATE} element={<CreateNotificationPage />} />
         <Route path={APP_ROUTES.NOTIFICATION.DETAILS} element={<DetailNotificationPage />} />
         //ROUTE SCORE_STUDENT
         <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentTemplate />} />

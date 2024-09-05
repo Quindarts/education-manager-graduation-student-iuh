@@ -1,5 +1,16 @@
 import { useAuth } from '@/hooks/api/useAuth';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import * as Yup from 'yup';
+
+export const validateSchemaReview = Yup.object().shape({
+  name: Yup.string()
+    .min(5, 'Tên tiêu chí lớn hơn 5 kí tự')
+    .required('Tên tiêu chí không được bỏ trống'),
+
+  description: Yup.string()
+    .min(5, 'Tên tiêu chí lớn hơn 5 kí tự')
+    .required('Tên tiêu chí không được bỏ trống'),
+});
 
 type ContextReviewManagerPropsType = {
   children: React.ReactNode;

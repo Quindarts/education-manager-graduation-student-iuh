@@ -13,11 +13,12 @@ import * as StudentServices from "@/services/apiStudent"
 //[KEYS]
 export enum QueryStudent {
     getAllStudent = 'getAllStudent',
-    getStudentsAssignTopic = "getStudentsAssignTopic",
+    getSearchStudentBasic = "getSearchStudentBasic",
     getStudentById = 'getStudentById',
     searchStudentByField = 'searchStudentByField',
     managerActionStudent = 'managerActionStudent',
-    getCountOfStudent = "getCountOfStudent"
+    getCountOfStudent = "getCountOfStudent",
+    getStudentsToExport = "getStudentsToExport"
 }
 export const useStudent = () => {
 
@@ -37,12 +38,13 @@ export const useStudent = () => {
     const { enqueueSnackbar } = useSnackbar()
 
     //[GET]
-    const handleGetStudentsAssignTopic = (keywords: string, searchField: string) => {
-        return useQuery([QueryStudent.getStudentsAssignTopic, termId, keywords, searchField], () => StudentServices.getStudentsAssignTopic(termId, keywords, searchField), {
+    const handleGetSearchStudentBasic = (keywords: string, searchField: string) => {
+        return useQuery([QueryStudent.getSearchStudentBasic, termId, keywords, searchField], () => StudentServices.getSearchStudentBasic(termId, keywords, searchField), {
             staleTime: 1000 * (60 * 10), // 10 min,
             refetchInterval: 1000 * (60 * 20),
             keepPreviousData: true,
-            enabled: keywords !== ''
+            cacheTime: 1000,
+            // cacheTime: 1000
         })
     }
 
@@ -51,10 +53,22 @@ export const useStudent = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
         getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery
-            ([QueryStudent.getAllStudent, termId, majorId,
-            getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')],
-                () => StudentServices.getStudentOfSearch(termId, majorId, getQueryField('limit'),
-                    getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')),
+            ([QueryStudent.getAllStudent,
+                termId,
+                majorId,
+            getQueryField('limit'),
+            getQueryField('page'),
+            getQueryField('searchField'),
+            getQueryField('sort'),
+            getQueryField('keywords')],
+                () => StudentServices.getStudentOfSearch(
+                    termId,
+                    majorId,
+                    getQueryField('limit'),
+                    getQueryField('page'),
+                    getQueryField('searchField'),
+                    getQueryField('sort'),
+                    getQueryField('keywords')),
                 {
                     onSuccess(data: any) {
                         const total = data.params ? data.params.totalPage : 0
@@ -62,8 +76,10 @@ export const useStudent = () => {
                         setTotalPage(total)
                     },
                     staleTime: 1000 * (60 * 10), // 10 min,
+                    cacheTime: 1000,
                     refetchInterval: 1000 * (60 * 20),
                     keepPreviousData: true,
+                    refetchOnMount: true,
                 })
     }
 
@@ -87,14 +103,24 @@ export const useStudent = () => {
     const onUpdateStudent = (id: string) => {
         return useMutation((data: Partial<Student>) => StudentServices.updateStudent(id, data), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
-                if (data.student)
-                    enqueueSnackbar('Cập nhật sinh viên thành công', { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
+                enqueueSnackbar('Cập nhật sinh viên thành công', { variant: 'success' })
+                queryClient.invalidateQueries({
+                    queryKey: [QueryStudent.getAllStudent,
+                        termId,
+                        majorId,
+                    getQueryField('limit'),
+                    getQueryField('page'),
+                    getQueryField('searchField'),
+                    getQueryField('sort'),
+                    getQueryField('keywords')]
+                })
                 queryClient.invalidateQueries({ queryKey: [QueryStudent.getStudentById, id] })
             },
-            onError() {
-                enqueueSnackbar('Cập nhật sinh viên thất bại, thử lại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -105,9 +131,24 @@ export const useStudent = () => {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar(`sinh viên thành công!`, { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryStudent.getAllStudent,
+                            termId,
+                            majorId,
+                        getQueryField('limit'),
+                        getQueryField('page'),
+                        getQueryField('searchField'),
+                        getQueryField('sort'),
+                        getQueryField('keywords')]
+                    })
                     queryClient.invalidateQueries({ queryKey: [`get-student-by-id`, id] })
                 }
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -118,30 +159,59 @@ export const useStudent = () => {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar('Tạo sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryStudent.getAllStudent,
+                            termId,
+                            majorId,
+                        getQueryField('limit'),
+                        getQueryField('page'),
+                        getQueryField('searchField'),
+                        getQueryField('sort'),
+                        getQueryField('keywords')]
+                    })
+                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getCountOfStudent] })
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryStudent.getCountOfStudent]
+                    })
                 }
             }
             ,
-            onError() {
-                enqueueSnackbar('Tạo sinh viên thất bại, thử lại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
-
+    const handleGetStudentsToExport = () => {
+        return useQuery([QueryStudent.getStudentsToExport, termId, majorId], () => StudentServices.getStudentsToExport(termId, majorId))
+    }
     //[DELETE]
     const onDeleteStudent = () => {
         return useMutation((id: string) => StudentServices.deleteStudent(id), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
-                if (data.success) {
-                    enqueueSnackbar("Xóa sinh viên ra khỏi học kì.", { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')] })
-                }
+                enqueueSnackbar("Xóa sinh viên ra khỏi học kì.", { variant: 'success' })
+                queryClient.invalidateQueries({
+                    queryKey: [QueryStudent.getAllStudent,
+                        termId,
+                        majorId,
+                    getQueryField('limit'),
+                    getQueryField('page'),
+                    getQueryField('searchField'),
+                    getQueryField('sort'),
+                    getQueryField('keywords')]
+                })
+                queryClient.invalidateQueries({
+                    queryKey: [QueryStudent.getCountOfStudent]
+                })
             }
             ,
-            onError() {
-                enqueueSnackbar('Tạo sinh viên thất bại, thử lại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -154,11 +224,11 @@ export const useStudent = () => {
                     enqueueSnackbar('Cấp lại mật khẩu thành công', { variant: 'success' })
                 }
             },
-            onError(error: any) {
-                if (error.status === 404)
-                    enqueueSnackbar(error.message, { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
                 else
-                    enqueueSnackbar("Cập nhật mật khẩu thất bại", { variant: 'error' })
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -168,8 +238,9 @@ export const useStudent = () => {
         studentStore,
         handleGetStudentById,
         handleGetAllStudent,
-        handleGetStudentsAssignTopic,
+        handleGetSearchStudentBasic,
         handleGetCountOfStudent,
+        handleGetStudentsToExport,
         onDeleteStudent,
         onUpdateStudent,
         onCreateStudent,

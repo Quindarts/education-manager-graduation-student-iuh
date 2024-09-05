@@ -6,7 +6,7 @@ function TableStudentScore(props: any) {
   const { handleRowClick, currentRowSelectId, rows } = props;
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Nhóm Sinh viên',
+      headerName: 'Tên Nhóm',
       field: 'topic',
       flex: 1,
       headerAlign: 'center',
@@ -27,11 +27,12 @@ function TableStudentScore(props: any) {
         sx={{
           bgcolor: 'white',
           '&  .Mui-selected': {
-            color: 'error.main',
-            bgcolor: '#f8d2cb !important',
+            color: 'success.main',
+            bgcolor: '#CBF8E0 !important',
           },
         }}
         minHeight={300}
+        rowHeight={50}
         columns={basicColumns}
         totalItems={1}
         totalPages={1}
@@ -40,6 +41,7 @@ function TableStudentScore(props: any) {
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector
+        disableDensitySelector
         getRowClassName={(params) => (params.id === currentRowSelectId ? 'Mui-selected' : '')}
         onRowClick={handleRowClick}
       />

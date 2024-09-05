@@ -4,7 +4,7 @@ import MainLayout from '@/components/shared/layouts/MainLayout';
 
 
 function PrivateRouter() {
-  return getValueFromLocalStorage('accessToken') ? (
+  return getValueFromLocalStorage('refreshToken') ? (
     <MainLayout />
   ) : (
     <Navigate to='/auth/login' />

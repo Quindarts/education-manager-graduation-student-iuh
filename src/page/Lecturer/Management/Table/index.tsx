@@ -10,7 +10,16 @@ import DeleteModal from '../Modal/DeleteModal';
 import ResetPassword from '../Modal/ResetPassword';
 
 function TableManagamentLecturer(props: any) {
-  const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
+  const {
+    rows,
+    totalItems,
+    currentTermId,
+    limit,
+    handleChangeLimit,
+    totalPage,
+    page,
+    handleChangePage,
+  } = props;
   const navigate = useNavigate();
 
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
@@ -21,9 +30,16 @@ function TableManagamentLecturer(props: any) {
     setOpenEditInfoModal({ lecturerId, isOpen: true });
   };
 
-  const [openDeleteModal, setOpenDeleteModal] = useState({ lecturerId: '', isOpen: false });
+  const [openDeleteModal, setOpenDeleteModal] = useState({
+    lecturerId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal({ ...openDeleteModal, isOpen: false });
+  };
+  const handleOpenDeleteModal = (lecturerId: string, name: string) => {
+    setOpenDeleteModal({ lecturerId, name, isOpen: true });
   };
 
   const [openResetPasswordStudentModal, setOpenResetPasswordStudentModal] = useState({
@@ -45,23 +61,23 @@ function TableManagamentLecturer(props: any) {
   };
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Mã Giảng viên',
+      headerName: 'Mã giảng viên',
       field: 'username',
       flex: 0.6,
       headerAlign: 'center',
-      align: 'right',
+      align: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontWeight={600}>
+          <Typography variant='h6' fontWeight={500}>
             {params.row.username}
           </Typography>
         );
       },
     },
     {
-      headerName: 'Họ & Tên đệm',
+      headerName: 'Họ & tên đệm',
       field: 'firstName',
-      flex: 0.7,
+      flex: 1,
       headerAlign: 'left',
       align: 'left',
     },
@@ -76,23 +92,14 @@ function TableManagamentLecturer(props: any) {
     {
       headerName: 'Giới tính',
       field: 'gender',
-      flex: 0.5,
+      flex: 0.6,
       headerAlign: 'left',
       align: 'left',
       renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
+        return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
       },
     },
-    {
-      headerName: 'SĐT',
-      field: 'phone',
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{params.row.phone}</Typography>;
-      },
-    },
+
     {
       headerName: 'Email',
       field: 'email',
@@ -100,7 +107,17 @@ function TableManagamentLecturer(props: any) {
       headerAlign: 'left',
       align: 'left',
       renderCell: (params: any) => {
-        return <Typography variant='body1'>{params.row.email}</Typography>;
+        return <Typography variant='h6'>{params.row.email}</Typography>;
+      },
+    },
+    {
+      headerName: 'SĐT',
+      field: 'phone',
+      flex: 0.6,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => {
+        return <Typography variant='h6'>{params.row.phone}</Typography>;
       },
     },
     {
@@ -130,13 +147,12 @@ function TableManagamentLecturer(props: any) {
               <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
-          <Box></Box>
           <Tooltip
-            onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
-            title='Xem Chi tiết'
+            onClick={() => handleOpenDeleteModal(params.row.id, params.row.fullName)}
+            title='Xóa giảng viên'
           >
-            <IconButton color='primary'>
-              <Icon width={20} icon='flat-color-icons:view-details' />
+            <IconButton color='error'>
+              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -145,25 +161,26 @@ function TableManagamentLecturer(props: any) {
   ];
 
   return (
-    <>
-      <Box>
-        <Table
-          rows={rows}
-          sx={{
-            bgcolor: 'white',
-            width: '100%',
-          }}
-          columns={basicColumns}
-          totalItems={totalItems}
-          totalPages={totalPage}
-          page={page}
-          handleChangePage={handleChangePage}
-          disableColumnMenu
-          disableColumnFilter
-          disableColumnSelector
-          minHeight={400}
-        />
-      </Box>
+    <Box>
+      <Table
+        rows={rows}
+        isLimit={true}
+        sx={{
+          bgcolor: 'white',
+          width: '100%',
+          minHeight: 500,
+        }}
+        columns={basicColumns}
+        totalItems={totalItems}
+        totalPages={totalPage}
+        handleChangeLimit={handleChangeLimit}
+        handleChangePage={handleChangePage}
+        page={page}
+        limit={limit}
+        disableColumnFilter
+        minHeight={400}
+      />
+
       <EditInfoModal
         lecturerId={openEditInfoModal.lecturerId}
         open={openEditInfoModal.isOpen}
@@ -174,6 +191,7 @@ function TableManagamentLecturer(props: any) {
         lecturerId={openDeleteModal.lecturerId}
         open={openDeleteModal.isOpen}
         onClose={handleCloseDeleteModal}
+        name={openDeleteModal.name}
       />
       <ResetPassword
         name={openResetPasswordStudentModal.name}
@@ -182,7 +200,7 @@ function TableManagamentLecturer(props: any) {
         onClose={handleCloseResetPasswordStudentModal}
         username={openResetPasswordStudentModal.username}
       />
-    </>
+    </Box>
   );
 }
 

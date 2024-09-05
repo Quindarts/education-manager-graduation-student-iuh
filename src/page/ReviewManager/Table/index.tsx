@@ -55,7 +55,7 @@ function TableManagerReviewScore(props: any) {
       align: 'center',
     },
     {
-      headerName: '',
+      headerName: 'Chức năng',
       field: 'none',
       flex: 1.5,
       headerAlign: 'center',
@@ -67,7 +67,7 @@ function TableManagerReviewScore(props: any) {
             title='Sửa tiêu chí'
           >
             <IconButton size='small'>
-              <Icon icon='ph:pencil-line-fill' style={{ color: '#0288d1' }} />
+              <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
           <Box></Box>
@@ -76,7 +76,7 @@ function TableManagerReviewScore(props: any) {
             title='Xóa tiêu chí'
           >
             <IconButton color='error' size='small'>
-              <Icon icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+              <Icon icon='carbon:close-filled' width={20} style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -118,9 +118,7 @@ function TableManagerReviewScore(props: any) {
         totalPages={1}
         page={1}
         handleChangePage={() => {}}
-        disableColumnMenu
         disableColumnFilter
-        disableColumnSelector
       />
       <EditEvaluationModal
         termId={termId}

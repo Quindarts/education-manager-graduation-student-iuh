@@ -13,11 +13,14 @@ function TermPage() {
   const { data, isLoading, isFetching } = handleGetAllTermByMajor();
   return (
     <>
-      <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-        <TitleManager icon='quill:list' mb={0} mt={2}>
-          Danh sách học kì {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
-        </TitleManager>
-        <HeaderTerm />
+      <Paper sx={{ py: 10, px: 10 }} elevation={0}>
+        <Box justifyContent={'space-between'} display={'flex'}>
+          <TitleManager icon='quill:list' mb={0}>
+            Danh sách học kì {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
+          </TitleManager>
+          <HeaderTerm />
+        </Box>
+
         {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (

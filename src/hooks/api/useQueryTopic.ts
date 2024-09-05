@@ -22,9 +22,10 @@ export enum QueryTopic {
     getTopicById = 'getTopicById',
     getGroupByTopic = "getGroupByTopic",
     getCountOfTopic = "getCountOfTopic",
-
+    getTopicToExport = "getTopicToExport",
+    getTopicsByLecturerTermId = "getTopicsByLecturerTermId",
     //LECTURER
-    getAllTopicByLecturerTerm = 'getAllTopicByLecturerTerm'
+    getTopicsByMe = 'getTopicsByMe'
 }
 export const useTopic = () => {
 
@@ -44,11 +45,7 @@ export const useTopic = () => {
     const { enqueueSnackbar } = useSnackbar()
 
     const handleGetCountOfTopic = () => {
-        return useQuery([QueryTopic.getCountOfTopic], () => TopicServices.getCountOfTopic(termId)), {
-            staleTime: 1000 * (60 * 20), // 10 min,
-            refetchOnMount: true,
-            refetchInterval: 1000 * (60 * 20),
-        }
+        return useQuery([QueryTopic.getCountOfTopic], () => TopicServices.getCountOfTopic(termId))
     }
 
     const handleUiRender = (): string[] => {
@@ -104,9 +101,13 @@ export const useTopic = () => {
             keepPreviousData: true,
         })
     }
-
-
-    //[GET BY TERM, MAJOR]
+    //[GET TO EXPORT]
+    const handleGetTopicToExport = () => {
+        return useQuery([QueryTopic.getTopicToExport, termId], () => TopicServices.getTopicsExport(termId), {
+            enabled: !!termId
+        })
+    }
+    //[GET BY TERM, MAJOR]  
     const handleTopicsByTermByMajor = () => {
         return useQuery([QueryTopic.getSearchTopic, termStore.currentTerm.id, ''], () => TopicServices.getTopicsByTermByMajor(termStore.currentTerm.id), {
             staleTime: 1000 * (60 * 3), // 10 min,
@@ -114,8 +115,15 @@ export const useTopic = () => {
     }
 
     //[GET BY TERM, LECTURER]
-    const handleTopicsByLecturerByTerm = () => {
-        return useQuery([QueryTopic.getAllTopicByLecturerTerm, termStore.currentTerm.id, lecturerStore.me.user.id], () => TopicServices.getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
+    const handleTopicsByMe = () => {
+        return useQuery([QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id], () => TopicServices.getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
+            staleTime: Infinity, onSuccess(data) {
+            }
+        })
+    }
+    //[GET BY TERM, LECTURER]
+    const handleTopicsByLecturerByTerm = (lecturerId: string) => {
+        return useQuery([QueryTopic.getTopicsByLecturerTermId, termStore.currentTerm.id, lecturerId], () => TopicServices.getTopicsByLecturerByTerm(lecturerId, termStore.currentTerm.id), {
             staleTime: Infinity, onSuccess(data) {
             }
         })
@@ -127,10 +135,16 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
+
             },
-            onError() {
-                enqueueSnackbar("Tạo đề tài thất bại", { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         },
         );
@@ -142,13 +156,17 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
             },
-            onError() {
-                enqueueSnackbar("Cập nhật tài thất bại vui lòng thử lại sau", { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -162,8 +180,11 @@ export const useTopic = () => {
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] });
                 },
-                onError() {
-                    enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
+                onError(err: any) {
+                    if (err.status < 500)
+                        enqueueSnackbar(err.message, { variant: 'error' })
+                    else
+                        enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
                 }
             }
         )
@@ -173,9 +194,14 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
+
             },
-            onError() {
-                enqueueSnackbar("Cập nhật đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -186,11 +212,16 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
             },
-            onError() {
-                enqueueSnackbar("Xóa đề tài thất bại vui lòng thử lại sau", { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -199,9 +230,12 @@ export const useTopic = () => {
         paramTotalPage,
         topicStore,
         handleTopicsByTermByMajor,
+        handleGetTopicToExport,
         handleTopicsByLecturerByTerm,
+        handleTopicsByMe,
         handleUiRender,
         handleTopicById,
+        handleGetCountOfTopic,
         onCreateTopicByToken,
         onUpdateTopicById,
         onDeleteTopicById,

@@ -7,6 +7,7 @@ import * as NotificationServices from "@/services/apiNotifications"
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setParamTotalPage } from '@/store/slice/notification.slice';
+import { QueryKeysNotificationLecturer } from './useQueryNotificationLecturer';
 
 export enum QueryKeysNotification {
     getNotificationsOfFilter = "getNotificationsOfFilter",
@@ -78,11 +79,15 @@ export const useNotification = () => {
                                 ""
                             ]
                     });
+                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
 
                 }
             },
-            onError: () => {
-                enqueueSnackbar('Thêm thông báo thất bại', { variant: 'error' });
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         });
     };
@@ -102,10 +107,15 @@ export const useNotification = () => {
                                 ""
                             ]
                     });
+                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
+
                 }
             },
-            onError: () => {
-                enqueueSnackbar('Cập nhật thông báo thất bại', { variant: 'error' });
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         });
     };
@@ -119,16 +129,20 @@ export const useNotification = () => {
                     queryClient.invalidateQueries({
                         queryKey:
                             [QueryKeysNotification.getNotificationsOfFilter,
-                                "10",
-                                "1",
+                            getQueryField('limit'),
+                            getQueryField('page'),
                                 "",
                                 ""
                             ]
                     });
+                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
                 }
             },
-            onError: () => {
-                enqueueSnackbar('Xóa thông báo thất bại', { variant: 'error' });
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         });
     };

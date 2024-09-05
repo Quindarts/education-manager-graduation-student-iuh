@@ -9,12 +9,18 @@ import { useNotification } from '@/hooks/api/useQueryNotification';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { useNotificationLecturer } from '@/hooks/api/useQueryNotificationLecturer';
+import { useState } from 'react';
 
 function Notification() {
   const { handleActive, active, menuRef } = usePopup();
+  const [limit, setLimit] = useState(5);
   const { handleGetMyNotification } = useNotificationLecturer();
-  const { data, isLoading, isFetching } = handleGetMyNotification();
+  const { data, isLoading, isFetching } = handleGetMyNotification(limit.toString());
   const navigate = useNavigate();
+
+  const handleChangeLimit = () => {
+    setLimit((pre) => pre + 5);
+  };
   const handleNavigate = (id: string) => {
     navigate(`/notifications/${id}`);
     handleActive();
@@ -41,7 +47,9 @@ function Notification() {
         color='info'
       >
         <Badge
-          
+          badgeContent={
+            data ? data?.notifications.filter((noti: any) => noti.isRead === 0).length : 0
+          }
           color='error'
           sx={{
             height: '100%',
@@ -92,14 +100,14 @@ function Notification() {
             </Typography>
             <Box borderRadius={1} alignSelf={'center'} px={4} py={2}>
               <Typography fontWeight={500} variant='body2' color='white'>
-                {/* {data ? data?.notifications.length : 0} Thông báo */}
+                {data ? data?.notifications?.length : 0} Thông báo
               </Typography>
             </Box>
           </Box>
           <Box sx={{ overflowY: 'auto', height: '80%', px: 2 }}>
             {isLoading || isFetching ? (
               <CircularProgress />
-            ) : true ? (
+            ) : data?.notifications?.length < 1 ? (
               <Box width={'100%'}>
                 <Box textAlign={'center'} m={'auto'} p='auto' width={240}>
                   <img width={100} src='/public/images/bell-alarm.webp' alt='' />
@@ -115,7 +123,7 @@ function Notification() {
               </Box>
             ) : (
               <>
-                {/* {data?.notifications.map((noti: any) => (
+                {data?.notifications.map((noti: any) => (
                   <Paper
                     sx={{
                       my: 2,
@@ -137,14 +145,11 @@ function Notification() {
                       color='grey.600'
                       sx={{}}
                     >
-                      {dayjs(noti.created_at).format('DD/MM/YYYY hh:ss')}
+                      {dayjs(noti.createdAt).format('DD/MM/YYYY hh:ss')}
                     </Typography>
-                    <Typography
-                      variant='body2'
-                      fontSize={10}
-                      color='grey.700'
-                      dangerouslySetInnerHTML={{ __html: noti.message.split('<br/>')[1] }}
-                    />
+                    <Typography variant='body1' color='grey.700'>
+                      {noti.title}
+                    </Typography>
                     <Box justifyContent={'end'} display={'flex'}>
                       <>
                         {noti.isRead ? (
@@ -160,7 +165,7 @@ function Notification() {
                       </>
                     </Box>
                   </Paper>
-                ))} */}
+                ))}
               </>
             )}
           </Box>
@@ -173,9 +178,9 @@ function Notification() {
             borderRadius={'0 0 8px 8px '}
             bgcolor={'#f6fcff'}
           >
-            {/* <Button size='small' color='warning'>
-              Đánh dấu tất cả là đã đọc
-            </Button> */}
+            <Button onClick={handleChangeLimit} size='small' color='warning'>
+              Xem thêm
+            </Button>
           </Box>
         </Box>
       )}

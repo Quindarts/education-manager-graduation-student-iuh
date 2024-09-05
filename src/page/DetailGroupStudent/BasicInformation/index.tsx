@@ -18,7 +18,7 @@ function BasicInformationGrStudentPage(props: any) {
   const { groupStudent } = props;
   return (
     <>
-      <Paper variant='elevation' sx={{ mt: 1, py: 12, px: 8 }}>
+      <Paper variant='elevation' elevation={0} sx={{ mt: 1, py: 12, px: 8 }}>
         <TitleManager
           icon='flat-color-icons:info'
           fontWeight={600}
@@ -40,7 +40,7 @@ function BasicInformationGrStudentPage(props: any) {
         <Box sx={{ position: 'absolute', top: 10, zIndex: 10, left: '-20px' }}>
           <Icon width={50} color='#122E69' icon='game-icons:achievement' />
         </Box>
-        <Accordion sx={{ px: 10 }} defaultExpanded>
+        <Accordion sx={{ px: 10 }}>
           <AccordionSummary
             expandIcon={<GridExpandMoreIcon color='primary' />}
             aria-controls='panel-topic-content'

@@ -30,9 +30,6 @@ function CardLecturer(props: any) {
         },
       }}
     >
-      <Box>
-        <Avatar  sizes='small' src={``} />
-      </Box>
       <Box flex={1}>
         <Typography variant='body1' fontWeight={500} color='grey.700'>
           Tên giảng viên

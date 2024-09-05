@@ -15,7 +15,9 @@ export enum QueryKeysLecturerTerm {
     listLecturerTerms = 'listLecturerTerms',
     lecturerTermsToAdd = 'lecturerTermsToAdd',
     getAllLectuerTermByParams = 'getAllLectuerTermByParams',
-    getCountOfLecturerTerm = "getCountOfLecturerTerm"
+    getCountOfLecturerTerm = "getCountOfLecturerTerm",
+    getLecturerTermById = "getLecturerTermById",
+    getLecturerTermToExport = "getLecturerTermToExport"
 }
 
 export const useLecturerTerm = () => {
@@ -55,30 +57,45 @@ export const useLecturerTerm = () => {
                 getQueryField('limit'),
                 getQueryField('page'),
                 getQueryField('searchField'),
+                getQueryField('sort'),
                 getQueryField('keywords')
             ],
-            () => LecturerTermServices.getAllLecturerTermByParams(termId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')),
+            () => LecturerTermServices.getAllLecturerTermByParams(
+                termId,
+                getQueryField('limit'),
+                getQueryField('page'),
+                getQueryField('searchField'),
+                getQueryField('sort'),
+                getQueryField('keywords')),
             {
                 onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params' | 'lecturerTerms'>) {
                     const total = data.params ? data.params.totalPage : 0
                     setTotalPage(total)
                     dispatch(setParamTotalPageLectuerTerm(total))
                 },
-                staleTime: 1000 * (60 * 15),
-                keepPreviousData: true,
+                staleTime: 1000 * (60 * 3), // 10 min,
+                refetchOnMount: true,
                 refetchInterval: 1000 * (60 * 20),
+                keepPreviousData: true,
             })
     }
-
+    const handleGetLecturerTermById = (id: string) => {
+        return useQuery([QueryKeysLecturerTerm.getLecturerTermById, id], () => LecturerTermServices.getLecturerTermById(id), {
+            enabled: !!id
+        })
+    }
     //[GET LIST LECTURER]
     const handleGetListLecturerTerms = () => {
         return useQuery([QueryKeysLecturerTerm.listLecturerTerms, termId], () => LecturerTermServices.getListLecturerTerm(termId), {
 
         })
     }
+    const handleGetLecturerTermToExport = () => {
+        return useQuery([QueryKeysLecturerTerm.getLecturerTermToExport, termId], () => LecturerTermServices.getLecturerTermToExport(termId))
+    }
 
     const onDeleteLecturerTerm = () => {
-        return useMutation((lecturerId: string) => LecturerTermServices.deleteLecturerTermById(lecturerId, termStore.currentTerm.id), {
+        return useMutation((id: string) => LecturerTermServices.deleteLecturerTermById(id), {
             onSuccess: (data: Pick<ResponseType, 'success' | 'message'>) => {
                 if (data.success === true) {
                     enqueueSnackbar(data.message, { variant: "success" });
@@ -86,12 +103,22 @@ export const useLecturerTerm = () => {
                         [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
                         getQueryField('limit'), getQueryField('page'), getQueryField("searchField"), getQueryField('keywords')]
                     );
-                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termStore.currentTerm.id, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.getCountOfLecturerTerm, termId])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
+
 
                 }
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
+    //[GET]
     const handleLecturerTermsToAdd = () => {
         return useQuery([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorId], () => LecturerTermServices.getListLecturerTermToAdding(termId, majorId), {
             enabled: !!termId && !!majorId,
@@ -100,7 +127,7 @@ export const useLecturerTerm = () => {
     }
 
     const onCreateLecturerTerm = () => {
-        return useMutation((data: { lecturerId: string, termId: string }) => LecturerTermServices.createLecturerTerm(data), {
+        return useMutation((data: { id: string, termId: string }) => LecturerTermServices.createLecturerTerm(data), {
             onSuccess(data: any) {
                 if (data.success === true) {
                     enqueueSnackbar(data.message, { variant: "success" });
@@ -108,17 +135,24 @@ export const useLecturerTerm = () => {
                         [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
                         getQueryField('limit'), getQueryField('page'), getQueryField("searchField"), getQueryField('keywords')]
                     );
-                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termStore.currentTerm.id, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.getCountOfLecturerTerm, termId])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
+
+
                 }
             },
-            onError(error: any) {
-                enqueueSnackbar(error.message, { variant: "error" });
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
     //[IMPORT]
     const onImportLecturerTerm = () => {
-        return useMutation(() => LecturerTermServices.importLecturerTerm(termStore.currentTerm.id, majorStore.currentMajor.id), {
+        return useMutation(() => LecturerTermServices.importLecturerTerm(termId, majorStore.currentMajor.id), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
                 if (data.success) {
                     enqueueSnackbar("Cập nhật danh sách giảng viên thành công", { variant: 'success' })
@@ -126,12 +160,17 @@ export const useLecturerTerm = () => {
                         [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
                         getQueryField('limit'), getQueryField('page'), getQueryField("searchField"), getQueryField('keywords')]
                     );
-                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termStore.currentTerm.id, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.getCountOfLecturerTerm, termId])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
 
                 };
             },
-            onError() {
-                enqueueSnackbar("Cập nhật danh sách giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -139,11 +178,13 @@ export const useLecturerTerm = () => {
     return {
         paramTotalPage: paramTotalPage.lecturerTerm,
         handleGetAllLecturerTermByParam,
+        handleGetLecturerTermById,
         handleGetCountOfLecturerTerm,
         handleGetListLecturerTerms,
         handleLecturerTermsToAdd,
         onImportLecturerTerm,
         onDeleteLecturerTerm,
-        onCreateLecturerTerm
+        onCreateLecturerTerm,
+        handleGetLecturerTermToExport
     }
 }

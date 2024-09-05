@@ -25,7 +25,7 @@ function EditModal(props: any) {
   };
 
   useEffect(() => {
-    onClose();
+    if (successCreate) onClose();
   }, [successCreate]);
   const currentRole = handleUiRender();
 
@@ -167,7 +167,7 @@ function EditModal(props: any) {
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
                     <Icon icon='material-symbols:save-outline' />
-                    Lưu thông tin
+                    Lưu
                   </Button>
                 </Box>
               </form>

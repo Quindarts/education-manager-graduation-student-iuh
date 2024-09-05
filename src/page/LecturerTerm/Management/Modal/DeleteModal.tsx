@@ -5,12 +5,12 @@ import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
 function DeleteModal(props: any) {
-  const { onClose, open, lecturerId, name } = props;
+  const { onClose, open, lecturerTermId, name } = props;
   const { onDeleteLecturerTerm } = useLecturerTerm();
   const { mutate: deleteLect, isSuccess } = onDeleteLecturerTerm();
 
   const handleDelete = () => {
-    deleteLect(lecturerId);
+    deleteLect(lecturerTermId);
   };
   useEffect(() => {
     onClose();

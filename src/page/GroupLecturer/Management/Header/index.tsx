@@ -1,7 +1,9 @@
 import DropDown from '@/components/ui/Dropdown';
+import ExportExcelButton from '@/components/ui/Export';
+import useAssign from '@/hooks/api/useQueryAssign';
 import { APP_ROUTES } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +14,8 @@ function HeaderGroupLecturer(props: any) {
   useEffect(() => {
     handleTypeGroupLecturer(currentTypeGroupLecturer);
   }, [currentTypeGroupLecturer]);
+  const { handleGetExportAssignGroup } = useAssign();
+  const { data: fetchGroup } = handleGetExportAssignGroup();
 
   return (
     <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
@@ -23,29 +27,37 @@ function HeaderGroupLecturer(props: any) {
           }}
           options={[
             {
-              name: 'Nhóm giảng viên Phản biện',
+              name: 'Nhóm Phản biện',
               _id: 'reviewer',
             },
             {
-              name: 'Nhóm giảng viên Poster',
+              name: 'Nhóm Poster',
               _id: 'report_poster',
             },
             {
-              name: 'Nhóm giảng viên Hội đồng',
+              name: 'Nhóm Hội đồng',
               _id: 'report_council',
             },
           ]}
         />
-        <Button
-          size='small'
-          onClick={() => navigate(APP_ROUTES.GROUP_LECTURER.CREATE)}
-          color='error'
-          type='button'
-          variant='contained'
-        >
-          <Icon icon='lets-icons:add-round' width={20} />
-          Tạo Nhóm giảng viên
-        </Button>
+        <Tooltip title='Tạo Nhóm '>
+          <Button
+            size='small'
+            onClick={() => navigate(APP_ROUTES.GROUP_LECTURER.CREATE)}
+            color='error'
+            type='button'
+            variant='contained'
+          >
+            <Icon icon='lets-icons:add-round' width={20} />
+          </Button>
+        </Tooltip>
+        <ExportExcelButton
+          data={fetchGroup?.assigns}
+          entity='assignGroup'
+          label=''
+          labelTooltip=''
+          disabled
+        />
       </Box>
     </Box>
   );

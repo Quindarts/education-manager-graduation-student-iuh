@@ -47,7 +47,7 @@ function EditTermDate(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-        <TitleManager  textTransform={'uppercase'} mb={10} mt={4}>
+        <TitleManager textTransform={'uppercase'} mb={10} mt={4}>
           Cập nhật trạng thái học kì
         </TitleManager>
         {loadingDetail || isFetching ? (
@@ -140,8 +140,8 @@ function EditTermDate(props: any) {
                     Hủy
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
-                    <Icon icon='material-symbols:save-outline' />
-                    Lưu thông tin
+                    <Icon width={20} icon='material-symbols:save-outline' />
+                    Lưu
                     {loadingUpdate && (
                       <CircularProgress
                         size={'small'}

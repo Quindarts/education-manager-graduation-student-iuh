@@ -1,8 +1,9 @@
 import { TabPanel, TabPanelProps } from '@mui/lab';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent.js';
 import { useLocation } from 'react-router-dom';
 import TableDetailGroupStudentOfLecturer from './TableSupportStudent.tsx';
+import SekeletonUI from '@/components/ui/Sekeleton/index.jsx';
 
 function DetailSupportStudent(props: TabPanelProps) {
   const { value } = props;
@@ -11,10 +12,19 @@ function DetailSupportStudent(props: TabPanelProps) {
   const lecturerId = `${current[current.length - 1]}`;
 
   const { handleGetGroupStudentByLecturerByTerm } = useGroupStudent();
-  const { data, isFetching, isLoading } = handleGetGroupStudentByLecturerByTerm(lecturerId);
+  const { data, isFetching, isLoading, refetch } =
+    handleGetGroupStudentByLecturerByTerm(lecturerId);
+
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
-    <TabPanel value={value} sx={{ my: 10 }}>
-      <TableDetailGroupStudentOfLecturer rows={data ? data.groupStudents : []} />
+    <TabPanel value={value} sx={{ my: 4 }}>
+      {isLoading ? (
+        <SekeletonUI />
+      ) : (
+        <TableDetailGroupStudentOfLecturer rows={data ? data.groupStudents : []} />
+      )}
     </TabPanel>
   );
 }

@@ -43,8 +43,11 @@ const useEvaluation = () => {
                 enqueueSnackbar('Tạo tiêu chí đánh giá thành công', { variant: "success" })
                 queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, type] })
             },
-            onError() {
-                enqueueSnackbar('Tạo tiêu chí đánh giá thất bại', { variant: "error" })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -56,8 +59,11 @@ const useEvaluation = () => {
                 queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationById, evaluationId] })
 
             },
-            onError() {
-                enqueueSnackbar('Cập nhật tiêu chí đánh giá thất bại', { variant: "error" })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -67,8 +73,11 @@ const useEvaluation = () => {
                 enqueueSnackbar('Xóa tiêu chí đánh giá thành công', { variant: "success" })
                 queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, type] })
             },
-            onError() {
-                enqueueSnackbar('Xóa tiêu chí đánh giá thất bại', { variant: "error" })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }

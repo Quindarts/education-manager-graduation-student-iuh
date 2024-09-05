@@ -15,6 +15,7 @@ export enum QueryKeysGroupLecturer {
     managerActionGroupLecturer = 'managerActionGroupLecturer',
     createGroupLecturer = 'createGroupLecturer',
     searchGroupLecturerByField = 'searchGroupLecturerByField',
+    searchGroupLecturerByName = "searchGroupLecturerByName"
 }
 
 export const useGroupLecturer = () => {
@@ -66,12 +67,15 @@ export const useGroupLecturer = () => {
         const termId = termStore.currentTerm.id
         return useQuery([QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termId], () => GroupLecturerServices.getLecturerNoGroupByTypeGroup(type, termId))
     }
+    const handleGetGroupLecturerSearchByName = (name: string) => {
+        return useQuery([QueryKeysGroupLecturer.searchGroupLecturerByName, termId, name], () => GroupLecturerServices.searchGroupLecturerByName(termId, name))
+    }
 
     //[GET]
-    const handleGetGroupLecturerByLecturerId = (type: string) => {
+    const handleGetGroupLecturerByLecturerId = (lecturerId?: string) => {
         const termId = termStore.currentTerm.id
-        const lecturerId = lecturerStore.me.user.id
-        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, type, termId, lecturerId], () => GroupLecturerServices.getGroupLecturerByLecturerId(type, termId, lecturerId))
+        const lecturerIdToSend = lecturerId ? lecturerId : lecturerStore.me.user.id
+        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, termId, lecturerId], () => GroupLecturerServices.getGroupLecturerByLecturerId(termId, lecturerIdToSend))
     }
 
     //[GET]
@@ -87,15 +91,20 @@ export const useGroupLecturer = () => {
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termStore.currentTerm.id] })
             },
-            onError: (error: any) => {
-                enqueueSnackbar(error.message, { variant: 'error' })
-            }
+            onError(err: any) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+            },
         })
     }
 
 
     return {
         handleGetCountOfGroupLecturer,
+        handleGetGroupLecturerSearchByName,
         handleGetLecturerNoGroupByTypeGroup,
         handleGetAllGroupLecturerByTypeGroup,
         handleGetGroupLecturerById,

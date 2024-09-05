@@ -61,7 +61,7 @@ function UpdatePassword() {
   const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
   return (
     <Box>
-      <Card sx={{ width: 600, m: 'auto', my: 20 }}>
+      <Card sx={{ width: 600, m: 'auto', my: 20, boxShadow:'0px 0px 0px white' }}>
         <CardContent>
           <TitleManager icon='solar:key-bold' color='grey.700' textTransform={'uppercase'}>
             {' '}

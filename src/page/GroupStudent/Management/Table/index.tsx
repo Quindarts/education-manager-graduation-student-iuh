@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import DeleteGroupStudentModal from '../Modal/DeleteModal';
 
 function TableManagamentGroupStudent(props: any) {
-  const { rows, totalItems, totalPage, page, handleChangePage } = props;
+  const { rows, totalItems, limit, handleChangeLimit, totalPage, page, handleChangePage } = props;
   const navigate = useNavigate();
   const [openModalDelete, setOpenModalDelete] = useState({
     isOpen: false,
@@ -31,27 +31,40 @@ function TableManagamentGroupStudent(props: any) {
     {
       headerName: 'Tên nhóm',
       field: 'name',
-      flex: 1,
+      flex: 0.8,
       align: 'left',
-      headerAlign: 'center',
+      headerAlign: 'left',
     },
     {
-      headerName: 'Tên Đề tài',
-      field: 'name6',
-      flex: 3,
-      headerAlign: 'center',
+      headerName: 'Thành viên',
+      field: 'field',
+      flex: 1.4,
+      align: 'left',
+      headerAlign: 'left',
       renderCell: (params: any) => {
         return (
-          <Typography>{params.row.topicName ? params.row.topicName : 'Chưa có đề tài'}</Typography>
+          <Box>
+            {params.row.studentNames[0] !== null ? (
+              <>
+                {params.row.studentNames.map((std, index) => (
+                  <Typography variant='body1' color='initial'>
+                    TV{index + 1}: {std}
+                  </Typography>
+                ))}
+              </>
+            ) : (
+              <Typography>Chưa có thành viên</Typography>
+            )}
+          </Box>
         );
       },
     },
     {
       headerName: 'GV hướng dẫn',
       field: 'name3',
-      flex: 1,
+      flex: 1.2,
       align: 'left',
-      headerAlign: 'center',
+      headerAlign: 'left',
       renderCell: (params: any) => {
         return (
           <Typography>
@@ -61,24 +74,21 @@ function TableManagamentGroupStudent(props: any) {
       },
     },
     {
-      headerName: 'Số lượng thành viên',
-      field: 'name4',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      headerName: 'Tên Đề tài',
+      field: 'name6',
+      flex: 3,
+      headerAlign: 'left',
       renderCell: (params: any) => {
         return (
-          <Typography>
-            {params.row.numOfMembers}
-            /2
-          </Typography>
+          <Typography>{params.row.topicName ? params.row.topicName : 'Chưa có đề tài'}</Typography>
         );
       },
     },
+
     {
       headerName: 'Chức năng',
       field: 'name8',
-      flex: 0.5,
+      flex: 0.7,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
@@ -113,22 +123,27 @@ function TableManagamentGroupStudent(props: any) {
     <Box>
       <Table
         rows={rows}
+        isLimit={true}
         sx={{
           bgcolor: 'white',
+          width: '100%',
+          minHeight: 500,
         }}
+        rowHeight={75}
         columns={basicColumns}
         totalItems={totalItems}
         totalPages={totalPage}
-        page={page}
+        handleChangeLimit={handleChangeLimit}
         handleChangePage={handleChangePage}
-        noData={
-          <Button variant='contained' onClick={hanldeImport}>
-            Tạo danh sách nhóm sinh viên{' '}
-          </Button>
-        }
-        disableColumnMenu
+        page={page}
+        limit={limit}
         disableColumnFilter
-        disableColumnSelector
+        minHeight={400}
+        // noData={
+        //   <Button variant='contained' onClick={hanldeImport}>
+        //     Tạo danh sách nhóm sinh viên{' '}
+        //   </Button>
+        // }
       />
       <DeleteGroupStudentModal
         groupStudentId={openModalDelete.groupStudentId}

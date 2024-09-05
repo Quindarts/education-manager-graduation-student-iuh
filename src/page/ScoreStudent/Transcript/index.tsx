@@ -7,8 +7,7 @@ import useTranscript from '@/hooks/api/useQueryTranscript';
 import { BodyEvaluation } from '@/services/apiTranscipts';
 import { Box, Button, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react';
-//[Author - Le Minh Quang ]
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 export type MemberScore = {
   studentId: string;
   transcriptId?: string;
@@ -92,16 +91,17 @@ function TranscriptOfGroupStudent(props: any) {
     isExistTranscripts: false,
   });
 
-  //[Get member of group]
+  //[Get member of group student need score]
   const { handleGetMemberInGroupStudent } = useMemberGroupStudent();
   const {
     data: memberFetch,
     isLoading: loadingMembers,
     isFetching: fetchingMembers,
     isSuccess: successMember,
+    refetch: refetchMembers,
   } = handleGetMemberInGroupStudent(groupStudent.id);
 
-  //[Handler update or create of transcript]
+  //[Handler update/ create transcript of group student]
   const { onCreateTranscripts, onUpdateTranscripts, handleGetTranscriptOfStudentInGroup } =
     useTranscript();
   const { mutate: createTranscripts, isSuccess: successCreate } = onCreateTranscripts(
@@ -109,7 +109,7 @@ function TranscriptOfGroupStudent(props: any) {
   );
   const { mutate: updateTranscripts, isSuccess: successUpdate } = onUpdateTranscripts();
 
-  //[Get transcript in database]
+  //[Get transcript of group in database]
   const {
     data: transcriptFetch,
     isSuccess: successTranscript,
@@ -129,15 +129,16 @@ function TranscriptOfGroupStudent(props: any) {
             : convertEvaluations(evaluations, memberFetch?.members),
         isExistTranscripts: transcriptFetch.transcripts.length > 0,
       }));
+      setScoreStudent(handleTotalScores(transcriptFetch.transcripts));
     }
   }, [fetchingTranscript, fetchingMembers, groupStudent.id]);
 
   //[Toggle total score of students to update]
-  useEffect(() => {
-    if (initTranscripts.isExistTranscripts === true) {
-      setScoreStudent(handleTotalScores(initTranscripts.transcripts));
-    }
-  }, [initTranscripts.isExistTranscripts]);
+  // useEffect(() => {
+  //   if (initTranscripts.isExistTranscripts === true) {
+  //     setScoreStudent(handleTotalScores(initTranscripts.transcripts));
+  //   }
+  // }, [initTranscripts.isExistTranscripts, groupStudent.id]);
 
   //create
   const [scoreStudent, setScoreStudent] = useState<any[]>([]);
@@ -175,53 +176,74 @@ function TranscriptOfGroupStudent(props: any) {
       {loadingTranscript || fetchingTranscript ? (
         <SekeletonUI />
       ) : (
-        <Paper sx={{ p: 4 }}>
+        <Paper
+          elevation={0}
+          sx={{
+            mt: 10,
+          }}
+        >
           <Box mx={6}>
             <Typography
               my={3}
-              variant='h6'
+              variant='body1'
               textTransform={'uppercase'}
-              fontWeight={'bold'}
+              fontWeight={'700'}
               color='primary.dark'
             >
-              Tên đề tài : {groupStudent?.topicName}
               <Typography
                 component={'span'}
-                variant='body1'
-                mx={5}
+                variant='h6'
                 fontWeight={600}
-                color={initTranscripts.isExistTranscripts ? 'success.main' : 'error.dark'}
+                px={4}
+                py={2}
+                borderRadius={1}
+                marginRight={4}
+                bgcolor={'#F1EFEF'}
+                color={initTranscripts.isExistTranscripts ? 'warning.main' : 'error.dark'}
               >
-                {initTranscripts.isExistTranscripts ? 'Đã chấm' : 'Chưa có điểm'}
+                {initTranscripts.isExistTranscripts ? 'Đã chấm' : 'Chưa chấm'}
               </Typography>
+              Đề tài : {groupStudent?.topicName}{' '}
             </Typography>
             <Box>
               <Box component={'section'}>
+                {/****
+                 * HEADER TRANSCRIPT
+                 */}
                 <TableHead sx={{ bgcolor: '#132e65' }}>
                   <StyledTableRow>
-                    <StyledTableCell sx={{ color: 'grey.300', width: '3%', fontSize: 12 }}>
+                    <StyledTableCell sx={{ color: 'grey.300', width: '3%', fontSize: 14 }}>
                       CLO{' '}
                     </StyledTableCell>
                     <StyledTableCell
-                      sx={{ color: 'grey.300', width: '40%', fontSize: 12 }}
+                      sx={{ color: 'grey.300', width: '40%', fontSize: 14 }}
                       align='center'
                     >
                       Contents
                     </StyledTableCell>
                     <StyledTableCell
-                      sx={{ color: 'grey.300', width: '14%', fontSize: 12 }}
+                      sx={{ color: 'grey.300', width: '14%', fontSize: 14 }}
                       align='center'
                     >
                       Max score
                     </StyledTableCell>
-                    {memberFetch?.members.map((st: any) => (
-                      <StyledTableCell
-                        sx={{ color: 'grey.300', width: '20%', fontSize: 12 }}
-                        align='center'
-                      >
-                        {st.student.fullName}
-                      </StyledTableCell>
-                    ))}
+                    {!initTranscripts.isExistTranscripts
+                      ? memberFetch?.members.map((st: any) => (
+                          <StyledTableCell
+                            sx={{ color: 'grey.300', width: '20%', fontSize: 14 }}
+                            align='center'
+                          >
+                            {st.student.fullName}
+                          </StyledTableCell>
+                        ))
+                      : initTranscripts.transcripts[0]?.students?.map((st: any) => (
+                          <StyledTableCell
+                            sx={{ color: 'grey.300', width: '20%', fontSize: 14 }}
+                            align='center'
+                          >
+                            {st.fullName}
+                          </StyledTableCell>
+                        ))}
                   </StyledTableRow>
                 </TableHead>
                 {/****
@@ -233,7 +255,7 @@ function TranscriptOfGroupStudent(props: any) {
                       <>
                         <StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                           <StyledTableCell align='center'>{index + 1}</StyledTableCell>
-                          <StyledTableCell component='th' sx={{ fontSize: 12 }} scope='row'>
+                          <StyledTableCell component='th' sx={{ fontSize: 14 }} scope='row'>
                             {row.evaluationName}
                           </StyledTableCell>
                           <StyledTableCell align='center' sx={{ fontSize: 14 }}>
@@ -261,14 +283,13 @@ function TranscriptOfGroupStudent(props: any) {
                       <StyledTableCell align='center' sx={{ fontSize: 14, fontWeight: 'bold' }}>
                         100
                       </StyledTableCell>{' '}
-                      {successMember &&
-                        memberFetch.members.map((st: any) => (
-                          <StyledTableCell align='center' sx={{ fontSize: 20 }}>
-                            <Typography variant='h6' fontWeight={'600'} color='error.dark'>
-                              {scoreStudent[`${st.student.id}`]}
-                            </Typography>
-                          </StyledTableCell>
-                        ))}
+                      {initTranscripts.transcripts[0]?.students?.map((st: any) => (
+                        <StyledTableCell align='center' sx={{ fontSize: 14 }}>
+                          <Typography variant='h6' fontWeight={'600'} color='error.dark'>
+                            {scoreStudent[`${st.studentId}`]}
+                          </Typography>
+                        </StyledTableCell>
+                      ))}
                     </StyledTableRow>
                   </TableBody>
                 ) : (
@@ -279,13 +300,13 @@ function TranscriptOfGroupStudent(props: any) {
                     {initTranscripts.transcripts.map((row: any, index: number) => (
                       <StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                         <StyledTableCell align='center'>{index + 1}</StyledTableCell>
-                        <StyledTableCell component='th' sx={{ fontSize: 12 }} scope='row'>
+                        <StyledTableCell component='th' sx={{ fontSize: 14 }} scope='row'>
                           {row.evaluationName}
                         </StyledTableCell>
                         <StyledTableCell align='center' sx={{ fontSize: 14 }}>
                           {row.scoreMax}
                         </StyledTableCell>
-                        {memberFetch?.members.map((st: any) => (
+                        {memberFetch.members.map((st: any) => (
                           <StyledTableCell sx={{ p: 0 }} align='center'>
                             <ScoreInput
                               handleChangeScore={handleChangeScore}
@@ -309,14 +330,13 @@ function TranscriptOfGroupStudent(props: any) {
                       {/**
                        * Total score
                        */}
-                      {successMember &&
-                        memberFetch.members.map((st: any) => (
-                          <StyledTableCell align='center' sx={{ fontSize: 14 }}>
-                            <Typography variant='h6' fontWeight={'600'} color='error.dark'>
-                              {scoreStudent[`${st.student.id}`]}
-                            </Typography>
-                          </StyledTableCell>
-                        ))}
+                      {memberFetch.members.map((st: any) => (
+                        <StyledTableCell align='center' sx={{ fontSize: 14 }}>
+                          <Typography variant='h6' fontWeight={'600'} color='error.dark'>
+                            {scoreStudent[`${st.student.id}`]}
+                          </Typography>
+                        </StyledTableCell>
+                      ))}
                     </StyledTableRow>
                   </TableBody>
                 )}

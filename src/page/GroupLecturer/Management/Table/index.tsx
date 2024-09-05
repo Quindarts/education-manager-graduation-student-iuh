@@ -95,9 +95,7 @@ function TableManagamentGroupLecturer(props: any) {
         checkboxSelection
         page={1}
         handleChangePage={() => {}}
-        disableColumnMenu
         disableColumnFilter
-        disableColumnSelector
       />
     </Box>
   );

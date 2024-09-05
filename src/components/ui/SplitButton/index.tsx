@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 export default function SplitButton(props: any) {
   const { options, handleClick, label, icon } = props;
@@ -43,15 +43,32 @@ export default function SplitButton(props: any) {
 
   return (
     <Box width={'100%'}>
-      <ButtonGroup variant='contained' ref={anchorRef} aria-label='Button group with a nested menu'>
+      <ButtonGroup
+        sx={{
+          boxShadow: '0px 0px 0px white!important',
+          fontSize: 14,
+        }}
+        variant='contained'
+        ref={anchorRef}
+        aria-label='button-group'
+      >
         <Button
           variant='outlined'
-          sx={{ color: 'black', bgcolor: 'white', border: '1px solid #909090', height: 37 }}
+          sx={{
+            color: 'black',
+            bgcolor: 'white',
+            boxShadow: '0px!important',
+            border: '1px solid #8d8d8d',
+            height: 37,
+            fontSize: 14,
+          }}
           size='small'
           onClick={handleToggle}
         >
           {icon && <Icon icon={icon} style={{ marginRight: 2 }} width={16} />}
-          {options[selectedIndex]}
+          <Typography variant='body1' fontWeight={'600'} color='grey.700'>
+            {options[selectedIndex]}
+          </Typography>
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>

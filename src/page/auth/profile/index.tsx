@@ -42,14 +42,12 @@ function ProfilePage() {
   const navigate = useNavigate();
   return (
     <>
-      <Paper elevation={1} sx={{ width: '100%', mx: 'auto', mt: 8, position: 'relative' }}>
+      <Paper elevation={0} sx={{ width: '80%', mx: 'auto', mt: 8, position: 'relative' }}>
         <Box
           sx={{
             width: '100%',
             height: '20px',
             borderRadius: '4px 4px 0 0 ',
-            bgcolor: 'primary.dark',
-            backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             position: 'absolute',
             zIndex: 1,
@@ -57,9 +55,9 @@ function ProfilePage() {
           }}
         ></Box>
 
-        <Box sx={{ px: 20, pt: '30px', zIndex: 10, position: 'relative' }}>
-          <TitleManager icon='vaadin:user-card' variant='h5' textTransform={'uppercase'}>
-            Thông tin cá nhân
+        <Box sx={{ px: 10, pt: 10, zIndex: 10, position: 'relative' }}>
+          <TitleManager icon='vaadin:user-card' variant='h6' textTransform={'uppercase'}>
+            Thông tin giảng viên
           </TitleManager>
           <Box py={10} px={5}>
             <Formik
@@ -79,7 +77,7 @@ function ProfilePage() {
             >
               {({ values, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
                 <form onSubmit={handleSubmit}>
-                  <Box display={'flex'} gap={20}>
+                  <Box display={'flex'} gap={10}>
                     <Box flex={1}>
                       <CustomTextField
                         required
@@ -93,7 +91,7 @@ function ProfilePage() {
                         error={errors.username ? true : false}
                         helperText={errors.username}
                       />
-                      <Box display={'flex'} gap={10} mt={8}>
+                      <Box display={'flex'} gap={4} mt={8}>
                         <Box width={'100%'}>
                           <CustomTextField
                             required
@@ -107,9 +105,8 @@ function ProfilePage() {
                             helperText={errors.fullName}
                           />
                         </Box>
-                        <Box width={200}>
+                        <Box mt={2} width={200}>
                           <DropDown
-                            sx={{ mb: 8 }}
                             value={`${values.gender}`}
                             onChange={(e) => {
                               setFieldValue('gender', e.target.value);

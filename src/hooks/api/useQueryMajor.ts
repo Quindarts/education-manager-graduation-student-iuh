@@ -53,9 +53,11 @@ export const useMajor = () => {
                     queryClient.invalidateQueries({ queryKey: [QueryKeysMajor.getAllMajor] })
                 }
             },
-            onError: () => {
-                enqueueSnackbar('Thêm chuyên ngành thất bại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -71,8 +73,11 @@ export const useMajor = () => {
                     queryClient.invalidateQueries({ queryKey: [QueryKeysMajor.getAllMajor] })
                 }
             },
-            onError: () => {
-                enqueueSnackbar('Cập nhật chuyên ngành thất bại', { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -86,8 +91,11 @@ export const useMajor = () => {
 
                 }
             },
-            onError: () => {
-                enqueueSnackbar('Xóa chuyên ngành thất bại', { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }

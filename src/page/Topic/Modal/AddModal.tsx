@@ -160,8 +160,8 @@ function AddModal(props: any) {
                   Hủy
                 </Button>
                 <Button variant='contained' color='success' type='submit'>
-                  <Icon icon='material-symbols:save-outline' />
-                  Lưu thông tin
+                  <Icon width={20} icon='material-symbols:save-outline' />
+                  Lưu 
                 </Button>
               </Box>
             </form>

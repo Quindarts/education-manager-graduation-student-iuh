@@ -1,13 +1,13 @@
 import Modal from '@/components/ui/Modal';
-import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
+import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
 function DeleteModal(props: any) {
-  const { onClose, open, lecturerId } = props;
-  const { onDeleteLecturerTerm } = useLecturerTerm();
-  const { mutate: deleteLect, isSuccess } = onDeleteLecturerTerm();
+  const { onClose, open, name, lecturerId } = props;
+  const { onDeleteLecturer } = useLecturer();
+  const { mutate: deleteLect, isSuccess } = onDeleteLecturer();
 
   const handleDelete = () => {
     deleteLect(lecturerId);
@@ -30,7 +30,7 @@ function DeleteModal(props: any) {
           <Icon color='#b31d1d82' height={70} width={70} icon='fa-solid:trash-restore' />{' '}
         </Box>
         <Typography variant='h3' mt={10} mb={14}>
-          Bạn có chắc chắn muốn xóa giảng viên này ?
+          Bạn có chắc chắn muốn xóa giảng viên {name} ?
         </Typography>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
           <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>

@@ -1,10 +1,10 @@
-import { Box, Button, Paper } from '@mui/material';
+import { Box, Button, Paper, Tooltip } from '@mui/material';
 import TableManagerReviewScore from './Table';
 import { useState } from 'react';
 import DropDown from '@/components/ui/Dropdown';
 import TitleManager from '@/components/ui/Title';
 import ModalUpload from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useExcel';
+import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import SekeletonUI from '@/components/ui/Sekeleton';
@@ -49,8 +49,8 @@ function ReviewManagerPage() {
   return (
     <>
       <ContextReviewManager>
-        <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-          <Box my={4} display={'flex'} justifyContent={'space-between'} gap={2}>
+        <Paper sx={{ py: 10, px: 10 }} elevation={0}>
+          <Box my={0} display={'flex'} justifyContent={'space-between'} gap={2}>
             <TitleManager icon='quill:list'>Tiêu chí Đánh giá</TitleManager>
             <Box display={'flex'} gap={2}>
               <DropDown
@@ -60,32 +60,34 @@ function ReviewManagerPage() {
                 }}
                 options={[
                   {
-                    name: 'Tiêu chí Đánh giá Hướng dẫn',
+                    name: 'Tiêu chí Hướng dẫn',
                     _id: 'ADVISOR',
                   },
                   {
-                    name: 'Tiêu chí Đánh giá Phản biện',
+                    name: 'Tiêu chí Phản biện',
                     _id: 'REVIEWER',
                   },
                   {
-                    name: 'Tiêu chí Đánh giá Báo cáo',
+                    name: 'Tiêu chí Báo cáo',
                     _id: 'REPORT',
                   },
                 ]}
               />
               {currentRole.includes('all') && (
                 <>
-                  <Button
-                    size='small'
-                    color='error'
-                    variant='contained'
-                    onClick={handleOpenCreateEvaluationModal}
-                  >
-                    <Icon icon='ic:baseline-plus' />
-                    Tạo tiêu chí mới
-                  </Button>
-
+                  <Tooltip title='Thêm tiêu chí'>
+                    <Button
+                      size='small'
+                      color='error'
+                      variant='contained'
+                      onClick={handleOpenCreateEvaluationModal}
+                    >
+                      <Icon width={20} icon='ic:baseline-plus' />
+                    </Button>
+                  </Tooltip>
                   <ModalUpload
+                    label=''
+                    labelToolTip='Thêm tiêu chí bằng file excel'
                     disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0}
                     entityUpload={TypeEntityUpload.EVALUATION}
                     termId={termStore.currentTerm.id}
@@ -94,22 +96,23 @@ function ReviewManagerPage() {
                 </>
               )}
               {currentRole.includes('crud') && (
-                <Button
-                  disabled={data?.evaluations.length < 1}
-                  size='small'
-                  color='success'
-                  variant='contained'
-                  onClick={handleOpenExportModal}
-                >
-                  <Icon width={20} icon='material-symbols:export-notes' />
-                  Xuất phiếu chấm
-                </Button>
+                <Tooltip title='Xuất phiếu chấm'>
+                  <Button
+                    disabled={data?.evaluations.length < 1}
+                    size='small'
+                    color='success'
+                    variant='contained'
+                    onClick={handleOpenExportModal}
+                  >
+                    <Icon width={20} icon='material-symbols:export-notes' />
+                  </Button>
+                </Tooltip>
               )}
             </Box>
           </Box>
 
           <Box mt={4}>
-            {isLoading || isFetching ? (
+            {isLoading ? (
               <SekeletonUI />
             ) : (
               <>
@@ -119,7 +122,7 @@ function ReviewManagerPage() {
                   currentRole={currentRole}
                   rows={convertEvalutationTable(data.evaluations)}
                 />
-                <Paper elevation={0} sx={{ px: 2, py: 3, mt: 4 }}>
+                <Paper elevation={0} sx={{ px: 2, py: 3, mt: 2 }}>
                   <TitleManager variant='body1'>Tổng điểm: 100</TitleManager>
                 </Paper>
               </>

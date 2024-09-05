@@ -3,16 +3,22 @@ import { Icon } from '@iconify/react';
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
-import { checkGender } from '@/utils/validations/person.validation';
 import DeleteModal from '../Modal/DeleteModal';
-import EditInfoModal from '../Modal/EditInfoModal';
 import { useNavigate } from 'react-router-dom';
 
 function TableManagamentLecturer(props: any) {
-  const { rows, totalItems, totalPage, page, handleChangePage } = props;
+  const {
+    rows,
+    totalItems,
+    limit,
+    handleChangeLimit,
+    totalPage,
+    page,
+    handleChangePage,
+  } = props;
 
   const [openDeleteModal, setOpenDeleteModal] = useState({
-    lecturerId: '',
+    lecturerTermId: '',
     name: '',
     isOpen: false,
   });
@@ -20,32 +26,31 @@ function TableManagamentLecturer(props: any) {
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal({ ...openDeleteModal, isOpen: false });
   };
-  const handleOpenDeleteModal = (lecturerId: string, name: string) => {
-    setOpenDeleteModal({ lecturerId, name, isOpen: true });
+  const handleOpenDeleteModal = (lecturerTermId: string, name: string) => {
+    setOpenDeleteModal({ lecturerTermId, name, isOpen: true });
   };
 
-  const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
   const navigate = useNavigate();
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Mã Giảng Viên',
+      headerName: 'Mã giảng viên',
       field: 'username',
       flex: 0.6,
       headerAlign: 'center',
-      align: 'right',
+      align: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontWeight={600}>
+          <Typography variant='h6' fontWeight={500}>
             {params.row.username}
           </Typography>
         );
       },
     },
     {
-      headerName: 'Họ & Tên đệm',
+      headerName: 'Họ & tên đệm',
       field: 'firstName',
-      flex: 0.7,
+      flex: 1,
       headerAlign: 'left',
       align: 'left',
     },
@@ -57,64 +62,49 @@ function TableManagamentLecturer(props: any) {
       align: 'left',
     },
     {
-      headerName: 'Chuyên ngành',
-      field: 'majorName',
+      headerName: 'Số lượng đề tài',
+      field: 'totalTopics',
       flex: 1,
-      headerAlign: 'left',
-      align: 'left',
+      headerAlign: 'right',
+      align: 'right',
     },
     {
-      headerName: 'Giới tính',
-      field: 'gender',
-      flex: 0.5,
-      headerAlign: 'left',
-      align: 'left',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
-      },
-    },
-    {
-      headerName: 'Email',
-      field: 'email',
-      flex: 1.2,
-      headerAlign: 'left',
-      align: 'left',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{params.row.email}</Typography>;
-      },
-    },
-    {
-      headerName: 'SĐT',
-      field: 'phone',
+      headerName: 'SL nhóm sinh viên',
+      field: 'totalGroupStudents',
       flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{params.row.phone}</Typography>;
-      },
+      headerAlign: 'right',
+      align: 'right',
+    },
+
+    {
+      headerName: 'SL nhóm giảng viên',
+      field: 'totalGroupLecturers',
+      flex: 1,
+      headerAlign: 'right',
+      align: 'right',
     },
     {
       headerName: 'Chức năng',
       field: 'updateTing',
-      flex: 0.5,
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
+          <Tooltip
+            onClick={() => navigate(`/lecturer-terms/detail/${params.row.id}`)}
+            title='Xem Chi tiết'
+          >
+            <IconButton color='primary'>
+              <Icon width={20} icon='flat-color-icons:view-details' />
+            </IconButton>
+          </Tooltip>
           <Tooltip
             onClick={() => handleOpenDeleteModal(params.row.id, params.row.fullName)}
             title='Gỡ giảng viên khỏi học kì'
           >
             <IconButton color='error'>
               <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip
-            onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
-            title='Xem Chi tiết'
-          >
-            <IconButton color='primary'>
-              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
         </Box>
@@ -124,27 +114,27 @@ function TableManagamentLecturer(props: any) {
 
   return (
     <>
-      <Box>
-        <Table
-          rows={rows}
-          sx={{
-            bgcolor: 'white',
-            width: '100%',
-          }}
-          columns={basicColumns}
-          totalItems={totalItems}
-          totalPages={totalPage}
-          page={page}
-          handleChangePage={handleChangePage}
-          disableColumnMenu
-          disableColumnFilter
-          disableColumnSelector
-          minHeight={400}
-        />
-      </Box>
+      <Table
+        rows={rows}
+        isLimit={true}
+        sx={{
+          bgcolor: 'white',
+          width: '100%',
+          minHeight: 500,
+        }}
+        columns={basicColumns}
+        totalItems={totalItems}
+        totalPages={totalPage}
+        handleChangeLimit={handleChangeLimit}
+        handleChangePage={handleChangePage}
+        page={page}
+        limit={limit}
+        disableColumnFilter
+        minHeight={400}
+      />
 
       <DeleteModal
-        lecturerId={openDeleteModal.lecturerId}
+        lecturerTermId={openDeleteModal.lecturerTermId}
         open={openDeleteModal.isOpen}
         onClose={handleCloseDeleteModal}
         name={openDeleteModal.name}

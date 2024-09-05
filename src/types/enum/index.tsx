@@ -17,6 +17,14 @@ enum RoleCheck {
   ADMIN = 'ADMIN',
 }
 
+enum EnumUser {
+  LECTURER = 'LECTURER',
+  STUDENT = 'STUDENT',
+  GROUP_STUDENT = 'GROUP_STUDENT',
+  GROUP_LECTURER = 'GROUP_LECTURER',
+  ALL = 'ALL',
+}
+
 export enum QueryKeys {
   topic = 'topic',
   lecturer = 'lecturer',
@@ -27,4 +35,4 @@ export enum QueryKeys {
   evaluate = 'evaluate',
 }
 
-export { EnumRole, EnumGender, RoleCheck };
+export { EnumRole, EnumGender, EnumUser, RoleCheck };

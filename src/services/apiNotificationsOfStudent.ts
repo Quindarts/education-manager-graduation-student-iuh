@@ -13,7 +13,7 @@ export const getNotificationsOfStudent = (id: string) => {
 }
 
 //[POST] [ADMIN, HEAD_Student, HEAD_COURSE] Create notification Student
-export const createNotificationOfStudentId = (data: { title: string, content: string, studentId: string }) => {
+export const createNotificationOfStudentIds: any = (data: { title: string, content: string, studentIds: string[] }) => {
     return axiosConfig.post<ResponseType, any>(`${URL}`, data)
 }
 
@@ -28,3 +28,12 @@ export const upateReadNotificationStudent = (id: string) => {
 }
 
 
+//[GROUP_STUDENT]
+export const createNotificationOfGroupStudent = (data: { title: string, content: string, groupStudentIds: string[] }) => {
+    return axiosConfig.post<ResponseType, any>(`${URL}/group-student`, data)
+}
+
+//[GROUP_STUDENT INSTRUCTOR]
+export const createNotificationOfGroupSupport = (data: { title: string, content: string, termId: string }) => {
+    return axiosConfig.post<ResponseType, any>(`${URL}/group-student/my-instructor`, data)
+}

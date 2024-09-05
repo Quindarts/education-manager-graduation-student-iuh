@@ -2,15 +2,20 @@ import Modal from '@/components/ui/Modal';
 import { useNotification } from '@/hooks/api/useQueryNotification';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function DeleteNotificationModal(props: any) {
-  const { onClose, open, topicId } = props;
+  const { onClose, open, notifyId } = props;
   const { onDeleteNotificationById } = useNotification();
-  const { mutate: deleteNotify } = onDeleteNotificationById();
+  const { mutate: deleteNotify, isSuccess } = onDeleteNotificationById();
   const handleSubmit = () => {
-    deleteNotify(topicId);
+    deleteNotify(notifyId);
   };
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+    }
+  }, [isSuccess]);
   return (
     <Modal onClose={onClose} open={open}>
       <Box

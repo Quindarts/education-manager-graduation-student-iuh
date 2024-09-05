@@ -13,14 +13,24 @@ export enum TypeStatusGroup {
     PASS_SESSION_HOST = 'PASS_SESSION_HOST',
 }
 //[Admin role]
-export const searchGroupStudentAdmin: any = (termId: string, limit: number, page: number, searchField: 'name', keywords: string) => {
-    return axiosConfig.get(`/api/v1/groupStudents/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}`);
+export const searchGroupStudentAdmin: any = (termId: string, limit: number, page: number, searchField: 'name', sort: string, keywords: string) => {
+    let searchFieldSend = searchField ? searchField : "name";
+    let keywordSend = keywords ? keywords : ""
+    let sortSend = sort ? sort : "ASC"
+    return axiosConfig.get(`/api/v1/group-students/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&sort=${sortSend}`);
+}
+
+
+export const searchGroupStudentByName: any = (termId: string, name: string) => {
+    return axiosConfig.get(`/api/v1/group-students/search?termId=${termId}&name=${name}`);
 }
 
 export const getGroupByTopic: any = (termId: string, topicId: string) => {
     return axiosConfig.get(`/api/v1/group-students/topic?termId=${termId}&topicId=${topicId}`);
 }
-
+export const getExportGroupStudent: any = (termId: string) => {
+    return axiosConfig.get(`/api/v1/group-students/export?termId=${termId}`)
+}
 
 //[GET]
 export const getGroupStudentByTerm: any = (termId: string, limit: number, page: number) => {

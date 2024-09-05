@@ -12,7 +12,7 @@ import EditStatusMuiltiStudent from '../Modal/EditStatusMuiltiStudentModal';
 import { CustomToolbar } from './custom';
 
 function TableManagamentStudent(props: any) {
-  const { rows, totalItems, totalPage, page, handleChangePage } = props;
+  const { rows, totalItems, limit, handleChangeLimit, totalPage, page, handleChangePage } = props;
 
   const [openEditInfoModal, setOpenEditInfoModal] = useState({
     studentId: '',
@@ -92,12 +92,12 @@ function TableManagamentStudent(props: any) {
     {
       headerName: 'MSSV',
       field: 'username',
-      flex: 0.6,
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontWeight={600}>
+          <Typography variant='h6' fontWeight={500}>
             {params.row.username}
           </Typography>
         );
@@ -111,7 +111,7 @@ function TableManagamentStudent(props: any) {
       align: 'left',
       renderCell(params) {
         return (
-          <Typography variant='body1' color='initial'>
+          <Typography variant='h6' color='initial'>
             {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
           </Typography>
         );
@@ -125,7 +125,7 @@ function TableManagamentStudent(props: any) {
       align: 'left',
       renderCell(params) {
         return (
-          <Typography variant='body1' color='initial'>
+          <Typography variant='h6' color='initial'>
             {params.row.fullName.trim().split(' ').pop()}
           </Typography>
         );
@@ -135,12 +135,12 @@ function TableManagamentStudent(props: any) {
     {
       headerName: 'Email',
       field: 'email',
-      flex: 1.2,
+      flex: 1.5,
       align: 'left',
       headerAlign: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontSize='13px' color='grey.900'>
+          <Typography variant='h6' fontSize='14px' color='grey.900'>
             {params.row.email ? params.row.email : 'Chưa có thông tin'}
           </Typography>
         );
@@ -154,7 +154,7 @@ function TableManagamentStudent(props: any) {
 
       headerAlign: 'center',
       renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
+        return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
       },
     },
     {
@@ -166,39 +166,33 @@ function TableManagamentStudent(props: any) {
       headerAlign: 'center',
     },
     {
-      headerName: 'Trạng thái',
-      field: 'isActive',
-      flex: 0.7,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box>
-          <Button
-            variant='contained'
-            sx={{ py: 0, fontSize: 12 }}
-            onClick={() =>
-              handleOpenStatusStudentModal(params.row.id, params.row.fullName, params.row.isActive)
-            }
-            color={params.row.isActive ? 'success' : 'error'}
-          >
-            {' '}
-            <Icon
-              width={20}
-              icon={params.row.isActive ? 'bi:unlock' : 'material-symbols:lock-outline'}
-            />
-            {params.row.isActive ? 'Đang mở' : 'Bị khóa'}
-          </Button>
-        </Box>
-      ),
-    },
-    {
       headerName: 'Chức năng',
       field: 'name8',
-      flex: 0.6,
+      flex: 1,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
+        <Box display={'flex'} gap={3}>
+          <Tooltip 
+          onClick={() =>
+            handleOpenStatusStudentModal(
+              params.row.id,
+              params.row.fullName,
+              params.row.isActive,
+            )
+          }
+          title={params.row.isActive ? 'Tài khoản đang hoạt động' : 'Tài khoản đã bị khóa'}>
+          <IconButton size='small'
+              color={params.row.isActive ? 'success' : 'error'}
+            >
+              <Icon
+                width={20}
+                style={{color:'#034eb1'}}
+                icon={params.row.isActive ? 'bi:unlock' : 'material-symbols:lock-outline'}
+              />
+            </IconButton>
+          </Tooltip>
+
           <Tooltip
             onClick={() => handleOpenInfoModal(params.row.id, params.row.fullName)}
             title='Cập nhật thông tin'
@@ -256,16 +250,16 @@ function TableManagamentStudent(props: any) {
           sx={{
             bgcolor: 'white',
           }}
+          isLimit={true}
           columns={basicColumns}
           totalItems={totalItems}
           totalPages={totalPage}
-          page={page}
+          handleChangeLimit={handleChangeLimit}
           handleChangePage={handleChangePage}
-          disableColumnMenu
+          page={page}
+          limit={limit}
           disableColumnFilter
-          slots={{
-            toolbar: CustomToolbar,
-          }}
+          minHeight={400}
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
           }}

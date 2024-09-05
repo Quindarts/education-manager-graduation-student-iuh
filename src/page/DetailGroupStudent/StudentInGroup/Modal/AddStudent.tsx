@@ -52,7 +52,7 @@ function AddStudentModal(props: any) {
     <Modal open={open} onClose={onClose}>
       <Box py={10} px={10}>
         <TitleManager mb={8} variant='h5' textTransform={'uppercase'}>
-          Thêm Sinh viên vào nhóm
+          Thêm sinh viên vào nhóm
         </TitleManager>
         <Box height={'350px'}>
           {isLoading || isFetching ? (
@@ -71,7 +71,7 @@ function AddStudentModal(props: any) {
                     <CustomTextField
                       {...params}
                       placeholder='Nhập vào tên sinh viên'
-                      label='Danh sách sinh viên HD khoa CNTT'
+                      label='Danh sách sinh viên làm khóa luận (chưa có nhóm)'
                     />
                   </>
                 )}
@@ -84,7 +84,7 @@ function AddStudentModal(props: any) {
                   variant='body1'
                   fontWeight={'bold'}
                 >
-                  Thông tin sinh viên
+                  Sinh viên được chọn
                 </Typography>
                 {!currentStudent || currentStudent?.id === '' ? (
                   <>

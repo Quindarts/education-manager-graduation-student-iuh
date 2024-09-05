@@ -7,5 +7,9 @@ export const getGroupStudentNoAssign: any = async (type: string, termId: string)
     return axiosConfig.get(`/api/v1/assigns/type-evaluation/${type}/group-student/no-assign?termId=${termId}`);
 }
 
+export const getExportAssignGroup: any = async (termId: string) => {
+    return axiosConfig.get(`/api/v1/assigns/export?termId=${termId}`)
+}
+
 
 

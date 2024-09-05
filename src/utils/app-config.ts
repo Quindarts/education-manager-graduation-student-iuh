@@ -24,7 +24,7 @@ export const APP_ROUTES = {
   },
   LECTURER_TERM: {
     MANAGEMENT: "/lecturer-terms",
-    DETAILS: "/lecturer-terms/detail/:lecturer_id"
+    DETAILS: "/lecturer-terms/detail/:id"
   },
   NOTIFICATION: {
     MANAGEMENT: "/notifications",
@@ -125,28 +125,29 @@ export const APP_SIDEBAR = [
     icon: 'mage:book-fill',
     text: 'Học kì',
     roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
-    link: [APP_ROUTES.TERM.MANAGEMENT],
+    link: APP_ROUTES.TERM.MANAGEMENT,
     key: '/terms',
-    children: [
-      {
-        text: 'Danh sách học kì',
-        link: APP_ROUTES.TERM.MANAGEMENT,
-        key: APP_ROUTES.TERM.MANAGEMENT,
-      },
-    ],
+    // children: [
+    //   {
+    //     text: 'Danh sách học kì',
+    //     link: APP_ROUTES.TERM.MANAGEMENT,
+    //     key: APP_ROUTES.TERM.MANAGEMENT,
+    //   },
+    // ],
   },
+
   {
-    icon: 'fluent-mdl2:permissions',
-    text: 'Phân quyền',
-    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
-    link: [APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách người dùng',
-        link: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
-        key: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
-      },
-    ],
+    icon: 'material-symbols:topic',
+    text: 'Đề tài',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
+    link: APP_ROUTES.TOPIC.MANAGEMENT,
+    // children: [
+    //   {
+    //     text: 'Danh sách đề tài',
+    //     link: APP_ROUTES.TOPIC.MANAGEMENT,
+    //     key: APP_ROUTES.TOPIC.MANAGEMENT,
+    //   },
+    // ],
   },
   {
     icon: 'mdi:teach-poll',
@@ -155,16 +156,17 @@ export const APP_SIDEBAR = [
     link: [APP_ROUTES.LECTURER.MANAGEMENT],
     children: [
       {
+        text: 'Danh sách GV hướng dẫn',
+        link: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
+        key: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
+      },
+      {
         text: 'Danh sách GV chuyên ngành',
         link: APP_ROUTES.LECTURER.MANAGEMENT,
         key: APP_ROUTES.LECTURER.MANAGEMENT,
         roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
       },
-      {
-        text: 'Danh sách GV hướng dẫn',
-        link: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
-        key: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
-      },
+
     ],
   },
   {
@@ -178,117 +180,6 @@ export const APP_SIDEBAR = [
     text: 'Giảng viên Chuyên ngành',
     roles: [RoleCheck.ADMIN],
     link: APP_ROUTES.LECTURER.MANAGEMENT,
-  },
-  {
-    icon: 'mdi:account-student',
-    text: 'Sinh viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.HEAD_COURSE],
-    link: [APP_ROUTES.STUDENT.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách sinh viên',
-        link: APP_ROUTES.STUDENT.MANAGEMENT,
-        key: APP_ROUTES.STUDENT.MANAGEMENT,
-      },
-    ],
-  },
-  {
-    icon: 'material-symbols:topic',
-    text: 'Đề tài',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
-    link: [APP_ROUTES.TOPIC.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách đề tài',
-        link: APP_ROUTES.TOPIC.MANAGEMENT,
-        key: APP_ROUTES.TOPIC.MANAGEMENT,
-      },
-    ],
-  },
-  {
-    icon: 'material-symbols:topic',
-    text: 'Đề tài của tôi',
-    roles: [RoleCheck.LECTURER],
-    link: [APP_ROUTES.TOPIC.LECTURER],
-    children: [
-      {
-        text: 'Danh sách đề tài của tôi',
-        link: APP_ROUTES.TOPIC.LECTURER,
-        key: APP_ROUTES.TOPIC.LECTURER,
-      },
-    ],
-  },
-  {
-    icon: 'fluent-mdl2:review-solid',
-    text: 'Tiêu chí Đánh giá',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.HEAD_COURSE],
-    link: APP_ROUTES.REVIEW.MANAGEMENT,
-    key: '/review',
-    children: [
-      {
-        text: 'Danh sách',
-        link: APP_ROUTES.REVIEW.MANAGEMENT,
-        key: APP_ROUTES.REVIEW.MANAGEMENT,
-
-      },
-    ],
-  },
-  {
-    icon: 'icon-park-outline:message',
-    text: 'Thông báo',
-    roles: [RoleCheck.HEAD_LECTURER],
-    link: [APP_ROUTES.NOTIFICATION.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách Thông báo',
-        link: APP_ROUTES.NOTIFICATION.MANAGEMENT,
-        key: APP_ROUTES.NOTIFICATION.MANAGEMENT,
-      },
-    ],
-  },
-  {
-    icon: 'healthicons:i-exam-multiple-choice',
-    text: 'Chấm điểm',
-    roles: [RoleCheck.LECTURER],
-    link: [APP_ROUTES.SCORE_STUDENT.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách Chấm điểm',
-        link: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
-        key: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
-      },
-    ],
-  },
-  {
-    icon: 'material-symbols:group',
-    text: 'Nhóm sinh viên',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
-    link: [APP_ROUTES.GROUP_STUDENT.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách nhóm quản lý',
-        link: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
-        key: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
-      },
-    ],
-  },
-  {
-    icon: 'fa6-solid:hand-holding-hand',
-    text: 'Nhóm hướng dẫn',
-    roles: [RoleCheck.LECTURER],
-    link: [APP_ROUTES.GROUP_SUPPORT.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách nhóm sinh viên',
-        link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
-        key: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
-      },
-      // {
-      //   text: 'Chấm điểm hướng dẫn',
-      //   link: APP_ROUTES.GROUP_SUPPORT.SCORE,
-      //   key: APP_ROUTES.GROUP_SUPPORT.SCORE,
-      // },
-    ],
   },
   {
     icon: 'typcn:group',
@@ -314,17 +205,139 @@ export const APP_SIDEBAR = [
     ],
   },
   {
+    icon: 'mdi:account-student',
+    text: 'Sinh viên',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.HEAD_COURSE],
+    link: APP_ROUTES.STUDENT.MANAGEMENT
+    // children: [
+    //   {
+    //     text: 'Danh sách sinh viên',
+    //     link: APP_ROUTES.STUDENT.MANAGEMENT,
+    //     key: APP_ROUTES.STUDENT.MANAGEMENT,
+    //   },
+    // ],
+  },
+  {
+    icon: 'material-symbols:group',
+    text: 'Nhóm sinh viên',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
+    link: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
+    // children: [
+    //   {
+    //     text: 'Danh sách nhóm quản lý',
+    //     link: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
+    //     key: APP_ROUTES.GROUP_STUDENT.MANAGEMENT,
+    //   },
+    // ],
+  },
+
+  {
+    icon: 'material-symbols:topic',
+    text: 'Đề tài của tôi',
+    roles: [RoleCheck.LECTURER],
+    link: APP_ROUTES.TOPIC.LECTURER,
+    // children: [
+    //   {
+    //     text: 'Danh sách đề tài của tôi',
+    //     link: APP_ROUTES.TOPIC.LECTURER,
+    //     key: APP_ROUTES.TOPIC.LECTURER,
+    //   },
+    // ],
+  },
+  {
+    icon: 'fluent-mdl2:review-solid',
+    text: 'Tiêu chí Đánh giá',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.HEAD_COURSE],
+    link: APP_ROUTES.REVIEW.MANAGEMENT,
+    key: APP_ROUTES.REVIEW.MANAGEMENT,
+    // children: [
+    //   {
+    //     text: 'Danh sách',
+    //     link: APP_ROUTES.REVIEW.MANAGEMENT,
+    //     key: APP_ROUTES.REVIEW.MANAGEMENT,
+
+    //   },
+    // ],
+  },
+  {
+    icon: 'icon-park-outline:message',
+    text: 'Thông báo',
+    roles: [RoleCheck.HEAD_LECTURER],
+    link: [APP_ROUTES.NOTIFICATION.MANAGEMENT],
+    children: [
+      {
+        text: 'Danh sách Thông báo',
+        link: APP_ROUTES.NOTIFICATION.MANAGEMENT,
+        key: APP_ROUTES.NOTIFICATION.MANAGEMENT,
+      },
+      {
+        text: 'Tạo Thông báo',
+        link: APP_ROUTES.NOTIFICATION.CREATE,
+        key: APP_ROUTES.NOTIFICATION.CREATE,
+      },
+    ],
+  },
+  {
+    icon: 'healthicons:i-exam-multiple-choice',
+    text: 'Chấm điểm',
+    roles: [RoleCheck.LECTURER],
+    link: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
+  },
+
+  {
+    icon: 'fa6-solid:hand-holding-hand',
+    text: 'Nhóm hướng dẫn của tôi',
+    roles: [RoleCheck.LECTURER],
+    link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
+  },
+  // {
+  //   icon: 'typcn:group',
+  //   text: 'Nhóm giảng viên',
+  //   roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
+  //   link: [APP_ROUTES.GROUP_LECTURER.MANAGEMENT],
+  //   children: [
+  //     {
+  //       text: 'Danh sách nhóm',
+  //       link: APP_ROUTES.GROUP_LECTURER.MANAGEMENT,
+  //       key: APP_ROUTES.GROUP_LECTURER.MANAGEMENT,
+  //     },
+  //     {
+  //       text: 'Phân công chấm điểm',
+  //       link: APP_ROUTES.GROUP_LECTURER.REPORT,
+  //       key: APP_ROUTES.GROUP_LECTURER.REPORT,
+  //     },
+  //     {
+  //       text: 'Tạo nhóm chấm',
+  //       link: APP_ROUTES.GROUP_LECTURER.CREATE,
+  //       key: APP_ROUTES.GROUP_LECTURER.CREATE,
+  //     }
+  //   ],
+  // },
+  {
     icon: 'typcn:group',
     text: 'Nhóm chấm điểm',
     roles: [RoleCheck.LECTURER],
-    link: [APP_ROUTES.GROUP_LECTURER.ME],
-    children: [
-      {
-        text: 'Danh sách nhóm',
-        link: APP_ROUTES.GROUP_LECTURER.ME,
-        key: APP_ROUTES.GROUP_LECTURER.ME,
-      },
-    ],
+    link: APP_ROUTES.GROUP_LECTURER.ME,
+    // children: [
+    //   {
+    //     text: 'Danh sách nhóm',
+    //     link: APP_ROUTES.GROUP_LECTURER.ME,
+    //     key: APP_ROUTES.GROUP_LECTURER.ME,
+    //   },
+    // ],
+  },
+  {
+    icon: 'fluent-mdl2:permissions',
+    text: 'Phân quyền',
+    roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
+    link: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
+    // children: [
+    //   {
+    //     text: 'Danh sách người dùng',
+    //     link: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
+    //     key: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
+    //   },
+    // ],
   },
 ];
 

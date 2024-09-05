@@ -7,11 +7,11 @@ import { useTopic } from '@/hooks/api/useQueryTopic';
 import HeaderTopic from '../Topic/Header';
 
 function MyTopic() {
-  const { handleTopicsByLecturerByTerm } = useTopic();
-  const { data, isLoading, isFetching } = handleTopicsByLecturerByTerm();
+  const { handleTopicsByMe } = useTopic();
+  const { data, isLoading, isFetching } = handleTopicsByMe();
   return (
     <Box>
-      <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <Paper sx={{ py: 10, px: 10 }} elevation={0}>
         <TitleManager icon='quill:list' mb={8} mt={2}>
           Danh sách đề tài
         </TitleManager>

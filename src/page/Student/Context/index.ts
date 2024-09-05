@@ -15,5 +15,7 @@ export const validateSchemaStudent = Yup.object().shape({
     // .required('Số điện thoại không được để trống'),
     email: Yup.string().email('Email phải hợp lệ')
         .required('Email không được để trống'),
+    dateOfBirth: Yup.date().required(),
+
 });
 

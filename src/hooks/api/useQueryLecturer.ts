@@ -18,7 +18,8 @@ export enum QueryKeysLecturer {
     createLecturer = 'createLecturer',
     getLecturerById = "getLecturerById",
     searchLecturerByField = 'searchLecturerByField',
-    getCountOfMajorLecturer = "getCountOfMajorLecturer"
+    getCountOfMajorLecturer = "getCountOfMajorLecturer",
+    getLecturerToExport = "getLecturerToExport"
 
 }
 
@@ -33,7 +34,7 @@ export const useLecturer = () => {
     const dispatch = useDispatch()
 
     //[PARAMS URL] 
-    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
+    const { getQueryField, setTotalPage, setLimit, setPage, setDefaultTypeSearch } = useParams()
 
     //[OTHER]
     const { enqueueSnackbar } = useSnackbar()
@@ -58,6 +59,7 @@ export const useLecturer = () => {
                 getQueryField('limit'),
                 getQueryField('page'),
                 getQueryField('searchField'),
+                getQueryField('sort'),
                 getQueryField('keywords')
             ],
             () => LecturerServices.getAllLecturer(
@@ -65,6 +67,7 @@ export const useLecturer = () => {
                 getQueryField('limit'),
                 getQueryField('page'),
                 getQueryField('searchField'),
+                getQueryField('sort'),
                 getQueryField('keywords')
             ),
             {
@@ -75,10 +78,16 @@ export const useLecturer = () => {
                 },
                 staleTime: 1000 * (60 * 10), // 10 min,
                 refetchInterval: 1000 * (60 * 20), //20 min
+                cacheTime: 1000,
                 keepPreviousData: true,
             })
     }
-
+    //[GET TO EXPORT]
+    const handleGetLecturerToExport = () => {
+        return useQuery([QueryKeysLecturer.getLecturerToExport, majorId], () => LecturerServices.getLecturerToExport(majorId), {
+            enabled: !!majorId
+        })
+    }
     //[GET BY ID]
     const handleGetLecturerById = (id: string) => {
         return useQuery([QueryKeysLecturer.getLecturerById, id], () => LecturerServices.getLecturerById(id), {
@@ -92,22 +101,23 @@ export const useLecturer = () => {
         return useMutation((lecturer: Partial<Lecturer>) => LecturerServices.createLecturer(lecturer),
             {
                 onSuccess() {
-                    enqueueSnackbar("Tạo giang vien thành công", { variant: 'success' })
+                    enqueueSnackbar("Thêm giang vien thành công", { variant: 'success' })
                     queryClient.invalidateQueries(
                         [QueryKeysLecturer.getAllLecturer, majorId,
                         getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')]
                     );
                     queryClient.invalidateQueries(
-                        [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
-                            "10", "1", "", ""]
+                        [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId]
                     );
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
+
                 },
                 onError(err: Pick<ResponseType, 'status' | 'message'>) {
                     if (err.status < 500) {
                         enqueueSnackbar(err.message, { variant: 'error' })
                     }
                     else
-                        enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
+                        enqueueSnackbar("Thêm giảng vien thất bại", { variant: 'error' })
                 },
             },
         );
@@ -146,14 +156,16 @@ export const useLecturer = () => {
                     );
                     queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getLecturerById, id] });
                     queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, 'reviewer'] })
-                    queryClient.invalidateQueries([QueryKeysLecturerTerm.getAllLectuerTermByParams, termId, "10", "1", "", ""]);
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.getAllLectuerTermByParams, termId, "10", "1", "", "", ""]);
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
+
                 },
                 onError(err: Pick<ResponseType, 'status' | 'message'>) {
                     if (err.status < 500) {
                         enqueueSnackbar(err.message, { variant: 'error' })
                     }
                     else
-                        enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
+                        enqueueSnackbar("Thêm giảng vien thất bại", { variant: 'error' })
                 },
             })
     }
@@ -168,16 +180,23 @@ export const useLecturer = () => {
                     getQueryField('limit'), 1, getQueryField('searchField'), getQueryField('keywords')]
                 );
                 queryClient.invalidateQueries(
-                    [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
-                        "10", "1", "", ""]
+                    [QueryKeysLecturer.getAllLecturer, majorId,
+                    getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')]
                 );
+                queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
+
+
             },
-            onError() {
-                enqueueSnackbar("Xóa giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
-            }
+            onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+            },
         })
     }
-    
+
     return {
         me,
         currentRoleRender,
@@ -186,10 +205,11 @@ export const useLecturer = () => {
         handleGetLecturerById,
         handleGetAllLecturer,
         handleGetCountOfMajorLecturer,
+        handleGetLecturerToExport,
         onCreateLecturer,
         onResetPassword,
         onDeleteLecturer,
-        onUpdateLecturer
+        onUpdateLecturer,
     }
 }
 

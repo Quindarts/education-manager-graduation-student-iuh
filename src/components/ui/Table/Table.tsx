@@ -1,6 +1,13 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { DataGrid, DataGridProps } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  DataGridProps,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  viVN,
+} from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -59,8 +66,19 @@ export default function Table(props: Props) {
             },
           },
         }}
+        localeText={{
+          ...viVN.components.MuiDataGrid.defaultProps.localeText,
+          toolbarColumns: 'Điều chỉnh Cột hiển thị',
+          toolbarDensity: 'Thay đổi độ cao của dòng',
+        }}
         slots={{
           ...slots,
+          toolbar: () => (
+            <GridToolbarContainer>
+              <GridToolbarColumnsButton />
+              <GridToolbarDensitySelector />
+            </GridToolbarContainer>
+          ),
           noRowsOverlay: () => (
             <Box
               mx={'auto'}
@@ -81,7 +99,7 @@ export default function Table(props: Props) {
                   alt='nodata'
                 />
               </Box>
-              <Typography variant='h3' sx={{ mt: 2 }}>
+              <Typography variant='h6' sx={{ mt: 2 }}>
                 Không có dữ liệu ( Data not found)
               </Typography>
               <Box>{noData}</Box>
@@ -95,10 +113,23 @@ export default function Table(props: Props) {
             md: 12,
             xl: 14,
           },
-          color: 'grey.700',
+          color: 'black',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
             outline: 'none !important',
           },
+          '& .MuiDataGrid-toolbarContainer': {
+            bgcolor: '#f2f1f1',
+
+            '& .MuiButton-text': {
+              color: 'grey.600',
+              fontSize: 13,
+              '&:hover': {
+                bgcolor: '#d2d2d2',
+                color: 'grey.700',
+              },
+            },
+          },
+
           '& .MuiDataGrid-virtualScrollerContent': {
             minHeight,
             width: '100%',
@@ -107,8 +138,10 @@ export default function Table(props: Props) {
             borderColor: 'text.disabled',
             bgcolor: 'primary.dark',
             color: 'white',
+            height: '50px!important',
+            minHeight: '50px!important',
+            fontSize: 14,
           },
-
           '& .MuiDataGrid-virtualScroller': {
             minHeight,
             overflowX: 'auto',

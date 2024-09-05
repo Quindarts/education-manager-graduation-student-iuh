@@ -17,20 +17,19 @@ export const useNotificationLecturer = () => {
 
     const { enqueueSnackbar } = useSnackbar()
     //[GET]
-    const handleGetMyNotification = () => {
-        return useQuery([QueryKeysNotificationLecturer.getMyNotification], () => NotificationLecturerServices.getMyNotification, {
-            staleTime: 20 * 60 * 1000,
+    const handleGetMyNotification = (limit: string) => {
+        return useQuery([QueryKeysNotificationLecturer.getMyNotification, limit], () => NotificationLecturerServices.getMyNotification(limit), {
         })
     }
     //[GET]
-    const handleGetNotificationOfLecturer = () => {
-        return useQuery([QueryKeysNotificationLecturer.getNotificationsOfLecturer], () => NotificationLecturerServices.getNotificationsOfLecturer)
+    const handleGetNotificationOfLecturer = (id: string) => {
+        return useQuery([QueryKeysNotificationLecturer.getNotificationsOfLecturer, id], () => NotificationLecturerServices.getNotificationsOfLecturer(id))
     }
     //[POST]
-    const onCreateNotificationOfLecturerId = () => {
-        return useMutation((data: { title: string, content: string, lecturerId: string }) => NotificationLecturerServices.createNotificationOfLecturerId(data), {
+    const onCreateNotificationOfLecturerIds = () => {
+        return useMutation((data: { title: string, content: string, lecturerIds: string[] }) => NotificationLecturerServices.createNotificationOfLecturerIds(data), {
             onSuccess(data: any) {
-                enqueueSnackbar('', { variant: 'success' })
+                enqueueSnackbar('Gửi thông báo thành công', { variant: 'success' })
                 queryClient.invalidateQueries({
                     queryKey:
                         [QueryKeysNotification.getNotificationsOfFilter,
@@ -66,6 +65,8 @@ export const useNotificationLecturer = () => {
                                 ""
                             ]
                     });
+                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
+
                 },
                 onError(error: any) {
                     if (error.status > 500) {
@@ -77,12 +78,46 @@ export const useNotificationLecturer = () => {
                 }
             })
     }
+    //[POST]
+    const onCreateNotificationOfGroupLecturer = () => {
+        return useMutation((data: { title: string, content: string, groupLecturerIds: string[] }) => NotificationLecturerServices.createNotificationOfGroupLecturer(data), {
+            onSuccess(data: any) {
+                enqueueSnackbar('Gửi thông báo thành công', { variant: 'success' })
+                queryClient.invalidateQueries({
+                    queryKey:
+                        [QueryKeysNotification.getNotificationsOfFilter,
+                            "10",
+                            "1",
+                            "",
+                            ""
+                        ]
+                });
+            },
+            onError(error: any) {
+                if (error.status > 500) {
+                    enqueueSnackbar('Hệ thống không xử lý được yêu cầu của bạn, thử lại sau.', { variant: 'warning' })
+                }
+                else {
+                    enqueueSnackbar(error.message, { variant: 'error' })
+                }
+            }
+        })
+    }
+
     //[PUT]
-    const onUpdateReadStatus = () => {
-        return useMutation((id: string) => NotificationLecturerServices.upateReadStatusNotification(id),
+    const onUpdateReadStatus = (id: string) => {
+        return useMutation(() => NotificationLecturerServices.upateReadStatusNotification(id),
             {
                 onSuccess(data: any) {
-                    enqueueSnackbar('', { variant: 'success' })
+                    enqueueSnackbar('Cập nhật thành công', { variant: 'success' })
+                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getNotificationsOfLecturer, id])
+                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
+                },
+                onError(err: any) {
+                    if (err.status < 500)
+                        enqueueSnackbar(err.message, { variant: 'error' })
+                    else
+                        enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
                 }
             })
     }
@@ -90,7 +125,8 @@ export const useNotificationLecturer = () => {
         handleGetMyNotification,
         handleGetNotificationOfLecturer,
         onCreateAllNotificationLecturerTerms,
-        onCreateNotificationOfLecturerId,
+        onCreateNotificationOfLecturerIds,
+        onCreateNotificationOfGroupLecturer,
         onUpdateReadStatus
     }
 }

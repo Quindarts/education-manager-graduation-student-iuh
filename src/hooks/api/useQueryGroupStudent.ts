@@ -1,7 +1,5 @@
 import { getStudentsNoHaveGroup } from './../../services/apiStudent';
 import { queryClient } from "@/providers/ReactQueryClientProvider"
-import { assignTopic, createGroupStudent, deleteGroupStudent, getCountOfGroupStudent, getGroupStudentById, getGroupStudentByLecturerByTerm, getGroupStudentByTerm, importGroupStudent, removeAssign, searchGroupStudentAdmin } from "@/services/apiGroupStudent"
-import { setParams, setTypeRender } from "@/store/slice/groupStudent.slice"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useSelector } from "react-redux"
@@ -11,6 +9,9 @@ import { useAuth } from './useAuth';
 import { RoleCheck } from '@/types/enum';
 import { QueryTopic } from './useQueryTopic';
 import useParams from '../ui/useParams';
+import { setParamTotalPage } from '@/store/slice/groupStudent.slice';
+import { ResponseType } from '@/types/axios.type';
+import * as GroupStudentServices from "@/services/apiGroupStudent"
 
 export const enum QueryKeysGroupStudent {
     getGroupStudentByTerm = 'getGroupStudentByTerm',
@@ -21,18 +22,24 @@ export const enum QueryKeysGroupStudent {
     getMemberInGroupStudent = "getMemberInGroupStudent",
     getStudentsNohaveGroup = "getStudentsNoHaveGroup",
     getCountOfGroupStudent = "getCountOfGroupStudent",
-    getGroupStudentByLecturerTermId = "getGroupStudentByLecturerTermId"
+    getGroupStudentByLecturerTermId = "getGroupStudentByLecturerTermId",
+    searchGroupStudentByName = 'searchGroupStudentByName',
+    getExportGroupStudent = "getExportGroupStudent"
 }
 const useGroupStudent = () => {
-    const { enqueueSnackbar } = useSnackbar()
+    //[REDUX]
     const groupStudentStore = useSelector((state: any) => state.groupStudentSlice)
-    const { params, renderUi } = groupStudentStore
+    const { paramTotalPage } = groupStudentStore
     const { termStore } = useTerm()
     const termId = termStore.currentTerm.id
     const dispatch = useDispatch()
     const { lecturerStore } = useAuth()
-    const { getQueryField } = useParams()
 
+    //[PARAMS URL] 
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
+
+
+    const { enqueueSnackbar } = useSnackbar()
 
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
@@ -49,47 +56,62 @@ const useGroupStudent = () => {
         }
         return permissions
     }
+    const hanldeSearchGroupStudents = (name: string) => {
+        return useQuery([QueryKeysGroupStudent.searchGroupStudentByName, termId, name], () => GroupStudentServices.searchGroupStudentByName(termId, name))
+    }
 
-    const handleManagerRenderActionGroupStudent = (limit: number, page: number, searchField: string,
-        keywords: string | number) => {
-        return useQuery([QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, limit, page, renderUi, keywords], () => {
-            if (searchField !== 'all' && keywords != '')
-                return searchGroupStudentAdmin(termStore.currentTerm.id, limit, page, searchField, keywords)
-            else
-                return getGroupStudentByTerm(termStore.currentTerm.id, limit, page)
-        }, {
-            onSuccess(data: any) {
-                dispatch(setParams(data.params))
-                dispatch(setTypeRender(searchField))
+    const handleManagerRenderActionGroupStudent = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
+        return useQuery(
+            [
+                QueryKeysGroupStudent.managerActionGroupStudent,
+                termId,
+                getQueryField('limit'),
+                getQueryField('page'),
+                getQueryField('searchField'),
+                getQueryField('sort'),
+                getQueryField('keywords'),
+            ], () => GroupStudentServices.searchGroupStudentAdmin(
+                termId,
+                getQueryField('limit'),
+                getQueryField('page'),
+                getQueryField('searchField'),
+                getQueryField('sort'),
+                getQueryField('keywords')), {
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params' | 'groupStudents'>) {
+                const total = data.params ? data.params.totalPage : 0
+                setTotalPage(total)
+                dispatch(setParamTotalPage(total))
             },
-            staleTime: 10000,
+            staleTime: 1000 * (60 * 3), // 10 min,
+            refetchOnMount: true,
+            cacheTime: 1000,
+            refetchInterval: 1000 * (60 * 20),
+            keepPreviousData: true,
         })
     }
     //[GET BY TERM]
     const handleGetGroupStudentByTerm = (termId?: string, limit?: number, page?: number, majorId?: string, topicId?: string) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentByTerm, termStore.currentTerm.id, 10, 1], () => getGroupStudentByTerm(termStore.currentTerm.id, 10, 1))
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByTerm, termId, 10, 1], () => GroupStudentServices.getGroupStudentByTerm(termId, 10, 1))
     }
     //[GET BY TERM]
     const handleGetGroupStudentByLecturerByTerm = (lecturerId: string) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerSupport, termStore.currentTerm.id, lecturerId], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id, lecturerId), {
+        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerSupport, termId, lecturerId], () => GroupStudentServices.getGroupStudentByLecturerByTerm(termId, lecturerId), {
             staleTime: 10000
         })
     }
-    const handleGetGroupStudentByLecturerTermId = (lecturerTermId?: string) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentByLecturerTermId, lecturerTermId], () => getGroupStudentByLecturerByTerm(termStore.currentTerm.id), {
-            staleTime: 5000
-        })
-    }
+
     const onUnAssignTopicGroupStudent = (topicId: string) => {
-        return useMutation((id: string) => removeAssign(id, topicId), {
+        return useMutation((id: string) => GroupStudentServices.removeAssign(id, topicId), {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Gỡ gán nhóm sinh viên cho đề tài thành công', { variant: 'success' })
-                    queryClient.invalidateQueries([QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')])
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
-                    queryClient.invalidateQueries([QueryTopic.getGroupByTopic, termStore.currentTerm.id, topicId])
+                    queryClient.invalidateQueries([QueryTopic.getSearchTopic, termId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
+                    queryClient.invalidateQueries([QueryTopic.getGroupByTopic, termId, topicId])
                 }
             },
             onError(err: any) {
@@ -101,15 +123,15 @@ const useGroupStudent = () => {
         })
     }
     const onAssignTopicGroupStudent = (topicId: string) => {
-        return useMutation((id: string) => assignTopic(id, topicId), {
+        return useMutation((id: string) => GroupStudentServices.assignTopic(id, topicId), {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Phân nhóm sinh viên cho đề tài thành công', { variant: 'success' })
-                    queryClient.invalidateQueries([QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')])
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
-                    queryClient.invalidateQueries([QueryTopic.getGroupByTopic, termStore.currentTerm.id, topicId])
+                    queryClient.invalidateQueries([QueryTopic.getSearchTopic, termId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
+                    queryClient.invalidateQueries([QueryTopic.getGroupByTopic, termId, topicId])
                 }
             },
             onError(err: any) {
@@ -120,74 +142,88 @@ const useGroupStudent = () => {
             }
         })
     }
+    const handleGetExportGroupStudent = () => {
+        return useQuery([QueryKeysGroupStudent.getExportGroupStudent, termId], () => GroupStudentServices.getExportGroupStudent(termId))
+    }
     const handleGetCountOfGroupStudent = () => {
-        return useQuery([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id], () => getCountOfGroupStudent(termStore.currentTerm.id))
+        return useQuery([QueryKeysGroupStudent.getCountOfGroupStudent, termId], () => GroupStudentServices.getCountOfGroupStudent(termId))
     }
     //[GET BY ID]
     const handleGetGroupStudentById = (id: string) => {
-        return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => getGroupStudentById(id), {
+        return useQuery([QueryKeysGroupStudent.getGroupStudentById, id], () => GroupStudentServices.getGroupStudentById(id), {
             staleTime: 1000,
             enabled: !!id
         })
     }
     const handleGetStudentNoHaveGroup = () => {
-        return useQuery([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id], () => getStudentsNoHaveGroup(termStore.currentTerm.id))
+        return useQuery([QueryKeysGroupStudent.getStudentsNohaveGroup, termId], () => getStudentsNoHaveGroup(termId))
     }
     const onCreateGroupStudent = () => {
-        return useMutation((studentIds: string[]) => createGroupStudent({ termId: termStore.currentTerm.id, studentIds }), {
+        return useMutation((studentIds: string[]) => GroupStudentServices.createGroupStudent({ termId: termId, studentIds }), {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Tạo nhóm sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
                 }
-            }, onError() {
-                enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'error' })
-            }
+            },
+            onError(err: any) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+            },
         })
     }
     const onImportGroupStudent = () => {
-        return useMutation(() => importGroupStudent(termId), {
+        return useMutation(() => GroupStudentServices.importGroupStudent(termId), {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Import danh sách nhóm sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
                 }
-            }, onError() {
-                enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'error' })
-            }
+            }, onError(err: any) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+            },
         })
     }
-
     const onDeleteGroupStudent = () => {
-        return useMutation((id) => deleteGroupStudent(id), {
+        return useMutation((id) => GroupStudentServices.deleteGroupStudent(id), {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Xóa nhóm sinh vien thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, params.limit, params.page, 'all', ''] })
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
-                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
+                    queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
                 }
-            }, onError(err: any) {
+            },
+            onError(err: any) {
                 if (err.status < 500)
                     enqueueSnackbar(err.message, { variant: 'error' })
                 else
                     enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
-
             }
         })
     }
+
     return {
-        params,
-        renderUi,
+        paramTotalPage,
         handleUiRender,
         handleManagerRenderActionGroupStudent,
+        hanldeSearchGroupStudents,
         handleGetCountOfGroupStudent,
         handleGetStudentNoHaveGroup,
         handleGetGroupStudentByTerm,
         handleGetGroupStudentById,
         handleGetGroupStudentByLecturerByTerm,
+        handleGetExportGroupStudent,
         onDeleteGroupStudent,
         onCreateGroupStudent,
         onImportGroupStudent,

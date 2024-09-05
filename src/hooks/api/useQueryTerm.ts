@@ -32,6 +32,12 @@ export function useTerm() {
         return useQuery([TermQueryKey.allTerm], () => getAllTerm(), {
             onSuccess: (data) => {
                 dispatch(setAllTerm(data.terms));
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         });
     };
@@ -45,6 +51,7 @@ export function useTerm() {
                 dispatch(setAllTerm([]));
                 dispatch(setAllTerm(data.terms));
             },
+
         });
     };
 
@@ -79,6 +86,12 @@ export function useTerm() {
             onSuccess() {
                 enqueueSnackbar("Tạo học kì mới thành công", { variant: 'success' });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorStore.currentMajor.id] });
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         });
     };
@@ -88,15 +101,14 @@ export function useTerm() {
         return useMutation((data: Pick<Term, 'startDate' | 'endDate'>) => updateTermWithType(termId, type, data), {
             onSuccess() {
                 enqueueSnackbar("Cập nhật trạng thái học kì thành công", { variant: 'success' });
-                // const isAdminRole = lecturerStore.currentRoleRender === RoleCheck.ADMIN;
-                // if (!isAdminRole) {
-                //     queryClient.invalidateQueries({ queryKey: [TermQueryKey.currentTerm, lecturerStore.me.user.majorId] });
-                // }
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor,] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, type, termId] });
             },
-            onError() {
-                enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         });
     };
@@ -109,9 +121,11 @@ export function useTerm() {
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorStore.currentMajor.id] });
                 queryClient.invalidateQueries({ queryKey: [TermQueryKey.getTermDetailById, termId] });
             },
-            onError() {
-                enqueueSnackbar("Cập nhật trạng thái học kì thất bại", { variant: 'error' });
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         });
     };

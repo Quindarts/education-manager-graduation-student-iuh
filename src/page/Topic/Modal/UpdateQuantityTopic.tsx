@@ -33,7 +33,7 @@ function UpdateQuantityTopicModal(props: any) {
         py={12}
       >
         <TitleManager textTransform={'uppercase'} variant='h3'>
-          Cập nhật số lượng đề tài tối đa
+    Cập nhật số lượng của toàn bộ đề tài
         </TitleManager>
         <Box width={'100%'}>
           <CustomTextField

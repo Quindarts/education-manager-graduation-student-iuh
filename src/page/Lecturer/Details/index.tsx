@@ -18,13 +18,13 @@ function DetailsLecturerPage() {
     refetch();
   }, []);
   return (
-    <Paper sx={{ px: 10, py: 10, minHeight: '60vh' }} elevation={2}>
+    <Paper sx={{ px: 10, py: 10, minHeight: '60vh' }} elevation={0}>
       {isLoading ? (
         <SekeletonUI />
       ) : (
         <>
           <TitleManager textTransform={'uppercase'}>Thông tin giảng viên</TitleManager>
-          <Box mt={20} display={'flex'} gap={8}>
+          <Box mt={10} display={'flex'} gap={8}>
             <Box>
               <Avatar sx={{ width: 80, height: 80 }} />
             </Box>
@@ -60,7 +60,7 @@ function DetailsLecturerPage() {
               </Box>
             </Box>
           </Box>
-          <Box my={10}>
+          <Box my={4}>
             <TabPanelUI />
           </Box>
         </>

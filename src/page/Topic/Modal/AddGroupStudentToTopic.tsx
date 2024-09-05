@@ -40,7 +40,7 @@ function AddGroupStudentToTopicModal(props: any) {
   const [keywords, setKeywords] = useState('');
   const keysend = useDebounce(keywords, 500);
   const [students, setStudents] = useState([]);
-  const { handleGetStudentsAssignTopic } = useStudent();
+  const { handleGetSearchStudentBasic } = useStudent();
   const { onAssignTopicGroupStudent, onUnAssignTopicGroupStudent } = useGroupStudent();
   const { hanldeGetGroupsByTopic } = useTopic();
 
@@ -54,7 +54,7 @@ function AddGroupStudentToTopicModal(props: any) {
     data: fetchStudents,
     isLoading: loadingStudents,
     isFetching: fetchingStudents,
-  } = handleGetStudentsAssignTopic(keysend, searchField);
+  } = handleGetSearchStudentBasic(keysend, searchField);
 
   //[CHANGE]
   const { mutate: assign, isSuccess: successAssign } = onAssignTopicGroupStudent(topic.id);

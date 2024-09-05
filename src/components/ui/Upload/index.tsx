@@ -15,7 +15,7 @@ import {
 import { Icon } from '@iconify/react';
 import TitleManager from '../Title';
 import styled from '@emotion/styled';
-import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useExcel';
+import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useAuth } from '@/hooks/api/useAuth';

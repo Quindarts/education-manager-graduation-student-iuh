@@ -11,7 +11,7 @@ const components: Components = {
       }),
 
       sizeSmall: ({ theme }: any) => ({
-        fontSize: theme.typography.h6,
+        fontSize: theme.typography.h5,
         height: 35,
       }),
       sizeMedium: ({ theme }: any) => ({

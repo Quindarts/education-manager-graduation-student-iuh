@@ -24,9 +24,9 @@ function GroupSupportManagement() {
 
   return (
     <>
-      <Paper sx={{ py: 20, px: 10 }} elevation={1}>
+      <Paper sx={{ py: 10, px: 10 }} elevation={0}>
         <Box display={'flex'} justifyContent={'space-between'}>
-          <TitleManager mb={14} mt={2}>
+          <TitleManager mb={4} mt={2}>
             Danh sách nhóm sinh viên hướng dẫn
           </TitleManager>
         </Box>

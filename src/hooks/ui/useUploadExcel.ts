@@ -160,7 +160,7 @@ const useUploadExcel = (props: UploadHandler) => {
             });
             queryClient.invalidateQueries(
               [QueryKeysLecturer.getAllLecturer, majorId,
-                "10", "1", 'username', '']
+                "10", "1", '', '','']
             );
             handleCloseUpload()
           }
@@ -175,7 +175,8 @@ const useUploadExcel = (props: UploadHandler) => {
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, "10", "1", '', ''] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, "10", "1", '', '',''] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getCountOfStudent] })
             handleCloseUpload()
 
           }
@@ -183,8 +184,9 @@ const useUploadExcel = (props: UploadHandler) => {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", ''] });
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", '', '',''] });
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, me.id, termId] })
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
             handleCloseUpload()
           }
         }

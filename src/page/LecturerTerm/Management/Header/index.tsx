@@ -1,28 +1,21 @@
 import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
-import { Box, Button, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, TextField, Tooltip } from '@mui/material';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import AddLecturerModal from '../Modal/AddModal';
 import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import useSearch from '@/hooks/ui/useParams';
+import SplitButton from '@/components/ui/SplitButton';
 
-const DROP_SEARCH_VALUE = [
+const SEARCH_DROP_VALUE = [
   {
     _id: ENUM_RENDER_LECTURER.SEARCH_FULLNAME,
-    name: 'Tên giảng viên',
+    name: 'Họ tên giảng viên',
   },
   {
     _id: ENUM_RENDER_LECTURER.SEARCH_USERNAME,
     name: 'Mã giảng viên',
-  },
-  {
-    _id: ENUM_RENDER_LECTURER.SEARCH_PHONE,
-    name: 'Số điện thoại',
-  },
-  {
-    _id: ENUM_RENDER_LECTURER.SEARCH_EMAIL,
-    name: 'Email',
   },
 ];
 
@@ -37,24 +30,43 @@ function HeaderLecturerTerm() {
   };
   const { onImportLecturerTerm } = useLecturerTerm();
   const { mutate: importLecturer } = onImportLecturerTerm();
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused } = useSearch();
-
   const handleImport = () => {
     importLecturer();
   };
+
+  const {
+    onSearchChange,
+    getQueryField,
+    onTypeSearchChange,
+    setDefaultTypeSearch,
+    handleFocused,
+    setTypeSort,
+  } = useSearch();
+  const [sort, setSort] = useState('ASC');
+  const optionSort = ['Tăng dần', 'Giảm dần'];
+  const handleClick = (index: number) => {
+    if (index === 0) setSort('ASC');
+    else if (index === 1) setSort('DESC');
+  };
+  useEffect(() => {
+    setTypeSort(sort);
+  }, [sort]);
+
   return (
     <>
       <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
-        <Box flex={1} display={'flex'} gap={4} width={'full'}>
-          <Box width={200}>
+        <Box flex={1} display={'flex'} gap={2} width={''}>
+          <Box display={'flex'} gap={2}>
             <DropDown
-              defaultValue={
-                getQueryField('searchField') ? getQueryField('searchField') : 'username'
-              }
+              value={getQueryField('searchField') ? getQueryField('searchField') : 'full_name'}
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
-              options={DROP_SEARCH_VALUE}
+              options={SEARCH_DROP_VALUE}
             />
+            <Box width={119}>
+              <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
+            </Box>
           </Box>
+
           <TextField
             fullWidth
             size='small'
@@ -64,20 +76,22 @@ function HeaderLecturerTerm() {
             placeholder='Tim kiếm giảng viên HD theo..'
           />
         </Box>
-        <Button color='primary' variant='contained' onClick={handleImport}>
-          <Icon icon='fe:import' />
-          Tải lên dữ liệu GV chuyên ngành
-        </Button>
-        <Button
-          size='small'
-          color='error'
-          type='button'
-          onClick={handleOpenModal}
-          variant='contained'
-        >
-          <Icon icon='lets-icons:add-round' width={20} />
-          Thêm giảng viên HD
-        </Button>
+        <Tooltip title={'Thêm tất cả GV chuyên ngành tham gia HD'}>
+          <Button size='small' color='primary' variant='contained' onClick={handleImport}>
+            <Icon width={16} icon='fe:import' />
+          </Button>
+        </Tooltip>
+        <Tooltip title={'Thêm giảng viên HD'}>
+          <Button
+            size='small'
+            color='error'
+            type='button'
+            onClick={handleOpenModal}
+            variant='contained'
+          >
+            <Icon icon='lets-icons:add-round' width={20} />
+          </Button>
+        </Tooltip>
       </Box>
       <AddLecturerModal open={openAddModal} onClose={handleCloseAddModal} />
     </>

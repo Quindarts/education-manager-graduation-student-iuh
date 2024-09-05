@@ -12,6 +12,7 @@ import {
   ENUM_GROUP_LECTURER_REPORT,
   ENUM_STATUS_LECTURER,
 } from '@/utils/validations/groupLecturer.validation';
+import TitleManager from '@/components/ui/Title';
 
 const convertLecturerGroup = (data: any[]) => {
   if (!data) {
@@ -33,7 +34,7 @@ function CreateReportGroupPage() {
   const { onCreateGroupLecturer } = useGroupLecturer();
   const { handleGetListLecturerTerms } = useLecturerTerm();
   const { termStore } = useTerm();
-
+  const [isDrag, setIsDrag] = useState(false);
   const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms();
 
   const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer(`${currentGroup}`);
@@ -51,6 +52,7 @@ function CreateReportGroupPage() {
   }, [successCreate, isFetched]);
 
   const handleOnDrageStart = (evt: any) => {
+    setIsDrag(true);
     let element = evt.currentTarget;
     element.classList.add('dragged');
     evt.dataTransfer.setData('text/plain', evt.currentTarget.id);
@@ -79,6 +81,7 @@ function CreateReportGroupPage() {
     evt.dataTransfer.dropEffect = 'move';
   };
   const handleOnDrop = (evt: any, value: any, status: any) => {
+    setIsDrag(false);
     evt.preventDefault();
     evt.currentTarget.classList.remove('dragged-over');
     let data = evt.dataTransfer.getData('text/plain');
@@ -99,7 +102,7 @@ function CreateReportGroupPage() {
   );
 
   return (
-    <Box display={'flex'} py={10} px={0} gap={20} justifyContent={'space-between'}>
+    <Box display={'flex'} py={10} px={0} gap={10} justifyContent={'space-between'}>
       <Paper
         onDragLeave={(e: any) => handleOnDragLeave(e)}
         onDragEnter={(e) => handleOnDragEnter(e)}
@@ -111,16 +114,16 @@ function CreateReportGroupPage() {
         }}
       >
         {' '}
-        <Box px={10} bgcolor={'grey.200'} py={4} mb={4}>
-          <Typography mb={4} variant='h6' color='primary'>
-            <Icon icon='ic:baseline-list' />
+        <Box px={10} bgcolor={'grey.50'} py={1} mb={4}>
+          <TitleManager fontWeight={'500'} mb={4} icon='ic:baseline-list'>
             Danh sách giảng viên trống lịch
-          </Typography>
+          </TitleManager>
+
           <Box sx={{ bgcolor: 'white' }}>
             <CustomTextField placeholder='Tim kiem giang vien' />
           </Box>
         </Box>
-        <Box sx={{ overflowY: 'auto' }} height={500} px={4}>
+        <Box sx={{ overflowY: 'auto' }} height={600} px={2}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (
@@ -143,9 +146,12 @@ function CreateReportGroupPage() {
         sx={{
           flex: 1,
           px: 8,
-          height: 400,
+          height: 600,
           py: 10,
-          borderTop: '5px solid #0052b1',
+          transition: 'all 0.3s ease-in',
+          border: isDrag ? '1px solid #174b79' : '1px solide #fffff',
+          boxShadow: isDrag ? 'rgba(0, 110, 174, 0.35) 0px 5px 15px' : '0px',
+          bgcolor: isDrag ? '#f6f8fe' : '#fffff',
         }}
         onDragLeave={(e: any) => handleOnDragLeave(e)}
         onDragEnter={(e) => handleOnDragEnter(e)}
@@ -172,13 +178,13 @@ function CreateReportGroupPage() {
           <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'}>
             <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
               <Typography color='grey.500' variant='h6' mt={20}>
-                Vui lòng kéo thả giảng viên...
+                Để chọn giảng viên cần tạo nhóm, vui lòng kéo thả vào bảng này
               </Typography>
               <Icon color='#dfdfdf' width={100} icon='icon-park-solid:hand-left' />
             </Box>
           </Box>
         ) : (
-          <Box sx={{ minHeight: 500 }}>
+          <Box sx={{ minHeight: 600 }}>
             {dataLecturerGradingAssembly?.map((task: any) => (
               <Paper
                 sx={{
@@ -226,7 +232,7 @@ function CreateReportGroupPage() {
                 </Box>
               </Paper>
             ))}{' '}
-            {dataLecturerGradingAssembly?.length === 2 && (
+            {dataLecturerGradingAssembly?.length === 3 && (
               <Typography
                 component={'span'}
                 variant='body1'
@@ -234,27 +240,31 @@ function CreateReportGroupPage() {
                 fontWeight={'500'}
                 color='error.main'
               >
-                <Icon icon='material-symbols-light:warning-outline' />
-                Đã đạt số lượng thành viên tối đa
+                <Icon style={{ marginTop: 3 }} icon='material-symbols-light:warning-outline' />
+                Chú thích*: Nhóm đã đủ số lượng thành viên
               </Typography>
             )}
-            <Typography variant='body1' mt={4} color='primary'>
-              Số lượng thành viên:{' '}
-              <Typography component={'span'} variant='body1' mt={10} color='initial'>
-                {dataLecturerGradingAssembly?.length} /2
-              </Typography>
-            </Typography>
-            <Box display={'flex'} justifyContent={'end'} mt={10} mr={4}>
-              <Button
-                color='success'
-                variant='contained'
-                disabled={dataLecturerGradingAssembly && dataLecturerGradingAssembly.length > 2}
-                onClick={handleCreateGroup}
-              >
-                <Icon icon='dashicons:saved' />
-                Tạo nhóm
-              </Button>
-            </Box>
+            {dataLecturerGradingAssembly?.length > 0 && (
+              <>
+                <Typography variant='body1' mt={4} color='primary'>
+                  Số lượng thành viên:{' '}
+                  <Typography component={'span'} variant='body1' mt={10} color='initial'>
+                    {dataLecturerGradingAssembly?.length} /3
+                  </Typography>
+                </Typography>
+                <Box display={'flex'} justifyContent={'end'} mt={10} mr={4}>
+                  <Button
+                    color='success'
+                    variant='contained'
+                    disabled={dataLecturerGradingAssembly && dataLecturerGradingAssembly.length > 3}
+                    onClick={handleCreateGroup}
+                  >
+                    <Icon icon='dashicons:saved' />
+                    Tạo nhóm
+                  </Button>
+                </Box>
+              </>
+            )}
           </Box>
         )}
       </Paper>

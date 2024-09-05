@@ -48,12 +48,13 @@ const convertLecturer = (lterms: any) => {
 function AddMemberGroupLecturerModal(props: any) {
   const { onClose, open, groupType } = props;
   const [lecturer, setlecturer] = useState<string>('');
-  const { handleGetListLecturerTerms } = useLecturerTerm();
   const { pathname } = useLocation();
   const current = pathname.split('/');
   const grLecturerId = `${current[current.length - 1]}`;
 
+  const { handleGetListLecturerTerms } = useLecturerTerm();
   const { data, isLoading, isFetching } = handleGetListLecturerTerms();
+  
   const { onAddMemberToGroupLecturer } = useMemberGroupLecturer();
   const { mutate: addMember } = onAddMemberToGroupLecturer(grLecturerId);
   const handleSubmit = () => {

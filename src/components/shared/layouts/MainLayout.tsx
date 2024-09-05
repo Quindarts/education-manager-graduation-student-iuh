@@ -37,24 +37,26 @@ function MainLayout() {
                 height='100%'
                 component='section'
                 sx={{
-                  maxWidth: isOpen ? `calc(100vw - 250px)` : `calc(100vw - 76px)`,
+                  maxWidth: '100vw',
                   width: '100%',
                   minHeight: '100vh',
-                  marginLeft: isOpen ? '250px' : '76px',
-                  transition: 'all 0.1s ease',
                   backgroundColor: 'grey.100',
                 }}
               >
-                <Navbar />
                 <Box
                   pt={12}
                   pb={6}
-                  mx={8}
-                  mt={30}
+                  mt={20}
                   sx={{
                     height: '100%',
+                    width: 'auto',
+                    transition: 'all 0.2s ease-in',
+                    marginLeft: isOpen ? '270px' : '90px',
+                    marginRight: 10,
                   }}
                 >
+                  <Navbar />
+
                   <Box my={4}>
                     <BreadCrumbRouting />
                   </Box>

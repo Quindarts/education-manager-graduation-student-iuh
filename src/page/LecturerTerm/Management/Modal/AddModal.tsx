@@ -27,6 +27,7 @@ function AddLecturerModal(props: any) {
     label: '',
     id: '',
   });
+  
 
   const handleSubmitCreateLecturer = (currentLecturer: any) => {
     const dataSend = {
@@ -154,7 +155,7 @@ function AddLecturerModal(props: any) {
             type='submit'
           >
             <Icon icon='material-symbols:save-outline' />
-            Thêm GV hướng dẫn
+            Thêm giảng viên
           </Button>
         </Box>
       </Box>

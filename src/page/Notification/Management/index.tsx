@@ -50,7 +50,7 @@ function NotificationManagementPage() {
   }, [getQueryField('keywords')]);
   return (
     <>
-      <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <Paper sx={{ py: 10, px: 10 }} elevation={0}>
         <TitleManager icon='basil:notification-on-outline' mb={6} mt={2}>
           Danh sách thông báo
         </TitleManager>

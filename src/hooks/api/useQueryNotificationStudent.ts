@@ -19,10 +19,10 @@ export const useNotificationStudent = () => {
         return useQuery([QueryKeysNotificationStudent.getNotificationsOfStudent], () => NotificationStudentServices.getNotificationsOfStudent)
     }
     //[POST]
-    const onCreateNotificationOfStudentId = () => {
-        return useMutation((data: { title: string, content: string, studentId: string }) => NotificationStudentServices.createNotificationOfStudentId(data), {
+    const onCreateNotificationOfStudentIds = () => {
+        return useMutation((data: { title: string, content: string, studentIds: string[] }) => NotificationStudentServices.createNotificationOfStudentIds(data), {
             onSuccess(data: any) {
-                enqueueSnackbar('', { variant: 'success' })
+                enqueueSnackbar('Gửi thông báo thành công', { variant: 'success' })
                 queryClient.invalidateQueries({
                     queryKey:
                         [QueryKeysNotification.getNotificationsOfFilter,
@@ -75,13 +75,71 @@ export const useNotificationStudent = () => {
             {
                 onSuccess(data: any) {
                     enqueueSnackbar('', { variant: 'success' })
+                },
+                onError(err: any) {
+                    if (err.status < 500)
+                        enqueueSnackbar(err.message, { variant: 'error' })
+                    else
+                        enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
                 }
             })
+    }
+
+    //[GROUP_STUDENT]
+    const onCreateNotificationOfGroupStudentIds = () => {
+        return useMutation((data: { title: string, content: string, groupStudentIds: string[] }) => NotificationStudentServices.createNotificationOfGroupStudent(data), {
+            onSuccess(data: any) {
+                enqueueSnackbar('Gửi thông báo thành công', { variant: 'success' })
+                queryClient.invalidateQueries({
+                    queryKey:
+                        [QueryKeysNotification.getNotificationsOfFilter,
+                            "10",
+                            "1",
+                            "",
+                            ""
+                        ]
+                });
+            },
+            onError(error: any) {
+                if (error.status > 500) {
+                    enqueueSnackbar('Hệ thống không xử lý được yêu cầu của bạn, thử lại sau.', { variant: 'warning' })
+                }
+                else {
+                    enqueueSnackbar(error.message, { variant: 'error' })
+                }
+            }
+        })
+    }
+    const onCreateNotificationOfGroupSupportIds = () => {
+        return useMutation((data: { title: string, content: string, termId: string }) => NotificationStudentServices.createNotificationOfGroupSupport(data), {
+            onSuccess(data: any) {
+                enqueueSnackbar('Gửi thông báo thành công', { variant: 'success' })
+                queryClient.invalidateQueries({
+                    queryKey:
+                        [QueryKeysNotification.getNotificationsOfFilter,
+                            "10",
+                            "1",
+                            "",
+                            ""
+                        ]
+                });
+            },
+            onError(error: any) {
+                if (error.status > 500) {
+                    enqueueSnackbar('Hệ thống không xử lý được yêu cầu của bạn, thử lại sau.', { variant: 'warning' })
+                }
+                else {
+                    enqueueSnackbar(error.message, { variant: 'error' })
+                }
+            }
+        })
     }
     return {
         handleGetNotificationOfStudent,
         onCreateAllNotificationStudentTerms,
-        onCreateNotificationOfStudentId,
-        onUpdateReadStatus
+        onCreateNotificationOfStudentIds,
+        onUpdateReadStatus,
+        onCreateNotificationOfGroupStudentIds,
+        onCreateNotificationOfGroupSupportIds
     }
 }

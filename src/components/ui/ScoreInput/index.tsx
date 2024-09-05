@@ -10,9 +10,6 @@ interface ScoreInputPropsType {
 }
 function ScoreInput(props: ScoreInputPropsType) {
   const { scoreMax, evaluationId, handleChangeScore, studentId, oldScore } = props;
-  console.log('🚀 ~ ScoreInput ~ oldScore:', oldScore);
-  console.log('🚀 ~ ScoreInput ~ evaluationId:', evaluationId);
-  console.log('🚀 ~ ScoreInput ~ studentId:', studentId);
   const [errorMess, setErrorMess] = useState('');
   const [score, setScore] = useState(`${oldScore}`);
 
@@ -41,7 +38,7 @@ function ScoreInput(props: ScoreInputPropsType) {
           height: 24,
           padding: '2px 4px',
           width: 50,
-          fontSize: 16,
+          fontSize: 12,
           color: 'red',
         }}
         onChange={(e) => {
@@ -50,7 +47,7 @@ function ScoreInput(props: ScoreInputPropsType) {
         value={score}
       />
       {errorMess !== '' && (
-        <Typography variant='body1' fontSize={11} color='error.main'>
+        <Typography variant='body1' fontSize={10} color='error.main'>
           {errorMess}
         </Typography>
       )}{' '}

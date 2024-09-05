@@ -4,13 +4,13 @@ import { updateStatusStudent } from "@/services/apiStudent"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
-import useGroupStudent, { QueryKeysGroupStudent } from "./useQueryGroupStudent"
+import { QueryKeysGroupStudent } from "./useQueryGroupStudent"
+import { QueryStudent } from "./useQueryStudent"
 
 export const enum QueryKeysMemberOfGroupStudent {
     getMemberInGroupStudent = "getMemberInGroupStudent"
 }
 const useMemberGroupStudent = () => {
-    const { params } = useGroupStudent()
     const { enqueueSnackbar } = useSnackbar()
     const { termStore } = useTerm()
     //[GET MEMBER]
@@ -28,9 +28,11 @@ const useMemberGroupStudent = () => {
                 queryClient.invalidateQueries({ queryKey: [QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id] })
 
             },
-            onError() {
-                enqueueSnackbar('Cập nhật sinh viên thất bại, thử lại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
 
         })
@@ -46,7 +48,13 @@ const useMemberGroupStudent = () => {
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, 10, 1, 'all', ''])
-
+                queryClient.invalidateQueries([QueryStudent.getSearchStudentBasic, termStore.currentTerm.id, '', ''])
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
@@ -59,6 +67,12 @@ const useMemberGroupStudent = () => {
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, 10, 1, 'all', ''])
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }

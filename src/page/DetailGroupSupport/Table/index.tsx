@@ -20,10 +20,10 @@ function TableDetailGroupSupport() {
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Thông tin chung',
+      headerName: 'Thông tin sinh viên',
       field: 'name',
       flex: 1.7,
-      headerAlign: 'center',
+      headerAlign: 'left',
       renderCell: (params: any) => {
         return (
           <Box gap={2} display={'flex'} alignItems={'center'}>
@@ -48,20 +48,20 @@ function TableDetailGroupSupport() {
       headerName: 'Lớp chuyên ngành',
       field: 'clazzName',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'left',
+      headerAlign: 'left',
     },
     {
       headerName: 'Điểm Hướng dẫn',
       field: 'hd',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[0]
-              ? `${parseFloat(params.row.transcripts[0]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[0]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -71,13 +71,13 @@ function TableDetailGroupSupport() {
       headerName: 'Điểm Phản biện',
       field: 'pb',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[1]
-              ? `${parseFloat(params.row.transcripts[1]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[1]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -87,13 +87,13 @@ function TableDetailGroupSupport() {
       headerName: 'Điểm Báo cáo',
       field: 'bc',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[2]
-              ? `${parseFloat(params.row.transcripts[2]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[2]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -103,19 +103,18 @@ function TableDetailGroupSupport() {
       headerName: 'Điểm Trung bình',
       field: 'tb',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[3]
-              ? `${parseFloat(params.row.transcripts[3]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[3]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
       },
     },
-
     {
       headerName: 'Tình trạng',
       field: 'abc',
@@ -145,15 +144,12 @@ function TableDetailGroupSupport() {
                 height: 350,
               }}
               minHeight={350}
-              rowHeight={100}
+              rowHeight={80}
               columns={basicColumns}
               totalItems={data.members.length}
               totalPages={1}
               page={1}
               handleChangePage={() => {}}
-              disableColumnMenu
-              disableColumnFilter
-              disableColumnSelector
             />
           </Box>
         )}

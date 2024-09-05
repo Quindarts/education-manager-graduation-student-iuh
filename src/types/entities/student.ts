@@ -7,6 +7,7 @@ export interface Student {
   phone: string;
   email: string;
   gender: EnumGender;
+  dateOfBirth: string;
   clazzName: string;
   typeTraining: string;
   isActive: boolean;

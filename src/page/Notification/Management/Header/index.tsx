@@ -5,6 +5,7 @@ import { Box, Button, Paper, TextField, Tooltip } from '@mui/material';
 import DropDown from '@/components/ui/Dropdown';
 import useParams from '@/hooks/ui/useParams';
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
 const DROP_SEARCH_VALUE = [
   {
     _id: 'senderName',
@@ -16,14 +17,6 @@ const DROP_SEARCH_VALUE = [
   },
 ];
 function HeaderNotification() {
-  //[Handler Modal ]
-  const [openAddModal, setOpenAddModal] = useState(false);
-  const handleOpenAddModal = () => {
-    setOpenAddModal(true);
-  };
-  const handleCloseModal = () => {
-    setOpenAddModal(false);
-  };
   const onDefaultSearchDrop = () => {
     getQueryField('searchField')
       ? getQueryField('searchField')
@@ -35,6 +28,7 @@ function HeaderNotification() {
       ? getQueryField('searchField')
       : setDefaultTypeSearch('senderName');
   }, []);
+  const navigate = useNavigate();
   const { onSearchChange, getQueryField, setDefaultTypeSearch, onTypeSearchChange } = useParams();
   return (
     <>
@@ -56,15 +50,17 @@ function HeaderNotification() {
             placeholder='Tim kiếm thông báo theo..'
           />
         </Box>
-        <Tooltip title='Thêm thông báo'>
-          <Button onClick={handleOpenAddModal} color='error' variant='contained' size='small'>
+        <Tooltip title='Tạo thông báo'>
+          <Button
+            onClick={() => navigate('/notifications/create')}
+            color='error'
+            variant='contained'
+            size='small'
+          >
             <Icon width={20} icon='ph:plus-fill' />
           </Button>
         </Tooltip>
       </Box>
-      <>
-        <AddNotificationModal open={openAddModal} onClose={handleCloseModal} />
-      </>
     </>
   );
 }

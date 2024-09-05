@@ -64,8 +64,8 @@ function TableStudentInGroup(props: any) {
     {
       headerName: 'Thông tin chung',
       field: 'name',
-      flex: 1.7,
-      headerAlign: 'center',
+      flex: 1.5,
+      headerAlign: 'left',
       renderCell: (params: any) => {
         return (
           <Box gap={2} display={'flex'} alignItems={'center'}>
@@ -86,24 +86,18 @@ function TableStudentInGroup(props: any) {
         );
       },
     },
-    {
-      headerName: 'Lớp chuyên ngành',
-      field: 'clazzName',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-    },
+
     {
       headerName: 'Điểm Hướng dẫn',
       field: 'hd',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[0]
-              ? `${parseFloat(params.row.transcripts[0]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[0]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -113,13 +107,13 @@ function TableStudentInGroup(props: any) {
       headerName: 'Điểm Phản biện',
       field: 'pb',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[1]
-              ? `${parseFloat(params.row.transcripts[1]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[1]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -129,13 +123,13 @@ function TableStudentInGroup(props: any) {
       headerName: 'Điểm Báo cáo',
       field: 'bc',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[2]
-              ? `${parseFloat(params.row.transcripts[2]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[2]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -145,13 +139,13 @@ function TableStudentInGroup(props: any) {
       headerName: 'Điểm Trung bình',
       field: 'tb',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[3]
-              ? `${parseFloat(params.row.transcripts[3]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[3]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -162,22 +156,12 @@ function TableStudentInGroup(props: any) {
       headerName: 'Tình trạng',
       field: 'abc',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Box display={'flex'}>
             <Typography variant='body1'>{getStatusGroup(params.row.status)}</Typography>
-            {currentRole.includes('crud') && (
-              <Tooltip title='Cập nhật trạng thái sinh viên'>
-                <IconButton
-                  size='small'
-                  onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
-                >
-                  <Icon width={16} icon='fluent-mdl2:global-nav-button-active' />
-                </IconButton>
-              </Tooltip>
-            )}
           </Box>
         );
       },
@@ -186,19 +170,32 @@ function TableStudentInGroup(props: any) {
     {
       headerName: '',
       field: 'name8',
-      flex: currentRole.includes('crud') ? 1 : 0,
+      flex: currentRole.includes('crud') ? 1.2 : 0,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
           {currentRole.includes('crud') && (
-            <Tooltip title='Cho rời nhóm'>
-              <IconButton
-                size='small'
-                color='primary'
-                onClick={() => handleOpenStudentLeaveGroup(params.row.id)}
-              >
-                <Icon icon='pepicons-print:leave-circle' width={20} />
+            <Tooltip
+              title='Cập nhật trạng thái sinh viên'
+              onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
+            >
+              <IconButton size='small'>
+                <Icon
+                  width={20}
+                  style={{ color: '#1e4990' }}
+                  icon='fluent-mdl2:global-nav-button-active'
+                />
+              </IconButton>
+            </Tooltip>
+          )}
+          {currentRole.includes('crud') && (
+            <Tooltip
+              title='Xóa khỏi nhóm'
+              onClick={() => handleOpenStudentLeaveGroup(params.row.id)}
+            >
+              <IconButton size='small' color='primary'>
+                <Icon icon='pepicons-print:leave-circle' style={{ color: '#1e4990' }} width={20} />
               </IconButton>
             </Tooltip>
           )}
@@ -231,18 +228,15 @@ function TableStudentInGroup(props: any) {
               rows={convertGroupMembersTable(data?.members)}
               sx={{
                 bgcolor: 'white',
-                height: 350,
               }}
               minHeight={350}
-              rowHeight={100}
+              rowHeight={80}
               columns={basicColumns}
               totalItems={1}
               totalPages={1}
               page={1}
               handleChangePage={() => {}}
-              disableColumnMenu
               disableColumnFilter
-              disableColumnSelector
             />
           </Box>
         )}

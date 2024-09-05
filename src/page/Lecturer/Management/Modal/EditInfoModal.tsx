@@ -99,6 +99,7 @@ function EditInfoModal(props: any) {
             }) => (
               <form onSubmit={handleSubmit}>
                 <CustomTextField
+                  required
                   value={values.username}
                   name='username'
                   label='Mã giảng viên'
@@ -195,7 +196,7 @@ function EditInfoModal(props: any) {
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
                     <Icon icon='material-symbols:save-outline' />
-                    Cập nhật giảng viên
+                    Lưu
                   </Button>
                 </Box>
               </form>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { redirect, useNavigate } from 'react-router-dom';
 
 const axiosConfig = axios.create({
-  baseURL: `${env.NODE_ENV === "local" ? env.BASE_URL : env.API_URL}`,
+  baseURL: `${env.API_URL}`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -32,7 +32,7 @@ axiosConfig.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.data.status === 401 && error.response.data.success === false) {
+    if (error?.response?.data?.status === 401 && error?.response?.data?.success === false) {
       originalRequest._retry = true;
       try {
         const refreshToken = getValueFromLocalStorage("refreshToken");
@@ -44,6 +44,7 @@ axiosConfig.interceptors.response.use(
 
         return axiosConfig(originalRequest);
       } catch (error: any) {
+        console.log("🚀 ~ error:", error)
         if (error.status >= 500 && error.success === false) {
           localStorage.clear();
           redirect('/auth/login')

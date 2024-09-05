@@ -6,7 +6,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 
 function AcceptTopicModal(props: any) {
-  const { onClose, open, topicId } = props;
+  const { onClose, open, topicId, name } = props;
   const { onUpdateStatusTopic } = useTopic();
   const [note, setNote] = useState('Đủ điều kiện duyệt.');
   const { mutate: updateAcceptTopic } = onUpdateStatusTopic(topicId);
@@ -28,8 +28,8 @@ function AcceptTopicModal(props: any) {
         <Box borderRadius='50%' padding={6} sx={{ background: 'rgba(49, 255, 159, 0.2)' }}>
           <Icon color='#0F9B6CD4' height={70} width={70} icon='subway:tick' />
         </Box>
-        <Typography variant='h3' mt={10} mb={14}>
-          Bạn có chắc chắn muốn duyệt đề tài này ?
+        <Typography variant='h5' textAlign={'center'} textTransform={'lowercase'} mt={10} mb={14}>
+          Bạn có chắc chắn muốn duyệt đề tài {name} ?
         </Typography>
         <Box width={'100%'}>
           <CustomTextField
