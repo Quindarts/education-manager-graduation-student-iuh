@@ -60,7 +60,7 @@ export class TopicClassExportExcel extends EntityExportExcel {
         }
     }
     public customizeSheet(): void {
-        this.getSheet().properties.defaultRowHeight = 70
+        // this.getSheet().properties.defaultRowHeight = 70
         this.customizeHeaderColumn();
         this.customizeCells()
         this.customizeColumns()

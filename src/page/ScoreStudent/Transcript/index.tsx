@@ -134,12 +134,6 @@ function TranscriptOfGroupStudent(props: any) {
   }, [fetchingTranscript, fetchingMembers, groupStudent.id]);
 
   //[Toggle total score of students to update]
-  // useEffect(() => {
-  //   if (initTranscripts.isExistTranscripts === true) {
-  //     setScoreStudent(handleTotalScores(initTranscripts.transcripts));
-  //   }
-  // }, [initTranscripts.isExistTranscripts, groupStudent.id]);
-
   //create
   const [scoreStudent, setScoreStudent] = useState<any[]>([]);
 
@@ -159,7 +153,6 @@ function TranscriptOfGroupStudent(props: any) {
     setInitTranscripts((pre: any) => ({ ...pre, transcripts: updateTranscript }));
     setScoreStudent(handleTotalScores(updateTranscript));
   };
-
   //[Saved Create or Update ]
   const handleSubmit = () => {
     let data = convertDataRequest(initTranscripts.transcripts, termStore.currentTerm.id);

@@ -15,7 +15,7 @@ function GroupLecturer({ lecturerId }: any) {
     refetch();
   }, []);
   return (
-    <Paper sx={{ p: 10 }} elevation={0}>
+    <Paper sx={{ px: 10 }} elevation={0}>
       <Box my={10}>
         {isLoading || isFetching ? (
           <SekeletonUI />

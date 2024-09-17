@@ -60,7 +60,7 @@ export class StudentClassExportExcel extends EntityExportExcel {
         }
     }
     public customizeSheet(): void {
-        this.getSheet().properties.defaultRowHeight = 20
+        // this.getSheet().properties.defaultRowHeight = 20
         this.customizeHeaderColumn();
         this.customizeCells()
         this.customizeColumns()

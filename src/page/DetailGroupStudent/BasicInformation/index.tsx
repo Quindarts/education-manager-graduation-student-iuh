@@ -51,7 +51,7 @@ function BasicInformationGrStudentPage(props: any) {
             </TitleManager>
           </AccordionSummary>
           <AccordionDetails>
-            {!groupStudent.topicId ? (
+            {!groupStudent.topicName ? (
               <Box
                 mx={'auto'}
                 display={'flex'}

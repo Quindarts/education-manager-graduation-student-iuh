@@ -15,7 +15,7 @@ const HEADER_TYPE = {
     { header: 'Họ và tên', key: 'Họ và tên', width: 32 },
     { header: 'Giới tính', key: 'Giới tính', width: 15 },
     { header: 'Số điện thoại', key: 'Số điện thoại', width: 25 },
-    { header: 'Email', key: 'Email', width: 30 },
+    { header: 'Email', key: 'Email', width: 40 },
   ],
   lecturerTerm: [
     { header: 'Mã GV', key: 'Mã GV', width: 15 },
@@ -42,7 +42,7 @@ const HEADER_TYPE = {
     { header: 'Họ và tên', key: 'Họ và tên', width: 32 },
     { header: 'Giới tính', key: 'Giới tính', width: 10 },
     { header: 'Ngày sinh', key: 'Ngày sinh', width: 30 },
-    { header: 'Email', key: 'Email', width: 30 },
+    { header: 'Email', key: 'Email', width: 40 },
     { header: 'Lớp học', key: 'Lớp học', width: 15 },
     { header: 'Số điện thoại', key: 'Số điện thoại', width: 15 },
   ],
@@ -62,7 +62,7 @@ const HEADER_TYPE = {
     { header: 'Họ tên SV', key: 'Họ tên SV', width: 24 },
     { header: 'GVHD', key: 'GVHD', width: 20 },
     { header: '#HĐPB', key: '#HĐPB', width: 22 },
-    { header: 'fullName', key: 'fullName', width: 20 },
+    { header: 'HD TV', key: 'HD TV', width: 20 },
     { header: 'Ghi chú', key: 'Ghi chú', width: 30 },
   ],
 };
@@ -175,17 +175,17 @@ function ExportExcelButton(props: ExportExcelPropsType) {
     <Box>
       <Tooltip arrow title={labelTooltip}>
         <Button size='small' onClick={onOpenModal} variant='contained' color='success'>
-          <Icon icon='bxs:download' width={24} />
+          <Icon icon='mdi:file-download' width={24} />
           {label}
         </Button>
       </Tooltip>
 
       <Modal maxWidth={'md'} open={isOpen} onClose={onCloseModal}>
         <TitleManager
-          mx={4}
-          variant='h5'
+          mx={10}
+          variant='h6'
           textTransform={'uppercase'}
-          icon='vscode-icons:file-type-excel2'
+          icon='uiw:file-excel'
         >
           Export file excel
         </TitleManager>
@@ -196,7 +196,7 @@ function ExportExcelButton(props: ExportExcelPropsType) {
           elevation={0}
         >
           <Box component={'section'}>
-            <Box display={'flex'} gap={20}>
+            <Box display={'flex'} gap={4}>
               <Box
                 border={
                   mappedCheckbox?.filter((col) => col[Object.keys(col)[0]] === true).length !== 0
@@ -265,8 +265,8 @@ function ExportExcelButton(props: ExportExcelPropsType) {
               onClick={handleSubmit}
               color='success'
             >
-              <Icon icon='ic:baseline-download' width={20} />
-              Tải file
+              <Icon icon='ri:file-excel-fill'  width={20} />
+              Tải file excel
             </Button>
             <Button variant='contained' color='primary' onClick={onCloseModal}>
               <Icon icon='mdi:close-outline' />

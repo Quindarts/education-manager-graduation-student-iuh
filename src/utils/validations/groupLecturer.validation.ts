@@ -1,4 +1,4 @@
-export const typeConvertGroupLecturer = (type: string) => {
+export const checktTypeGroupLecturer = (type: string) => {
     switch (type) {
         case 'reviewer':
             return 'Nhóm chấm Phản biện';

@@ -46,7 +46,12 @@ function EditInstruction(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-        <TitleManager textTransform={'uppercase'} mb={10} mt={4}>
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='ant-design:field-time-outlined'
+          textTransform={'uppercase'}
+        >
           Cập nhật trạng thái phản biện
         </TitleManager>
         {loadingDetail || isFetching ? (

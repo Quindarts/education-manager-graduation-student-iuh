@@ -93,7 +93,7 @@ function AddGroupStudentToTopicModal(props: any) {
   return (
     <Modal maxWidth='xl' open={open} onClose={onClose}>
       <Paper sx={{ px: 10, py: 4 }}>
-        <TitleManager textTransform={'uppercase'}>Gán đề tài cho nhóm sinh viên</TitleManager>
+        <TitleManager icon='fluent:people-team-add-24-filled' variant='h6' textTransform={'uppercase'}>Gán đề tài cho nhóm sinh viên</TitleManager>
         <Box gap={20} display={'flex'} my={10}>
           {' '}
           <Box width={'40%'}>
@@ -443,7 +443,7 @@ function AddGroupStudentToTopicModal(props: any) {
                               size='small'
                             >
                               <Icon icon='iconamoon:close-fill' style={{ marginRight: 1 }} />
-                              Hủy
+                              Xóa chọn gán
                             </Button>
                           </Box>
                         </Box>

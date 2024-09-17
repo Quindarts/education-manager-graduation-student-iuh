@@ -68,8 +68,9 @@ export class AssginGroupClassExport extends EntityExportExcel {
                     }
                 })
 
-                let groupValue = row.values[6];
-                let address_cell = row.model.cells[5].address + '';
+                let groupValue = row.values[2];
+                console.log("🚀 ~ AssginGroupClassExport ~ this.getSheet ~ groupValue:", groupValue)
+                let address_cell = row.model.cells[1].address + '';
                 if (!groups[groupValue]) {
                     groups[groupValue] = [];
                 }
@@ -88,15 +89,19 @@ export class AssginGroupClassExport extends EntityExportExcel {
                 let index_start = 0
                 let startAddress = groups[group][index_start];
                 let endAddress = groups[group][index_end];
+                console.log("🚀 ~ AssginGroupClassExport ~ startAddress:", startAddress)
+                console.log("🚀 ~ AssginGroupClassExport ~ endAddress:", endAddress)
                 // Lấy phần chữ (A, B, C) 
                 let startAlpha = startAddress.slice(0, 1);
                 let endInt = _.toInteger(endAddress.substring(1));
+
                 // Merge các ô từ index_start -> index_end
                 this.getSheet().mergeCells(`${startAlpha}${startAddress.substring(1)}:${startAlpha}${endInt}`);
-                // STT	STT Nhóm	Mã SV	Họ tên SV	GVHD	Mã đề tài	Tên đề tài
-                // A      B            C        D         E         F           G
+
+                // STT	STT Nhóm	Mã SV	Họ tên SV	GVHD	#HĐPB	fullName	Ghi chú
+                // A    B           C       D           E       F       G           H
                 this.getSheet().mergeCells(`${'E'}${startAddress.substring(1)}:${'E'}${endInt}`);
-                this.getSheet().mergeCells(`${'B'}${startAddress.substring(1)}:${'B'}${endInt}`);
+                this.getSheet().mergeCells(`${'F'}${startAddress.substring(1)}:${'F'}${endInt}`);
                 this.getSheet().mergeCells(`${'G'}${startAddress.substring(1)}:${'G'}${endInt}`);
                 this.getSheet().mergeCells(`${'H'}${startAddress.substring(1)}:${'H'}${endInt}`);
             }
@@ -108,7 +113,7 @@ export class AssginGroupClassExport extends EntityExportExcel {
         }
     }
     public customizeSheet(): void {
-        this.getSheet().properties.defaultRowHeight = 30
+        // this.getSheet().properties.defaultRowHeight = 30
         this.customizeHeaderColumn();
         this.customizeCells()
         this.customizeColumns()

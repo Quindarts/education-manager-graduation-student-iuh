@@ -14,13 +14,13 @@ function MyDetailGroupLecturer() {
   const { data, isLoading, isFetching } = handleGetGroupLecturerById(grLecturerId);
 
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       {isLoading || isFetching ? (
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>{data?.groupLecturer?.name}</TitleManager>
-          <Box my={4}>
+          {/* <TitleManager>{data?.groupLecturer?.name}</TitleManager> */}
+          <Box>
             <TabPanelUI groupLecturer={data?.groupLecturer} />
           </Box>
         </>

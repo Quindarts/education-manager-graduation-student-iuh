@@ -13,7 +13,7 @@ function TableStudentScore(props: any) {
       align: 'center',
       renderCell: (params: any) => {
         return (
-          <Typography sx={{ textTransform: 'uppercase', fontWeight: '600' }} variant='body1'>
+          <Typography sx={{  fontWeight: '400' }} variant='h6'>
             {params.row.name}
           </Typography>
         );

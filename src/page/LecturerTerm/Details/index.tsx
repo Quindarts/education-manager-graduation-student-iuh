@@ -18,7 +18,7 @@ function DetailsLecturerPage() {
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager textTransform={'uppercase'}>Thông tin giảng viên</TitleManager>
+          <TitleManager variant='h6'  icon='heroicons:user-20-solid' textTransform={'uppercase'}>Chi tiết giảng viên hướng dẫn</TitleManager>
           <Box mt={10} display={'flex'} gap={8}>
             <Box>
               <Avatar sx={{ width: 80, height: 80 }} />

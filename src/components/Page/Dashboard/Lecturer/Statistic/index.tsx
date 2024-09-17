@@ -5,24 +5,29 @@ import StatisticsCard from './Card';
 import useStatistical from '@/hooks/api/useQueryStatistical';
 
 function StatisticManager() {
-  const { studentCount, lecturerCount, groupStudentCount, topicCount, handleGetCountOfDashboard } =
-    useStatistical();
-  handleGetCountOfDashboard();
+  const {
+    grLecturerCountOfgrLecturer,
+    registeredTopicCountOfLecturer,
+    approvedTopicCountOfLecturer,
+    groupStudentCountOfLecturer,
+    handleGetCountOfDashBoardLecturerRole,
+  } = useStatistical();
+  handleGetCountOfDashBoardLecturerRole();
   const stats = [
     {
-      title: 'Số nhóm sinh viên',
-      value: groupStudentCount,
+      title: 'Nhóm sinh viên đang hướng dẫn',
+      value: groupStudentCountOfLecturer,
       icon: <Group />,
-      link: '/group-students',
+      link: '/group-supports',
     },
-    { title: 'Số lượng đề tài', value: topicCount, icon: <Book />, link: '/topics' },
     {
-      title: 'Số lượng giảng viên',
-      value: lecturerCount,
+      title: 'Tổng số đề tài của tôi',
+      value: registeredTopicCountOfLecturer,
       icon: <Person />,
-      link: '/lecturer-terms',
+      link: '/topic-lecturers',
     },
-    { title: 'Số lượng sinh viên', value: studentCount, icon: <School />, link: '/students/query' },
+    { title: 'Số lượng đề tài được duyệt', value: approvedTopicCountOfLecturer, icon: <Book />, link: '/topic-lecturers' },
+    { title: 'Số nhóm giảng viên của tôi', value: grLecturerCountOfgrLecturer, icon: <School />, link: '/my-group-lecturers' },
   ];
   return (
     <Box sx={{ maxWidth: '100%', width: '100%' }}>

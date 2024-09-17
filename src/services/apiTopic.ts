@@ -3,16 +3,21 @@ import axiosConfig from "./axiosConfig";
 import { ResponseType } from "@/types/axios.type";
 
 const URL = "/api/v1/topics"
-//[GET] TOPIC
+//[GET] COUNT HEAD_LECTURER
 export const getCountOfTopic: any = (termId: string) => {
     return axiosConfig.get(`${URL}/count?termId=${termId}`)
 }
-
+//[GET] COUNT LECTURER
+export const getCountOfTopicByLecturer: any = (termId: string) => {
+    return axiosConfig.get(`${URL}/count-by-lecturer?termId=${termId}`)
+}
 //[HEAD LEC, LEC]
 export const getTopicById = async (topicId: string) => {
     return axiosConfig.get<ResponseType, any>(`${URL}/${topicId}`)
 }
-
+export const getTopicsByGroupLecturerAssigned = async (groupId: string) => {
+    return axiosConfig.get<ResponseType, any>(`${URL}/group-lecturer/${groupId}/${groupId}`)
+}
 export const assignTopic = async (id: string, topicId: string) => {
     return axiosConfig.post(`/api/v1/group-students/${id}/assign-topic`, { topicId: topicId })
 }

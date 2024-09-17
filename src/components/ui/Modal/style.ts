@@ -3,20 +3,21 @@ import { Dialog } from '@mui/material';
 
 const CustomModal = styled(Dialog)`
   .MuiDialog-container {
+
     .MuiDialog-paper {
       align-items: center;
       width: 96%;
       max-height:94vh;
       border-top: 6px solid #1349BD ;
-
       margin: auto;
-
+      border-radius: 12px;
+   
       &::-webkit-scrollbar {
-        width: 8px !important;
+        width: 5px !important;
       }
 
       &::-webkit-scrollbar-thumb {
-        background-color: 'primary.main';
+        background-color: 'primary.dark';
         border-radius: 10px;
       }
 

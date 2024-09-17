@@ -4,7 +4,6 @@ import CardGroupLecturer from './Card';
 
 function GridGroupLecturer(props: any) {
   const { groupLecturers } = props;
-  const test = [1, 2, 3, 4, 5, 6];
   return (
     <Box
       sx={{

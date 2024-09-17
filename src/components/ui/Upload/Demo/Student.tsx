@@ -7,19 +7,19 @@ function StudentExcelDemo() {
     <Table>
       <TableHead>
         <TableRow
-          sx={{ bgcolor: 'success.dark', color: 'white', fontSize: 12, textAlign: 'center' }}
+          sx={{ bgcolor: 'success.dark', color: 'white', fontSize: 11, textAlign: 'center' }}
         >
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>STT</TableCell>
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>Mã SV</TableCell>
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>Họ đệm</TableCell>
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>Tên</TableCell>
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>
+          <TableCell sx={{ color: 'white', fontSize: 11, textAlign: 'center' }}>STT</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: 11, textAlign: 'center' }}>Mã SV</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: 11, textAlign: 'center' }}>Họ đệm</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: 11, textAlign: 'center' }}>Tên</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: 11, textAlign: 'center' }}>
             Giới tính
           </TableCell>
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>
+          <TableCell sx={{ color: 'white', fontSize: 11, textAlign: 'center' }}>
             Số điện thoại
           </TableCell>
-          <TableCell sx={{ color: 'white', fontSize: 12, textAlign: 'center' }}>Lớp học</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: 11, textAlign: 'center' }}>Lớp học</TableCell>
         </TableRow>
       </TableHead>
     </Table>

@@ -102,7 +102,7 @@ export interface AppSiderBarType {
 }
 export const APP_SIDEBAR = [
   {
-    text: 'Trang chính',
+    text: 'Bảng điều khiển',
     icon: 'ic:baseline-home',
     link: APP_ROUTES.DASHBOARD,
     roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.LECTURER],
@@ -185,24 +185,7 @@ export const APP_SIDEBAR = [
     icon: 'typcn:group',
     text: 'Nhóm giảng viên',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
-    link: [APP_ROUTES.GROUP_LECTURER.MANAGEMENT],
-    children: [
-      {
-        text: 'Danh sách nhóm',
-        link: APP_ROUTES.GROUP_LECTURER.MANAGEMENT,
-        key: APP_ROUTES.GROUP_LECTURER.MANAGEMENT,
-      },
-      {
-        text: 'Phân công chấm điểm',
-        link: APP_ROUTES.GROUP_LECTURER.REPORT,
-        key: APP_ROUTES.GROUP_LECTURER.REPORT,
-      },
-      {
-        text: 'Tạo nhóm chấm',
-        link: APP_ROUTES.GROUP_LECTURER.CREATE,
-        key: APP_ROUTES.GROUP_LECTURER.CREATE,
-      }
-    ],
+    link: APP_ROUTES.GROUP_LECTURER.MANAGEMENT,
   },
   {
     icon: 'mdi:account-student',
@@ -236,13 +219,18 @@ export const APP_SIDEBAR = [
     text: 'Đề tài của tôi',
     roles: [RoleCheck.LECTURER],
     link: APP_ROUTES.TOPIC.LECTURER,
-    // children: [
-    //   {
-    //     text: 'Danh sách đề tài của tôi',
-    //     link: APP_ROUTES.TOPIC.LECTURER,
-    //     key: APP_ROUTES.TOPIC.LECTURER,
-    //   },
-    // ],
+  },
+  {
+    icon: 'fa6-solid:hand-holding-hand',
+    text: 'Nhóm sinh viên hướng dẫn',
+    roles: [RoleCheck.LECTURER],
+    link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
+  },
+  {
+    icon: 'typcn:group',
+    text: 'Nhóm giảng viên của tôi',
+    roles: [RoleCheck.LECTURER],
+    link: APP_ROUTES.GROUP_LECTURER.ME,
   },
   {
     icon: 'fluent-mdl2:review-solid',
@@ -284,12 +272,7 @@ export const APP_SIDEBAR = [
     link: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
   },
 
-  {
-    icon: 'fa6-solid:hand-holding-hand',
-    text: 'Nhóm hướng dẫn của tôi',
-    roles: [RoleCheck.LECTURER],
-    link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
-  },
+
   // {
   //   icon: 'typcn:group',
   //   text: 'Nhóm giảng viên',
@@ -313,19 +296,7 @@ export const APP_SIDEBAR = [
   //     }
   //   ],
   // },
-  {
-    icon: 'typcn:group',
-    text: 'Nhóm chấm điểm',
-    roles: [RoleCheck.LECTURER],
-    link: APP_ROUTES.GROUP_LECTURER.ME,
-    // children: [
-    //   {
-    //     text: 'Danh sách nhóm',
-    //     link: APP_ROUTES.GROUP_LECTURER.ME,
-    //     key: APP_ROUTES.GROUP_LECTURER.ME,
-    //   },
-    // ],
-  },
+
   {
     icon: 'fluent-mdl2:permissions',
     text: 'Phân quyền',

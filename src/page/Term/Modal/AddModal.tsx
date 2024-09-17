@@ -39,8 +39,8 @@ function AddModal(props: any) {
   }, [isSuccess]);
   return (
     <Modal open={open} onClose={onClose}>
-      <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+      <Box pb={5} px={10}>
+        <TitleManager mb={10} variant='h6' icon='ant-design:field-time-outlined' textTransform={'uppercase'}>
           Tạo học kì mới
         </TitleManager>
         {isLoading ? (
@@ -115,7 +115,7 @@ function AddModal(props: any) {
                   </Box>
                 </Box>
                 <Box justifyContent={'end'} gap={4} display={'flex'} mt={10}>
-                  <Button  type='submit' variant='contained' color='primary' onClick={onClose}>
+                  <Button type='submit' variant='contained' color='primary' onClick={onClose}>
                     <Icon width={20} icon='mdi:close-outline' />
                     Hủy
                   </Button>

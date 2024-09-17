@@ -121,7 +121,7 @@ function HeaderTopic() {
               <ExportExcelButton
                 data={data.topics}
                 entity='topic'
-                labelTooltip='Tải danh sách đề tài'
+                labelTooltip='Tải file excel gồm danh sách các đề tài'
               />
             )}
             <Tooltip

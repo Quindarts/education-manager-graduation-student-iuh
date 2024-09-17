@@ -60,7 +60,7 @@ function TableDetailGroupSupport() {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[0]
+            {params.row.transcripts?.length > 0 && params.row.transcripts[0]
               ? `${(parseFloat(params.row.transcripts[0]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
@@ -76,7 +76,7 @@ function TableDetailGroupSupport() {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[1]
+            {params.row.transcripts?.length > 0 && params.row.transcripts[1]
               ? `${(parseFloat(params.row.transcripts[1]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
@@ -92,7 +92,7 @@ function TableDetailGroupSupport() {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[2]
+            {params.row.transcripts?.length > 0 && params.row.transcripts[2]
               ? `${(parseFloat(params.row.transcripts[2]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
@@ -108,7 +108,7 @@ function TableDetailGroupSupport() {
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[3]
+            {params.row.transcripts?.length > 0 && params.row.transcripts[3]
               ? `${(parseFloat(params.row.transcripts[3]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>

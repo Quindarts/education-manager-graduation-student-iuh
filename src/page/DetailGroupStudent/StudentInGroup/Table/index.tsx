@@ -13,14 +13,12 @@ import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import AddStudentModal from '../Modal/AddStudent';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
-function TableStudentInGroup(props: any) {
+function TableStudentInGroup({ members }: any) {
   const { pathname } = useLocation();
   const current = pathname.split('/');
   const grStudentId = `${current[current.length - 1]}`;
   const { handleUiRender } = useGroupStudent();
   const currentRole = handleUiRender();
-  const { handleGetMemberInGroupStudent } = useMemberGroupStudent();
-  const { data, isLoading } = handleGetMemberInGroupStudent(grStudentId);
 
   const [openAddStudentModal, setOpenModalAddStudent] = useState(false);
 
@@ -206,40 +204,36 @@ function TableStudentInGroup(props: any) {
   return (
     <>
       <Box>
-        {isLoading ? (
-          <SekeletonUI />
-        ) : (
-          <Box>
-            {currentRole.includes('crud') && (
-              <Box display={'flex'} mt={6} mb={4} justifyContent={'end'}>
-                <Button
-                  disabled={data?.members.length >= 2}
-                  size='small'
-                  color='error'
-                  variant='contained'
-                  onClick={handleOpenModalAddStudent}
-                >
-                  <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
-                  Thêm Sinh viên
-                </Button>
-              </Box>
-            )}
-            <Table
-              rows={convertGroupMembersTable(data?.members)}
-              sx={{
-                bgcolor: 'white',
-              }}
-              minHeight={350}
-              rowHeight={80}
-              columns={basicColumns}
-              totalItems={1}
-              totalPages={1}
-              page={1}
-              handleChangePage={() => {}}
-              disableColumnFilter
-            />
-          </Box>
-        )}
+        <Box>
+          {currentRole.includes('crud') && (
+            <Box display={'flex'} mt={6} mb={4} justifyContent={'end'}>
+              <Button
+                disabled={members.length >= 2}
+                size='small'
+                color='error'
+                variant='contained'
+                onClick={handleOpenModalAddStudent}
+              >
+                <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
+                Thêm Sinh viên
+              </Button>
+            </Box>
+          )}
+          <Table
+            rows={convertGroupMembersTable(members)}
+            sx={{
+              bgcolor: 'white',
+            }}
+            minHeight={350}
+            rowHeight={80}
+            columns={basicColumns}
+            totalItems={1}
+            totalPages={1}
+            page={1}
+            handleChangePage={() => {}}
+            disableColumnFilter
+          />
+        </Box>
       </Box>
       {currentRole.includes('crud') && (
         <>

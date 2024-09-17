@@ -130,11 +130,16 @@ function ModalUpload(props: ModalUploadPropsType) {
           {label}
         </Button>
       </Tooltip>
-      <Modal maxWidth={'lg'} open={isOpen} onClose={handleCloseUpload}>
-        <Paper sx={{ px: 10, py: 7 }} elevation={3}>
+      <Modal maxWidth={'md'} open={isOpen} onClose={handleCloseUpload}>
+        <Paper sx={{ px: 10, pb: 4 }} elevation={3}>
           <Box display={'flex'} gap={4}>
-            <TitleManager mb={4} variant='h4' textTransform={'uppercase'}>
-              Tải File Excel
+            <TitleManager
+              mb={4}
+              variant='h6'
+              icon='streamline:file-add-alternate-solid'
+              textTransform={'uppercase'}
+            >
+              Nhập dữ liệu bằng file excel
             </TitleManager>
           </Box>
           <Paper elevation={1} sx={{ px: 10, py: 12, mb: 6 }}>
@@ -153,7 +158,7 @@ function ModalUpload(props: ModalUploadPropsType) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
-                    py: 20,
+                    py: 30,
                   }}
                 >
                   <VisuallyHiddenInput
@@ -165,28 +170,22 @@ function ModalUpload(props: ModalUploadPropsType) {
 
                   <Box
                     bgcolor='rgb(0,82,177,0.2)'
-                    p={10}
+                    p={20}
                     borderRadius={'50%'}
-                    width={100}
-                    height={100}
+                    width={150}
+                    height={150}
                   >
                     <Icon
                       color='rgb(0,82,177,0.7)'
                       width={'full'}
                       height={'full'}
-                      icon='line-md:uploading-loop'
+                      icon='iwwa:box'
                     />
                   </Box>
 
-                  <Typography
-                    fontWeight={'600'}
-                    textTransform={'uppercase'}
-                    color='grey.600'
-                    mt={6}
-                    variant='h4'
-                  >
-                    <Icon style={{ marginRight: 2 }} icon='fxemoji:warningsign' />
-                    Chưa có file tải lên ngay
+                  <Typography color='grey.600' mt={6} variant='h5'>
+                    Chưa có file được import
+                    <Icon style={{ marginLeft: 2 }} icon='fluent-emoji:sad-but-relieved-face' />
                   </Typography>
                 </Button>
               ) : (
@@ -197,12 +196,15 @@ function ModalUpload(props: ModalUploadPropsType) {
                   alignItems={'center'}
                   justifyContent={'center'}
                 >
-                  <Icon color='#40bb92' width={150} icon='teenyicons:file-tick-solid' />
-                  <Typography mt={6} variant='h5' color='success.dark'>
-                    <Icon icon='teenyicons:tick-circle-solid' /> Đã tải file lên thành công, Lưu dữ
-                    liệu xuống cơ sở dữ liệu.
+                  <Icon color='#40bb92' width={150} icon='icon-park-solid:file-success' />
+                  <Typography mt={6} variant='h5' color='grey.600'>
+                    <Icon icon='teenyicons:tick-circle-solid' /> Đã tải file lên thành công, Vui
+                    lòng lưu dữ liệu vào hệ thống.
                   </Typography>
                   <Button
+                    sx={{
+                      mt: 5,
+                    }}
                     color='success'
                     variant='contained'
                     disabled={currentFile === undefined}
@@ -211,7 +213,7 @@ function ModalUpload(props: ModalUploadPropsType) {
                     }}
                   >
                     <Icon width={20} style={{ marginRight: 10 }} icon='el:hand-right' />
-                    Lưu vào hệ thống
+                    Lưu ngay
                   </Button>
                 </Box>
               )}
@@ -220,18 +222,18 @@ function ModalUpload(props: ModalUploadPropsType) {
 
           <Box>
             {currentFile !== undefined ? (
-              <Card sx={{ p: 6, borderRadius: 2, bgcolor: 'rgb(0,82,177,0.1)' }}>
-                <Box gap={6} alignItems={'center'} display={'flex'}>
+              <Card sx={{ p: 6, borderRadius: 2 }}>
+                <Box gap={2} alignItems={'center'} display={'flex'}>
                   <Icon width={50} icon='vscode-icons:file-type-excel' color='rgb(0,82,177,0.8)' />
-                  <Box width={320}>
-                    <Typography variant='h6' color='primary.dark'>
-                      tên file:{' '}
+                  <Box>
+                    <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
+                      Tên file:{' '}
                       <Typography component='span' variant='h6' color='grey.800'>
                         {fileName}
                       </Typography>
                     </Typography>
-                    <Typography variant='h6' color='primary.dark'>
-                      kích thước:{' '}
+                    <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>
+                      Kích thước:{' '}
                       <Typography component='span' variant='h6' color='grey.800'>
                         {totalSize}
                       </Typography>
@@ -255,8 +257,8 @@ function ModalUpload(props: ModalUploadPropsType) {
               <Skeleton />
             )}
           </Box>
-          <Box my={10}>
-            <TitleManager fontWeight={400} component={'i'} color={'error.main'}>
+          <Box mt={10}>
+            <TitleManager fontWeight={400} variant='body1'>
               Chú thích*: Mẫu Excel bao gồm các cột:{' '}
             </TitleManager>
             <Box mt={4}>{checkModel(entityUpload)}</Box>

@@ -12,7 +12,7 @@ function SheetTranscriptAdvisor(props: any) {
     useGlobalContextReview();
 
   return (
-    <Paper sx={{ p: 4, overflowY: 'auto', height: 650 }} elevation={3}>
+    <Paper sx={{ px: 4, overflowY: 'auto', height: '100%' }} elevation={1}>
       {/* 
       <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
         <Typography textAlign={'center'} variant='body2' color='initial'>
@@ -32,7 +32,7 @@ function SheetTranscriptAdvisor(props: any) {
           <br />
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          2. Instructors:
+          2. Instructors: {lecturerSupportName}
           <br />
         </Typography>
         <Typography my={3} variant='body1' color='initial'>

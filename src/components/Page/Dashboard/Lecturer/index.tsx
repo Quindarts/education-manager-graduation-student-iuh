@@ -7,11 +7,11 @@ import StatisticManager from './Statistic';
 import CalendarSection from './Calendar';
 import { useStudent } from '@/hooks/api/useQueryStudent';
 
-export default function Dashboard() {
+export default function DashboardOfLecturer() {
   const { lecturerStore } = useAuth();
   const { handleGetCountOfStudent } = useStudent();
   const { data: fetchCountStudent } = handleGetCountOfStudent();
-  
+
   return (
     <Box sx={{ px: 10, bgcolor: 'white', py: 2, minHeight: '60vh' }}>
       <>

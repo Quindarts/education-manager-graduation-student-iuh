@@ -42,14 +42,13 @@ function TableManagementGroupLecturer(props: any) {
       renderCell: (params: any) => {
         return (
           <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar sizes='small' src={params.row.avatar} />
             <Box>
               <Typography fontWeight={600} variant='body1'>
                 {params.row.fullName}
               </Typography>
 
               <Typography>
-                Mã SV: {'  '}
+                Mã GV: {'  '}
                 <Typography component={'span'}>{params.row.username}</Typography>
               </Typography>
             </Box>

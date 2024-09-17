@@ -22,23 +22,27 @@ function CardGroupLecturer(props: any) {
       <CardMedia
         component='img'
         alt='green iguana'
-        height={50}
-        width={50}
+        height={75}
+        width={100}
         sx={{
           objectFit: 'contain',
         }}
-        image='/images/group_student_2.webp'
+        image='/images/group_student_3.webp'
       />
       <CardContent>
         <Typography gutterBottom variant='h5' color='primary' fontWeight={600} component='div'>
           {group.name}
         </Typography>
-        <Typography variant='body1' color='text.primary'>
-          Phòng chấm điểm : Zoom 1235 3828 1282
+        <Typography variant='h6' fontWeight={'500'} color=''>
+          Thành viên :
         </Typography>
-        <Typography variant='body1' color='text.primary'>
-          Số lượng thành viên : {group?.members.length} /2
-        </Typography>
+        {group?.members.map((mem: any,index) => (
+          <Box mb={2}>
+            <Typography variant='body1' color='grey.600'>
+              GV{index + 1}: {mem.fullName}
+            </Typography>
+          </Box>
+        ))}
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>
         <Box></Box>

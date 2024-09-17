@@ -13,12 +13,11 @@ import GuidePage from '@/page/Guide';
 import Toolconvert from '@/page/tool';
 const DetailGroupSupportPage = lazy(() => import('@/page/DetailGroupSupport'));
 const RegisterTemplate = lazy(() => import('@/page/auth/register'));
-const DashboardTemplate = lazy(() => import('@/page/Dashboard/Dashboard'));
+const DashboardTemplate = lazy(() => import('@/page/Dashboard'));
 const TermTemplate = lazy(() => import('@/page/Term'));
 const StudentTemplate = lazy(() => import('@/page/Student'));
 const TopicTemplate = lazy(() => import('@/page/Topic'));
 const ReviewManagerTemplate = lazy(() => import('@/page/ReviewManager'));
-const GroupGradingAssemblyTemplate = lazy(() => import('@/page/GroupLecturer/GroupAssembly'));
 const LecturerManagementTemplate = lazy(() => import('@/page/Lecturer/Management'));
 const DetailsLecturerTemplate = lazy(() => import('@/page/Lecturer/Details'));
 const DetailLecturerTermTemplate = lazy(() => import('@/page/LecturerTerm/Details'));
@@ -99,7 +98,6 @@ function Routing() {
           element={<GroupLecturerManagementTemplate />}
         />
         <Route path={APP_ROUTES.GROUP_LECTURER.ME} element={<MyGroupLecturerTemplate />} />
-        <Route path={APP_ROUTES.GROUP_LECTURER.REPORT} element={<GroupGradingAssemblyTemplate />} />
         <Route path={APP_ROUTES.GROUP_LECTURER.CREATE} element={<CreateGroupLecturerTemplate />} />
         <Route path={APP_ROUTES.GROUP_LECTURER.DETAIL} element={<GroupLecturerDetailTemplate />} />
         <Route

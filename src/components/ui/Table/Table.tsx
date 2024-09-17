@@ -180,6 +180,9 @@ export default function Table(props: Props) {
                   { _id: '15', name: 'Hiển thị 15 dòng' },
                   { _id: '20', name: 'Hiển thị 20 dòng' },
                   { _id: '30', name: 'Hiển thị 30 dòng' },
+                  { _id: '50', name: 'Hiển thị 50 dòng' },
+                  { _id: '100', name: 'Hiển thị 100 dòng' },
+                  { _id: '300', name: 'Hiển thị 300 dòng' },
                 ]}
               />
             </Box>

@@ -27,7 +27,10 @@ function GroupLecturerManagementPage() {
         {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (
-          <TableManagamentGroupLecturer rows={convertGroupLecturerTable(data?.groupLecturers)} />
+          <TableManagamentGroupLecturer
+            groupType={checkType}
+            rows={convertGroupLecturerTable(data?.groupLecturers)}
+          />
         )}
       </Box>
     </Paper>

@@ -25,7 +25,8 @@ export enum QueryTopic {
     getTopicToExport = "getTopicToExport",
     getTopicsByLecturerTermId = "getTopicsByLecturerTermId",
     //LECTURER
-    getTopicsByMe = 'getTopicsByMe'
+    getTopicsByMe = 'getTopicsByMe',
+    getTopicsByGroupLecturerAssigned = "getTopicsByGroupLecturerAssigned"
 }
 export const useTopic = () => {
 
@@ -70,7 +71,6 @@ export const useTopic = () => {
         })
 
     }
-
     const handleSearchTopic = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
         getQueryField('page') ? getQueryField('page') : setPage(1)
@@ -119,6 +119,12 @@ export const useTopic = () => {
         return useQuery([QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id], () => TopicServices.getTopicsByLecturerByTerm(lecturerStore.me.user.id, termStore.currentTerm.id), {
             staleTime: Infinity, onSuccess(data) {
             }
+        })
+    }
+    //[GET TOPIC BY LECTURER ID]
+    const handleGetTopicsByGroupLecturerAssigned = (groupId: string) => {
+        return useQuery([QueryTopic.getTopicsByGroupLecturerAssigned, groupId], () => TopicServices.getTopicsByGroupLecturerAssigned(groupId), {
+            enabled: !!groupId
         })
     }
     //[GET BY TERM, LECTURER]
@@ -232,6 +238,7 @@ export const useTopic = () => {
         handleTopicsByTermByMajor,
         handleGetTopicToExport,
         handleTopicsByLecturerByTerm,
+        handleGetTopicsByGroupLecturerAssigned,
         handleTopicsByMe,
         handleUiRender,
         handleTopicById,

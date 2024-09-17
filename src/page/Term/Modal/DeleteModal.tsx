@@ -2,11 +2,20 @@ import Modal from '@/components/ui/Modal';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
+import TitleManager from '@/components/ui/Title';
 
 function DeleteModal(props: any) {
   const { onClose, open } = props;
   return (
     <Modal onClose={onClose} open={open}>
+      <TitleManager
+        mb={10}
+        variant='h6'
+        icon='ant-design:field-time-outlined'
+        textTransform={'uppercase'}
+      >
+        Xóa học kì
+      </TitleManager>
       <Box
         width='100%'
         display='flex'

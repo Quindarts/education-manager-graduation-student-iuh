@@ -71,9 +71,8 @@ function ExportWordModal(props: ExportWordModalProps) {
   }, [open]);
   return (
     <Modal maxWidth='lg' open={open} onClose={onClose}>
-      <Box px={6} sx={{ height: '94vh' }} py={6}>
-        <TitleManager my={6}>
-          <Icon width={16} icon='vscode-icons:file-type-word2' />
+      <Box sx={{ height: '94vh' }} pb={6}>
+        <TitleManager mx={10} variant='h6' textTransform={'uppercase'} icon='vscode-icons:file-type-word2'>
           Xuất phiếu Chấm điểm {getTypeEvaluation(typeReport)}
         </TitleManager>
         <Box sx={{ display: 'flex', gap: 10, px: 10, py: 6 }}>
@@ -91,8 +90,8 @@ function ExportWordModal(props: ExportWordModalProps) {
             {typeReport === 'REVIEWER' && <SheetTranscriptReviewer evaluations={evaluations} />}
             {typeReport === 'REPORT' && <SheetTranscriptCouncil evaluations={evaluations} />}
           </Box>
-          <Paper elevation={2} sx={{ width: '50%', p: 10, minHeight: 200 }}>
-            <TitleManager>Tải xuống phiếu chấm</TitleManager>
+          <Paper elevation={1} sx={{ width: '50%', px: 4, pt: 2, minHeight: 200 }}>
+            <TitleManager mb={2}>Chỉnh sửa thông tin file tải xuống</TitleManager>
             <Formik
               initialValues={{
                 fileName: fileName + `${groupStudentName ? '_' + groupStudentName : ''}`,
@@ -101,7 +100,7 @@ function ExportWordModal(props: ExportWordModalProps) {
             >
               {({ values, handleBlur }) => (
                 <Form>
-                  <Box>
+                  <Box sx={{ mx: 2 }}>
                     <Box>
                       <CustomTextField
                         placeholder='VD: GVPB_PhieuChamDiem_CuoiKy_KLTN'
@@ -116,7 +115,7 @@ function ExportWordModal(props: ExportWordModalProps) {
                       />
                     </Box>
                     <Box>{permissions.includes('crud') && <BaseExportDataOfLecturer />}</Box>
-                    <Box mt={4}>
+                    <Box mt={4} mx={2}>
                       <Button
                         variant='contained'
                         type={'submit'}

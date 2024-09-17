@@ -16,8 +16,13 @@ function TermDetail(props: any) {
   const { data, isLoading, isFetching } = handelGetTermById(termId);
   return (
     <Modal open={open} onClose={onClose}>
-      <Box p={10}>
-        <TitleManager textTransform={'uppercase'} mb={10} variant='h4'>
+      <Box pb={5} px={10}>
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='ant-design:field-time-outlined'
+          textTransform={'uppercase'}
+        >
           Thông tin chi tiết Học kì
         </TitleManager>
         {isLoading || isFetching ? (

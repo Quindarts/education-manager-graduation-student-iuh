@@ -20,8 +20,8 @@ const convertToDropValue = (data: any[]) => {
     let newArray = [];
     newArray = data;
     return newArray.map((v: any) => ({
-      label: v.lecturer.fullName + ' - ' + v.lecturer.username,
-      id: v.lecturer.id,
+      label: v?.lecturer?.fullName + ' - ' + v?.lecturer?.username,
+      id: v?.lecturer?.id,
     }));
   }
 };

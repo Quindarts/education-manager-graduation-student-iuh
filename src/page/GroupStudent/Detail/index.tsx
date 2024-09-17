@@ -22,7 +22,7 @@ function GroupStudentDetailPage() {
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager icon='mingcute:group-fill'>{data.groupStudent.name}</TitleManager>
+          <TitleManager icon='mingcute:group-fill'>{data.groupStudent.info.name}</TitleManager>
           <Box mt={4}>
             <TabPanelUI groupStudent={data.groupStudent} />
           </Box>

@@ -8,6 +8,7 @@ import TableManagementGroupLecturer from '@/page/DetailGroupLecturer/Management/
 import { Paper, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
 import CustomTextField from '@/components/ui/CustomTextField';
+import TableManagementGroupAssign from '@/page/DetailGroupLecturer/GroupAssign/Table';
 
 function TabPanelUI(props: any) {
   const { groupLecturer } = props;
@@ -16,121 +17,18 @@ function TabPanelUI(props: any) {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const type = groupLecturer?.typeGroup;
   return (
     <Box sx={{ width: '100%', typography: 'h4' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'primary.main' }}>
           <TabList onChange={handleChange} aria-label=''>
-            <Tab label='Thông tin chung' value='1' />
+            <Tab label='Danh sách nhóm sinh viên được phân chấm.' value='1' />
             <Tab label='Danh sách giảng viên' value='2' />
           </TabList>
         </Box>
 
         <TabPanel value={'1'}>
-          {type === 'REVIEWER' ? (
-            <Paper elevation={2} sx={{ px: 10, py: 6 }}>
-              <Typography variant='h6' fontWeight='bold' color='dark'>
-                <Icon icon='el:list-alt' />
-                Danh sách đề tài chấm điểm của nhóm
-              </Typography>
-              <Box mx={4} my={4}>
-                <Typography variant='body1' color='initial'>
-                  Đề tài 1: Xây dựng Website bán vé tàu online
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Đề tài 2:Tìm hiểu công nghệ WPF và ứng dụng xây dựng game ghép hình cho trẻ em
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Đề tài 3: Tạo ra ứng dụng về du lịch và dịch vụ bán sản phẩm.
-                </Typography>
-              </Box>
-              <Box my={4}>
-                <Typography variant='h6' mb={4} fontWeight='bold' color='dark'>
-                  <Icon icon='tdesign:time' /> Thời gian chấm phản biện
-                </Typography>
-                <Box mx={4}>
-                  <Typography variant='body1' color='initial'>
-                    Đề tài 1: 13h Ngay 19/7/2024
-                  </Typography>
-                  <Typography variant='body1' color='initial'>
-                    Đề tài 2: 14h Ngay 19/7/2024
-                  </Typography>
-                  <Typography variant='body1' color='initial'>
-                    Đề tài 3: 16h Ngay 19/7/2024
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box my={4}>
-                <Typography variant='h6' mb={4} fontWeight='bold' color='dark'>
-                  <Icon width={16} style={{ marginRight: 5 }} icon='ph:link-bold' />
-                  Link phòng trực tuyến
-                </Typography>
-                <CustomTextField
-                  label={'Đề tài số 1'}
-                  placeholder='https://zoom.us/fr'
-                  value={'https://zoom.us/fr'}
-                />
-                <CustomTextField
-                  label={'Đề tài số 2'}
-                  placeholder='https://zoom.us/fr'
-                  value={'https://zoom.us/fr'}
-                />{' '}
-                <CustomTextField
-                  label={'Đề tài số 3'}
-                  placeholder='https://zoom.us/fr'
-                  value={'https://zoom.us/fr'}
-                />
-              </Box>
-
-              <Box></Box>
-            </Paper>
-          ) : (
-            <Paper elevation={2} sx={{ px: 10, py: 6 }}>
-              <Typography variant='h6' color='primary'>
-                <Icon icon='el:list-alt' />
-                Danh sách đề tài chấm điểm của nhóm
-              </Typography>
-              <Box mx={4} my={4}>
-                <Typography variant='body1' color='initial'>
-                  Đề tài 1: Xây dựng Website bán vé tàu online
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Đề tài 2:Tìm hiểu công nghệ WPF và ứng dụng xây dựng game ghép hình cho trẻ em
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Đề tài 3: Tạo ra ứng dụng về du lịch và dịch vụ bán sản phẩm.
-                </Typography>
-              </Box>
-              <Box my={4}>
-                <Typography variant='h6' color='primary'>
-                  <Icon icon='tdesign:time' /> Thời gian chấm
-                </Typography>
-                <Box mx={4}>
-                  <Typography variant='body1' color='initial'>
-                    Đề tài 1: 13h Ngay 19/7/2024
-                  </Typography>
-                  <Typography variant='body1' color='initial'>
-                    Đề tài 2: 14h Ngay 19/7/2024
-                  </Typography>
-                  <Typography variant='body1' color='initial'>
-                    Đề tài 3: 16h Ngay 19/7/2024
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box my={4}>
-                <Typography variant='h6' color='primary'>
-                  <Icon icon='ic:sharp-meeting-room' />
-                  Phòng chấm
-                </Typography>
-                <CustomTextField label={'Thông tin phòng'} placeholder='A2.03' value={'A2.03'} />
-              </Box>
-
-              <Box></Box>
-            </Paper>
-          )}
+          <TableManagementGroupAssign rows={groupLecturer?.groupStudents} />
         </TabPanel>
         <TabPanel value={'2'}>
           <TableManagementGroupLecturer rows={groupLecturer?.members} />

@@ -20,8 +20,6 @@ function ScoreStudentPage() {
   const { hanleGetEvalutaionsForScoring, handleGetUnTranscriptGroupStudentsByType } =
     useQueryTranscript();
 
-  const { handleGetGroupStudentByLecturerByTerm } = useGroupStudent();
-
   const { data, isSuccess } = hanleGetEvalutaionsForScoring(checkTypeEvaluation(typeScoreStudent));
 
   const { data: groups, isLoading: loadingGrStudent } =
@@ -39,10 +37,10 @@ function ScoreStudentPage() {
             position: 'static !important',
             top: 0,
           }}
-          width={420}
+          width={370}
         >
           <Box mb={4} display={'flex'} justifyContent={'space-between'} gap={10}>
-            <TitleManager textTransform={'uppercase'} icon='quill:list'>
+            <TitleManager icon='quill:list'>
               Nhóm sinh viên{' '}
             </TitleManager>
             <Box width={170}>
@@ -71,7 +69,7 @@ function ScoreStudentPage() {
             )}
           </Box>
         </Box>
-        <Box sx={{ width: 'calc(100% - 420px)', minHeight: 570 }}>
+        <Box sx={{ width: 'calc(100% - 320px)', minHeight: 570 }}>
           {!currentDataRow ? (
             <Box display={'flex'} flexDirection={'column'} height={570}>
               <Box

@@ -30,9 +30,9 @@ function EditModal(props: any) {
   const currentRole = handleUiRender();
 
   return (
-    <Modal maxWidth='xl' open={open} onClose={onClose}>
-      <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+    <Modal maxWidth='md' open={open} onClose={onClose}>
+      <Box pb={5} px={10}>
+        <TitleManager mb={10} variant='h6' icon='material-symbols:edit-document' textTransform={'uppercase'}>
           Cập nhật thông tin đề tài
         </TitleManager>
         {isLoading || isFetching ? (

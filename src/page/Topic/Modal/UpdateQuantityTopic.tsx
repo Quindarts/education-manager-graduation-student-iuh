@@ -23,6 +23,9 @@ function UpdateQuantityTopicModal(props: any) {
 
   return (
     <Modal onClose={onClose} open={open}>
+      <TitleManager px={10} textTransform={'uppercase'} icon='ic:sharp-change-circle' variant='h6'>
+        Cập nhật (tất cả)  số lượng nhóm đăng ký đề tài
+      </TitleManager>
       <Box
         width='100%'
         display='flex'
@@ -32,9 +35,9 @@ function UpdateQuantityTopicModal(props: any) {
         px={10}
         py={12}
       >
-        <TitleManager textTransform={'uppercase'} variant='h3'>
-    Cập nhật số lượng của toàn bộ đề tài
-        </TitleManager>
+        <Box my={10} borderRadius='50%' padding={10} sx={{ background: 'rgba(255,49,111,0.2)' }}>
+          <Icon color='#b31d1d82' height={70} width={70} icon='ic:sharp-change-circle' />{' '}
+        </Box>
         <Box width={'100%'}>
           <CustomTextField
             onChange={(e: any) => {
@@ -44,7 +47,7 @@ function UpdateQuantityTopicModal(props: any) {
               setQuantity(e.target.value);
             }}
             type='number'
-            label='Số lượng'
+            label='Nhập vào số lượng thay đổi'
           />
         </Box>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
