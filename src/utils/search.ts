@@ -10,14 +10,13 @@ export const handleSearch = (
     typeSearch: string, //'topicName' | 'fullName'
     keywords: string,
 ) => {
-    console.log("🚀 ~ typeSearch:", typeSearch)
-    console.log("🚀 ~ keywords:", keywords)
+
     if (keywords.length === 0) {
         return data;
     }
-    let query = removeVietnameseTones(keywords.toLowerCase());
+    let query = removeVietnameseTones(keywords?.toLowerCase());
     return data.filter((gr: any) => {
-        let val = removeVietnameseTones(gr[`${typeSearch}`].toLowerCase())
+        let val = removeVietnameseTones(gr[`${typeSearch}`]?.toLowerCase())
         return val.includes(query)
     });
 };

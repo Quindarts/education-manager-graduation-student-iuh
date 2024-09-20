@@ -55,8 +55,7 @@ function SearchInput({
           label='Tìm kiếm theo'
           onChange={(e) => setSearchType(e.target.value)}
         >
-          <MenuItem value='topicName'>Tên sinh viên</MenuItem>
-          <MenuItem value='lecturerSupportName'>Giảng viên hướng dẫn</MenuItem>
+          {/* <MenuItem value='lecturerSupportName'>Giảng viên hướng dẫn</MenuItem> */}
           <MenuItem value='topicName'>Tên đề tài</MenuItem>
         </Select>
       </FormControl>

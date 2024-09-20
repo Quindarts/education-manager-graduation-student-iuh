@@ -15,7 +15,6 @@ const useAssign = () => {
     const { termStore } = useTerm();
     const termId = termStore.currentTerm.id
     const handletGetGroupStudentNoAssignByType = (type: string) => {
-
         return useQuery([QueryKeysAssign.getGroupStudentNoAssignByType, type, termId], () => AssignServices.getGroupStudentNoAssign(type, termId))
     }
     const onCreateAssignByType = (type: string, groupLecturerId: string) => {
@@ -25,6 +24,8 @@ const useAssign = () => {
                 queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type, termId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId])
+                queryClient.invalidateQueries([[QueryKeysAssign.getExportAssignGroup, termId, type]])
+
             },
             onError(err: any) {
                 enqueueSnackbar(err.message, { variant: "error" })
@@ -38,6 +39,7 @@ const useAssign = () => {
                 queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type, termId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId])
+                queryClient.invalidateQueries([[QueryKeysAssign.getExportAssignGroup, termId, type]])
             },
             onError(err: any) {
                 enqueueSnackbar(err.message, { variant: "error" })

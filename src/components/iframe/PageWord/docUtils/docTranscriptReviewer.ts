@@ -10,6 +10,8 @@ export default function docTranscriptReviewer({
     evaluations,
     fileType = 'many'
 }: any) {
+    console.log("🚀 ~ groupStudentName:", groupStudentName)
+
     const fileName = 'Phiếu chấm_Nhóm sv_' + groupStudentName + '_' + evaluatorFullName
     const rows = convertRowEvaluations(evaluations);
     const lineSpacing = 200
@@ -118,7 +120,7 @@ export default function docTranscriptReviewer({
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `4. Evaluator's full name: ${evaluatorFullName.split('_')[1]}`,
+                                text: `4. Evaluator's full name: ${fileType === 'many' ? evaluatorFullName.split('_')[1] : evaluatorFullName}`,
                                 size: 24,
                             }),
                         ],

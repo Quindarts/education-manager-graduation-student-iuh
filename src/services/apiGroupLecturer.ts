@@ -1,6 +1,6 @@
 import axiosConfig from "./axiosConfig"
 export enum TypeGroupLecturer {
-    SESSION_HOST = "session_host",
+    REPORT = "report",
     REVIEWER = 'reviewer'
 }
 const URL = '/api/v1/group-lecturers'
@@ -15,8 +15,12 @@ export const getCountOfGroupLecturerByLecturer: any = (termId: string) => {
 }
 
 //[GET]
-export const getGroupLecturerByType: any = async (termId: string, type: TypeGroupLecturer) => {
+export const getGroupLecturerByType: any = async (termId: string, type: string) => {
     return axiosConfig.get(`${URL}?termId=${termId}&type=${type}`)
+}
+//[GET]
+export const getGroupLecturerByTypeEvaluation: any = async (termId: string, type: string) => {
+    return axiosConfig.get(`${URL}/evaluation?termId=${termId}&type=${type}`)
 }
 export const searchGroupLecturerByName: any = async (termId: string, name: string) => {
     return axiosConfig.get(`${URL}/search?termId=${termId}&name=${name}`)

@@ -1,13 +1,16 @@
 import DropDown from '@/components/ui/Dropdown';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
-import SearchInput from '@/page/GroupLecturer/Assign/SearchInput';
 import { handleSearch } from '@/utils/search';
 import { Box, Button, Checkbox, Typography } from '@mui/material';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PreviewModal from './PreviewModal';
 import TitleManager from '@/components/ui/Title';
 import { getFileNameToExportDocx } from '@/utils/validations/evaluation.validation';
+import SearchInput from './SearchInput';
+import { useAuth } from '@/hooks/api/useAuth';
+import { RoleCheck } from '@/types/enum';
+import { TypeEvaluation } from '@/services/apiEvaluation';
 
 const processingDataResponse = (data: any[]) => {
   if (!data) {
@@ -88,7 +91,8 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
   //TODO CALL API
   const { handleGetGroupLecturerById } = useGroupLecturer();
   const { handleGetDataToExportReportDocx } = useEvaluation();
-
+  const { lecturerStore } = useAuth();
+  const currentRole = lecturerStore.currentRoleRender;
   const {
     data: fetchGrLecturer,
     isLoading: loadingGrL,
@@ -99,10 +103,16 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
   useEffect(() => {
     setLoading(true);
     handleGetDataToExportReportDocx(typeEvaluation).then((data) => {
-      setGroupLecturersDropdown(processingDataResponse(data.groupLecturers));
-      changeCurrentGrLecturers(data.groupLecturers);
+      const checked = typeEvaluation === TypeEvaluation.REVIEWER ? typeEvaluation : 'REPORT';
+      const dataConvert =
+        currentRole === RoleCheck.LECTURER
+          ? data.groupLecturers.filter((gr: any) => gr.type.includes(checked))
+          : data.groupLecturers;
+
+      setGroupLecturersDropdown(processingDataResponse(dataConvert));
+      changeCurrentGrLecturers(dataConvert);
       setGroupLecturers(
-        data.groupLecturers.map((gr) => {
+        dataConvert.map((gr) => {
           if (gr.groupLecturerId) {
             return {
               ...gr,

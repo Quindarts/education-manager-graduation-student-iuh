@@ -18,6 +18,7 @@ interface SearchPropsType extends BoxProps {
   handleClearSearch: (isClear: boolean) => void;
   handleKeywords: (value: string) => void;
 }
+
 function SearchInput({
   sx,
   isClear,
@@ -56,7 +57,7 @@ function SearchInput({
           onChange={(e) => setSearchType(e.target.value)}
         >
           <MenuItem value='topicName'>Tên đề tài</MenuItem>
-          <MenuItem value='lecturerName'>Giảng viên HD</MenuItem>
+          <MenuItem value='fullName'>Giảng viên HD</MenuItem>
         </Select>
       </FormControl>
       <TextField

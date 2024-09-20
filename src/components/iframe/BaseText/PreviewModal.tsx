@@ -21,6 +21,7 @@ function PreviewModal({
   const { handleUiRender } = useEvaluation();
   const { lecturerStore } = useAuth();
   const meId = lecturerStore.me.user.id;
+
   return (
     <Modal maxWidth={handleUiRender().includes('crud') ? 'md' : 'xl'} open={open} onClose={onClose}>
       <TitleManager icon='fontisto:preview' mx={10}>

@@ -9,6 +9,7 @@ import { EvaluationLecturer, GroupLecturerServiceKeys } from "@/page/ReviewManag
 import { useTerm } from './useQueryTerm';
 import { TypeGroupLecturer } from '@/services/apiGroupLecturer';
 import { useState } from 'react';
+import { TypeEvalution } from '@/types/entities/assign';
 
 export enum QueryEvaluation {
     getEvaluationByType = 'getEvaluationByType',
@@ -46,8 +47,8 @@ const useEvaluation = () => {
                 break;
 
             case RoleCheck.HEAD_LECTURER:
-                apiName = 'getGroupLecturerByType'
-                params = [termId, TypeGroupLecturer[typeEvaluation.toUpperCase()]]
+                apiName = 'getGroupLecturerByTypeEvaluation'
+                params = [termId, TypeEvalution[typeEvaluation.toUpperCase()]]
                 break;
         }
         const res = await EvaluationAPIClass.apiGetGroupLecturer(apiName, params);

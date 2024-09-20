@@ -23,11 +23,30 @@ import {
   toggleDataByTransferId,
 } from './context';
 import SearchInput from './SearchInput';
-import { checkTypeEvaluation } from '@/utils/validations/transcript.validation';
-import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
-import { useNavigate } from 'react-router-dom';
-import { handleSearch } from '@/utils/search';
 
+import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
+
+export function removeVietnameseTones(str: string) {
+  return str
+    ?.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D');
+}
+export const handleSearch = (
+  data: any[],
+  typeSearch: string, //'topicName' | 'fullName'
+  keywords: string,
+) => {
+  if (keywords.length === 0) {
+    return data;
+  }
+  let query = removeVietnameseTones(keywords?.toLowerCase());
+  return data.filter((gr: any) => {
+    let val = removeVietnameseTones(gr[`${typeSearch}`]?.toLowerCase());
+    return val.includes(query);
+  });
+};
 function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: any) {
   //TODO: [Api hooks]
   const { handleGetGroupLecturerById } = useGroupLecturer();
