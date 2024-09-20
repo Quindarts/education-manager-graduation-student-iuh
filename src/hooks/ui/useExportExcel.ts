@@ -3,9 +3,7 @@ import { GroupStudentClassExportExcel } from "@/components/ui/Export/Entity/Grou
 import { LecturerClassExportExcel } from "@/components/ui/Export/Entity/Lecturer";
 import { StudentClassExportExcel } from "@/components/ui/Export/Entity/Student";
 import { TopicClassExportExcel } from "@/components/ui/Export/Entity/Topic";
-import { FreeBreakfastSharp } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
-const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
 const useExportExcel = () => {
     const { enqueueSnackbar } = useSnackbar()
@@ -52,6 +50,8 @@ const useExportExcel = () => {
                         sheetName,
                         headerColumn,
                     )
+
+
                     GrStudentExport.setData(data)
                     GrStudentExport.customizeSheet()
                     GrStudentExport.onExport()
@@ -62,12 +62,20 @@ const useExportExcel = () => {
                         sheetName,
                         headerColumn,
                     )
+                    // console.log("🚀 ~ onExport ~ data:", data)
+
+                    // const rs = data.map(tv => {
+                    //     console.log("🚀 ~ rs ~ tv:", tv['HD TV'])
+                    //     const HDTV = tv['HD TV'].reduce((acc, lec, index) => {
+                    //         acc[`HD TV ${index + 1}`] = lec;
+                    //         return acc;
+                    //     }, {})
+                    //     return { ...tv, HDTV }
+                    // });
                     GrAssignExport.setData(data)
                     GrAssignExport.customizeSheet()
                     GrAssignExport.onExport()
             }
-
-
         }
     }
     return {

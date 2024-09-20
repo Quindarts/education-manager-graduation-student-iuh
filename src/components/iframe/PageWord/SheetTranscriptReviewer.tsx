@@ -2,16 +2,23 @@ import { Box, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from './style';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
 
-function SheetTranscriptReviewer(props: any) {
-  const { evaluations } = props;
+function SheetTranscriptReviewer({
+  topicName,
+  groupStudentName,
+  students,
+  evaluatorFullName,
+  lecturerSupport,
+  evaluations,
+}: any) {
+
   return (
-    <Paper sx={{ p: 4, overflowY: 'auto', height: 650 }} elevation={3}>
+    <Paper sx={{ px: 4, overflowY: 'auto', height: 'auto' }} elevation={0}>
       <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
-        <Typography textAlign={'center'} variant='body2' color='initial'>
+        {/* <Typography textAlign={'center'} variant='body2' color='initial'>
           <b>INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY</b>
           <br /> FACULTY OF INFORMATION TECHNOLOGY <br />
           =======//======
-        </Typography>
+        </Typography> */}
       </Box>
       <Box>
         <Typography textAlign={'center'} my={3} variant='body1' fontWeight={800} color='initial'>
@@ -20,23 +27,23 @@ function SheetTranscriptReviewer(props: any) {
       </Box>
       <Box mx={6}>
         <Typography my={3} variant='body1' color='initial'>
-          1. Topic name:
-          <br />
+          1. Topic name: {topicName}
+        </Typography>
+        <Typography my={3} variant='body1' color='initial'>
+          2. Instructors: {lecturerSupport}
           <br />
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          2. Instructors:
+          3. Team: {groupStudentName}
           <br />
+          First student name: {students && students[0]?.fullName}            Student code 1:{' '}
+          {students && students[0]?.username}
+          <br />
+          Second student name:{students && students[1]?.fullName}            Student code 2:{' '}
+          {students && students[1]?.username}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          3. Team:
-          <br />
-          First student name: Student code 1:
-          <br />
-          Second student name: Student code 2:
-        </Typography>
-        <Typography my={3} variant='body1' color='initial'>
-          4. Evaluator's full name:
+          4. Evaluator's full name:  {' '} {evaluatorFullName}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
           5. Role of the evaluator:  Instructor  Board member{' '}
@@ -85,7 +92,7 @@ function SheetTranscriptReviewer(props: any) {
           <Typography my={3} variant='body2' fontWeight={'bold'} color='initial'>
             Other comments:
           </Typography>
-          <Typography variant='body1' color='initial'>
+          {/* <Typography variant='body1' color='initial'>
             ....................................................................................................................................................................................
             ....................................................................................................................................................................................
             ....................................................................................................................................................................................
@@ -100,8 +107,8 @@ function SheetTranscriptReviewer(props: any) {
               <br />
               <br />
               .........
-            </Typography>
-          </Box>
+            </Typography> */}
+          {/* </Box> */}
         </Box>
       </Box>
     </Paper>

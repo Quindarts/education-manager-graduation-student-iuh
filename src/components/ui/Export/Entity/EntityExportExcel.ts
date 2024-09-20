@@ -23,7 +23,6 @@ export abstract class EntityExportExcel {
             FileSaver.saveAs(container, this.fileName + '.xlsx');
             return
         } catch (error) {
-            console.log("🚀 ~ EntityExportExcel ~ onExport ~ error:", error)
         }
     }
     public getSheet = (): Worksheet => {

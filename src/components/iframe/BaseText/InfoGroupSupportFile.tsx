@@ -1,42 +1,32 @@
 import DropDown from '@/components/ui/Dropdown';
+
+import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import useGroupSupport from '@/hooks/api/useQueryGroupSupport';
 import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import { useGlobalContextReview } from '@/page/ReviewManager/Context';
 import { Box, Typography } from '@mui/material';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
-const convertGroupStudent = (groups: any) => {
-  let arr = [];
-  if (!groups) {
-    return [];
-  } else {
-    groups.map((group: any) => {
-      arr.push({
-        _id: group.groupStudentId,
-        name: group.groupStudentName,
-      });
-    });
-  }
-  return arr;
-};
-
-function BaseExportDataOfLecturer() {
-  const { handleGetMyGroupSupport } = useGroupSupport();
+//!: Chỉ export nhóm hướng dẫn
+function InfoGroupSupportFile() {
+  //TODO: HOOKS
+  const [currentGroup, setCurrentGroup] = useState('');
   const { handleSetGroupStudentId, handleSetContext } = useGlobalContextReview();
+
+  //TODO: CALL API
+  const { handleGetMyGroupSupport } = useGroupSupport();
+  const { handleGetMemberInGroupStudent } = useMemberGroupStudent();
+  const {
+    data: detailGroup,
+    isLoading: loadingMember,
+    isSuccess: successMember,
+  } = handleGetMemberInGroupStudent(currentGroup);
   const {
     data: groupFetch,
     isLoading: loadingGroup,
     isSuccess: successGroup,
     isFetching: fetchingGroup,
   } = handleGetMyGroupSupport();
-
-  const { handleGetMemberInGroupStudent } = useMemberGroupStudent();
-  const [currentGroup, setCurrentGroup] = useState('');
-  const {
-    data: detailGroup,
-    isLoading: loadingMember,
-    isSuccess: successMember,
-  } = handleGetMemberInGroupStudent(currentGroup);
 
   useLayoutEffect(() => {
     if (successMember === true && successGroup === true) {
@@ -68,7 +58,7 @@ function BaseExportDataOfLecturer() {
           <DropDown
             placeholder='Chọn nhóm sinh viên'
             label='Nhóm sinh viên đang hướng dẫn'
-            options={convertGroupStudent(groupFetch.groupStudents)}
+            options={convertGroups(groupFetch.groupStudents)}
             onChange={(e: any) => {
               setCurrentGroup(e.target.value);
               handleSetGroupStudentId(e.target.value);
@@ -116,5 +106,19 @@ function BaseExportDataOfLecturer() {
     </Box>
   );
 }
+const convertGroups = (groups: any) => {
+  let arr = [];
+  if (!groups) {
+    return [];
+  } else {
+    groups.map((group: any) => {
+      arr.push({
+        _id: group.groupStudentId,
+        name: group.groupStudentName,
+      });
+    });
+  }
+  return arr;
+};
 
-export default BaseExportDataOfLecturer;
+export default InfoGroupSupportFile;

@@ -55,12 +55,13 @@ function SearchInput({
           label='Tìm kiếm theo'
           onChange={(e) => setSearchType(e.target.value)}
         >
+          <MenuItem value='topicName'>Tên sinh viên</MenuItem>
+          <MenuItem value='lecturerSupportName'>Giảng viên hướng dẫn</MenuItem>
           <MenuItem value='topicName'>Tên đề tài</MenuItem>
-          <MenuItem value='lecturerName'>Giảng viên HD</MenuItem>
         </Select>
       </FormControl>
       <TextField
-        label={`Tìm kiếm theo ${searchType === 'topicName' ? 'tên đề tài' : 'Giảng viên'}`}
+        label={`Tìm kiếm theo ${searchType === 'topicName' ? 'Tên đề tài' : 'Giảng viên hướng dẫn'}`}
         variant='outlined'
         fullWidth
         value={searchTerm}

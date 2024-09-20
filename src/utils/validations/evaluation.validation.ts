@@ -10,7 +10,7 @@ export const getTypeEvaluation = (typeEvaluation: string) => {
     return;
 };
 
-export const getFileNameExportEvaluation = (typeEvaluation: string) => {
+export const getFileNameToExportDocx = (typeEvaluation: string) => {
     switch (typeEvaluation) {
         case 'ADVISOR':
             return 'HD_PhieuChamDiem_CuoiKy_KLTN';

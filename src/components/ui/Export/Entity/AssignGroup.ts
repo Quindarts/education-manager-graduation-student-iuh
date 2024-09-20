@@ -58,7 +58,7 @@ export class AssginGroupClassExport extends EntityExportExcel {
                             fgColor: { argb: 'FFFFFFFF' },
                         };
                         cell.font = {
-                            color: { argb: 'FF1F2EBE' }, // #1f2ebe
+                            color: { argb: 'FF1F2EBE' },
                             bold: true
                         };
                         cell.alignment = {
@@ -69,7 +69,6 @@ export class AssginGroupClassExport extends EntityExportExcel {
                 })
 
                 let groupValue = row.values[2];
-                console.log("🚀 ~ AssginGroupClassExport ~ this.getSheet ~ groupValue:", groupValue)
                 let address_cell = row.model.cells[1].address + '';
                 if (!groups[groupValue]) {
                     groups[groupValue] = [];
@@ -89,8 +88,6 @@ export class AssginGroupClassExport extends EntityExportExcel {
                 let index_start = 0
                 let startAddress = groups[group][index_start];
                 let endAddress = groups[group][index_end];
-                console.log("🚀 ~ AssginGroupClassExport ~ startAddress:", startAddress)
-                console.log("🚀 ~ AssginGroupClassExport ~ endAddress:", endAddress)
                 // Lấy phần chữ (A, B, C) 
                 let startAlpha = startAddress.slice(0, 1);
                 let endInt = _.toInteger(endAddress.substring(1));
@@ -113,7 +110,6 @@ export class AssginGroupClassExport extends EntityExportExcel {
         }
     }
     public customizeSheet(): void {
-        // this.getSheet().properties.defaultRowHeight = 30
         this.customizeHeaderColumn();
         this.customizeCells()
         this.customizeColumns()

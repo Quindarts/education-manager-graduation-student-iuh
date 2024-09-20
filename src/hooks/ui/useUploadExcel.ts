@@ -185,7 +185,7 @@ const useUploadExcel = (props: UploadHandler) => {
               variant: 'success',
             });
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", '', '',''] });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByLecturerTerm, me.id, termId] })
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, me.id, termId] })
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
             handleCloseUpload()
           }

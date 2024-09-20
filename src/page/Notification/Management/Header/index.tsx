@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import AddNotificationModal from '../Modal/AddModal';
 import TitleManager from '@/components/ui/Title';
 import { Box, Button, Paper, TextField, Tooltip } from '@mui/material';
 import DropDown from '@/components/ui/Dropdown';

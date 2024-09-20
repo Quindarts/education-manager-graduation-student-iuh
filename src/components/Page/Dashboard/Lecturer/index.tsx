@@ -1,11 +1,10 @@
 import { Box, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { useAuth } from '@/hooks/api/useAuth';
-
 import PromotionTextContent from '@/components/ui/PromotionTextContent';
 import StatisticManager from './Statistic';
-import CalendarSection from './Calendar';
 import { useStudent } from '@/hooks/api/useQueryStudent';
+import TimeLine from './Timeline';
 
 export default function DashboardOfLecturer() {
   const { lecturerStore } = useAuth();
@@ -26,21 +25,22 @@ export default function DashboardOfLecturer() {
           <Box my={4}>
             <StatisticManager />
           </Box>
-          <Box id='calendar' gap={8} display={'flex'} my={10}>
-            <Paper sx={{ px: 10, py: 4, width: '100%' }}>
+          <Box id='calendar' gap={8} display={'flex'} minHeight={400} my={10}>
+            <Paper sx={{ px: 10, py: 4 }}>
               {' '}
               <Typography mb={6} mt={10} variant='h6' fontWeight={'bold'} color='grey.700'>
-                Sự kiện
+                Các giai đoạn quản lý khóa luận
               </Typography>
-              <Box>
-                <PromotionTextContent />
+              <Box mt={40}>
+                <TimeLine />
               </Box>
             </Paper>
-            <Paper sx={{ px: 10, py: 4, width: '40%' }}>
-              <Typography mb={6} mt={10} variant='h6' fontWeight={'bold'} color='grey.700'>
-                Lịch làm việc của tôi{' '}
+            <Paper sx={{ px: 4, py: 4, width: 500 }}>
+              <Typography mb={6} mt={3} variant='h6' fontWeight={'bold'} color='grey.700'>
+                Tỉ lệ đậu/ rớt nhóm hướng dẫn
               </Typography>
-              <CalendarSection />
+              <PromotionTextContent />
+              {/* <PieChart /> */}
             </Paper>
           </Box>
         </Box>

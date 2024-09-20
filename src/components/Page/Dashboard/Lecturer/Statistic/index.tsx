@@ -15,7 +15,7 @@ function StatisticManager() {
   handleGetCountOfDashBoardLecturerRole();
   const stats = [
     {
-      title: 'Nhóm sinh viên đang hướng dẫn',
+      title: 'Nhóm sinh viên hướng dẫn',
       value: groupStudentCountOfLecturer,
       icon: <Group />,
       link: '/group-supports',
@@ -23,11 +23,21 @@ function StatisticManager() {
     {
       title: 'Tổng số đề tài của tôi',
       value: registeredTopicCountOfLecturer,
-      icon: <Person />,
+      icon: <Book />,
       link: '/topic-lecturers',
     },
-    { title: 'Số lượng đề tài được duyệt', value: approvedTopicCountOfLecturer, icon: <Book />, link: '/topic-lecturers' },
-    { title: 'Số nhóm giảng viên của tôi', value: grLecturerCountOfgrLecturer, icon: <School />, link: '/my-group-lecturers' },
+    {
+      title: 'Số  đề tài được duyệt',
+      value: approvedTopicCountOfLecturer,
+      icon: <Book />,
+      link: '/topic-lecturers',
+    },
+    {
+      title: 'Số nhóm giảng viên của tôi',
+      value: grLecturerCountOfgrLecturer,
+      icon: <Group />,
+      link: '/my-group-lecturers',
+    },
   ];
   return (
     <Box sx={{ maxWidth: '100%', width: '100%' }}>

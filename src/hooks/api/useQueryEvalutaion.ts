@@ -1,9 +1,14 @@
+import { setCurrentRoleRender } from '@/store/slice/lecturer.slice';
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 import { EvaluationDataRequestType, TypeEvaluation, createEvaluation, deleteEvaluation, getEvaluationById, getEvaluationByTermByType, updateEvaluation } from "@/services/apiEvaluation"
 import { useSnackbar } from "notistack"
 import { useMutation, useQuery } from "react-query"
 import { useAuth } from "./useAuth"
 import { RoleCheck } from "@/types/enum"
+import { EvaluationLecturer, GroupLecturerServiceKeys } from "@/page/ReviewManager/Entity/EvaluationManager"
+import { useTerm } from './useQueryTerm';
+import { TypeGroupLecturer } from '@/services/apiGroupLecturer';
+import { useState } from 'react';
 
 export enum QueryEvaluation {
     getEvaluationByType = 'getEvaluationByType',
@@ -11,11 +16,16 @@ export enum QueryEvaluation {
 }
 const useEvaluation = () => {
     const { enqueueSnackbar } = useSnackbar()
-
     const { lecturerStore } = useAuth();
+    const { termStore } = useTerm()
+    const termId = termStore.currentTerm.id
+    const lecturerId = lecturerStore.me.user.id
+    const currentRole = lecturerStore.currentRoleRender;
+
+    const [grLecturers, setGrLecturers] = useState()
 
     const handleUiRender = (): string[] => {
-        const currentRole = lecturerStore.currentRoleRender;
+
         var permissions: string[] = []
         if (currentRole === RoleCheck.HEAD_COURSE || currentRole === RoleCheck.HEAD_LECTURER) {
             permissions.push('all')
@@ -24,6 +34,24 @@ const useEvaluation = () => {
             permissions.push('crud')
         }
         return permissions
+    }
+    const handleGetDataToExportReportDocx = async (typeEvaluation: string) => {
+        const EvaluationAPIClass = new EvaluationLecturer(typeEvaluation);
+        let apiName: GroupLecturerServiceKeys
+        let params: string[];
+        switch (currentRole) {
+            case RoleCheck.LECTURER:
+                apiName = 'getGroupLecturerByLecturerId'
+                params = [termId, lecturerId]
+                break;
+
+            case RoleCheck.HEAD_LECTURER:
+                apiName = 'getGroupLecturerByType'
+                params = [termId, TypeGroupLecturer[typeEvaluation.toUpperCase()]]
+                break;
+        }
+        const res = await EvaluationAPIClass.apiGetGroupLecturer(apiName, params);
+        return res
     }
 
     const handleGetEvalutationByType = (termId?: string, type?: TypeEvaluation) => {
@@ -83,6 +111,7 @@ const useEvaluation = () => {
     }
     return {
         handleGetEvalutationByType,
+        handleGetDataToExportReportDocx,
         handleUiRender,
         handleGetEvaluationById,
         onUpdateEvaluationById,

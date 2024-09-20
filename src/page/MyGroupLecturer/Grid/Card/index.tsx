@@ -33,11 +33,9 @@ function CardGroupLecturer(props: any) {
         <Typography gutterBottom variant='h5' color='primary' fontWeight={600} component='div'>
           {group.name}
         </Typography>
+
         <Typography variant='body1' color='text.primary'>
-          Phòng chấm điểm : Zoom 1235 3828 1282
-        </Typography>
-        <Typography variant='body1' color='text.primary'>
-          Số lượng thành viên : {group?.members.length} /2
+          Số lượng thành viên : {group?.members.length}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>

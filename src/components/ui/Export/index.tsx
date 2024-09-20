@@ -62,7 +62,7 @@ const HEADER_TYPE = {
     { header: 'Họ tên SV', key: 'Họ tên SV', width: 24 },
     { header: 'GVHD', key: 'GVHD', width: 20 },
     { header: '#HĐPB', key: '#HĐPB', width: 22 },
-    { header: 'HD TV', key: 'HD TV', width: 20 },
+    { header: 'HD TV', key: 'HD TV', width: 40 },
     { header: 'Ghi chú', key: 'Ghi chú', width: 30 },
   ],
 };

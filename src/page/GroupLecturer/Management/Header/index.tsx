@@ -10,7 +10,6 @@ import CreateGroupModal from '../Modal/CreateGroupModal';
 
 function HeaderGroupLecturer(props: any) {
   const { handleTypeGroupLecturer } = props;
-  const navigate = useNavigate();
   const [currentTypeGroupLecturer, setCurrentTypeGroupLecturer] = useState('reviewer');
   useEffect(() => {
     handleTypeGroupLecturer(currentTypeGroupLecturer);

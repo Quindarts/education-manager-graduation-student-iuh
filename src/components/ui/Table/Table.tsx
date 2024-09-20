@@ -182,7 +182,7 @@ export default function Table(props: Props) {
                   { _id: '30', name: 'Hiển thị 30 dòng' },
                   { _id: '50', name: 'Hiển thị 50 dòng' },
                   { _id: '100', name: 'Hiển thị 100 dòng' },
-                  { _id: '300', name: 'Hiển thị 300 dòng' },
+                  { _id: '100', name: 'Hiển thị 300 dòng' },
                 ]}
               />
             </Box>

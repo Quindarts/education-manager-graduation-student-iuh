@@ -16,7 +16,6 @@ import useAssign from '@/hooks/api/useQueryAssign';
 import TitleManager from '@/components/ui/Title';
 import { Icon } from '@iconify/react';
 import {
-  handleSearch,
   isExistLecturerSupport,
   startInitGrHaveAssigned,
   startInitGrNeedAssign,
@@ -27,6 +26,7 @@ import SearchInput from './SearchInput';
 import { checkTypeEvaluation } from '@/utils/validations/transcript.validation';
 import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 import { useNavigate } from 'react-router-dom';
+import { handleSearch } from '@/utils/search';
 
 function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: any) {
   //TODO: [Api hooks]

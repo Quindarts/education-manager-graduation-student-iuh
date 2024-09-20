@@ -12,8 +12,8 @@ import { convertEvalutationTable } from '@/utils/convertDataTable';
 import { TypeEvaluation } from '@/services/apiEvaluation';
 import { Icon } from '@iconify/react';
 import AddEvaluationModal from './Modal/Add';
-import ExportWordModal from './Modal/ExportWord';
 import ContextReviewManager from './Context';
+import ExportWordModal from './Modal/ExportWord';
 
 function ReviewManagerPage() {
   const [currentTypeReview, setCurrentTypeReview] = useState(TypeEvaluation.ADVISOR);
@@ -95,19 +95,19 @@ function ReviewManagerPage() {
                   />
                 </>
               )}
-              {currentRole.includes('crud') && (
-                <Tooltip title='Xuất phiếu chấm'>
-                  <Button
-                    disabled={data?.evaluations.length < 1}
-                    size='small'
-                    color='success'
-                    variant='contained'
-                    onClick={handleOpenExportModal}
-                  >
-                    <Icon width={20} icon='material-symbols:export-notes' />
-                  </Button>
-                </Tooltip>
-              )}
+              {/* {currentRole.includes('crud') && ( */}
+              <Tooltip title='Xuất phiếu chấm'>
+                <Button
+                  disabled={data?.evaluations.length < 1}
+                  size='small'
+                  color='success'
+                  variant='contained'
+                  onClick={handleOpenExportModal}
+                >
+                  <Icon width={20} icon='material-symbols:export-notes' />
+                </Button>
+              </Tooltip>
+              {/* )} */}
             </Box>
           </Box>
 
@@ -128,18 +128,18 @@ function ReviewManagerPage() {
               </>
             )}
           </Box>
-          {currentRole.includes('crud') && (
-            <>
-              <ExportWordModal
-                permissions={currentRole}
-                onClose={handleCloseExportModal}
-                termId={`${termStore.currentTerm.id}`}
-                typeReport={currentTypeReview}
-                open={openModalExport.isOpen}
-                evaluations={data?.evaluations}
-              />
-            </>
-          )}
+          {/* {currentRole.includes('crud') && ( */}
+          <>
+            <ExportWordModal
+              permissions={currentRole}
+              onClose={handleCloseExportModal}
+              termId={`${termStore.currentTerm.id}`}
+              typeEvaluation={currentTypeReview}
+              open={openModalExport.isOpen}
+              evaluations={data?.evaluations}
+            />
+          </>
+          {/* )} */}
           {currentRole.includes('all') && (
             <AddEvaluationModal
               open={openModalCreateEvaluation.isOpen}

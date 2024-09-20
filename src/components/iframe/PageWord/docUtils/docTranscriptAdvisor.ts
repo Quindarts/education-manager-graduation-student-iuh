@@ -68,7 +68,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
             ],
           }),
           new Paragraph({
-            spacing: { after: 400 },
+            spacing: { after: 200 },
             children: [
               new TextRun({
                 text: '1. Topic name: ' + `${topic?.name}`,
@@ -79,7 +79,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
           new Paragraph({
             children: [
               new TextRun({
-                text: '2. Instructors:  ',
+                text: '2. Instructors:  ' + `${lecturerSupportName}`,
                 size: 24,
               }),
             ],
@@ -95,7 +95,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
           new Paragraph({
             children: [
               new TextRun({
-                text: `     First student name:  ${groupMember && groupMember[0]?.student?.fullName}                                                        Student code 1: ${groupMember && groupMember[0]?.student?.username}`,
+                text: `     First student name:  ${groupMember && groupMember[0]?.student?.fullName}                                                      Student code 1: ${groupMember && groupMember[0]?.student?.username}`,
                 size: 24,
               }),
             ],
@@ -103,7 +103,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
           new Paragraph({
             children: [
               new TextRun({
-                text: `     First student name:  ${groupMember && groupMember[1]?.student?.fullName}                                                          Student code 2: ${groupMember && groupMember[1]?.student?.username}`,
+                text: `     First student name:  ${groupMember && groupMember[1]?.student?.fullName}                                                      Student code 2: ${groupMember && groupMember[1]?.student?.username}`,
                 size: 24,
               }),
             ],

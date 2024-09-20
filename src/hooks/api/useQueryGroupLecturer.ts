@@ -80,7 +80,9 @@ export const useGroupLecturer = () => {
 
     //[GET]
     const handleGetGroupLecturerById = (id: string) => {
-        return useQuery([QueryKeysGroupLecturer.getGroupLecturerById, id], () => GroupLecturerServices.getGroupLecturerById(id))
+        return useQuery([QueryKeysGroupLecturer.getGroupLecturerById, id], () => GroupLecturerServices.getGroupLecturerById(id), {
+            enabled: id !== '1111'
+        })
     }
 
     //[POST]
