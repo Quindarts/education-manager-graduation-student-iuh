@@ -57,32 +57,23 @@ const useGroupStudent = () => {
         return permissions
     }
     const hanldeSearchGroupStudents = (name: string) => {
-        return useQuery([QueryKeysGroupStudent.searchGroupStudentByName, termId, name], () => GroupStudentServices.searchGroupStudentByName(termId, name))
+        return useQuery([QueryKeysGroupStudent.searchGroupStudentByName, termId, name], () => GroupStudentServices.searchGroupStudentAdmin(termId))
     }
 
     const handleManagerRenderActionGroupStudent = () => {
-        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
-        getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery(
             [
                 QueryKeysGroupStudent.managerActionGroupStudent,
                 termId,
-                getQueryField('limit'),
-                getQueryField('page'),
                 getQueryField('searchField'),
                 getQueryField('sort'),
                 getQueryField('keywords'),
             ], () => GroupStudentServices.searchGroupStudentAdmin(
                 termId,
-                getQueryField('limit'),
-                getQueryField('page'),
                 getQueryField('searchField'),
                 getQueryField('sort'),
                 getQueryField('keywords')), {
-            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params' | 'groupStudents'>) {
-                const total = data.params ? data.params.totalPage : 0
-                setTotalPage(total)
-                dispatch(setParamTotalPage(total))
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'groupStudents'>) {
             },
             staleTime: 1000 * (60 * 3), // 10 min,
             refetchOnMount: true,

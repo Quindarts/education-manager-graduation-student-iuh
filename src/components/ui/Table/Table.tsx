@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import DropDown from '../Dropdown';
 interface Props extends DataGridProps {
   minHeight?: number;
-  page: number;
+  page?: number;
   totalPages: number;
   totalItems: number;
   limit?: number;
@@ -24,7 +24,7 @@ interface Props extends DataGridProps {
   isLimit?: boolean;
   slots?: any;
   onReset?: () => void;
-  handleChangeLimit?: (limit: number) => void;
+  handleChangeLimit?: (limit: number) => void;  
   noData?: React.ReactNode;
 }
 
@@ -182,7 +182,7 @@ export default function Table(props: Props) {
                   { _id: '30', name: 'Hiển thị 30 dòng' },
                   { _id: '50', name: 'Hiển thị 50 dòng' },
                   { _id: '100', name: 'Hiển thị 100 dòng' },
-                  { _id: '100', name: 'Hiển thị 300 dòng' },
+                  { _id: '300', name: 'Hiển thị 300 dòng' },
                 ]}
               />
             </Box>

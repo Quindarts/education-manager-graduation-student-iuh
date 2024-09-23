@@ -29,11 +29,11 @@ function TableManagamentGroupStudent(props: any) {
   };
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Tên nhóm',
+      headerName: 'Mã nhóm',
       field: 'name',
-      flex: 0.8,
-      align: 'left',
-      headerAlign: 'left',
+      flex: 0.6,
+      align: 'center',
+      headerAlign: 'center',
     },
     {
       headerName: 'Thành viên',
@@ -44,11 +44,11 @@ function TableManagamentGroupStudent(props: any) {
       renderCell: (params: any) => {
         return (
           <Box>
-            {params.row.studentNames[0] !== null ? (
+            {params.row.members[0] !== null ? (
               <>
-                {params.row.studentNames.map((std, index) => (
-                  <Typography variant='body1' color='initial'>
-                    TV{index + 1}: {std}
+                {params.row.members.map((std, index) => (
+                  <Typography variant='body1' mb={2} color='initial'>
+                    {std.username} - {std.fullName}
                   </Typography>
                 ))}
               </>
@@ -123,7 +123,6 @@ function TableManagamentGroupStudent(props: any) {
     <Box>
       <Table
         rows={rows}
-        isLimit={true}
         sx={{
           bgcolor: 'white',
           width: '100%',
@@ -133,17 +132,8 @@ function TableManagamentGroupStudent(props: any) {
         columns={basicColumns}
         totalItems={totalItems}
         totalPages={totalPage}
-        handleChangeLimit={handleChangeLimit}
-        handleChangePage={handleChangePage}
-        page={page}
-        limit={limit}
         disableColumnFilter
         minHeight={400}
-        // noData={
-        //   <Button variant='contained' onClick={hanldeImport}>
-        //     Tạo danh sách nhóm sinh viên{' '}
-        //   </Button>
-        // }
       />
       <DeleteGroupStudentModal
         groupStudentId={openModalDelete.groupStudentId}

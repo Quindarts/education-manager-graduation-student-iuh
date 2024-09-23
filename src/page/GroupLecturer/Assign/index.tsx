@@ -356,7 +356,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                           >
                             <Box>
                               <Typography variant='body1' color={'primary.dark'} fontWeight={'500'}>
-                                {group?.name}
+                                Nhóm sinh viên {group?.name}
                               </Typography>
                               <Typography variant='body1' color={'primary.dark'} fontWeight={'400'}>
                                 <span>Tên Đề tài : {'  '}</span>
@@ -364,7 +364,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                               </Typography>
                               <Typography variant='body1' color={'grey.700'} fontWeight={'500'}>
                                 <span>Giảng viên hướng dẫn : {'  '}</span>
-                                {group?.fullName}
+                                {group?.lecturerName}
                               </Typography>
                             </Box>
                           </Box>
@@ -480,7 +480,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                                   color={'primary.dark'}
                                   fontWeight={'500'}
                                 >
-                                  {group?.name}
+                                  Nhóm sinh viên {group?.name}
                                 </Typography>
                                 <Typography
                                   variant='body1'
@@ -492,7 +492,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                                 </Typography>
                                 <Typography variant='body1' color={'grey.700'} fontWeight={'500'}>
                                   <span>Giảng viên hướng dẫn : {'  '}</span>
-                                  {group?.fullName}
+                                  {group?.lecturerName}
                                 </Typography>
                               </Box>
                             </Box>

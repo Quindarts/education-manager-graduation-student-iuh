@@ -1,5 +1,5 @@
 import Table from '@/components/ui/Table/Table';
-import { Box, Button,  Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,15 +23,15 @@ function TableManagamentGroupLecturer(props: any) {
   };
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Tên nhóm',
+      headerName: 'Mã nhóm',
       field: 'name',
-      flex: 0.8,
+      flex: 0.2,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
         return (
           <Box>
-            <Typography variant='body1' fontWeight={'bold'} color='primary.main'>
+            <Typography variant='h6' fontWeight={'bold'} color='primary.main'>
               {params.row.name}
             </Typography>
           </Box>
@@ -41,7 +41,7 @@ function TableManagamentGroupLecturer(props: any) {
     {
       headerName: 'Thành viên ',
       field: 'name3',
-      headerAlign: 'center',
+      headerAlign: 'left',
       flex: 1,
       renderCell: (params: any) => {
         return (
@@ -49,12 +49,11 @@ function TableManagamentGroupLecturer(props: any) {
             {params.row.members.map((mem: any, index: number) => (
               <Box component={'div'} my={2}>
                 <Typography mr={4} component={'span'}>
-                  {' '}
-                  Mã GV: {mem.username}
+                  {mem.username}
                 </Typography>
                 {' - '}
                 <Typography ml={4} component={'span'} width={100} color='initial'>
-                  Họ và tên: {mem.fullName}
+                  {mem.fullName}
                 </Typography>
               </Box>
             ))}

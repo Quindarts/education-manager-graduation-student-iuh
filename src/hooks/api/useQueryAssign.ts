@@ -24,7 +24,7 @@ const useAssign = () => {
                 queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type, termId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId])
-                queryClient.invalidateQueries([[QueryKeysAssign.getExportAssignGroup, termId, type]])
+                queryClient.invalidateQueries([QueryKeysAssign.getExportAssignGroup, termId, type])
 
             },
             onError(err: any) {
@@ -39,7 +39,7 @@ const useAssign = () => {
                 queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type, termId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId])
                 queryClient.invalidateQueries([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId])
-                queryClient.invalidateQueries([[QueryKeysAssign.getExportAssignGroup, termId, type]])
+                queryClient.invalidateQueries([QueryKeysAssign.getExportAssignGroup, termId, type])
             },
             onError(err: any) {
                 enqueueSnackbar(err.message, { variant: "error" })

@@ -15,7 +15,7 @@ function HeaderGroupLecturer(props: any) {
     handleTypeGroupLecturer(currentTypeGroupLecturer);
   }, [currentTypeGroupLecturer]);
   const { handleGetExportAssignGroup } = useAssign();
-  const { data: fetchGroup } = handleGetExportAssignGroup(currentTypeGroupLecturer);
+  const { data: fetchGroup, refetch } = handleGetExportAssignGroup(currentTypeGroupLecturer);
   const [openModalCreate, setOpenModalCreate] = useState(false);
 
   const handleOpenModalCreate = () => {
@@ -24,6 +24,9 @@ function HeaderGroupLecturer(props: any) {
   const handleCloseModalCreate = () => {
     setOpenModalCreate(false);
   };
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <>
       <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>

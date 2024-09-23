@@ -14,16 +14,8 @@ export enum TypeStatusGroup {
 }
 const URL = '/api/v1/group-students'
 //[Admin role]
-export const searchGroupStudentAdmin: any = (termId: string, limit: number, page: number, searchField: 'name', sort: string, keywords: string) => {
-    let searchFieldSend = searchField ? searchField : "name";
-    let keywordSend = keywords ? keywords : ""
-    let sortSend = sort ? sort : "ASC"
-    return axiosConfig.get(`${URL}/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&sort=${sortSend}`);
-}
-
-
-export const searchGroupStudentByName: any = (termId: string, name: string) => {
-    return axiosConfig.get(`${URL}/search?termId=${termId}&name=${name}`);
+export const searchGroupStudentAdmin: any = (termId: string) => {
+    return axiosConfig.get(`${URL}?termId=${termId}`);
 }
 
 export const getGroupByTopic: any = (termId: string, topicId: string) => {

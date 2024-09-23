@@ -24,7 +24,7 @@ function GroupStudentManagement() {
   //[PARAMS]
   const [currentPage, setCurrentPage] = useState(1);
   const [currentLimit, setCurrentLimit] = useState(10);
-  const { setLimit, setPage, setTotalPage, getQueryField } = useParams();
+  const { getQueryField } = useParams();
 
   const handleChangePage = (value: number) => {
     setCurrentPage(value);
@@ -34,25 +34,6 @@ function GroupStudentManagement() {
   };
 
   useEffect(() => {
-    setLimit(currentLimit);
-    setPage(currentPage);
-  }, [currentPage]);
-
-  useEffect(() => {
-    setLimit(currentLimit);
-    refetch();
-  }, [currentLimit]);
-
-  useEffect(() => {
-    if (data !== null) {
-      const total = data ? data.params.totalPage : 0;
-      dispatch(setParamTotalPage(total));
-      setTotalPage(total);
-    }
-  }, [data]);
-  useEffect(() => {
-    setLimit(currentLimit);
-    setPage(1);
     if (getQueryField('keywords') === '') {
       refetch();
     }
@@ -75,11 +56,7 @@ function GroupStudentManagement() {
         <TableManagamentGroupStudent
           totalPage={paramTotalPage}
           totalItems={data?.groupStudents.length}
-          handleChangePage={handleChangePage}
-          handleChangeLimit={handleChangeLimit}
           rows={data ? data.groupStudents : []}
-          page={currentPage}
-          limit={currentLimit}
         />
       )}
     </Paper>

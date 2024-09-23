@@ -27,10 +27,10 @@ const HEADER_TYPE = {
     { header: 'Tên GV', key: 'Tên GV', width: 18 },
     { header: 'Tên đề tài', key: 'Tên đề tài', width: 32 },
     { header: 'Mô tả', key: 'Mô tả', width: 40 },
-    { header: 'MỤC TIÊU ĐỀ TÀI', key: 'MỤC TIÊU ĐỀ TÀI', width: 40 },
+    { header: 'Mục tiêu đề tài', key: 'Mục tiêu đề tài', width: 40 },
     {
-      header: 'DỰ KIẾN SẢN PHẨM NGHIÊN CỨU CỦA ĐỀ TÀI VÀ KHẢ NĂNG ỨNG DỤNG',
-      key: 'DỰ KIẾN SẢN PHẨM NGHIÊN CỨU CỦA ĐỀ TÀI VÀ KHẢ NĂNG ỨNG DỤNG',
+      header: 'Dự kiến sản phẩm nghiên cứu của đề tài và khả năng ứng dụng',
+      key: 'Dự kiến sản phẩm nghiên cứu của đề tài và khả năng ứng dụng',
       width: 50,
     },
     { header: 'Yêu cầu đầu vào', key: 'Yêu cầu đầu vào', width: 40 },
@@ -39,7 +39,7 @@ const HEADER_TYPE = {
   student: [
     { header: 'STT', key: 'STT', width: 6 },
     { header: 'Mã SV', key: 'Mã SV', width: 15 },
-    { header: 'Họ và tên', key: 'Họ và tên', width: 32 },
+    { header: 'Họ và tên', key: 'Họ và tên', width: 40 },
     { header: 'Giới tính', key: 'Giới tính', width: 10 },
     { header: 'Ngày sinh', key: 'Ngày sinh', width: 30 },
     { header: 'Email', key: 'Email', width: 40 },
@@ -48,7 +48,7 @@ const HEADER_TYPE = {
   ],
   groupStudent: [
     { header: 'STT', key: 'STT', width: 6 },
-    { header: 'STT Nhóm', key: 'STT Nhóm', width: 12 },
+    { header: 'Mã nhóm', key: 'Mã nhóm', width: 12 },
     { header: 'Mã SV', key: 'Mã SV', width: 10 },
     { header: 'Họ tên SV', key: 'Họ tên SV', width: 20 },
     { header: 'GVHD', key: 'GVHD', width: 20 },
@@ -56,14 +56,14 @@ const HEADER_TYPE = {
     { header: 'Tên đề tài', key: 'Tên đề tài', width: 100 },
   ],
   assignGroup: [
-    { header: 'STT', key: 'STT', width: 6 },
-    { header: 'STT Nhóm', key: 'STT Nhóm', width: 12 },
+    { header: 'STT Nhóm', key: 'STT Nhóm', width: 10 },
     { header: 'Mã SV', key: 'Mã SV', width: 12 },
     { header: 'Họ tên SV', key: 'Họ tên SV', width: 24 },
-    { header: 'GVHD', key: 'GVHD', width: 20 },
     { header: '#HĐPB', key: '#HĐPB', width: 22 },
-    { header: 'HD TV', key: 'HD TV', width: 40 },
     { header: 'Ghi chú', key: 'Ghi chú', width: 30 },
+    { header: 'HD TV', key: 'HD TV', width: 40 },
+    { header: 'STT', key: 'STT', width: 6 },
+    { header: 'GVHD', key: 'GVHD', width: 20 },
   ],
 };
 interface ExportExcelPropsType {
@@ -148,7 +148,6 @@ function ExportExcelButton(props: ExportExcelPropsType) {
     const listKeyChecked = mappedCheckbox
       .filter((col: { string: boolean }) => col[Object.keys(col)[0]] === true)
       .map((col: { string: boolean }) => Object.keys(col)[0]);
-
     const columnHavedFilter = HEADER_TYPE[`${entity}`]
       .map((head: any) => {
         if (listKeyChecked.includes(head.key)) {
@@ -181,12 +180,7 @@ function ExportExcelButton(props: ExportExcelPropsType) {
       </Tooltip>
 
       <Modal maxWidth={'md'} open={isOpen} onClose={onCloseModal}>
-        <TitleManager
-          mx={10}
-          variant='h6'
-          textTransform={'uppercase'}
-          icon='uiw:file-excel'
-        >
+        <TitleManager mx={10} variant='h6' textTransform={'uppercase'} icon='uiw:file-excel'>
           Export file excel
         </TitleManager>
         <Paper
@@ -265,7 +259,7 @@ function ExportExcelButton(props: ExportExcelPropsType) {
               onClick={handleSubmit}
               color='success'
             >
-              <Icon icon='ri:file-excel-fill'  width={20} />
+              <Icon icon='ri:file-excel-fill' width={20} />
               Tải file excel
             </Button>
             <Button variant='contained' color='primary' onClick={onCloseModal}>

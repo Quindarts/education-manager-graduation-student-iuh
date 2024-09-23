@@ -45,13 +45,13 @@ export class AssginGroupClassExport extends EntityExportExcel {
                         bottom: { style: 'thin' },
                         right: { style: 'thin' }
                     };
-                    cell.fill = {
-                        type: 'pattern',
-                        pattern: 'solid',
-                        fgColor: { argb: 'FFFCBC03' },
-                    };
+                    // cell.fill = {
+                    //     type: 'pattern',
+                    //     pattern: 'solid',
+                    //     fgColor: { argb: 'FFFCBC03' },
+                    // };
 
-                    if (colNumber === row.cellCount) {
+                    if (colNumber === row.cellCount - 3) {
                         cell.fill = {
                             type: 'pattern',
                             pattern: 'solid',
@@ -59,7 +59,6 @@ export class AssginGroupClassExport extends EntityExportExcel {
                         };
                         cell.font = {
                             color: { argb: 'FF1F2EBE' },
-                            bold: true
                         };
                         cell.alignment = {
                             horizontal: 'center',
@@ -82,27 +81,27 @@ export class AssginGroupClassExport extends EntityExportExcel {
         });
 
         // Merge ô
-        for (let group in groups) {
-            if (groups[group].length > 1) {
-                let index_end = groups[group].length - 1
-                let index_start = 0
-                let startAddress = groups[group][index_start];
-                let endAddress = groups[group][index_end];
-                // Lấy phần chữ (A, B, C) 
-                let startAlpha = startAddress.slice(0, 1);
-                let endInt = _.toInteger(endAddress.substring(1));
+        // for (let group in groups) {
+        //     if (groups[group].length > 1) {
+        //         let index_end = groups[group].length - 1
+        //         let index_start = 0
+        //         let startAddress = groups[group][index_start];
+        //         let endAddress = groups[group][index_end];
+        //         // Lấy phần chữ (A, B, C) 
+        //         let startAlpha = startAddress.slice(0, 1);
+        //         let endInt = _.toInteger(endAddress.substring(1));
 
-                // Merge các ô từ index_start -> index_end
-                this.getSheet().mergeCells(`${startAlpha}${startAddress.substring(1)}:${startAlpha}${endInt}`);
+        //         // Merge các ô từ index_start -> index_end
+        //         this.getSheet().mergeCells(`${startAlpha}${startAddress.substring(1)}:${startAlpha}${endInt}`);
 
-                // STT	STT Nhóm	Mã SV	Họ tên SV	GVHD	#HĐPB	fullName	Ghi chú
-                // A    B           C       D           E       F       G           H
-                this.getSheet().mergeCells(`${'E'}${startAddress.substring(1)}:${'E'}${endInt}`);
-                this.getSheet().mergeCells(`${'F'}${startAddress.substring(1)}:${'F'}${endInt}`);
-                this.getSheet().mergeCells(`${'G'}${startAddress.substring(1)}:${'G'}${endInt}`);
-                this.getSheet().mergeCells(`${'H'}${startAddress.substring(1)}:${'H'}${endInt}`);
-            }
-        }
+        //         // STT	STT Nhóm	Mã SV	Họ tên SV	GVHD	#HĐPB	fullName	Ghi chú
+        //         // A    B           C       D           E       F       G           H
+        //         this.getSheet().mergeCells(`${'E'}${startAddress.substring(1)}:${'E'}${endInt}`);
+        //         this.getSheet().mergeCells(`${'F'}${startAddress.substring(1)}:${'F'}${endInt}`);
+        //         this.getSheet().mergeCells(`${'G'}${startAddress.substring(1)}:${'G'}${endInt}`);
+        //         this.getSheet().mergeCells(`${'H'}${startAddress.substring(1)}:${'H'}${endInt}`);
+        //     }
+        // }
     }
     protected customizeColumns = () => {
         this.getSheet().getColumn(1).alignment = {

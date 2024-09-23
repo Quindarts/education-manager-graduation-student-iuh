@@ -19,7 +19,7 @@ function GroupLecturerDetailPage() {
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>{data?.groupLecturer?.name}</TitleManager>
+          <TitleManager>Nhóm {data?.groupLecturer?.name}</TitleManager>
           <Box my={4}>
             <TabPanelUI groupLecturer={data?.groupLecturer} />
           </Box>
