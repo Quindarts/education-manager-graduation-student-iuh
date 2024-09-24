@@ -4,8 +4,8 @@ import _ from "lodash";
 
 export class AssginGroupClassExport extends EntityExportExcel {
     private header: Row
-    constructor(fileName: string, sheetName: string, column: any) {
-        super(fileName, sheetName, column);
+    constructor(fileName: string, sheetName: string, column: any, subTitle?: string, mainTitle?: string) {
+        super(fileName, sheetName, column, subTitle, mainTitle);
         this.header = this.getSheet().getRow(1)
     }
     protected customizeHeaderColumn = () => {
@@ -32,11 +32,11 @@ export class AssginGroupClassExport extends EntityExportExcel {
         });
 
     }
+
     protected customizeCells = () => {
         // STT Nhóm = nhau => merge 
         let groups: { [key: string]: string[] } = {};
         this.getSheet().eachRow((row: Row, index: number) => {
-
             if (index !== 1) {
                 row.eachCell((cell, colNumber) => {
                     cell.border = {
@@ -108,9 +108,40 @@ export class AssginGroupClassExport extends EntityExportExcel {
             vertical: "middle",
         }
     }
+
+    protected addTitleAndLogo = () => {
+        const mainTitle = this.sheet.insertRow(1, [this.mainTitle])
+        mainTitle.font = { name: "Times New Roman", size: 20, bold: true };
+        mainTitle.alignment = { horizontal: 'center' };
+        mainTitle.alignment.vertical = "middle";
+        mainTitle.alignment.textRotation = 'vertical'
+        this.getSheet().mergeCells('A1:H1');
+        const subTitle = this.getSheet().insertRow(2, [this.subTitle]);
+        subTitle.font = { size: 14, bold: true };
+        subTitle.alignment = { horizontal: 'center' };
+        this.getSheet().mergeCells('A2:H2');
+    };
     public customizeSheet(): void {
+        this.addTitleAndLogo()
         this.customizeHeaderColumn();
         this.customizeCells()
         this.customizeColumns()
     }
 }
+// const toDataURL = (url: string) => {
+//     const promise = new Promise((resolve, reject) => {
+//         var xhr = new XMLHttpRequest();
+//         xhr.onload = function () {
+//             var reader = new FileReader();
+//             reader.readAsDataURL(xhr.response);
+//             reader.onloadend = function () {
+//                 resolve({ base64Url: reader.result });
+//             };
+//         };
+//         xhr.open("GET", url);
+//         xhr.responseType = "blob";
+//         xhr.send();
+//     });
+
+//     return promise;
+// };

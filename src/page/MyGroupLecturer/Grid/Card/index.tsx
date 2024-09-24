@@ -1,3 +1,4 @@
+import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 import { Card, CardContent, CardMedia, Typography, CardActions, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,12 +32,19 @@ function CardGroupLecturer(props: any) {
       />
       <CardContent>
         <Typography gutterBottom variant='h5' color='primary' fontWeight={600} component='div'>
-          {group.name}
+          {checktTypeGroupLecturer(group.type.toLowerCase())} - {group.name}
         </Typography>
 
-        <Typography variant='body1' color='text.primary'>
+        <Typography variant='h6' fontWeight={500} color='primary.dark'>
           Số lượng thành viên : {group?.members.length}
         </Typography>
+        <Box>
+          {group?.members.map((mem) => (
+            <Typography variant='body1' color='text.grey.500'>
+              {mem.fullName}
+            </Typography>
+          ))}
+        </Box>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>
         <Box></Box>

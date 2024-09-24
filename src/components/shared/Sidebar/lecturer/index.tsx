@@ -9,24 +9,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
-import { TermQueryKey, useTerm } from '@/hooks/api/useQueryTerm';
-import { convertMajorDropdown, convertTermDropdown } from '@/utils/convertDataTable';
+import { useTerm } from '@/hooks/api/useQueryTerm';
+import { convertTermDropdown } from '@/utils/convertDataTable';
 import { useDispatch } from 'react-redux';
 import { setCurrentTerm } from '@/store/slice/term.slice';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { setCurrentMajor } from '@/store/slice/major.slice';
-import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { RoleCheck } from '@/types/enum';
 import { useAuth } from '@/hooks/api/useAuth';
-import TitleManager from '@/components/ui/Title';
 import useSidebar from '@/hooks/ui/useSidebar';
 import { keyframes } from '@emotion/react';
-
-const homePageIndex = 0;
-const drawerWidth = '250px';
-const hidedDrawerWidth = '76px';
-const screen_mobile = 900;
-
+const opacity__animations_in = keyframes`
+  0% {
+   transform: translateX('0px'); 
+  }
+  100% {
+    transform: translateX(0); 
+  }
+`;
 const opacity__animations_out = keyframes`
   0% {
    transform: translateX(0); 
@@ -36,63 +36,161 @@ const opacity__animations_out = keyframes`
   }
 `;
 
-const opacity__animations_in = keyframes`
-  0% {
-   transform: translateX('0px'); 
-  }
-  100% {
-    transform: translateX(0); 
-  }
-`;
-const fadeOut = keyframes`
- from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-60%);
-  }
-`;
+const homePageIndex = 0;
+const drawerWidth = '250px';
+const hidedDrawerWidth = '76px';
 
+const setDropdown = (termsLecturer: any[]) => {
+  let majors = [];
+  let terms = [];
+  if (!termsLecturer) {
+    return;
+  }
+  termsLecturer?.map((term) => {
+    majors.push({
+      _id: term.majorId,
+      name: term.majorName,
+    });
+    terms.push({ ...term });
+  });
+  return {
+    majors,
+    terms,
+  };
+};
+const filterMainTerms = (terms, mainMajorId) => {
+  let filterTerms = { majorId: mainMajorId, listTerm: [] };
+  filterTerms.listTerm = terms?.filter(
+    (termsInMainMajor: any) => termsInMainMajor.majorId === mainMajorId,
+  )[0]?.terms;
+
+  return filterTerms;
+};
+const termPayload = (termId, terms) => {
+  let term = {
+    id: '',
+    name: '',
+    startDate: '',
+    endDate: '',
+    startChooseGroupDate: '',
+    endChooseGroupDate: '',
+    startPublicTopicDate: '',
+    endPublicTopicDate: '',
+    startChooseTopicDate: '',
+    endChooseTopicDate: '',
+    startDiscussionDate: '',
+    endDiscussionDate: '',
+    startReportDate: '',
+    endReportDate: '',
+    startPublicResultDate: '',
+    endPublicResultDate: '',
+  };
+  terms?.map((t: any) => {
+    if (t.id === termId) {
+      term = {
+        id: t?.id,
+        name: t?.name,
+        startDate: t?.startDate,
+        endDate: t?.endDate,
+        startChooseGroupDate: t?.startChooseGroupDate,
+        endChooseGroupDate: t?.endChooseGroupDate,
+        startPublicTopicDate: t?.startPublicTopicDate,
+        endPublicTopicDate: t?.endPublicTopicDate,
+        startChooseTopicDate: t?.startChooseTopicDate,
+        endChooseTopicDate: t?.endChooseTopicDate,
+        startDiscussionDate: t?.startDiscussionDate,
+        endDiscussionDate: t?.endDiscussionDate,
+        startReportDate: t?.startReportDate,
+        endReportDate: t?.endReportDate,
+        startPublicResultDate: t?.startPublicResultDate,
+        endPublicResultDate: t?.endPublicResultDate,
+      };
+    }
+  });
+  return term;
+};
+const majorPayload = (majorId, majors) => {
+  let major = {
+    id: '',
+    name: '',
+  };
+  majors.map((m: any) => {
+    if (majorId === m._id) {
+      major = {
+        id: m._id,
+        name: m.name,
+      };
+    }
+  });
+  return major;
+};
 export default function SidebarLecturer() {
+  //TODO HOOKS
   const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
   const { isOpen, handleToggleSidebar } = useSidebar();
-  const { lecturerStore } = useAuth();
+  const location = useLocation();
+  const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
+  const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
 
+  const { majorStore } = useMajor();
+  const { termStore } = useTerm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  //TODO HANDLER FETCH DATA
+  const [majorsOfLecturer, setMajorsOfLecturer] = useState([]);
+  const [termsOfLecturer, setTermsOfLecturer] = useState([]);
+  const [initTerms, setInitTerms] = useState([]);
+  const [selectedMajor, setSelectedMajor] = useState(majorStore.currentMajor.id);
+  const [selectedTerm, setSelectedTerm] = useState(termStore.currentTerm.id);
+  const { handleGetTermsByLecturer } = useTerm();
+  const { data: termsLecturer, isSuccess: successTerms } = handleGetTermsByLecturer();
+  
+  //TODO: lay major hien tai => lay term hien tai
+  //?Render first
+  useEffect(() => {
+    if (successTerms) {
+      const data = setDropdown(termsLecturer.terms);
+      setInitTerms(termsLecturer.terms);
+      setMajorsOfLecturer(data.majors);
+      setTermsOfLecturer(filterMainTerms(data.terms, majorStore.currentMajor.id).listTerm);
+    }
+  }, [successTerms]);
+
+  //?Re-render change major
+  useLayoutEffect(() => {
+    setTermsOfLecturer(filterMainTerms(initTerms, selectedMajor)?.listTerm);
+  }, [selectedMajor]);
+
+  const handleSelectedTerm = (termId: string) => {
+    setSelectedTerm(termId);
+    const payload = termPayload(termId, termsOfLecturer);
+    dispatch(setCurrentTerm(payload));
+  };
+  const handleSelectedMajor = (majorId: string) => {
+    setSelectedMajor(majorId);
+    const payload = majorPayload(majorId, majorsOfLecturer);
+    dispatch(setCurrentMajor(payload));
+  };
+  //Handle Term dropdown
   useLayoutEffect(() => {
     APP_SIDEBAR.map((item: any) => {
       item.roles.forEach((role: string) => {
-        if (role === lecturerStore.currentRoleRender) {
+        if (role === RoleCheck.LECTURER) {
           currentSidebarRole.push(item);
           setCurrentSidebarRole(currentSidebarRole);
         }
       });
     });
-  }, []);
+  }, [currentSidebarRole]);
+
   //Head_course
-  const isAdminRole = lecturerStore.currentRoleRender === RoleCheck.ADMIN;
-  const location = useLocation();
-  const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
-  const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
-  const navigate = useNavigate();
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth < screen_mobile);
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < screen_mobile);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isMobile]);
-
   useEffect(() => {
     if (location.pathname === '/') {
       setActiveItemIndexes([homePageIndex]);
       setCurrentSidebarItemIndex(homePageIndex);
       return;
     }
-
     currentSidebarRole.forEach((item: any, itemIndex: number) => {
       if (item.children) {
         item.children.forEach((subItem: any) => {
@@ -118,34 +216,12 @@ export default function SidebarLecturer() {
     }
   };
 
-  const dispatch = useDispatch();
-
-  //Handle Major Dropdown
-  const { majorStore } = useMajor();
-
-  const [majorSelectValue, setMajorSelectValue] = useState(
-    majorStore.currentMajor ? majorStore.currentMajor.id : '',
-  );
-
-  useEffect(() => {
-    if (majorStore.allMajor) {
-      dispatch(
-        setCurrentMajor(majorStore.allMajor.filter((m: any) => m.id === majorSelectValue)[0]),
-      );
-    }
-  }, [majorSelectValue]);
-
-  //Handle Term dropdown
-  const { termStore } = useTerm();
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorSelectValue] });
-  }, [majorSelectValue]);
   return (
     <Box
       sx={{
         width: isOpen ? drawerWidth : hidedDrawerWidth,
         animation: `${isOpen ? opacity__animations_in : opacity__animations_out}  0.2s ease-in`,
-        transition: 'width 0.7s ease forwards',
+        transition: 'width 0.4s ease forwards',
         opacity: 1,
         maxHeight: '100vh',
         height: '100%',
@@ -191,45 +267,31 @@ export default function SidebarLecturer() {
                 Danh mục quản lý
               </Typography>
               <Box sx={{ my: 10 }}>
-                {isAdminRole ? (
-                  <DropDown
-                    onChange={(e: any) => {
-                      isAdminRole && setMajorSelectValue(e.target.value);
-                    }}
-                    defaultValue={majorStore.currentMajor.id}
-                    options={convertMajorDropdown(majorStore.allMajor)}
-                  />
-                ) : (
-                  <TitleManager mb={10} color={'grey.300'} fontWeight={500} textAlign={'center'}>
-                    {lecturerStore.me.user.majorName}
-                  </TitleManager>
-                )}
+                <DropDown
+                  onChange={(e: any) => {
+                    handleSelectedMajor(e.target.value);
+                  }}
+                  value={selectedMajor}
+                  options={majorsOfLecturer}
+                />
               </Box>
 
               <DropDown
-                onChange={(e: any) => {
-                  if (termStore.allTerm)
-                    dispatch(
-                      setCurrentTerm(
-                        termStore.allTerm.filter((term: any) => term.id === e.target.value)[0],
-                      ),
-                    );
-                  else dispatch(setCurrentTerm({}));
-                }}
-                value={termStore.currentTerm?.id ? termStore.currentTerm.id : ''}
-                options={convertTermDropdown(termStore.allTerm)}
+                onChange={(e) => handleSelectedTerm(`${e.target.value}`)}
+                value={selectedTerm}
+                options={termsOfLecturer ? convertTermDropdown(termsOfLecturer) : []}
               />
             </Box>
           </Box>
           <Drawer
-            variant={isMobile ? 'temporary' : 'permanent'}
+            variant={'permanent'}
             open={isOpen}
             onClose={handleToggleSidebar}
             sx={{
               flexShrink: 0,
-              height: isMobile ? '100%' : 'calc(100% - 200px)',
+              height: 'calc(100% - 200px)',
               ['& .MuiDrawer-paper']: {
-                width: isMobile ? 250 : '100%',
+                width: '100%',
                 border: 'none',
                 height: 'calc(100%)',
                 boxSizing: 'border-box',
@@ -437,15 +499,15 @@ export default function SidebarLecturer() {
         </>
       ) : (
         <Drawer
-          variant={isMobile ? 'temporary' : 'permanent'}
+          variant={'permanent'}
           open={isOpen}
           onClose={handleToggleSidebar}
           sx={{
             flexShrink: 0,
             mt: 70,
-            height: isMobile ? '100%' : 'calc(100% - 200px)',
+            height: 'calc(100% - 200px)',
             ['& .MuiDrawer-paper']: {
-              width: isMobile ? 250 : '100%',
+              width: '100%',
               border: 'none',
               height: 'calc(100%)',
               boxSizing: 'border-box',

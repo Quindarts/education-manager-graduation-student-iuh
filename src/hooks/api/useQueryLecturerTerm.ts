@@ -127,7 +127,7 @@ export const useLecturerTerm = () => {
     }
 
     const onCreateLecturerTerm = () => {
-        return useMutation((data: { id: string, termId: string }) => LecturerTermServices.createLecturerTerm(data), {
+        return useMutation((data: { lecturerId: string, termId: string }) => LecturerTermServices.createLecturerTerm(data), {
             onSuccess(data: any) {
                 if (data.success === true) {
                     enqueueSnackbar(data.message, { variant: "success" });

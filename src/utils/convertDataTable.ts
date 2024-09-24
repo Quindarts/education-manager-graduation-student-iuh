@@ -3,11 +3,13 @@ import Major from "@/types/entities/major";
 import { Term } from "@/types/entities/term";
 
 
-export const convertTermDropdown = (terms?: Term[]
+export const convertTermDropdown = (terms?: any[]
 ) => {
+    console.log("🚀 ~ terms:", terms)
+
     let newTerms: any[] = [];
-    if (!terms) {
-        newTerms.push({ name: "Chưa có học kì", _id: 0 })
+    if (terms === null || terms === undefined || terms.length === 0) {
+        newTerms.push({ name: "Chưa có học kì", _id: '' })
     }
     else {
         terms.map((term: Term) => {

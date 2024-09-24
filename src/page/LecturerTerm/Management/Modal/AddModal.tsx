@@ -31,7 +31,7 @@ function AddLecturerModal(props: any) {
 
   const handleSubmitCreateLecturer = (currentLecturer: any) => {
     const dataSend = {
-      id: currentLecturer.id,
+      lecturerId: currentLecturer.id,
       termId: `${currentTerm.id}`,
     };
     create(dataSend);

@@ -72,10 +72,10 @@ export const useGroupLecturer = () => {
     }
 
     //[GET]
-    const handleGetGroupLecturerByLecturerId = (lecturerId?: string) => {
+    const handleGetGroupLecturerByLecturerId = (type?: string, lecturerId?: string) => {
         const termId = termStore.currentTerm.id
         const lecturerIdToSend = lecturerId ? lecturerId : lecturerStore.me.user.id
-        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, termId, lecturerId], () => GroupLecturerServices.getGroupLecturerByLecturerId(termId, lecturerIdToSend))
+        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, termId, lecturerId, type], () => GroupLecturerServices.getGroupLecturerByLecturerId(termId, lecturerIdToSend, type))
     }
 
     //[GET]

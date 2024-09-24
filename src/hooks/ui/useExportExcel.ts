@@ -12,7 +12,7 @@ const useExportExcel = () => {
         if (!data) {
             enqueueSnackbar('Không có dữ liệu tải xuống,thử lại', { variant: 'warning' })
         }
-        
+
         else {
             switch (entity) {
                 case 'topic':
@@ -62,19 +62,14 @@ const useExportExcel = () => {
                         fileName,
                         sheetName,
                         headerColumn,
+                        'Học kì 1 2024 - 2025',
+                        'Đại học công nghiệp thành phố hồ chí minh'
                     )
-                    // console.log("🚀 ~ onExport ~ data:", data)
-                    // const rs = data.map(tv => {
-                    //     console.log("🚀 ~ rs ~ tv:", tv['HD TV'])
-                    //     const HDTV = tv['HD TV'].reduce((acc, lec, index) => {
-                    //         acc[`HD TV ${index + 1}`] = lec;
-                    //         return acc;
-                    //     }, {})
-                    //     return { ...tv, HDTV }
-                    // });
+
                     GrAssignExport.setData(data)
                     GrAssignExport.customizeSheet()
                     GrAssignExport.onExport()
+
             }
         }
     }

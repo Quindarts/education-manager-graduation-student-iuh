@@ -1,4 +1,4 @@
-import { getTermDetailWithType, getTermById, updateTermById, getAllTermByMajor, TypeTermStatus } from './../../services/apiTerm';
+import { getTermDetailWithType, getTermById, updateTermById, getAllTermByMajor, TypeTermStatus, getTermsByLecturer } from './../../services/apiTerm';
 import { RootState } from '@/store';
 import { createTerm, getAllTerm, getCurrentTerm, updateTermWithType } from "@/services/apiTerm"
 import { useMutation, useQuery } from "react-query"
@@ -17,7 +17,8 @@ export enum TermQueryKey {
     allTermWithMajor = "allTermWithMajor",
     currentTerm = "currentTerm",
     getTermDetailWithType = "getTermDetailWithType",
-    getTermDetailById = 'getTermDetailById'
+    getTermDetailById = 'getTermDetailById',
+    getTermsByLecturer = "getTermsByLecturer"
 }
 export function useTerm() {
 
@@ -45,10 +46,10 @@ export function useTerm() {
     //[GET ALL]
     const handleGetAllTermByMajor = (majorId?: string) => {
         const majorIdCallApi = majorId ? majorId : majorStore.currentMajor.id;
-
         return useQuery([TermQueryKey.allTermWithMajor, majorIdCallApi], () => getAllTermByMajor(majorIdCallApi), {
             onSuccess: (data) => {
                 dispatch(setAllTerm([]));
+                dispatch(setCurrentTerm({}))
                 dispatch(setAllTerm(data.terms));
             },
 
@@ -64,6 +65,9 @@ export function useTerm() {
             enabled: !!majorId
         });
     };
+    const handleGetTermsByLecturer = () => {
+        return useQuery([TermQueryKey.getTermsByLecturer], () => getTermsByLecturer())
+    }
 
     //[GET BY ID]
     const handelGetTermById = (termId: string) => {
@@ -132,7 +136,7 @@ export function useTerm() {
 
     return {
         termStore,
-        handelGetTermById,
+        handelGetTermById, handleGetTermsByLecturer,
         handleGetAllTerm,
         handleGetCurrentTerm,
         handleGetTermDetailWithType,

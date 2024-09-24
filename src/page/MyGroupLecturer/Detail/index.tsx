@@ -5,6 +5,7 @@ import { Box, Paper } from '@mui/material';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import TabPanelUI from './TabPanel';
+import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 
 function MyDetailGroupLecturer() {
   const { pathname } = useLocation();
@@ -19,7 +20,9 @@ function MyDetailGroupLecturer() {
         <SekeletonUI />
       ) : (
         <>
-          {/* <TitleManager>{data?.groupLecturer?.name}</TitleManager> */}
+          <TitleManager>
+            {checktTypeGroupLecturer(data.groupLecturer.type)} {data?.groupLecturer?.name}
+          </TitleManager>
           <Box>
             <TabPanelUI groupLecturer={data?.groupLecturer} />
           </Box>

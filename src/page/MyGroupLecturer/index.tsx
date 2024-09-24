@@ -9,11 +9,30 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 
 function MyGroupLecturer() {
   const { handleGetGroupLecturerByLecturerId } = useGroupLecturer();
-  const { data, isLoading, isFetching } = handleGetGroupLecturerByLecturerId();
+  const [typeGroupLecturer, setTypeGroupLecturer] = useState<string>(
+    `${ENUM_GROUP_LECTURER[0]?._id}`,
+  );
+  const { data, isLoading, isFetching } = handleGetGroupLecturerByLecturerId(typeGroupLecturer);
 
   return (
     <Paper sx={{ p: 10, minHeight: 500 }} elevation={0}>
-      <TitleManager mb={4}>Danh sách nhóm giảng viên của bạn</TitleManager>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 10,
+          alignItems: 'center',
+        }}
+      >
+        <TitleManager mb={4}>Danh sách nhóm giảng viên của bạn</TitleManager>
+        <DropDown
+          onChange={(e: any) => {
+            setTypeGroupLecturer(e.target.value);
+          }}
+          value={typeGroupLecturer}
+          options={ENUM_GROUP_LECTURER}
+        />
+      </Box>
+
       <Box my={10}>
         {isLoading || isFetching ? (
           <SekeletonUI />

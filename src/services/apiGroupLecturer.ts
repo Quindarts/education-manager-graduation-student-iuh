@@ -31,8 +31,8 @@ export const getLecturerNoGroupByTypeGroup: any = async (type: string, termId: s
     return axiosConfig.get(`${URL}/${type}/no-group?termId=${termId}`)
 }
 //[GET] 
-export const getGroupLecturerByLecturerId: any = async (termId: string, lecturerId: string) => {
-    return axiosConfig.get(`${URL}/lecturer?lecturerId=${lecturerId}&termId=${termId}`)
+export const getGroupLecturerByLecturerId: any = async (termId: string, lecturerId: string, type: string) => {
+    return axiosConfig.get(`${URL}/lecturer?lecturerId=${lecturerId}&termId=${termId}&type=${type}`)
 }
 
 //[GET]

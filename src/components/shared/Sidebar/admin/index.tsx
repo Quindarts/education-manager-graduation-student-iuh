@@ -15,17 +15,16 @@ import { useDispatch } from 'react-redux';
 import { setCurrentTerm } from '@/store/slice/term.slice';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { setCurrentMajor } from '@/store/slice/major.slice';
-import { queryClient } from '@/providers/ReactQueryClientProvider';
 import { RoleCheck } from '@/types/enum';
 import { useAuth } from '@/hooks/api/useAuth';
 import TitleManager from '@/components/ui/Title';
 import useSidebar from '@/hooks/ui/useSidebar';
 import { keyframes } from '@emotion/react';
+import { queryClient } from '@/providers/ReactQueryClientProvider';
 
 const homePageIndex = 0;
 const drawerWidth = '250px';
 const hidedDrawerWidth = '76px';
-const screen_mobile = 900;
 
 const opacity__animations_out = keyframes`
   0% {
@@ -44,15 +43,22 @@ const opacity__animations_in = keyframes`
     transform: translateX(0); 
   }
 `;
-const fadeOut = keyframes`
- from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-60%);
-  }
-`;
 
+const majorPayload = (majorId: string, majors: any[]) => {
+  let major = {
+    id: '',
+    name: '',
+  };
+  majors.map((m: any) => {
+    if (majorId === m._id) {
+      major = {
+        id: m._id,
+        name: m.name,
+      };
+    }
+  });
+  return major;
+};
 export default function SidebarManager() {
   const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
   const { isOpen, handleToggleSidebar } = useSidebar();
@@ -70,21 +76,10 @@ export default function SidebarManager() {
   }, []);
   //Head_course
   const isAdminRole = lecturerStore.currentRoleRender === RoleCheck.ADMIN;
+  const navigate = useNavigate();
   const location = useLocation();
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
-  const navigate = useNavigate();
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth < screen_mobile);
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < screen_mobile);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isMobile]);
 
   useEffect(() => {
     if (location.pathname === '/') {
@@ -119,27 +114,26 @@ export default function SidebarManager() {
   };
 
   const dispatch = useDispatch();
-
   //Handle Major Dropdown
   const { majorStore } = useMajor();
-
-  const [majorSelectValue, setMajorSelectValue] = useState(
-    majorStore.currentMajor ? majorStore.currentMajor.id : '',
-  );
-
-  useEffect(() => {
-    if (majorStore.allMajor) {
-      dispatch(
-        setCurrentMajor(majorStore.allMajor.filter((m: any) => m.id === majorSelectValue)[0]),
-      );
-    }
-  }, [majorSelectValue]);
-
+  const { termStore, handleGetAllTermByMajor } = useTerm();
+  const [majorSelectValue, setMajorSelectValue] = useState(majorStore.currentMajor.id);
+  const [termSelectValue, setTermSelectValue] = useState(termStore.currentTerm.id);
   //Handle Term dropdown
-  const { termStore } = useTerm();
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor, majorSelectValue] });
-  }, [majorSelectValue]);
+  const handleSelectTerm = (termId) => {
+    dispatch(setCurrentTerm({}));
+    setTermSelectValue(termId);
+    const payload = termStore.allTerm.filter((term: any) => term.id === termId)[0];
+    dispatch(setCurrentTerm(payload));
+  };
+  const { data, isSuccess } = handleGetAllTermByMajor(majorSelectValue);
+
+  const handleSelectMajor = (majorId) => {
+    setMajorSelectValue(majorId);
+    const payload = majorPayload(majorId, convertMajorDropdown(majorStore.allMajor));
+    dispatch(setCurrentMajor(payload));
+    queryClient.invalidateQueries({ queryKey: [TermQueryKey.allTermWithMajor] });
+  };
   return (
     <Box
       sx={{
@@ -194,9 +188,9 @@ export default function SidebarManager() {
                 {isAdminRole ? (
                   <DropDown
                     onChange={(e: any) => {
-                      isAdminRole && setMajorSelectValue(e.target.value);
+                      handleSelectMajor(e.target.value);
                     }}
-                    defaultValue={majorStore.currentMajor.id}
+                    defaultValue={majorSelectValue}
                     options={convertMajorDropdown(majorStore.allMajor)}
                   />
                 ) : (
@@ -208,28 +202,22 @@ export default function SidebarManager() {
 
               <DropDown
                 onChange={(e: any) => {
-                  if (termStore.allTerm)
-                    dispatch(
-                      setCurrentTerm(
-                        termStore.allTerm.filter((term: any) => term.id === e.target.value)[0],
-                      ),
-                    );
-                  else dispatch(setCurrentTerm({}));
+                  handleSelectTerm(e.target.value);
                 }}
-                value={termStore.currentTerm?.id ? termStore.currentTerm.id : ''}
+                value={termSelectValue}
                 options={convertTermDropdown(termStore.allTerm)}
               />
             </Box>
           </Box>
           <Drawer
-            variant={isMobile ? 'temporary' : 'permanent'}
+            variant={'permanent'}
             open={isOpen}
             onClose={handleToggleSidebar}
             sx={{
               flexShrink: 0,
-              height: isMobile ? '100%' : 'calc(100% - 200px)',
+              height: 'calc(100% - 200px)',
               ['& .MuiDrawer-paper']: {
-                width: isMobile ? 250 : '100%',
+                width: '100%',
                 border: 'none',
                 height: 'calc(100%)',
                 boxSizing: 'border-box',
@@ -437,15 +425,15 @@ export default function SidebarManager() {
         </>
       ) : (
         <Drawer
-          variant={isMobile ? 'temporary' : 'permanent'}
+          variant={'permanent'}
           open={isOpen}
           onClose={handleToggleSidebar}
           sx={{
             flexShrink: 0,
             mt: 70,
-            height: isMobile ? '100%' : 'calc(100% - 200px)',
+            height: 'calc(100% - 200px)',
             ['& .MuiDrawer-paper']: {
-              width: isMobile ? 250 : '100%',
+              width: '100%',
               border: 'none',
               height: 'calc(100%)',
               boxSizing: 'border-box',

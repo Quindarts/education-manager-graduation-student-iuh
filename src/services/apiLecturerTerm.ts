@@ -29,7 +29,7 @@ export const getListLecturerTerm: any = async (termId: string) => {
     return axiosConfig.get<ResponseType, any>(`${URL}/list?termId=${termId}`);
 }
 //[CREATE]
-export const createLecturerTerm: any = async (data: { id: string, termId: string }) => {
+export const createLecturerTerm: any = async (data: { lecturerId: string, termId: string }) => {
     return axiosConfig.post(`${URL}`, data);
 }
 export const getLecturerTermToExport: any = async (termId: string) => {
