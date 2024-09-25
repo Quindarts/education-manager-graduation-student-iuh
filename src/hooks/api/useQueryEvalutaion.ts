@@ -43,10 +43,14 @@ const useEvaluation = () => {
         switch (currentRole) {
             case RoleCheck.LECTURER:
                 apiName = 'getGroupLecturerByLecturerId'
-                params = [termId, lecturerId]
+                params = [termId, lecturerId, typeEvaluation.split('_')[0].toUpperCase()]
                 break;
 
             case RoleCheck.HEAD_LECTURER:
+                apiName = 'getGroupLecturerByTypeEvaluation'
+                params = [termId, TypeEvalution[typeEvaluation.toUpperCase()]]
+                break;
+            case RoleCheck.HEAD_COURSE:
                 apiName = 'getGroupLecturerByTypeEvaluation'
                 params = [termId, TypeEvalution[typeEvaluation.toUpperCase()]]
                 break;

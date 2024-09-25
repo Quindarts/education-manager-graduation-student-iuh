@@ -1,6 +1,6 @@
 import { ErrorResponseType, ResponseType } from './../../types/axios.type';
 import { LoginResponse } from './../../types/entities/user';
-import { forgotPass, getMe, login, logout, updatePassword } from "@/services/apiAuth";
+import { forgotPass, getMe, login, logout, updateMe, updatePassword } from "@/services/apiAuth";
 import { RootState } from "@/store";
 import { setCurrentRoleRender, setMe, setParamTotalPageLectuerMajor, setParamTotalPageLectuerTerm } from "@/store/slice/lecturer.slice";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
@@ -65,7 +65,7 @@ export const useAuth = () => {
             dispatch(setParamTotalPageLectuerMajor(0))
             dispatch(setParamTotalPageLectuerTerm(0))
             dispatch(setParamTotalPage(0))
-            
+
             queryClient.clear()
             navigate('/auth/login');
         }
@@ -81,7 +81,10 @@ export const useAuth = () => {
 
                 },
                 onError: (error: any) => {
-                    enqueueSnackbar(error?.message, { variant: "error" });
+                    if (error.status >= 500)
+                        enqueueSnackbar('Hệ thống không thể xử lý yêu cầu của bạn. Thử lại sau', { variant: "warning" });
+                    else
+                        enqueueSnackbar(error.message, { variant: "error" });
                 }
             }
         )
@@ -93,15 +96,36 @@ export const useAuth = () => {
                 navigate('/auth/login')
             },
             onError: (error: any) => {
-                enqueueSnackbar(error?.message, { variant: "error" });
+                if (error.status >= 500)
+                    enqueueSnackbar('Hệ thống không thể xử lý yêu cầu của bạn. Thử lại sau', { variant: "warning" });
+                else
+                    enqueueSnackbar(error.message, { variant: "error" });
+            }
+        })
+    }
+    const onUpdateMe = () => {
+        return useMutation((data: {
+            fullName: string,
+            email: string,
+            phone: string,
+            gender: string
+        }) => updateMe(data), {
+            onSuccess: () => {
+                enqueueSnackbar('Cập nhật thông tin thành công.', { variant: "success" });
+            },
+            onError: (error: any) => {
+                if (error.status >= 500)
+                    enqueueSnackbar('Hệ thống không thể xử lý yêu cầu của bạn. Thử lại sau', { variant: "warning" });
+                else
+                    enqueueSnackbar(error.message, { variant: "error" });
             }
         })
     }
 
-
     return {
         onForgotPassword,
         onUpdatePassword,
+        onUpdateMe,
         handleLogin,
         handleGetMe,
         handleLogout,

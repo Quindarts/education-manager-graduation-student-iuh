@@ -75,4 +75,4 @@ function MainLayout() {
   );
 }
 
-export default React.memo(MainLayout);
+export default MainLayout;

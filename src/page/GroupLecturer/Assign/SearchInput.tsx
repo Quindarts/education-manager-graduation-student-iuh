@@ -57,7 +57,7 @@ function SearchInput({
           onChange={(e) => setSearchType(e.target.value)}
         >
           <MenuItem value='topicName'>Tên đề tài</MenuItem>
-          <MenuItem value='fullName'>Giảng viên HD</MenuItem>
+          <MenuItem value='lecturerName'>Giảng viên HD</MenuItem>
         </Select>
       </FormControl>
       <TextField

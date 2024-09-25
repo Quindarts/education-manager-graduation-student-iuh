@@ -4,14 +4,13 @@ import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
-import InfoModal from '../Modal/InfoModal';
-import AcceptTopicModal from '../Modal/AcceptTopicModal';
-import RefuseTopicModal from '../Modal/RefuseTopicModal';
-import EditModal from '../Modal/EditModal';
-import { CustomToolbar } from './custom';
-import DeleteModal from '../Modal/DeleteModal';
 import { useTopic } from '@/hooks/api/useQueryTopic';
-import AddGroupStudentToTopicModal from '../Modal/AddGroupStudentToTopic';
+import DeleteModal from '@/components/Page/Topic/Modal/DeleteModal';
+import AddGroupStudentToTopicModal from '@/components/Page/Topic/Modal/AddGroupStudentToTopic';
+import EditModal from '@/components/Page/Topic/Modal/EditModal';
+import InfoModal from '@/components/Page/Topic/Modal/InfoModal';
+import AcceptTopicModal from '@/components/Page/Topic/Modal/AcceptTopicModal';
+import RefuseTopicModal from '@/components/Page/Topic/Modal/RefuseTopicModal';
 
 function TableManagamentTopic(props: any) {
   const {

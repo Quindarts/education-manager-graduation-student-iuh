@@ -7,6 +7,8 @@ import useDocx from '@/hooks/ui/useDocx';
 import docTranscriptReviewer from '../PageWord/docUtils/docTranscriptReviewer';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import { useAuth } from '@/hooks/api/useAuth';
+import { TypeEvaluation } from '@/services/apiEvaluation';
+import docTranscriptCouncil from '../PageWord/docUtils/docTranscriptCouncil';
 function PreviewModal({
   open,
   onClose,
@@ -16,6 +18,7 @@ function PreviewModal({
   evaluators,
   lecturerSupport,
   evaluations,
+  typeEvaluation,
 }: any) {
   const { onExportDocxFile } = useDocx();
   const { handleUiRender } = useEvaluation();
@@ -63,20 +66,30 @@ function PreviewModal({
             }}
             color='primary'
             variant='contained'
-            onClick={() =>
+            onClick={() => {
               onExportDocxFile(
                 'Phiếu chấm Nhóm sv_' + groupStudentName + '_' + lecturerStore.me.user.fullName,
-                docTranscriptReviewer({
-                  topicName,
-                  groupStudentName,
-                  students,
-                  evaluatorFullName: lecturerStore.me.user.fullName,
-                  lecturerSupport,
-                  evaluations,
-                  fileType: 'one',
-                }),
-              )
-            }
+                typeEvaluation === 'REPORT'
+                  ? docTranscriptCouncil({
+                      topicName,
+                      groupStudentName,
+                      students,
+                      evaluatorFullName: lecturerStore.me.user.fullName,
+                      lecturerSupport,
+                      evaluations,
+                      fileType: 'one',
+                    })
+                  : docTranscriptReviewer({
+                      topicName,
+                      groupStudentName,
+                      students,
+                      evaluatorFullName: lecturerStore.me.user.fullName,
+                      lecturerSupport,
+                      evaluations,
+                      fileType: 'one',
+                    }),
+              );
+            }}
           >
             Xuất phiếu đang preview
           </Button>

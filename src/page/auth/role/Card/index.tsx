@@ -1,4 +1,6 @@
+import { useTerm } from '@/hooks/api/useQueryTerm';
 import { setCurrentRoleRender } from '@/store/slice/lecturer.slice';
+import { RoleCheck } from '@/types/enum';
 import { Icon } from '@iconify/react';
 import { Card, CardActions, CardContent, Typography, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
@@ -13,9 +15,12 @@ type CardRolePropType = {
 function CardRole({ icon, role, name, desc }: Partial<CardRolePropType>) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+ 
   const handleNavigate = () => {
     dispatch(setCurrentRoleRender(role));
     navigate('/');
+    if (RoleCheck.LECTURER !== role) {
+    }
   };
   return (
     <Card

@@ -17,6 +17,10 @@ export const register = async (data: any) => {
 export const getMe = async () => {
     return await axiosConfig.get('/api/v1/lecturers/me')
 }
+export const updateMe = async (data) => {
+    return await axiosConfig.put('/api/v1/lecturers/me', data)
+}
+
 export const updatePassword = async (data: { password: string; newPassword: string }) => {
     return await axiosConfig<AxiosResponse>({
         url: `/api/v1/lecturers/update-password`,

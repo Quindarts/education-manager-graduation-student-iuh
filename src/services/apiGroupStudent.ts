@@ -24,11 +24,14 @@ export const getGroupByTopic: any = (termId: string, topicId: string) => {
 export const getExportGroupStudent: any = (termId: string) => {
     return axiosConfig.get(`${URL}/export?termId=${termId}`)
 }
-
+export const getGroupStdsExportByLecturer = async (termId: string) => {
+    return axiosConfig.get<ResponseType, any>(`${URL}/export-me?termId=${termId}`)
+}
 //[GET]
 export const getGroupStudentByTerm: any = (termId: string, limit: number, page: number) => {
     return axiosConfig.get(`${URL}?termId=${termId}&page=${page}&limit=${limit}`)
 }
+//[]
 export const getGroupStudentByLecturerByTerm: any = (termId: string, lecturerId: string) => {
     return axiosConfig.get(`${URL}/lecturer?termId=${termId}&lecturerId=${lecturerId}`)
 }

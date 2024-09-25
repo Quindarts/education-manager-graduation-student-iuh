@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import TableManagamentTerm from './Table';
 import HeaderTerm from './Header';
 import TitleManager from '@/components/ui/Title';
@@ -10,7 +10,10 @@ import { useMajor } from '@/hooks/api/useQueryMajor';
 function TermPage() {
   const { handleGetAllTermByMajor } = useTerm();
   const { majorStore } = useMajor();
-  const { data, isLoading, isFetching } = handleGetAllTermByMajor();
+  const { data, isLoading, isFetching, refetch } = handleGetAllTermByMajor();
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <>
       <Paper sx={{ py: 10, px: 10 }} elevation={0}>

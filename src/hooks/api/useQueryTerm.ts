@@ -49,7 +49,6 @@ export function useTerm() {
         return useQuery([TermQueryKey.allTermWithMajor, majorIdCallApi], () => getAllTermByMajor(majorIdCallApi), {
             onSuccess: (data) => {
                 dispatch(setAllTerm([]));
-                dispatch(setCurrentTerm({}))
                 dispatch(setAllTerm(data.terms));
             },
 

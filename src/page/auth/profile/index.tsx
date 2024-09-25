@@ -29,14 +29,19 @@ const DEGREE_DROP_VALUE = [
 ];
 
 function ProfilePage() {
-  const { termStore } = useTerm();
   const { majorStore } = useMajor();
-  const { lecturerStore } = useAuth();
-  const { onUpdateLecturer } = useLecturer();
-  const { mutate: updateLecturer } = onUpdateLecturer();
+  const { lecturerStore, onUpdateMe } = useAuth();
+  const {} = useLecturer();
+  const { mutate: updateLecturer } = onUpdateMe();
 
   const handleSubmitEditLecturer = (values: any) => {
-    updateLecturer(values);
+    const data = {
+      fullName: values.fullName,
+      email: values.email,
+      phone: values.phone,
+      gender: values.gender,
+    };
+    updateLecturer(data);
   };
 
   const navigate = useNavigate();

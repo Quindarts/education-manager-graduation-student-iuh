@@ -11,10 +11,11 @@ function TableManagementGroupAssign(props: any) {
 
   const LecturerColumns: GridColDef[] = [
     {
-      headerName: 'Tên nhóm',
+      headerName: 'Mã nhóm',
       field: 'name',
-      flex: 1,
-      headerAlign: 'left',
+      flex: 0.6,
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       headerName: 'Giảng viên hướng dẫn',
@@ -40,7 +41,7 @@ function TableManagementGroupAssign(props: any) {
           <Box>
             {params.row.members.map((mem: any) => (
               <Typography variant='body1' color='initial'>
-                MSSV: {mem.username} - {mem.fullName}
+                {mem.username} - {mem.fullName}
               </Typography>
             ))}
           </Box>

@@ -2,7 +2,7 @@ import Table from '@/components/ui/Table/Table';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import EditInfoModal from '../Modal/EditInfoModal';
 import EditStatus from '../Modal/EditStatus';
 import DeleteModal from '../Modal/DeleteModal';
@@ -13,7 +13,6 @@ import { CustomToolbar } from './custom';
 
 function TableManagamentStudent(props: any) {
   const { rows, totalItems, limit, handleChangeLimit, totalPage, page, handleChangePage } = props;
-
   const [openEditInfoModal, setOpenEditInfoModal] = useState({
     studentId: '',
     name: '',
@@ -88,146 +87,148 @@ function TableManagamentStudent(props: any) {
     setOpenEditStatusMultiStudent({ listStudent, isOpen: true });
   };
 
-  const basicColumns: GridColDef[] = [
-    {
-      headerName: 'MSSV',
-      field: 'username',
-      flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell(params) {
-        return (
-          <Typography variant='h6' fontWeight={500}>
-            {params.row.username}
-          </Typography>
-        );
+  const basicColumns: GridColDef[] = useMemo(
+    () => [
+      {
+        headerName: 'MSSV',
+        field: 'username',
+        flex: 0.5,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' fontWeight={500}>
+              {params.row.username}
+            </Typography>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Họ & Tên đệm',
-      field: 'firstName',
-      flex: 0.7,
-      headerAlign: 'center',
-      align: 'left',
-      renderCell(params) {
-        return (
-          <Typography variant='h6' color='initial'>
-            {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
-          </Typography>
-        );
+      {
+        headerName: 'Họ & Tên đệm',
+        field: 'firstName',
+        flex: 0.7,
+        headerAlign: 'center',
+        align: 'left',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' color='initial'>
+              {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
+            </Typography>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Tên',
-      field: 'lastName',
-      flex: 0.5,
-      headerAlign: 'center',
-      align: 'left',
-      renderCell(params) {
-        return (
-          <Typography variant='h6' color='initial'>
-            {params.row.fullName.trim().split(' ').pop()}
-          </Typography>
-        );
+      {
+        headerName: 'Tên',
+        field: 'lastName',
+        flex: 0.5,
+        headerAlign: 'center',
+        align: 'left',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' color='initial'>
+              {params.row.fullName.trim().split(' ').pop()}
+            </Typography>
+          );
+        },
       },
-    },
 
-    {
-      headerName: 'Email',
-      field: 'email',
-      flex: 1.5,
-      align: 'left',
-      headerAlign: 'center',
-      renderCell(params) {
-        return (
-          <Typography variant='h6' fontSize='14px' color='grey.900'>
-            {params.row.email ? params.row.email : 'Chưa có thông tin'}
-          </Typography>
-        );
+      {
+        headerName: 'Email',
+        field: 'email',
+        flex: 1.5,
+        align: 'left',
+        headerAlign: 'center',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' fontSize='14px' color='grey.900'>
+              {params.row.email ? params.row.email : 'Chưa có thông tin'}
+            </Typography>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Giới tính',
-      field: 'gender',
-      flex: 0.5,
-      align: 'left',
+      {
+        headerName: 'Giới tính',
+        field: 'gender',
+        flex: 0.5,
+        align: 'left',
 
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
+        headerAlign: 'center',
+        renderCell: (params: any) => {
+          return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
+        },
       },
-    },
-    {
-      headerName: 'Lớp danh nghĩa',
-      field: 'clazzName',
-      flex: 0.7,
-      align: 'left',
+      {
+        headerName: 'Lớp danh nghĩa',
+        field: 'clazzName',
+        flex: 0.7,
+        align: 'left',
 
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Chức năng',
-      field: 'name8',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={3}>
-          <Tooltip 
-          onClick={() =>
-            handleOpenStatusStudentModal(
-              params.row.id,
-              params.row.fullName,
-              params.row.isActive,
-            )
-          }
-          title={params.row.isActive ? 'Tài khoản đang hoạt động' : 'Tài khoản đã bị khóa'}>
-          <IconButton size='small'
-              color={params.row.isActive ? 'success' : 'error'}
+        headerAlign: 'center',
+      },
+      {
+        headerName: 'Chức năng',
+        field: 'name8',
+        flex: 1,
+        align: 'center',
+        headerAlign: 'center',
+        renderCell: (params: any) => (
+          <Box display={'flex'} gap={3}>
+            <Tooltip
+              onClick={() =>
+                handleOpenStatusStudentModal(
+                  params.row.id,
+                  params.row.fullName,
+                  params.row.isActive,
+                )
+              }
+              title={params.row.isActive ? 'Tài khoản đang hoạt động' : 'Tài khoản đã bị khóa'}
             >
-              <Icon
-                width={20}
-                style={{color:'#034eb1'}}
-                icon={params.row.isActive ? 'bi:unlock' : 'material-symbols:lock-outline'}
-              />
-            </IconButton>
-          </Tooltip>
+              <IconButton size='small' color={params.row.isActive ? 'success' : 'error'}>
+                <Icon
+                  width={20}
+                  style={{ color: '#034eb1' }}
+                  icon={params.row.isActive ? 'bi:unlock' : 'material-symbols:lock-outline'}
+                />
+              </IconButton>
+            </Tooltip>
 
-          <Tooltip
-            onClick={() => handleOpenInfoModal(params.row.id, params.row.fullName)}
-            title='Cập nhật thông tin'
-          >
-            <IconButton size='small'>
-              <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
-            </IconButton>
-          </Tooltip>
-          <Box></Box>
-          <Tooltip
-            onClick={() =>
-              handleOpenResetPasswordStudentModal(
-                params.row.id,
-                params.row.fullName,
-                params.row.username,
-              )
-            }
-            title='Cấp lại mật khẩu'
-          >
-            <IconButton color='primary' size='small'>
-              <Icon icon='carbon:password' width={20} style={{ color: '#0288d1' }} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip
-            onClick={() => handleOpenDeleteStudentModal(params.row.id, params.row.fullName)}
-            title='Xóa sinh viên'
-          >
-            <IconButton color='error' size='small'>
-              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ];
+            <Tooltip
+              onClick={() => handleOpenInfoModal(params.row.id, params.row.fullName)}
+              title='Cập nhật thông tin'
+            >
+              <IconButton size='small'>
+                <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+            <Box></Box>
+            <Tooltip
+              onClick={() =>
+                handleOpenResetPasswordStudentModal(
+                  params.row.id,
+                  params.row.fullName,
+                  params.row.username,
+                )
+              }
+              title='Cấp lại mật khẩu'
+            >
+              <IconButton color='primary' size='small'>
+                <Icon icon='carbon:password' width={20} style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              onClick={() => handleOpenDeleteStudentModal(params.row.id, params.row.fullName)}
+              title='Xóa sinh viên'
+            >
+              <IconButton color='error' size='small'>
+                <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        ),
+      },
+    ],
+    [],
+  );
   const [rowSelectionModel, setRowSelectionModel] = React.useState<GridRowSelectionModel>([]);
 
   return (

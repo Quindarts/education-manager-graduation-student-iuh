@@ -1,8 +1,8 @@
 import { EnumRole } from "@/types/enum";
 
 export const checkDegree = (value: string) => {
-    if (value === 'DOCTOR') return 'Tiến sĩ';
-    if (value === 'MASTER') return 'Thạc sĩ';
+    if (value === 'MASTER') return 'Tiến sĩ';
+    if (value === 'DOCTOR') return 'Thạc sĩ';
     return;
 };
 

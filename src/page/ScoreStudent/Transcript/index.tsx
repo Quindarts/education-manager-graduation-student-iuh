@@ -129,7 +129,7 @@ function TranscriptOfGroupStudent(props: any) {
             : convertEvaluations(evaluations, memberFetch?.members),
         isExistTranscripts: transcriptFetch.transcripts.length > 0,
       }));
-      setScoreStudent(handleTotalScores(transcriptFetch.transcripts));
+      setScoreStudent(handleTotalScores(transcriptFetch?.transcripts));
     }
   }, [fetchingTranscript, fetchingMembers, groupStudent.id]);
 
@@ -221,7 +221,7 @@ function TranscriptOfGroupStudent(props: any) {
                       Max score
                     </StyledTableCell>
                     {!initTranscripts.isExistTranscripts
-                      ? memberFetch?.members.map((st: any) => (
+                      ? memberFetch?.members?.map((st: any) => (
                           <StyledTableCell
                             sx={{ color: 'grey.300', width: '20%', fontSize: 14 }}
                             align='center'
@@ -229,7 +229,7 @@ function TranscriptOfGroupStudent(props: any) {
                             {st.student.fullName}
                           </StyledTableCell>
                         ))
-                      : initTranscripts.transcripts[0]?.students?.map((st: any) => (
+                      : initTranscripts?.transcripts[0]?.students?.map((st: any) => (
                           <StyledTableCell
                             sx={{ color: 'grey.300', width: '20%', fontSize: 14 }}
                             align='center'
@@ -299,7 +299,7 @@ function TranscriptOfGroupStudent(props: any) {
                         <StyledTableCell align='center' sx={{ fontSize: 14 }}>
                           {row.scoreMax}
                         </StyledTableCell>
-                        {memberFetch.members.map((st: any) => (
+                        {memberFetch?.members?.map((st: any) => (
                           <StyledTableCell sx={{ p: 0 }} align='center'>
                             <ScoreInput
                               handleChangeScore={handleChangeScore}
@@ -323,7 +323,7 @@ function TranscriptOfGroupStudent(props: any) {
                       {/**
                        * Total score
                        */}
-                      {memberFetch.members.map((st: any) => (
+                      {successMember && memberFetch.members.map((st: any) => (
                         <StyledTableCell align='center' sx={{ fontSize: 14 }}>
                           <Typography variant='h6' fontWeight={'600'} color='error.dark'>
                             {scoreStudent[`${st.student.id}`]}

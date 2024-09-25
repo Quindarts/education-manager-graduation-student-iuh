@@ -35,6 +35,9 @@ export const getTopicsByTermByMajor = async (termId: string) => {
 export const getTopicsExport = async (termId: string) => {
     return axiosConfig.get<ResponseType, any>(`${URL}/export?termId=${termId}`)
 }
+export const getTopicsExportByLecturer = async (termId: string) => {
+    return axiosConfig.get<ResponseType, any>(`${URL}/export-me?termId=${termId}`)
+}
 
 export const updateAllQuantityGroupMax = async (termId: string, quantityGroupMax: number) => {
     return axiosConfig.put<ResponseType, any>(`${URL}/quantity-group-max?termId=${termId}`, { quantityGroupMax: quantityGroupMax })

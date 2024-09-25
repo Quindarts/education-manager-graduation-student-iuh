@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
-import { validationTopicSchema } from '../Context';
+import { validationTopicSchema } from '../../../../page/Topic/Context';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 
 function AddModal(props: any) {
@@ -48,9 +48,7 @@ function AddModal(props: any) {
         >
           {({ handleSubmit, values, errors, touched, handleBlur, handleChange, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              <Box>
-
-              </Box>
+              <Box></Box>
               <CustomTextField
                 value={`${lecturerStore.me.user.fullName}`}
                 required

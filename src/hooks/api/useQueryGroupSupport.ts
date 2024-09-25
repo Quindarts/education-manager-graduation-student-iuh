@@ -1,10 +1,12 @@
 import { getMyGroupSupport, getStudentMemberToScoring } from "@/services/apiGroupSupport"
 import { useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
+import { getGroupStdsExportByLecturer } from "@/services/apiGroupStudent"
 
 export enum QuertKeysGroupSupport {
     getMyGroupSupport = 'getMyGroupSupport',
-    getStudentMemberToScoring = 'getStudentMemberToScoring'
+    getStudentMemberToScoring = 'getStudentMemberToScoring',
+    getGrStdToExport = "getGrStdToExport"
 }
 
 function useGroupSupport() {
@@ -16,7 +18,11 @@ function useGroupSupport() {
     const handleGetStudentMemberToScoring = (termId?: string) => {
         return useQuery([QuertKeysGroupSupport.getStudentMemberToScoring, termStore.currentTerm.id], () => getStudentMemberToScoring(termStore.currentTerm.id))
     }
+    const handleGetGrToExport = () => {
+        return useQuery([QuertKeysGroupSupport.getGrStdToExport, termStore.currentTerm.id], () => getGroupStdsExportByLecturer(termStore.currentTerm.id))
+    }
     return {
+        handleGetGrToExport,
         handleGetMyGroupSupport,
         handleGetStudentMemberToScoring
     }

@@ -65,14 +65,9 @@ const useGroupStudent = () => {
             [
                 QueryKeysGroupStudent.managerActionGroupStudent,
                 termId,
-                getQueryField('searchField'),
-                getQueryField('sort'),
-                getQueryField('keywords'),
             ], () => GroupStudentServices.searchGroupStudentAdmin(
                 termId,
-                getQueryField('searchField'),
-                getQueryField('sort'),
-                getQueryField('keywords')), {
+            ), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'groupStudents'>) {
             },
             staleTime: 1000 * (60 * 3), // 10 min,
@@ -99,7 +94,7 @@ const useGroupStudent = () => {
                 if (data.success) {
                     enqueueSnackbar('Gỡ gán nhóm sinh viên cho đề tài thành công', { variant: 'success' })
                     queryClient.invalidateQueries([QueryTopic.getSearchTopic, termId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')])
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId] })
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
                     queryClient.invalidateQueries([QueryTopic.getGroupByTopic, termId, topicId])
@@ -119,7 +114,7 @@ const useGroupStudent = () => {
                 if (data.success) {
                     enqueueSnackbar('Phân nhóm sinh viên cho đề tài thành công', { variant: 'success' })
                     queryClient.invalidateQueries([QueryTopic.getSearchTopic, termId, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')])
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId] })
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
                     queryClient.invalidateQueries([QueryTopic.getGroupByTopic, termId, topicId])
@@ -154,7 +149,7 @@ const useGroupStudent = () => {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Tạo nhóm sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId] })
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
                 }
@@ -173,7 +168,7 @@ const useGroupStudent = () => {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Import danh sách nhóm sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId] })
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
                 }
             }, onError(err: any) {
@@ -190,7 +185,7 @@ const useGroupStudent = () => {
             onSuccess(data: any) {
                 if (data.success) {
                     enqueueSnackbar('Xóa nhóm sinh vien thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId, getQueryField('limit'), getQueryField('page'), '', '', ''] })
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.managerActionGroupStudent, termId] })
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termId])
                     queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termId])
                 }

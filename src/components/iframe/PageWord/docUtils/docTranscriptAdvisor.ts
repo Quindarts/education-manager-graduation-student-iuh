@@ -95,7 +95,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
           new Paragraph({
             children: [
               new TextRun({
-                text: `     First student name:  ${groupMember && groupMember[0]?.student?.fullName}                                                      Student code 1: ${groupMember && groupMember[0]?.student?.username}`,
+                text: `     Student code 1: ${groupMember && groupMember[0]?.student?.username}                                                First student name:  ${groupMember && groupMember[0]?.student?.fullName}`,
                 size: 24,
               }),
             ],
@@ -103,7 +103,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
           new Paragraph({
             children: [
               new TextRun({
-                text: `     First student name:  ${groupMember && groupMember[1]?.student?.fullName}                                                      Student code 2: ${groupMember && groupMember[1]?.student?.username}`,
+                text: `     Student code 2: ${groupMember && groupMember[1]?.student?.username}                                                First student name:  ${groupMember && groupMember[1]?.student?.fullName}                                                      `,
                 size: 24,
               }),
             ],
@@ -119,7 +119,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
           new Paragraph({
             children: [
               new TextRun({
-                text: '5. Role of the evaluator:     Instructor ',
+                text: '5. Role of the evaluator:   Instructor ',
                 size: 24,
               }),
             ],

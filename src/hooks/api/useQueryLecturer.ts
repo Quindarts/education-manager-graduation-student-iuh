@@ -140,6 +140,8 @@ export const useLecturer = () => {
 
             })
     }
+    
+
     //[PUT]
     const onUpdateLecturer = (id?: string) => {
         const lecturerId = id ? id : me.user.id

@@ -76,6 +76,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
   //TODO: [States]
   const [grHaveAssigned, setGrHaveAssigned] = useState([]);
   const [grNeedAssign, setGrNeedAssign] = useState([]);
+
   const [infoGroupLecturer, setInfoGroupLecturer] = useState({
     name: groupName,
     totalAssigns: totalAssigns,
@@ -386,7 +387,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
               <Box flex={1}>
                 <Box justifyContent={'space-between'} display={'flex'} mb={10}>
                   <Typography variant='h5' fontWeight={'700'} color='error.main'>
-                    {groupName}
+                    {checktTypeGroupLecturer(groupType)} {groupName}
                   </Typography>
                   <Box>
                     {infoGroupLecturer?.members?.map((member: any, index: number) => (

@@ -34,14 +34,8 @@ function HeaderLecturerTerm() {
     importLecturer();
   };
 
-  const {
-    onSearchChange,
-    getQueryField,
-    onTypeSearchChange,
-    setDefaultTypeSearch,
-    handleFocused,
-    setTypeSort,
-  } = useSearch();
+  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
+    useSearch();
   const [sort, setSort] = useState('ASC');
   const optionSort = ['Tăng dần', 'Giảm dần'];
   const handleClick = (index: number) => {

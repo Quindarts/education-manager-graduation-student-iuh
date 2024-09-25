@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
-import { validationTopicSchema } from '../Context';
+import { validationTopicSchema } from '../../../../page/Topic/Context';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import SekeletonUI from '@/components/ui/Sekeleton';
 
@@ -32,7 +32,12 @@ function EditModal(props: any) {
   return (
     <Modal maxWidth='md' open={open} onClose={onClose}>
       <Box pb={5} px={10}>
-        <TitleManager mb={10} variant='h6' icon='material-symbols:edit-document' textTransform={'uppercase'}>
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='material-symbols:edit-document'
+          textTransform={'uppercase'}
+        >
           Cập nhật thông tin đề tài
         </TitleManager>
         {isLoading || isFetching ? (

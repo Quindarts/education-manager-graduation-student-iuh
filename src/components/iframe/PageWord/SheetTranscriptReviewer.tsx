@@ -46,7 +46,7 @@ function SheetTranscriptReviewer({
           4. Evaluator's full name:  {' '} {evaluatorFullName}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          5. Role of the evaluator:  Instructor  Board member{' '}
+          5. Role of the evaluator: Reviewer{' '}
         </Typography>
         <Box>
           <Typography

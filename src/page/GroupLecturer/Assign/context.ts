@@ -36,7 +36,7 @@ export const stylingGrHaveAssigned = (grLecturer) => {
             id: group?.id,
             name: group?.name,
             topicName: group?.topicName,
-            fullName: group?.lecturerName,
+            lecturerName: group?.lecturerName,
             lecturerTermId: group?.lecturerTermId,
         };
     });

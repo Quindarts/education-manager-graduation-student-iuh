@@ -11,7 +11,7 @@ function docTranscriptCouncil({ topicName,
     fileType = 'many' }: any) {
     const rows = convertRowEvaluations(evaluations);
     const fileName = 'Phiếu chấm Nhóm sv_' + groupStudentName + '_' + evaluatorFullName
-
+    const lineSpacing = 200
     const doc = new Document({
         sections: [
             {
@@ -157,19 +157,19 @@ function docTranscriptCouncil({ topicName,
 
                     }),
                     new Paragraph({
+                        spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `     First student name: ${students && students[0]?.fullName}                                                         Student code 1: ${students && students[0]?.username}`,
+                                text: `     Student code 1: ${students && students[0]?.username}                                              First student name: ${students && students[0]?.fullName}`,
                                 size: 24,
-
-
                             }),
                         ],
                     }),
                     new Paragraph({
+                        spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `     Second student name: ${students && students[1]?.fullName}                                                        Student code 2: ${students && students[1]?.username}`,
+                                text: `     Student code 2: ${students && students[1]?.username}                                              Second student name: ${students && students[1]?.fullName}`,
                                 size: 24,
                             }),
                         ],

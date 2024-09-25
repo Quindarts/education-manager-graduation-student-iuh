@@ -1,19 +1,12 @@
-import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
-import { Box, Button, TextField, Tooltip } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import AddGroupStudentModal from '../Modal/AddModal/Add';
 import useParams from '@/hooks/ui/useParams';
-import SplitButton from '@/components/ui/SplitButton';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import ExportExcelButton from '@/components/ui/Export';
+import SearchInput from './SearchInput';
 
-const SEARCH_DROP_VALUE = [
-  {
-    _id: 'name',
-    name: 'Tên nhóm',
-  },
-];
 function HeaderGroupStudent({ countGroups }) {
   const [openAddModal, setOpenAddModal] = useState(false);
   const handleCloseAddModal = () => {
@@ -23,52 +16,20 @@ function HeaderGroupStudent({ countGroups }) {
     setOpenAddModal(true);
   };
 
-  const {
-    onSearchChange,
-    getQueryField,
-    onTypeSearchChange,
-    setDefaultTypeSearch,
-    handleFocused,
-    setTypeSort,
-  } = useParams();
-  const [sort, setSort] = useState('ASC');
-  const optionSort = ['Tăng dần', 'Giảm dần'];
-  const handleClick = (index: number) => {
-    if (index === 0) setSort('ASC');
-    else if (index === 1) setSort('DESC');
-  };
-  useEffect(() => {
-    setTypeSort(sort);
-  }, [sort]);
-
   const { onImportGroupStudent, handleGetExportGroupStudent } = useGroupStudent();
   const { mutate: importGr } = onImportGroupStudent();
   const handleImport = () => {
     importGr();
   };
   const { data: fetchGroup } = handleGetExportGroupStudent();
+
+  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
+    useParams();
+
   return (
     <Box mb={4} display={'flex'} justifyContent={'end'} flexWrap={'wrap'} gap={2}>
       <Box flex={1} display={'flex'} gap={2} width={''}>
-        <Box display={'flex'} gap={2}>
-          <DropDown
-            value={getQueryField('searchField') ? getQueryField('searchField') : 'name'}
-            onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
-            options={SEARCH_DROP_VALUE}
-          />
-          <Box width={119}>
-            <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
-          </Box>
-        </Box>
-
-        <TextField
-          fullWidth
-          size='small'
-          defaultValue={getQueryField('keywords')}
-          onChange={onSearchChange}
-          onBlur={() => handleFocused(false)}
-          placeholder='Tim kiếm nhóm sinh viên theo tên nhóm'
-        />
+        <SearchInput />
       </Box>
       <Tooltip title='Tạo nhóm'>
         <Button

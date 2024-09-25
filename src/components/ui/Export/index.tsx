@@ -56,7 +56,7 @@ const HEADER_TYPE = {
     { header: 'Tên đề tài', key: 'Tên đề tài', width: 100 },
   ],
   assignGroup: [
-    { header: 'STT Nhóm', key: 'STT Nhóm', width: 10 },
+    { header: 'Mã nhóm', key: 'Mã nhóm', width: 10 },
     { header: 'Mã SV', key: 'Mã SV', width: 12 },
     { header: 'Họ tên SV', key: 'Họ tên SV', width: 24 },
     { header: '#HĐPB', key: '#HĐPB', width: 22 },

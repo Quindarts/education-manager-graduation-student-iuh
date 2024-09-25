@@ -10,9 +10,8 @@ export default function docTranscriptReviewer({
     evaluations,
     fileType = 'many'
 }: any) {
-    console.log("🚀 ~ groupStudentName:", groupStudentName)
 
-    const fileName = 'Phiếu chấm_Nhóm sv_' + groupStudentName + '_' + evaluatorFullName
+    const fileName = 'Phiếu chấm_NhómSV_' + groupStudentName + '_' + evaluatorFullName
     const rows = convertRowEvaluations(evaluations);
     const lineSpacing = 200
     const doc = new Document({
@@ -102,7 +101,7 @@ export default function docTranscriptReviewer({
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `     First student name: ${students && students[0]?.fullName}                                                        Student code 1: ${students && students[0]?.username}`,
+                                text: `     Student code 1: ${students && students[0]?.username}                                              First student name: ${students && students[0]?.fullName}`,
                                 size: 24,
                             }),
                         ],
@@ -111,7 +110,7 @@ export default function docTranscriptReviewer({
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `     Second student name: ${students && students[1]?.fullName}                                                  Student code 2: ${students && students[1]?.username}`,
+                                text: `     Student code 2: ${students && students[1]?.username}                                              Second student name: ${students && students[1]?.fullName}`,
                                 size: 24,
                             }),
                         ],
@@ -129,7 +128,7 @@ export default function docTranscriptReviewer({
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: '5. Role of the evaluator:      Instructor    Reviewer     Member of Council',
+                                text: '5. Role of the evaluator:  Reviewer ',
                                 size: 24,
                             }),
                         ],

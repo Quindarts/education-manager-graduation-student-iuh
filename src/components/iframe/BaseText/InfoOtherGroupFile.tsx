@@ -314,6 +314,7 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
         students={openPreview.students}
         evaluators={openPreview?.evaluators}
         evaluations={evaluations}
+        typeEvaluation={typeEvaluation}
       />
     </>
   );

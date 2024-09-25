@@ -14,7 +14,7 @@ function TableStudentScore(props: any) {
       renderCell: (params: any) => {
         return (
           <Typography sx={{  fontWeight: '400' }} variant='h6'>
-            {params.row.name}
+           Nhóm sinh viên {params.row.name}
           </Typography>
         );
       },

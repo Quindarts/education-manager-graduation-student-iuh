@@ -20,7 +20,6 @@ function useParams() {
         setFocused(focus)
     }
     const onTypeSearchChange = (type: string) => {
-
         query.set(QueryEnum.SEARCH_FIELD, type);
         setSearch(query, {
             replace: true,
@@ -58,7 +57,7 @@ function useParams() {
                 replace: true,
             });
         }
-    }, 700)
+    }, 400)
 
 
     const setLimit = (limit?: number) => {

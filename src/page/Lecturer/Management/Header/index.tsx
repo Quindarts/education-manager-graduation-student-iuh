@@ -75,7 +75,7 @@ function HeaderLecturer() {
             <Box width={119}>
               <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
             </Box>
-          </Box>{' '}
+          </Box>
           <TextField
             fullWidth
             size='small'

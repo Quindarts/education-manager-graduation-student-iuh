@@ -4,9 +4,20 @@ import _ from "lodash";
 
 export class AssginGroupClassExport extends EntityExportExcel {
     private header: Row
+    private subTitle: string;
+    private mainTitle: string;
+    
     constructor(fileName: string, sheetName: string, column: any, subTitle?: string, mainTitle?: string) {
-        super(fileName, sheetName, column, subTitle, mainTitle);
+        super(fileName, sheetName, column);
         this.header = this.getSheet().getRow(1)
+        this.subTitle = subTitle
+        this.mainTitle = mainTitle
+    }
+    public setMainTitle = (title: string) => {
+        this.mainTitle = title
+    }
+    public setSubTitle = (title: string) => {
+        this.subTitle = title
     }
     protected customizeHeaderColumn = () => {
         this.header.font = {
@@ -109,7 +120,7 @@ export class AssginGroupClassExport extends EntityExportExcel {
         }
     }
 
-    protected addTitleAndLogo = () => {
+    private addTitleAndLogo = () => {
         const mainTitle = this.sheet.insertRow(1, [this.mainTitle])
         mainTitle.font = { name: "Times New Roman", size: 20, bold: true };
         mainTitle.alignment = { horizontal: 'center' };

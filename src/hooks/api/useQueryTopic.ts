@@ -23,6 +23,7 @@ export enum QueryTopic {
     getGroupByTopic = "getGroupByTopic",
     getCountOfTopic = "getCountOfTopic",
     getTopicToExport = "getTopicToExport",
+    getTopicLecturerToExport = "getTopicLecturerToExport",
     getTopicsByLecturerTermId = "getTopicsByLecturerTermId",
     //LECTURER
     getTopicsByMe = 'getTopicsByMe',
@@ -104,6 +105,11 @@ export const useTopic = () => {
     //[GET TO EXPORT]
     const handleGetTopicToExport = () => {
         return useQuery([QueryTopic.getTopicToExport, termId], () => TopicServices.getTopicsExport(termId), {
+            enabled: !!termId
+        })
+    }
+    const handleGetTopicLecturerToExport = () => {
+        return useQuery([QueryTopic.getTopicLecturerToExport, termId], () => TopicServices.getTopicsExportByLecturer(termId), {
             enabled: !!termId
         })
     }
@@ -239,6 +245,7 @@ export const useTopic = () => {
         handleGetTopicToExport,
         handleTopicsByLecturerByTerm,
         handleGetTopicsByGroupLecturerAssigned,
+        handleGetTopicLecturerToExport,
         handleTopicsByMe,
         handleUiRender,
         handleTopicById,
