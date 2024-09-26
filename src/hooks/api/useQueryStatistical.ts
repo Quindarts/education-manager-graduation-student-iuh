@@ -34,7 +34,7 @@ function useStatistical() {
                 setGroupStudentCount(groupStudentCount.count)
             })
             .catch(error => {
-                console.error('Error fetching counts:', error);
+                // console.error('Error fetching counts:', error);
             });
     }
 
@@ -58,7 +58,7 @@ function useStatistical() {
                 setGroupStudentCountOfLecturer(grStudent.count)
             })
             .catch(error => {
-                console.error('Error fetching counts:', error);
+                // console.error('Error fetching counts:', error);
             });
     }
     return {

@@ -51,10 +51,11 @@ function TableManagementGroupAssign(props: any) {
   ];
   const HeadLecturerColumns: GridColDef[] = [
     {
-      headerName: 'Tên nhóm',
+      headerName: 'Mã nhóm',
       field: 'name',
       flex: 0.6,
-      headerAlign: 'left',
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       headerName: 'Tên đề tài',
@@ -113,14 +114,6 @@ function TableManagementGroupAssign(props: any) {
             disableDensitySelector
           />
         </Box>
-        {/* )} */}
-        {/* <UnAssignModal
-          open={openUnAssign.isOpen}
-          grName={openUnAssign.grName}
-          grStudentId={openUnAssign.grStudentId}
-          onClose={handleCloseUnAssignModal}
-          topicName={openUnAssign.topicName}
-        /> */}
       </Box>
     </>
   );

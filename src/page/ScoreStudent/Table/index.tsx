@@ -6,15 +6,15 @@ function TableStudentScore(props: any) {
   const { handleRowClick, currentRowSelectId, rows } = props;
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Tên Nhóm',
+      headerName: 'Mã Nhóm',
       field: 'topic',
       flex: 1,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
         return (
-          <Typography sx={{  fontWeight: '400' }} variant='h6'>
-           Nhóm sinh viên {params.row.name}
+          <Typography sx={{ fontWeight: '400' }} variant='h6'>
+            {params.row.name}
           </Typography>
         );
       },

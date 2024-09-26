@@ -41,16 +41,31 @@ function GroupStudentManagement() {
         <TitleManager icon='quill:list' mb={8} mt={2}>
           Danh sách nhóm sinh viên
         </TitleManager>
-        <Typography variant='h5' fontWeight={700} mt={4} color='#636363'>
-          Số nhóm:{' '}
-          {data
-            ? handleSearch(
-                data.groupStudents,
-                getQueryField('searchField'),
-                getQueryField('keywords'),
-              ).length
-            : 0}
-        </Typography>
+        <Box>
+          <Typography variant='body1' fontWeight={600} color='#464646'>
+           Tổng số lượng : {data?.groupStudents.length} nhóm
+          </Typography>
+          {getQueryField('keywords') && (
+            <Typography
+              textAlign={'end'}
+              variant='body1'
+              fontWeight={500}
+              mt={0}
+              mb={1}
+              color='primary'
+            >
+              Kết quả tìm kiếm:{' '}
+              {data
+                ? handleSearch(
+                    data.groupStudents,
+                    getQueryField('searchField'),
+                    getQueryField('keywords'),
+                  ).length
+                : 0}{' '}
+              nhóm
+            </Typography>
+          )}
+        </Box>
       </Box>
 
       <HeaderGroupStudent countGroups={100} />

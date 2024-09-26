@@ -20,8 +20,8 @@ const convertToDropValue = (data: any[]) => {
     let newArray = [];
     newArray = data;
     return newArray.map((v: any) => ({
-      label: v?.lecturer?.fullName + ' - ' + v?.lecturer?.username,
-      id: v?.lecturer?.id,
+      label: v?.fullName + ' - ' + v?.username,
+      id: v?.lecturerId,
     }));
   }
 };
@@ -67,7 +67,7 @@ function CreateLecturerNotifyForm() {
   //[Validate isExist lecturer in list]
   useEffect(() => {
     if (currentLecturer?.id) {
-      if (listLecturer.filter((l) => l.id === currentLecturer?.id).length === 0) {
+      if (listLecturer.filter((l) => l.lecturerId === currentLecturer?.id).length === 0) {
         setListLecturer((pre) => [...pre, currentLecturer]);
       } else
         enqueueSnackbar({

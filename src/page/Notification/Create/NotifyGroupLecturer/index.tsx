@@ -58,7 +58,6 @@ function CreateGroupLecturerNotifyForm() {
     };
     if (values.typeQuantitySended === 'many') {
       // createManygroupLecturers(dataSend);
-      console.log('a');
     } else if (values.typeQuantitySended === 'few') {
       if (listGroupLecturer.length === 0) {
         enqueueSnackbar('Chưa có thông tin nhóm giảng viên nhận thông báo.', { variant: 'error' });

@@ -147,7 +147,7 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
@@ -168,9 +168,9 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
             },
@@ -224,7 +224,7 @@ export const useTopic = () => {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, lecturerStore.me.user.id, termStore.currentTerm.id] })
+                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 

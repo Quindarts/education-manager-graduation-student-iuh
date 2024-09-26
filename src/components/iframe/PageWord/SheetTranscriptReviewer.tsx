@@ -1,6 +1,7 @@
 import { Box, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from './style';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
+import { useAuth } from '@/hooks/api/useAuth';
 
 function SheetTranscriptReviewer({
   topicName,
@@ -10,7 +11,6 @@ function SheetTranscriptReviewer({
   lecturerSupport,
   evaluations,
 }: any) {
-
   return (
     <Paper sx={{ px: 4, overflowY: 'auto', height: 'auto' }} elevation={0}>
       <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
@@ -36,14 +36,14 @@ function SheetTranscriptReviewer({
         <Typography my={3} variant='body1' color='initial'>
           3. Team: {groupStudentName}
           <br />
-          First student name: {students && students[0]?.fullName}            Student code 1:{' '}
+          First student name: {students && students[0]?.fullName} Student code 1:{' '}
           {students && students[0]?.username}
           <br />
-          Second student name:{students && students[1]?.fullName}            Student code 2:{' '}
+          Second student name:{students && students[1]?.fullName} Student code 2:{' '}
           {students && students[1]?.username}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          4. Evaluator's full name:  {' '} {evaluatorFullName}
+          4. Evaluator's full name: {evaluatorFullName}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
           5. Role of the evaluator: Reviewer{' '}

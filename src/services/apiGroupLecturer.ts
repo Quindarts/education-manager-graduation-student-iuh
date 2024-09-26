@@ -22,6 +22,11 @@ export const getGroupLecturerByType: any = async (termId: string, type: string) 
 export const getGroupLecturerByTypeEvaluation: any = async (termId: string, type: string) => {
     return axiosConfig.get(`${URL}/evaluation?termId=${termId}&type=${type}`)
 }
+
+export const getGrLecturerByTypeEvaluationByLecturer: any = async (termId: string, type: string, lecturerId: string) => {
+    return axiosConfig.get(`${URL}/evaluation-lecturer?termId=${termId}&type=${type}&lecturerId=${lecturerId}`)
+}
+
 export const searchGroupLecturerByName: any = async (termId: string, name: string) => {
     return axiosConfig.get(`${URL}/search?termId=${termId}&name=${name}`)
 }

@@ -18,6 +18,8 @@ import InfoGroupSupportFile from '@/components/iframe/BaseText/InfoGroupSupportF
 import { TypeEvaluation } from '@/services/apiEvaluation';
 import InfoOtherGroupFile from '@/components/iframe/BaseText/InfoOtherGroupFile';
 import * as GroupLecturerServices from '@/services/apiGroupLecturer';
+import { useAuth } from '@/hooks/api/useAuth';
+import { RoleCheck } from '@/types/enum';
 interface ExportWordModalProps {
   open: boolean;
   onClose: () => void;
@@ -28,6 +30,9 @@ interface ExportWordModalProps {
 }
 
 const useExportMultiDocs = async (groupLecturers: any[], evaluations: any[], typeEvaluation) => {
+  const { lecturerStore } = useAuth();
+  const role = lecturerStore.currentRoleRender;
+  const isLecturerExport = role === RoleCheck.LECTURER;
   const [resultCall, setResultCall] = useState([]);
   const fetchGroupLecturers = async () => {
     try {
@@ -48,7 +53,7 @@ const useExportMultiDocs = async (groupLecturers: any[], evaluations: any[], typ
   );
   const processData = filterData.flatMap((group: any) => {
     return group.groupStudents.flatMap((studentGroup: any) => {
-      if (Array.isArray(group.members) && group.members.length > 0) {
+      if (Array.isArray(group.members) && group.members.length > 0 && !isLecturerExport) {
         return group.members.map((evaluator: any, index: number) => ({
           topicName: studentGroup.topicName,
           groupStudentName: studentGroup.name,
@@ -68,7 +73,7 @@ const useExportMultiDocs = async (groupLecturers: any[], evaluations: any[], typ
             username: student.username,
             fullName: student.fullName,
           })),
-          evaluatorFullName: '',
+          evaluatorFullName: lecturerStore.me.user.fullName,
           lecturerSupport: studentGroup.lecturerName,
           evaluations: evaluations,
         };
@@ -77,7 +82,7 @@ const useExportMultiDocs = async (groupLecturers: any[], evaluations: any[], typ
   });
   return Promise.all(
     processData.map((container: any) => {
-      return docTranscriptReviewer(container);
+      return docTranscriptReviewer({ ...container, role });
     }),
   );
 };

@@ -103,16 +103,10 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
   useEffect(() => {
     setLoading(true);
     handleGetDataToExportReportDocx(typeEvaluation).then((data) => {
-      const checked = typeEvaluation === TypeEvaluation.REVIEWER ? typeEvaluation : 'REPORT';
-      const dataConvert =
-        currentRole === RoleCheck.LECTURER
-          ? data.groupLecturers.filter((gr: any) => gr.type.includes(checked))
-          : data.groupLecturers;
-
-      setGroupLecturersDropdown(processingDataResponse(dataConvert));
-      changeCurrentGrLecturers(dataConvert);
+      setGroupLecturersDropdown(processingDataResponse(data?.groupLecturers));
+      changeCurrentGrLecturers(data?.groupLecturers);
       setGroupLecturers(
-        dataConvert.map((gr) => {
+        data?.groupLecturers.map((gr) => {
           if (gr.groupLecturerId) {
             return {
               ...gr,

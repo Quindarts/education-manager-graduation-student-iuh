@@ -12,7 +12,6 @@ function ScoreInput(props: ScoreInputPropsType) {
   const { scoreMax, evaluationId, handleChangeScore, studentId, oldScore } = props;
   const [errorMess, setErrorMess] = useState('');
   const [score, setScore] = useState(`${oldScore}`);
-
   useEffect(() => {
     setScore(`${oldScore}`);
   }, [oldScore]);

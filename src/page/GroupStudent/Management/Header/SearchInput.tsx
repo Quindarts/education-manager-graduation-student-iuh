@@ -20,7 +20,7 @@ const SEARCH_FIELD = {
 
 function SearchInput({ sx }: BoxProps) {
   const [sort, setSort] = useState('ASC');
-  const [typeSearch, setTypeSearch] = useState('topicName');
+  const [typeSearch, setTypeSearch] = useState('lecturerName');
 
   useEffect(() => {
     setTypeSort(sort);
@@ -47,7 +47,7 @@ function SearchInput({ sx }: BoxProps) {
         >
           <MenuItem value='topicName'>Tên đề tài</MenuItem>
           <MenuItem value='lecturerName'>Giảng viên HD</MenuItem>
-          <MenuItem value='name'>Tên nhóm</MenuItem>
+          <MenuItem value='name'>Mã nhóm</MenuItem>
         </Select>
       </FormControl>
 

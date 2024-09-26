@@ -22,6 +22,7 @@ import { useAuth } from '@/hooks/api/useAuth';
 import LecturerExcelDemo from './Demo/Lecturer';
 import StudentExcelDemo from './Demo/Student';
 import TopicExcelDemo from './Demo/Topic';
+import ExportExcelModelButton from './Model';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -57,19 +58,11 @@ interface ModalUploadPropsType {
   majorId?: string;
   label?: string;
   labelToolTip?: string;
+  sheetName: string;
+  title: string;
+  fileNameModel: string;
 }
 
-const checkModel = (entityUpload: string) => {
-  if (entityUpload === TypeEntityUpload.LECTURER) {
-    return <LecturerExcelDemo />;
-  }
-  if (entityUpload === TypeEntityUpload.STUDENT) {
-    return <StudentExcelDemo />;
-  }
-  if (entityUpload === TypeEntityUpload.TOPIC) {
-    return <TopicExcelDemo />;
-  }
-};
 function ModalUpload(props: ModalUploadPropsType) {
   const {
     entityUpload,
@@ -77,6 +70,9 @@ function ModalUpload(props: ModalUploadPropsType) {
     label = 'Tải dữ liệu lên từ Excel',
     labelToolTip = '',
     disabled = false,
+    title,
+    sheetName,
+    fileNameModel,
   } = props;
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
@@ -258,10 +254,12 @@ function ModalUpload(props: ModalUploadPropsType) {
             )}
           </Box>
           <Box mt={10}>
-            <TitleManager fontWeight={400} variant='body1'>
-              Chú thích*: Mẫu Excel bao gồm các cột:{' '}
-            </TitleManager>
-            <Box mt={4}>{checkModel(entityUpload)}</Box>
+            <ExportExcelModelButton
+              entityName={entityUpload}
+              fileName={fileNameModel}
+              title={title}
+              sheetName={sheetName}
+            />
           </Box>
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={handleCloseUpload}>

@@ -14,7 +14,7 @@ import TableManagementGroupAssign from '@/page/DetailGroupLecturer/GroupAssign/T
 function TabPanelUI(props: any) {
   const { groupLecturer } = props;
   const [value, setValue] = React.useState('1');
-  const type = groupLecturer.typeGroup;
+  const type = groupLecturer.type;
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -25,7 +25,6 @@ function TabPanelUI(props: any) {
         <Box sx={{ borderBottom: 1, borderColor: 'primary.main' }}>
           <TabList onChange={handleChange}>
             <Tab label='Danh sách giảng viên' value='1' />
-
             <Tab label='Nhóm sinh viên được phân công' value='2' />
           </TabList>
         </Box>

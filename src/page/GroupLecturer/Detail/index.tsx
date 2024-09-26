@@ -5,6 +5,7 @@ import { Paper } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
+import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 
 function GroupLecturerDetailPage() {
   const { pathname } = useLocation();
@@ -19,7 +20,7 @@ function GroupLecturerDetailPage() {
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>Nhóm {data?.groupLecturer?.name}</TitleManager>
+          <TitleManager>{checktTypeGroupLecturer(data?.groupLecturer.type.toLowerCase())} {data?.groupLecturer?.name}</TitleManager>
           <Box my={4}>
             <TabPanelUI groupLecturer={data?.groupLecturer} />
           </Box>

@@ -77,7 +77,6 @@ export function useTerm() {
 
     //[GET DETAIL WITH TYPE]
     const handleGetTermDetailWithType = (termId: string, type: TypeTermStatus) => {
-        // alert(type)
         return useQuery([TermQueryKey.getTermDetailById, type, termId], () => getTermDetailWithType(termId, type), {
             enabled: !!termId
         });

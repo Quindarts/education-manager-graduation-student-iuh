@@ -44,7 +44,6 @@ axiosConfig.interceptors.response.use(
 
         return axiosConfig(originalRequest);
       } catch (error: any) {
-        console.log("🚀 ~ error:", error)
         if (error.status >= 500 && error.success === false) {
           localStorage.clear();
           redirect('/auth/login')

@@ -21,8 +21,7 @@ function MyDetailGroupLecturer() {
       ) : (
         <>
           <TitleManager>
-            Nhóm giảng viên {checktTypeGroupLecturer(data.groupLecturer.type)}{' '}
-            {data?.groupLecturer?.name}
+            {checktTypeGroupLecturer(data.groupLecturer.type.toLowerCase())} {data?.groupLecturer?.name}
           </TitleManager>
           <Box>
             <TabPanelUI groupLecturer={data?.groupLecturer} />

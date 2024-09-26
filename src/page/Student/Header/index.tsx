@@ -96,6 +96,9 @@ function HeaderStudent() {
           labelToolTip='Thêm sinh viên bằng file excel'
           entityUpload={TypeEntityUpload.STUDENT}
           majorId={majorStore.currentMajor.id}
+          fileNameModel='Mẫu file excel danh sách sinh viên KLTN'
+          sheetName='Danh sách sinh viên KLTN'
+          title='Tải xuống mẫu file'
         />
         {successStudents && (
           <ExportExcelButton

@@ -13,13 +13,13 @@ function CardLecturer(props: any) {
       onDragEnd={onDragEnd}
       sx={{
         my: 6,
-        py: 2,
-        px: 10,
+        py: 4,
+        px: 6,
         display: 'flex',
         cursor: 'pointer',
         gap: 20,
         justifyContent: 'space-around',
-        borderRadius: 2,
+        borderRadius: 1,
         boxSizing: 'border-box',
         border: '2px solid #fefefe',
         ':hover': {
@@ -31,26 +31,17 @@ function CardLecturer(props: any) {
       }}
     >
       <Box flex={1}>
-        <Typography variant='body1' fontWeight={500} color='grey.700'>
-          Tên giảng viên
-          <Typography mx={4} component='span'>
-            {lecturer.fullName}
+        <Box px={10}>
+          <Typography variant='h6' fontWeight={600} color='grey.700'>
+            Giảng viên
+            <Typography mx={4} fontSize={14} component='span'>
+              {lecturer.fullName} - {lecturer.username}
+            </Typography>
           </Typography>
-          <Typography ml={10} component='span' textAlign={'end'}>
-            {/* Trình độ: {lecturer.degree} */}
+          <Typography variant='body1' color={'grey.600'}>
+            Ngành: <Typography component='span'>{lecturer.majorName}</Typography>
           </Typography>
-        </Typography>
-        <Typography variant='body1' fontWeight={500} color='grey.700'>
-          Mã giảng viên
-          <Typography mx={4} component='span'>
-            {lecturer.username}
-          </Typography>
-        </Typography>
-      </Box>
-      <Box>
-        <IconButton size='small'>
-          <Icon icon='mingcute:more-2-fill' style={{ color: '#0052b1' }} />
-        </IconButton>
+        </Box>
       </Box>
     </Paper>
   );

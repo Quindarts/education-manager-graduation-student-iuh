@@ -10,13 +10,36 @@ import { useLocation } from 'react-router-dom';
 
 function GroupLecturer({ lecturerId }: any) {
   const { handleGetGroupLecturerByLecturerId } = useGroupLecturer();
-  const { data, isLoading, isFetching, refetch } = handleGetGroupLecturerByLecturerId(lecturerId);
+  const [typeGroupLecturer, setTypeGroupLecturer] = useState<string>(
+    `${ENUM_GROUP_LECTURER[0]?._id}`,
+  );
+
+  const { data, isLoading, isFetching, refetch } = handleGetGroupLecturerByLecturerId(
+    typeGroupLecturer,
+    lecturerId,
+  );
+
   useEffect(() => {
     refetch();
   }, []);
   return (
     <Paper sx={{ px: 10 }} elevation={0}>
-      <Box my={10}>
+      <Box mb={10}>
+        <Box gap={4} mt={2} mb={6} pb={4} borderBottom={'2px solid #c2c2c2'} display={'flex'}>
+          <Typography variant='h6' fontWeight={'bold'} mt={2} color='primary.dark'>
+            Danh sách nhóm{' '}
+          </Typography>
+          <Box width={160}>
+            <DropDown
+              onChange={(e: any) => {
+                setTypeGroupLecturer(e.target.value);
+              }}
+              value={typeGroupLecturer}
+              options={ENUM_GROUP_LECTURER}
+            />
+          </Box>
+        </Box>
+
         {isLoading || isFetching ? (
           <SekeletonUI />
         ) : data?.groupLecturers && data.groupLecturers?.length > 0 ? (

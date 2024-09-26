@@ -43,7 +43,7 @@ export const useGroupLecturer = () => {
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
         var permissions: string[] = []
-        if (currentRole === RoleCheck.HEAD_LECTURER) {
+        if (currentRole === RoleCheck.HEAD_LECTURER || currentRole === RoleCheck.HEAD_COURSE) {
             permissions.push('all')
             permissions.push('crud')
         }

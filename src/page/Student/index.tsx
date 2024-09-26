@@ -18,7 +18,7 @@ function StudentPage() {
   //[FETCH]
   const { handleGetAllStudent, handleGetCountOfStudent, paramTotalPage } = useStudent();
   const { data: countFetch, isSuccess: countSuccess } = handleGetCountOfStudent();
-  const { data, isLoading, isFetching, refetch } = handleGetAllStudent();
+  const { data, isLoading, refetch } = handleGetAllStudent();
 
   //[PARAMS]
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,8 +64,8 @@ function StudentPage() {
         <TitleManager icon='quill:list'>
           Danh sách sinh viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
         </TitleManager>
-        <Typography variant='h5' fontWeight={700} mt={4} color='#636363'>
-          Số sinh viên: {countSuccess && countFetch?.count}
+        <Typography variant='body1' fontWeight={700} mt={4} color=''>
+          Số lượng: {countSuccess && countFetch?.count} sinh viên
         </Typography>
       </Box>
       <HeaderStudent />

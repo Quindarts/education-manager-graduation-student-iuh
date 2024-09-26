@@ -10,7 +10,6 @@ import { checkTypeEvaluation, ENUM_SCORE_STUDENT } from '@/utils/validations/tra
 import useQueryTranscript from '@/hooks/api/useQueryTranscript';
 import { convertListGroupStudentScore } from '@/utils/convertDataTable';
 import TranscriptOfGroupStudent from './Transcript';
-import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
 function ScoreStudentPage() {
   const [currentDataRow, setCurrentDataRow] = useState(null);
@@ -40,9 +39,7 @@ function ScoreStudentPage() {
           width={370}
         >
           <Box mb={4} display={'flex'} justifyContent={'space-between'} gap={10}>
-            <TitleManager icon='quill:list'>
-              Nhóm sinh viên{' '}
-            </TitleManager>
+            <TitleManager icon='quill:list'>Nhóm sinh viên </TitleManager>
             <Box width={170}>
               <DropDown
                 onChange={(e: any) => {

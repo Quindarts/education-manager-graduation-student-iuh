@@ -26,7 +26,7 @@ export const getLecturerTermById = (id: string) => {
 
 //[GET LIST]
 export const getListLecturerTerm: any = async (termId: string) => {
-    return axiosConfig.get<ResponseType, any>(`${URL}/list?termId=${termId}`);
+    return axiosConfig.get<ResponseType, any>(`${URL}?termId=${termId}`);
 }
 //[CREATE]
 export const createLecturerTerm: any = async (data: { lecturerId: string, termId: string }) => {

@@ -50,8 +50,8 @@ const HEADER_TYPE = {
     { header: 'STT', key: 'STT', width: 6 },
     { header: 'Mã nhóm', key: 'Mã nhóm', width: 12 },
     { header: 'Mã SV', key: 'Mã SV', width: 10 },
-    { header: 'Họ tên SV', key: 'Họ tên SV', width: 20 },
-    { header: 'GVHD', key: 'GVHD', width: 20 },
+    { header: 'Họ tên SV', key: 'Họ tên SV', width: 28 },
+    { header: 'GVHD', key: 'GVHD', width: 28 },
     { header: 'Mã đề tài', key: 'Mã đề tài', width: 10 },
     { header: 'Tên đề tài', key: 'Tên đề tài', width: 100 },
   ],
@@ -63,7 +63,7 @@ const HEADER_TYPE = {
     { header: 'Ghi chú', key: 'Ghi chú', width: 30 },
     { header: 'HD TV', key: 'HD TV', width: 40 },
     { header: 'STT', key: 'STT', width: 6 },
-    { header: 'GVHD', key: 'GVHD', width: 20 },
+    { header: 'GVHD', key: 'GVHD', width: 30 },
   ],
 };
 interface ExportExcelPropsType {

@@ -6,7 +6,6 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import useTranscript from '@/hooks/api/useQueryTranscript';
 import { BodyEvaluation } from '@/services/apiTranscipts';
 import { Box, Button, Paper, TableBody, TableHead, Typography } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 export type MemberScore = {
   studentId: string;
@@ -42,6 +41,7 @@ export const handleTotalScores = (transcripts: TranscriptWithEvaluation[]) => {
       else totalScores[`${member?.studentId}`] += convertSCore(member.score);
     });
   });
+
   return totalScores;
 };
 
@@ -77,6 +77,7 @@ export const convertDataRequest = (
       });
     });
   });
+
   return convertedScores;
 };
 
@@ -120,6 +121,7 @@ function TranscriptOfGroupStudent(props: any) {
 
   //[Set initTranscripts when fetching success]
   useEffect(() => {
+    setScoreStudent([]);
     if (successTranscript && successMember) {
       setInitTranscripts((pre) => ({
         ...pre,
@@ -156,6 +158,7 @@ function TranscriptOfGroupStudent(props: any) {
   //[Saved Create or Update ]
   const handleSubmit = () => {
     let data = convertDataRequest(initTranscripts.transcripts, termStore.currentTerm.id);
+    console.log('🚀 ~ handleSubmit ~ data:', initTranscripts);
     !initTranscripts.isExistTranscripts ? createTranscripts(data) : updateTranscripts(data);
   };
   useEffect(() => {
@@ -323,13 +326,14 @@ function TranscriptOfGroupStudent(props: any) {
                       {/**
                        * Total score
                        */}
-                      {successMember && memberFetch.members.map((st: any) => (
-                        <StyledTableCell align='center' sx={{ fontSize: 14 }}>
-                          <Typography variant='h6' fontWeight={'600'} color='error.dark'>
-                            {scoreStudent[`${st.student.id}`]}
-                          </Typography>
-                        </StyledTableCell>
-                      ))}
+                      {successMember &&
+                        memberFetch.members.map((st: any) => (
+                          <StyledTableCell align='center' sx={{ fontSize: 14 }}>
+                            <Typography variant='h6' fontWeight={'600'} color='error.dark'>
+                              {scoreStudent[`${st.student.id}`]}
+                            </Typography>
+                          </StyledTableCell>
+                        ))}
                     </StyledTableRow>
                   </TableBody>
                 )}

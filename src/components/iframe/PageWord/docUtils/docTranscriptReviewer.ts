@@ -1,3 +1,5 @@
+import { useAuth } from '@/hooks/api/useAuth';
+import { RoleCheck } from '@/types/enum';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
 import { Document, HeightRule, Paragraph, ShadingType, Table, TableCell, TableRow, TextRun, VerticalAlign, WidthType } from 'docx';
 
@@ -8,10 +10,12 @@ export default function docTranscriptReviewer({
     evaluatorFullName,
     lecturerSupport,
     evaluations,
-    fileType = 'many'
+    fileType = 'many',
+    role
 }: any) {
-
-    const fileName = 'Phiếu chấm_NhómSV_' + groupStudentName + '_' + evaluatorFullName
+    const isLecturer = role === RoleCheck.LECTURER
+    const nameEvaluatorExport = isLecturer ? evaluatorFullName : evaluatorFullName.split('_')[1]
+    const fileName = 'PhảnBiện_NhómSV' + groupStudentName + '_' + evaluatorFullName
     const rows = convertRowEvaluations(evaluations);
     const lineSpacing = 200
     const doc = new Document({
@@ -119,7 +123,7 @@ export default function docTranscriptReviewer({
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `4. Evaluator's full name: ${fileType === 'many' ? evaluatorFullName.split('_')[1] : evaluatorFullName}`,
+                                text: `4. Evaluator's full name: ${fileType === 'many' ? nameEvaluatorExport : evaluatorFullName}`,
                                 size: 24,
                             }),
                         ],

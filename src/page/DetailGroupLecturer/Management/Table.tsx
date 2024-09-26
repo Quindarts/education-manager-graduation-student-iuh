@@ -8,6 +8,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import { useMemo, useState } from 'react';
 import LecturerLeaveGroupModal from './Modal/LeaveGroup';
 import AddMemberGroupLecturerModal from './Modal/AddMember';
+import { TypeGroupLecturer } from '@/services/apiGroupLecturer';
 
 function TableManagementGroupLecturer(props: any) {
   const { rows, groupType } = props;
@@ -133,7 +134,12 @@ function TableManagementGroupLecturer(props: any) {
                 size='small'
                 onClick={handleOpenAddMemberModal}
                 color='error'
-                disabled={rows.length >= 2 ? true : false}
+                disabled={
+                  (rows.length >= 2 && groupType?.toLowerCase() === TypeGroupLecturer.REVIEWER) ||
+                  (rows.length >= 3 && groupType?.toLowerCase().split('_')[0] === TypeGroupLecturer.REPORT)
+                    ? true
+                    : false
+                }
                 variant='contained'
               >
                 <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />

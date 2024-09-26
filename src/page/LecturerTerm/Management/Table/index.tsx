@@ -7,15 +7,7 @@ import DeleteModal from '../Modal/DeleteModal';
 import { useNavigate } from 'react-router-dom';
 
 function TableManagamentLecturer(props: any) {
-  const {
-    rows,
-    totalItems,
-    limit,
-    handleChangeLimit,
-    totalPage,
-    page,
-    handleChangePage,
-  } = props;
+  const { rows, totalItems, limit, handleChangeLimit, totalPage, page, handleChangePage } = props;
 
   const [openDeleteModal, setOpenDeleteModal] = useState({
     lecturerTermId: '',
@@ -34,7 +26,7 @@ function TableManagamentLecturer(props: any) {
 
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Mã giảng viên',
+      headerName: 'Mã GV',
       field: 'username',
       flex: 0.6,
       headerAlign: 'center',
@@ -58,6 +50,13 @@ function TableManagamentLecturer(props: any) {
       headerName: 'Tên',
       field: 'lastName',
       flex: 0.5,
+      headerAlign: 'left',
+      align: 'left',
+    },
+    {
+      headerName: 'Chuyên ngành',
+      field: 'majorName',
+      flex: 1,
       headerAlign: 'left',
       align: 'left',
     },

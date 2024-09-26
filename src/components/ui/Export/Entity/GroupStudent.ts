@@ -93,12 +93,12 @@ export class GroupStudentClassExportExcel extends EntityExportExcel {
                 let startAlpha = startAddress.slice(0, 1);
                 let endInt = _.toInteger(endAddress.substring(1));
                 // Merge các ô từ index_start -> index_end
-                this.getSheet().mergeCells(`${startAlpha}${startAddress.substring(1)}:${startAlpha}${endInt}`);
+                // this.getSheet().mergeCells(`${startAlpha}${startAddress.substring(1)}:${startAlpha}${endInt}`);
                 // STT	STT Nhóm	Mã SV	Họ tên SV	GVHD	Mã đề tài	Tên đề tài
                 // A      B            C        D         E         F           G
-                this.getSheet().mergeCells(`${'E'}${startAddress.substring(1)}:${'E'}${endInt}`);
-                this.getSheet().mergeCells(`${'F'}${startAddress.substring(1)}:${'F'}${endInt}`);
-                this.getSheet().mergeCells(`${'G'}${startAddress.substring(1)}:${'G'}${endInt}`);
+                // this.getSheet().mergeCells(`${'E'}${startAddress.substring(1)}:${'E'}${endInt}`);
+                // this.getSheet().mergeCells(`${'F'}${startAddress.substring(1)}:${'F'}${endInt}`);
+                // this.getSheet().mergeCells(`${'G'}${startAddress.substring(1)}:${'G'}${endInt}`);
             }
         }
     }

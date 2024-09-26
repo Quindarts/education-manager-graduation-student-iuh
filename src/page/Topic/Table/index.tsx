@@ -3,7 +3,7 @@ import { getCardTopicStatus } from '@/utils/validations/topic.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import DeleteModal from '@/components/Page/Topic/Modal/DeleteModal';
 import AddGroupStudentToTopicModal from '@/components/Page/Topic/Modal/AddGroupStudentToTopic';
@@ -92,140 +92,146 @@ function TableManagamentTopic(props: any) {
     setOpenEditModal({ topicId, isOpen: true });
   };
 
-  const HeadLecturerColumn: GridColDef[] = [
-    {
-      headerName: 'Mã đề tài',
-      field: 'key',
-      headerAlign: 'center',
-      align: 'center',
-      flex: 0.4,
-    },
-    {
-      headerName: 'Tên Đề tài',
-      field: 'name',
-      flex: 2,
-      headerAlign: 'center',
-      align: 'left',
-      renderCell(params) {
-        return (
-          <Typography variant='h6' textTransform={'lowercase'} color='initial'>
-            {params.row.name}
-          </Typography>
-        );
+  const HeadLecturerColumn: GridColDef[] = useMemo(
+    () => [
+      {
+        headerName: 'Mã đề tài',
+        field: 'key',
+        headerAlign: 'center',
+        align: 'center',
+        flex: 0.4,
       },
-    },
-    {
-      headerName: 'Giảng viên HD',
-      field: 'fullName',
-      headerAlign: 'center',
-      align: 'left',
-      flex: 0.8,
-    },
-    {
-      headerName: 'SL nhóm',
-      field: 'quantityGroupMax',
-      flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (param) => {
-        return (
-          <Box>
-            {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
-          </Box>
-        );
+      {
+        headerName: 'Tên Đề tài',
+        field: 'name',
+        flex: 2,
+        headerAlign: 'center',
+        align: 'left',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' textTransform={'lowercase'} color='initial'>
+              {params.row.name}
+            </Typography>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Trạng thái',
-      field: 'text2',
-      flex: 0.6,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (param) => {
-        return <Box>{getCardTopicStatus(param.row.status)}</Box>;
+      {
+        headerName: 'Giảng viên HD',
+        field: 'fullName',
+        headerAlign: 'center',
+        align: 'left',
+        flex: 0.8,
       },
-    },
-    {
-      headerName: 'Duyệt đề tài',
-      field: 'status',
-      flex: 0.7,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return (
-          <>
-            {params.row.status === 'PENDING' ? (
-              <Box display={'flex'} gap={2}>
-                <Button
-                  size='small'
-                  onClick={() => handleOpenAcceptModal(params.row.id, params.row.name)}
-                  color='success'
-                  sx={{
-                    fontSize: {
-                      md: 12,
-                      lg: 12,
-                    },
-                    px: 0,
-                  }}
-                >
-                  <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
-                  Duyệt
-                </Button>
-                <Button
-                  size='small'
-                  onClick={() => handleOpenRefuseModal(params.row.id, params.row.name)}
-                  color='error'
-                >
-                  <Icon style={{ marginRight: 1 }} icon='lets-icons:cancel-fill' />
-                  Từ chối
-                </Button>
-              </Box>
-            ) : (
-              <>
-                {params.row.status === 'APPROVED' && (
-                  <Button size='small' onClick={() => handleOpenAddGroupStudent(params.row)}>
-                    Gán/xem đề tài
+      {
+        headerName: 'SL nhóm',
+        field: 'quantityGroupMax',
+        flex: 0.5,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (param) => {
+          return (
+            <Box>
+              {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
+            </Box>
+          );
+        },
+      },
+      {
+        headerName: 'Trạng thái',
+        field: 'text2',
+        flex: 0.6,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (param) => {
+          return <Box>{getCardTopicStatus(param.row.status)}</Box>;
+        },
+      },
+      {
+        headerName: 'Duyệt đề tài',
+        field: 'status',
+        flex: 0.7,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (params: any) => {
+          return (
+            <>
+              {params.row.status === 'PENDING' ? (
+                <Box display={'flex'} gap={2}>
+                  <Button
+                    size='small'
+                    onClick={() => handleOpenAcceptModal(params.row.id, params.row.name)}
+                    color='success'
+                    sx={{
+                      fontSize: {
+                        md: 12,
+                        lg: 12,
+                      },
+                      px: 0,
+                    }}
+                  >
+                    <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
+                    Duyệt
                   </Button>
-                )}
-              </>
-            )}
-          </>
-        );
+                  <Button
+                    size='small'
+                    onClick={() => handleOpenRefuseModal(params.row.id, params.row.name)}
+                    color='error'
+                  >
+                    <Icon style={{ marginRight: 1 }} icon='lets-icons:cancel-fill' />
+                    Từ chối
+                  </Button>
+                </Box>
+              ) : (
+                <>
+                  {params.row.status === 'APPROVED' && (
+                    <Button size='small' onClick={() => handleOpenAddGroupStudent(params.row)}>
+                      Gán/xem đề tài
+                    </Button>
+                  )}
+                </>
+              )}
+            </>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Chức năng ',
-      field: 'none',
-      flex: 0.6,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip
-            title='Chỉnh sửa thông tin đề tài'
-            onClick={() => handleOpenEditModal(params.row.id)}
-          >
-            <IconButton size='small' color='primary'>
-              <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xem thông tin đề tài' onClick={() => handleOpenInfoModal(params.row.id)}>
-            <IconButton size='small'>
-              <Icon width={20} icon='flat-color-icons:view-details' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip
-            title='Xóa đề tài'
-            onClick={() => handleOpenDeleteModal(params.row.id, params.row.name)}
-          >
-            <IconButton size='small'>
-              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ];
+      {
+        headerName: 'Chức năng ',
+        field: 'none',
+        flex: 0.6,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (params: any) => (
+          <Box display={'flex'} gap={2}>
+            <Tooltip
+              title='Chỉnh sửa thông tin đề tài'
+              onClick={() => handleOpenEditModal(params.row.id)}
+            >
+              <IconButton size='small' color='primary'>
+                <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title='Xem thông tin đề tài'
+              onClick={() => handleOpenInfoModal(params.row.id)}
+            >
+              <IconButton size='small'>
+                <Icon width={20} icon='flat-color-icons:view-details' />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title='Xóa đề tài'
+              onClick={() => handleOpenDeleteModal(params.row.id, params.row.name)}
+            >
+              <IconButton size='small'>
+                <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        ),
+      },
+    ],
+    [],
+  );
 
   const LecturerColumn: GridColDef[] = [
     {

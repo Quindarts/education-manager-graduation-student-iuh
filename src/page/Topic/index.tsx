@@ -45,7 +45,7 @@ function TopicPage() {
       setTotalPage(total);
     }
   }, [data]);
-  
+
   useEffect(() => {
     setLimit(currentLimit);
     setPage(1);
@@ -57,8 +57,8 @@ function TopicPage() {
     <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box justifyContent={'space-between'} display={'flex'} mb={8} mt={2}>
         <TitleManager icon='quill:list'>Danh sách đề tài</TitleManager>
-        <Typography variant='h5' fontWeight={700} mt={4} color='#636363'>
-          Số đề tài: {countSuccess && countFetch?.count}
+        <Typography variant='body1' fontWeight={700} mt={4}>
+          Số lượng: {countSuccess && countFetch?.count} đề tài
         </Typography>
       </Box>
 

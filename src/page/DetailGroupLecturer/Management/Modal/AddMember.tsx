@@ -16,8 +16,8 @@ const convertLecturer = (lterms: any) => {
   } else
     lterms?.map((lect: any) => {
       updateLecturers.push({
-        _id: lect.lecturer?.id,
-        name: lect.lecturer?.fullName + ' - ' + lect?.lecturer?.username,
+        _id: lect?.lecturerId,
+        name: lect?.username + ' - ' + lect?.fullName,
       });
     });
   return updateLecturers;
