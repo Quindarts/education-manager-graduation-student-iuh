@@ -133,6 +133,9 @@ function HeaderTopic() {
             </Tooltip>
             <ModalUpload
               label=''
+              fileNameModel='Mẫu file import danh sách đề tài KLTN '
+              sheetName='sheet1'
+              title={'Tải xuống mẫu file'}
               labelToolTip='Thêm đề tài bằng file excel'
               entityUpload={TypeEntityUpload.TOPIC}
             />

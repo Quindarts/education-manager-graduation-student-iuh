@@ -88,6 +88,9 @@ function ReviewManagerPage() {
                   <ModalUpload
                     label=''
                     labelToolTip='Thêm tiêu chí bằng file excel'
+                    fileNameModel='Mẫu file excel tiêu chí đánh giá KLTN'
+                    sheetName='tiêu chí'
+                    title='Tải xuống mẫu file'
                     disabled={isSuccess && convertEvalutationTable(data.evaluations).length > 0}
                     entityUpload={TypeEntityUpload.EVALUATION}
                     termId={termStore.currentTerm.id}
