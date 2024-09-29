@@ -193,4 +193,4 @@ function TermDetail(props: any) {
   );
 }
 
-export default TermDetail;
+export default React.memo(TermDetail);

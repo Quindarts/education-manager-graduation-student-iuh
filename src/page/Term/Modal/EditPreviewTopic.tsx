@@ -164,4 +164,4 @@ function EditPreviewTopic(props: any) {
   );
 }
 
-export default EditPreviewTopic;
+export default React.memo(EditPreviewTopic);

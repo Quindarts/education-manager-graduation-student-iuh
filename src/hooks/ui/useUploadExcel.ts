@@ -99,7 +99,6 @@ const useUploadExcel = (props: UploadHandler) => {
   //   const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
   //   const data = new Blob([excelBuffer], { type: fileType });
   //   FileSaver.saveAs(data, fileName + fileExtension);
-
   // }
   const importExcel = async (e: any) => {
     //read file

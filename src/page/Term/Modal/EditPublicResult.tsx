@@ -164,4 +164,4 @@ function EditPublicResult(props: any) {
   );
 }
 
-export default EditPublicResult;
+export default React.memo(EditPublicResult);

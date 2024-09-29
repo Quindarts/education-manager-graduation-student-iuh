@@ -50,4 +50,4 @@ function DeleteModal(props: any) {
   );
 }
 
-export default DeleteModal;
+export default React.memo(DeleteModal);

@@ -318,8 +318,8 @@ function TableManagamentTerm(props: any) {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
             {checkStatusGroup(
-              formatDates(params.row.startPublicResultDate),
-              formatDates(params.row.endPublicResultDate),
+              formatDates(params.row.startReportDate),
+              formatDates(params.row.endReportDate),
             )}
             <Tooltip
               onClick={() => handleOpenTopicReport(params.row.id)}

@@ -163,4 +163,4 @@ function EditGroupRegister(props: any) {
   );
 }
 
-export default EditGroupRegister;
+export default React.memo(EditGroupRegister);

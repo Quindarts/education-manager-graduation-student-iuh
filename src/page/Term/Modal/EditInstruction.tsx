@@ -163,4 +163,4 @@ function EditInstruction(props: any) {
   );
 }
 
-export default EditInstruction;
+export default React.memo(EditInstruction);

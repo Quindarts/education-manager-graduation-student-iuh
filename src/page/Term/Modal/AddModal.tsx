@@ -7,7 +7,7 @@ import { formatDates } from '@/utils/formatDate';
 import { Icon } from '@iconify/react';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { Formik } from 'formik';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { validationTermSchema } from '../context';
 import dayjs from 'dayjs';
 import { useMajor } from '@/hooks/api/useQueryMajor';
@@ -40,7 +40,12 @@ function AddModal(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box pb={5} px={10}>
-        <TitleManager mb={10} variant='h6' icon='ant-design:field-time-outlined' textTransform={'uppercase'}>
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='ant-design:field-time-outlined'
+          textTransform={'uppercase'}
+        >
           Tạo học kì mới
         </TitleManager>
         {isLoading ? (
@@ -133,4 +138,4 @@ function AddModal(props: any) {
   );
 }
 
-export default AddModal;
+export default React.memo(AddModal);

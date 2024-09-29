@@ -47,8 +47,13 @@ function EditTermDate(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-      <TitleManager mb={10} variant='h6' icon='ant-design:field-time-outlined' textTransform={'uppercase'}>
-      Cập nhật trạng thái học kì
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='ant-design:field-time-outlined'
+          textTransform={'uppercase'}
+        >
+          Cập nhật trạng thái học kì
         </TitleManager>
         {loadingDetail || isFetching ? (
           <Box
@@ -159,4 +164,4 @@ function EditTermDate(props: any) {
   );
 }
 
-export default EditTermDate;
+export default React.memo(EditTermDate);

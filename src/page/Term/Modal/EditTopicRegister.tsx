@@ -47,8 +47,13 @@ function EditTopicRegister(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-      <TitleManager mb={10} variant='h6' icon='ant-design:field-time-outlined' textTransform={'uppercase'}>
-      Cập nhật trạng thái đăng kí đề tài
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='ant-design:field-time-outlined'
+          textTransform={'uppercase'}
+        >
+          Cập nhật trạng thái đăng kí đề tài
         </TitleManager>
         {loadingDetail || isFetching ? (
           <Box
@@ -159,4 +164,4 @@ function EditTopicRegister(props: any) {
   );
 }
 
-export default EditTopicRegister;
+export default React.memo(EditTopicRegister);

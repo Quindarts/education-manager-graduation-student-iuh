@@ -164,4 +164,4 @@ function EditTopicReport(props: any) {
   );
 }
 
-export default EditTopicReport;
+export default React.memo(EditTopicReport);
