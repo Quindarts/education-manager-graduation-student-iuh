@@ -95,6 +95,7 @@ function ReviewManagerPage() {
                     entityUpload={TypeEntityUpload.EVALUATION}
                     termId={termStore.currentTerm.id}
                     typeEvaluation={currentTypeReview}
+                    havedModelExcel={false}
                   />
                 </>
               )}

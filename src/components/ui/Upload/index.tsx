@@ -58,9 +58,10 @@ interface ModalUploadPropsType {
   majorId?: string;
   label?: string;
   labelToolTip?: string;
-  sheetName: string;
-  title: string;
-  fileNameModel: string;
+  sheetName?: string;
+  title?: string;
+  fileNameModel?: string;
+  havedModelExcel?: boolean;
 }
 
 function ModalUpload(props: ModalUploadPropsType) {
@@ -73,6 +74,7 @@ function ModalUpload(props: ModalUploadPropsType) {
     title,
     sheetName,
     fileNameModel,
+    havedModelExcel = true,
   } = props;
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
@@ -253,14 +255,16 @@ function ModalUpload(props: ModalUploadPropsType) {
               <Skeleton />
             )}
           </Box>
-          <Box mt={10}>
-            <ExportExcelModelButton
-              entityName={entityUpload}
-              fileName={fileNameModel}
-              title={title}
-              sheetName={sheetName}
-            />
-          </Box>
+          {havedModelExcel && (
+            <Box mt={10}>
+              <ExportExcelModelButton
+                entityName={entityUpload}
+                fileName={fileNameModel}
+                title={title}
+                sheetName={sheetName}
+              />
+            </Box>
+          )}
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={handleCloseUpload}>
               <Icon icon='mdi:close-outline' />
