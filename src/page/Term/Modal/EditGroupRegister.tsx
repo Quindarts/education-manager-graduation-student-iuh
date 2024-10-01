@@ -46,7 +46,12 @@ function EditGroupRegister(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-        <TitleManager mb={10} mt={4}>
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='ant-design:field-time-outlined'
+          textTransform={'uppercase'}
+        >
           Cập nhật trạng thái đăng kí nhóm
         </TitleManager>
         {loadingDetail || isFetching ? (
@@ -139,8 +144,8 @@ function EditGroupRegister(props: any) {
                     Hủy
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
-                    <Icon icon='material-symbols:save-outline' />
-                    Lưu thông tin
+                    <Icon width={20} icon='material-symbols:save-outline' />
+                    Lưu
                     {loadingUpdate && (
                       <CircularProgress
                         size={'small'}
@@ -158,4 +163,4 @@ function EditGroupRegister(props: any) {
   );
 }
 
-export default EditGroupRegister;
+export default React.memo(EditGroupRegister);

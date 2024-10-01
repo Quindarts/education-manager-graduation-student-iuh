@@ -1,4 +1,3 @@
-import { ParamsType } from "@/types/axios.type"
 import { User } from "@/types/entities/user"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
@@ -15,9 +14,10 @@ export interface InitLecturerSliceType {
         roles: string[],
     },
     currentRoleRender: string,
-    renderUi: ENUM_RENDER_LECTURER,
-    keywords: string,
-    params: ParamsType,
+    paramTotalPage: {
+        lecturerTerm: number,
+        lecturerMajor: number,
+    },
 }
 const initLecturerSlice: InitLecturerSliceType = {
     me: {
@@ -35,13 +35,10 @@ const initLecturerSlice: InitLecturerSliceType = {
         },
         roles: []
     },
-    currentRoleRender: '',
-    renderUi: ENUM_RENDER_LECTURER.ALL,
-    keywords: '',
-    params: {
-        page: 1,
-        limit: 10,
-        totalPage: 1,
+    currentRoleRender: "",
+    paramTotalPage: {
+        lecturerTerm: 0,
+        lecturerMajor: 0
     }
 }
 
@@ -55,17 +52,14 @@ export const useLecturerSlice = createSlice({
         setCurrentRoleRender: (state: Pick<InitLecturerSliceType, 'currentRoleRender'>, { payload }: PayloadAction<any>) => {
             state.currentRoleRender = payload
         },
-        setParams: (state: Pick<InitLecturerSliceType, 'params'>, { payload }: PayloadAction<any>) => {
-            state.params = payload
+        setParamTotalPageLectuerTerm: (state: Pick<InitLecturerSliceType, 'paramTotalPage'>, { payload }: PayloadAction<any>) => {
+            state.paramTotalPage.lecturerTerm = payload
         },
-        setTypeRender: (state: Pick<InitLecturerSliceType, 'renderUi'>, { payload }: PayloadAction<any>) => {
-            state.renderUi = payload
-        },
-        setKeywords: (state: Pick<InitLecturerSliceType, 'keywords'>, { payload }: PayloadAction<any>) => {
-            state.keywords = payload
+        setParamTotalPageLectuerMajor: (state: Pick<InitLecturerSliceType, 'paramTotalPage'>, { payload }: PayloadAction<any>) => {
+            state.paramTotalPage.lecturerMajor = payload
         },
     }
 })
-export const { setMe, setCurrentRoleRender, setTypeRender, setParams, setKeywords } = useLecturerSlice.actions;
+export const { setMe, setCurrentRoleRender, setParamTotalPageLectuerTerm, setParamTotalPageLectuerMajor } = useLecturerSlice.actions;
 
 export default useLecturerSlice.reducer;

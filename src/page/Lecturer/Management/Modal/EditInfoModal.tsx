@@ -10,7 +10,6 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validateSchemaLecturer } from '../../context';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 
 const GenderLecturer = [
@@ -82,10 +81,9 @@ function EditInfoModal(props: any) {
             initialValues={{
               fullName: `${data?.lecturer?.fullName}`,
               username: `${data?.lecturer?.username}`,
-              email: `${data?.lecturer?.email}`,
               phone: `${data?.lecturer?.phone}`,
               gender: `${data?.lecturer?.gender}`,
-              // role: `${data?.lecturer.role}`,
+              email: `${data?.lecturer?.email ? data.lecturer.email : ''}`,
               degree: `${data?.lecturer?.degree}`,
               majorId: `${data?.lecturer?.majorId}`,
             }}
@@ -101,11 +99,11 @@ function EditInfoModal(props: any) {
             }) => (
               <form onSubmit={handleSubmit}>
                 <CustomTextField
+                  required
                   value={values.username}
                   name='username'
                   label='Mã giảng viên'
                   placeholder='Mã Giảng viên'
-                  disabled
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.username && touched.username ? true : false}
@@ -162,6 +160,7 @@ function EditInfoModal(props: any) {
                 <Box mt={8} width={'full'}>
                   <DropDown
                     label='Chuyên ngành'
+                    disabled
                     value={values.majorId}
                     onChange={(e) => {
                       setFieldValue('majorId', e.target.value);
@@ -197,7 +196,7 @@ function EditInfoModal(props: any) {
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
                     <Icon icon='material-symbols:save-outline' />
-                    Cập nhật giảng viên
+                    Lưu
                   </Button>
                 </Box>
               </form>

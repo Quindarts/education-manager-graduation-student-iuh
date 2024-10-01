@@ -32,37 +32,13 @@ function TableManagerReviewScore(props: any) {
   const handleCloseDeleteEvaluationModal = () => {
     setOpenDeleteEvaluationModal({ ...openModalDeleteEvaluationModal, isOpen: false });
   };
-  const FeatureComponent = currentRole.includes('all') && {
-    headerName: '',
-    field: 'none',
-    flex: 1.5,
-    headerAlign: 'center',
-    align: 'center',
-    renderCell: (params: any) => (
-      <Box display={'flex'} gap={2}>
-        <Tooltip title='Sửa tiêu chí'>
-          <IconButton size='small' onClick={() => handleOpenEditEvaluationModal(params.row.id)}>
-            <Icon icon='emojione:pencil' />
-          </IconButton>
-        </Tooltip>
-        <Box></Box>
-        <Tooltip title='Xóa tiêu chí'>
-          <IconButton
-            color='error'
-            size='small'
-            onClick={() => handleOpenDeleteEvaluationModal(params.row.id)}
-          >
-            <Icon icon='mdi:trash' />
-          </IconButton>
-        </Tooltip>
-      </Box>
-    ),
-  };
-  const basicColumns: GridColDef[] = [
+
+  const allRoleColumns: GridColDef[] = [
     {
       headerName: 'STT',
       field: 'stt',
-      flex: 0.25,
+      flex: 0.4,
+      align: 'center',
       headerAlign: 'center',
     },
     {
@@ -72,11 +48,54 @@ function TableManagerReviewScore(props: any) {
       headerAlign: 'center',
     },
     {
-      headerName: 'Mô tả',
-      field: 'description',
-      flex: 3,
+      headerName: 'Điểm tối đa',
+      field: 'scoreMax',
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
+    },
+    {
+      headerName: 'Chức năng',
+      field: 'none',
+      flex: 1.5,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => (
+        <Box display={'flex'} gap={2}>
+          <Tooltip
+            onClick={() => handleOpenEditEvaluationModal(params.row.id)}
+            title='Sửa tiêu chí'
+          >
+            <IconButton size='small'>
+              <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
+            </IconButton>
+          </Tooltip>
+          <Box></Box>
+          <Tooltip
+            onClick={() => handleOpenDeleteEvaluationModal(params.row.id)}
+            title='Xóa tiêu chí'
+          >
+            <IconButton color='error' size='small'>
+              <Icon icon='carbon:close-filled' width={20} style={{ color: ' #f2365b' }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
+    },
+  ];
+  const basicColumns: GridColDef[] = [
+    {
+      headerName: 'STT',
+      field: 'stt',
+      flex: 0.25,
+      align: 'center',
+      headerAlign: 'center',
+    },
+    {
+      headerName: 'Tên tiêu chí',
+      field: 'name',
+      flex: 6,
+      headerAlign: 'center',
     },
     {
       headerName: 'Điểm tối đa',
@@ -85,7 +104,6 @@ function TableManagerReviewScore(props: any) {
       headerAlign: 'center',
       align: 'center',
     },
-    FeatureComponent,
   ];
   return (
     <Box>
@@ -95,15 +113,12 @@ function TableManagerReviewScore(props: any) {
           bgcolor: 'white',
         }}
         minHeight={350}
-        columns={basicColumns}
-        totalItems={1}
+        columns={currentRole.includes('all') ? allRoleColumns : basicColumns}
+        totalItems={rows.length}
         totalPages={1}
         page={1}
-        checkboxSelection={true}
         handleChangePage={() => {}}
-        disableColumnMenu
         disableColumnFilter
-        disableColumnSelector
       />
       <EditEvaluationModal
         termId={termId}

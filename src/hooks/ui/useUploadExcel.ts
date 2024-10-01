@@ -9,6 +9,13 @@ import { QueryKeysLecturer } from '../api/useQueryLecturer';
 import { QueryEvaluation } from '../api/useQueryEvalutaion';
 import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
+import { User } from '@/types/entities/user';
+import { env } from '@/utils/env';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
+
+
+
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
@@ -62,7 +69,12 @@ axiosUpload.interceptors.response.use(
   },
 );
 
-const useUploadExcel = (entityUpload: string, termId: string, majorId: string, typeEvalutaion?: string) => {
+interface UploadHandler {
+  entityUpload: string, termId: string, majorId: string, me: User, typeEvaluation?: string, handleCloseUpload?: () => void;
+}
+
+const useUploadExcel = (props: UploadHandler) => {
+  const { entityUpload, termId, majorId, me, typeEvaluation, handleCloseUpload } = props
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState<string>('');
@@ -72,7 +84,6 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
 
   //axios
   const [valueLoading, setValueLoading] = useState<any>(0)
-  const [dataResult, setDataResult] = useState()
 
   const getExention = (file: any) => {
     const parts = file.name.split('.');
@@ -80,8 +91,16 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
     return EXTENSIONS.includes(extension);
   };
 
+  // const exportExcel = () => {
+  //   const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  //   const fileExtension = '.xlsx';
+  //   const ws = XLSX.utils.json_to_sheet(csvData);
+  //   const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+  //   const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  //   const data = new Blob([excelBuffer], { type: fileType });
+  //   FileSaver.saveAs(data, fileName + fileExtension);
+  // }
   const importExcel = async (e: any) => {
-
     //read file
     const file = e.target.files[0];
     setFileName(file.name);
@@ -121,9 +140,9 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
     const bodyRequestEval = {
       termId: termId,
       file: file,
-      type: typeEvalutaion
+      type: typeEvaluation
     }
-    return axiosUpload.post(`http://localhost:3000/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
+    return axiosUpload.post(`${env.API_URL}/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -134,30 +153,40 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
       .then(async function (response: any) {
         if (response.success) {
 
-          setDataResult(response.lecturer)
           if (entityUpload === TypeEntityUpload.LECTURER) {
             enqueueSnackbar('Lưu danh sách giảng viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getAllLecturer, termId, 20, 1] })
+            queryClient.invalidateQueries(
+              [QueryKeysLecturer.getAllLecturer, majorId,
+                "10", "1", '', '','']
+            );
+            handleCloseUpload()
           }
           if (entityUpload === TypeEntityUpload.EVALUATION) {
             enqueueSnackbar('Lưu danh sách tiêu chí từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvalutaion] })
+            queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvaluation] })
+            handleCloseUpload()
           }
           if (entityUpload === TypeEntityUpload.STUDENT) {
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, 10, 1] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, "10", "1", '', '',''] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getCountOfStudent] })
+            handleCloseUpload()
+
           }
           if (entityUpload === TypeEntityUpload.TOPIC) {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getAllTopicByTermMajor, termId, "e4fe02cb-f2b0-4afa-885d-d1b93130d350"] })
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", '', '',''] });
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, me.id, termId] })
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
+            handleCloseUpload()
           }
         }
       })
@@ -168,6 +197,7 @@ const useUploadExcel = (entityUpload: string, termId: string, majorId: string, t
       })
   }
   return {
+    // exportExcel,
     importExcel,
     setFileName,
     setTotalSize,

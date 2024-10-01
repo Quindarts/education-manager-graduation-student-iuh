@@ -1,19 +1,17 @@
-import Calendar from '@/components/ui/Calendar';
 import CustomTextField from '@/components/ui/CustomTextField';
 import DropDown from '@/components/ui/Dropdown';
-import Modal from '@/components/ui/Modal';
 import TitleManager from '@/components/ui/Title';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
-import { EnumGender, EnumRole } from '@/types/enum';
+import { EnumGender } from '@/types/enum';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, CircularProgress, Paper } from '@mui/material';
-import { Formik, useFormik } from 'formik';
-import React, { useContext, useEffect, useState } from 'react';
+import { Box, Button, Paper } from '@mui/material';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useAuth } from '@/hooks/api/useAuth';
 import { validateSchemaLecturer } from '@/page/Lecturer/context';
+import { useNavigate } from 'react-router-dom';
+import { Formik } from 'formik';
 
 const GenderLecturer = [
   {
@@ -25,54 +23,36 @@ const GenderLecturer = [
     name: 'Nam',
   },
 ];
-const RoleLecturerDrop = [
-  {
-    _id: EnumRole.LECTURER,
-    name: 'Giảng viên',
-  },
-  {
-    _id: EnumRole.HEAD_LECTURER,
-    name: 'Trưởng bộ môn',
-  },
-  {
-    _id: EnumRole.SUB_HEAD_LECTURER,
-    name: 'Phó bộ môn',
-  },
-];
-
 const DEGREE_DROP_VALUE = [
   { name: 'Tiến sĩ', _id: 'MASTER' },
   { name: 'Thạc sĩ', _id: 'DOCTOR' },
 ];
 
 function ProfilePage() {
-  const { termStore } = useTerm();
-  const { currentTerm } = termStore;
   const { majorStore } = useMajor();
-  const { lecturerStore } = useAuth();
-  const { handleGetLecturerById, onUpdateLecturer } = useLecturer();
-  const { mutate: updateLecturer, isSuccess } = onUpdateLecturer(
-    lecturerStore.me.id,
-    currentTerm.id,
-    20,
-    1,
-  );
+  const { lecturerStore, onUpdateMe } = useAuth();
+  const {} = useLecturer();
+  const { mutate: updateLecturer } = onUpdateMe();
 
   const handleSubmitEditLecturer = (values: any) => {
-    updateLecturer(values);
+    const data = {
+      fullName: values.fullName,
+      email: values.email,
+      phone: values.phone,
+      gender: values.gender,
+    };
+    updateLecturer(data);
   };
 
+  const navigate = useNavigate();
   return (
     <>
-      <Paper elevation={6} sx={{ width: '90%', mx: 'auto', mt: 8, position: 'relative' }}>
+      <Paper elevation={0} sx={{ width: '80%', mx: 'auto', mt: 8, position: 'relative' }}>
         <Box
           sx={{
             width: '100%',
-            height: '50px',
+            height: '20px',
             borderRadius: '4px 4px 0 0 ',
-            backgroundImage:
-              'url(https://c4.wallpaperflare.com/wallpaper/798/616/951/macos-sierra-wallpaper-preview.jpg)',
-            backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             position: 'absolute',
             zIndex: 1,
@@ -80,10 +60,9 @@ function ProfilePage() {
           }}
         ></Box>
 
-        <Box sx={{ px: 20, pt: '50px', zIndex: 10, position: 'relative' }}>
-          <TitleManager>
-            <Icon width={20} style={{ marginTop: '10px' }} icon='hugeicons:profile' />
-            Thông tin cá nhân
+        <Box sx={{ px: 10, pt: 10, zIndex: 10, position: 'relative' }}>
+          <TitleManager icon='vaadin:user-card' variant='h6' textTransform={'uppercase'}>
+            Thông tin giảng viên
           </TitleManager>
           <Box py={10} px={5}>
             <Formik
@@ -92,61 +71,19 @@ function ProfilePage() {
               }}
               validationSchema={validateSchemaLecturer}
               initialValues={{
-                fullName: `${lecturerStore.me.fullName}`,
-                username: `${lecturerStore.me.username}`,
-                email: `${lecturerStore.me.email}`,
-                phone: `${lecturerStore.me.phone}`,
-                gender: `${lecturerStore.me.gender}`,
-                role: `${lecturerStore.me.role}`,
-                degree: `${lecturerStore.me.degree}`,
-                majorId: `${lecturerStore.me.majorId}`,
+                fullName: `${lecturerStore.me.user.fullName}`,
+                username: `${lecturerStore.me.user.username}`,
+                email: `${lecturerStore.me.user.email}`,
+                phone: `${lecturerStore.me.user.phone}`,
+                gender: `${lecturerStore.me.user.gender}`,
+                degree: `${lecturerStore.me.user.degree}`,
+                majorId: `${lecturerStore.me.user.majorId}`,
               }}
             >
               {({ values, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
                 <form onSubmit={handleSubmit}>
-                  <Box display={'flex'} gap={20}>
+                  <Box display={'flex'} gap={10}>
                     <Box flex={1}>
-                      <Box
-                        mx={'auto'}
-                        position={'relative'}
-                        height={200}
-                        width={200}
-                        mb={3}
-                        sx={{ borderRadius: '20%', bgcolor: '#f3f3f9' }}
-                      >
-                        {' '}
-                        <img
-                          style={{ borderRadius: '10%', width: '200px', height: '200px' }}
-                          alt=''
-                          src={'https://img.artpal.com/867752/16-22-10-3-9-27-51m.jpg'}
-                        />
-                        <Box
-                          sx={{
-                            border: '6px solid white',
-                            backgroundColor: 'primary.main',
-                            cursor: 'pointer',
-                          }}
-                          borderRadius={'50%'}
-                          height={50}
-                          width={50}
-                          position={'absolute'}
-                          top={0}
-                          right={'4px'}
-                          color={'white'}
-                          display={'flex'}
-                          alignItems={'center'}
-                          justifyContent={'center'}
-                        >
-                          <label style={{ cursor: 'pointer' }}>
-                            <Icon icon='heroicons:camera-solid' width={16} />
-                            <input
-                              type='file'
-                              style={{ display: 'none' }}
-                              onChange={(event) => {}}
-                            />
-                          </label>
-                        </Box>
-                      </Box>
                       <CustomTextField
                         required
                         value={values.username}
@@ -159,7 +96,7 @@ function ProfilePage() {
                         error={errors.username ? true : false}
                         helperText={errors.username}
                       />
-                      <Box display={'flex'} gap={10} mt={8}>
+                      <Box display={'flex'} gap={4} mt={8}>
                         <Box width={'100%'}>
                           <CustomTextField
                             required
@@ -173,9 +110,8 @@ function ProfilePage() {
                             helperText={errors.fullName}
                           />
                         </Box>
-                        <Box width={200}>
+                        <Box mt={2} width={200}>
                           <DropDown
-                            sx={{ mb: 8 }}
                             value={`${values.gender}`}
                             onChange={(e) => {
                               setFieldValue('gender', e.target.value);
@@ -185,6 +121,16 @@ function ProfilePage() {
                           />
                         </Box>
                       </Box>
+                      <Box width={'full'}>
+                        <DropDown
+                          label='Trình độ'
+                          value={values.degree}
+                          onChange={(e) => {
+                            setFieldValue('degree', e.target.value);
+                          }}
+                          options={DEGREE_DROP_VALUE}
+                        />
+                      </Box>{' '}
                     </Box>
                     <Box flex={1}>
                       <CustomTextField
@@ -220,34 +166,20 @@ function ProfilePage() {
                           options={convertMajorDropDown(majorStore.allMajor)}
                         />
                       </Box>{' '}
-                      <Box mt={8} width={'full'}>
-                        <DropDown
-                          value={`${values.role}`}
-                          disabled
-                          onChange={(e) => {
-                            setFieldValue('role', e.target.value);
-                          }}
-                          label='Vai trò'
-                          options={RoleLecturerDrop}
-                        />
-                      </Box>
-                      <Box mt={8} width={'full'}>
-                        <DropDown
-                          label='Trình độ'
-                          value={values.degree}
-                          onChange={(e) => {
-                            setFieldValue('degree', e.target.value);
-                          }}
-                          options={DEGREE_DROP_VALUE}
-                        />
-                      </Box>{' '}
                     </Box>
                   </Box>
 
                   <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
-                    <Button variant='contained' color='primary' type='submit'>
-                      <Icon icon='material-symbols:save-outline' />
-                      Cập nhật thông tin cá nhân
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      onClick={() => navigate('/profile/update-password')}
+                    >
+                      Đổi mật khẩu <Icon width={20} icon='carbon:password' />
+                    </Button>
+
+                    <Button variant='contained' color='success' type='submit'>
+                      Cập nhật thông tin <Icon width={20} icon='ic:twotone-update' />
                     </Button>
                   </Box>
                 </form>

@@ -54,7 +54,7 @@ function AddLecturerModal(props: any) {
   const { currentTerm } = termStore;
 
   const { onCreateLecturer } = useLecturer();
-  const { mutate: createLecturer, isSuccess } = onCreateLecturer(currentTerm.id, 20, 1);
+  const { mutate: createLecturer, isSuccess } = onCreateLecturer();
 
   const handleSubmitCreateLecturer = (values: any) => {
     var dataSend = {
@@ -68,7 +68,6 @@ function AddLecturerModal(props: any) {
       majorId: values.majorId,
       termId: currentTerm.id,
     };
-    alert('hi');
     createLecturer(dataSend);
   };
   useEffect(() => {
@@ -78,7 +77,7 @@ function AddLecturerModal(props: any) {
     <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box py={10} px={10}>
         <TitleManager mb={8} variant='h5' textTransform={'uppercase'}>
-          Tạo thông tin Giảng viên
+          Thêm giảng viên
         </TitleManager>
 
         <Formik
@@ -99,38 +98,6 @@ function AddLecturerModal(props: any) {
         >
           {({ values, touched, handleChange, handleBlur, handleSubmit, errors, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              {/* <Box
-                mx={'auto'}
-                position={'relative'}
-                height={80}
-                width={80}
-                mb={3}
-                sx={{ borderRadius: '50%', bgcolor: '#f3f3f9' }}
-              >
-                <img style={{ borderRadius: '50%' }} alt='' src={'/'} />
-                <Box
-                  sx={{
-                    border: '3px solid white',
-                    backgroundColor: 'primary.main',
-                    cursor: 'pointer',
-                  }}
-                  borderRadius={'50%'}
-                  height={32}
-                  width={32}
-                  position={'absolute'}
-                  top={0}
-                  right={'4px'}
-                  color={'white'}
-                  display={'flex'}
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                >
-                  <label style={{ cursor: 'pointer' }}>
-                    <Icon icon='heroicons:camera-solid' width={16} />
-                    <input type='file' style={{ display: 'none' }} onChange={(event) => {}} />
-                  </label>
-                </Box>
-              </Box> */}
               <CustomTextField
                 required
                 value={values.username}
@@ -169,7 +136,6 @@ function AddLecturerModal(props: any) {
                 </Box>
               </Box>
               <CustomTextField
-                required
                 name='phone'
                 value={values.phone}
                 label='Số điện thoại'
@@ -180,7 +146,6 @@ function AddLecturerModal(props: any) {
                 helperText={errors.phone && touched.phone ? errors.phone : ''}
               />
               <CustomTextField
-                required
                 value={values.email}
                 name='email'
                 label='Email'
@@ -201,14 +166,6 @@ function AddLecturerModal(props: any) {
                   options={convertMajorDropDown(majorStore.allMajor)}
                 />
               </Box>{' '}
-              {/* <Box mt={8} width={'full'}>
-                <DropDown
-                  value={`${EnumRole.LECTURER}`}
-                  disabled
-                  label='Vai trò'
-                  options={RoleLecturerDrop}
-                />
-              </Box> */}
               <Box mt={8} width={'full'}>
                 <DropDown
                   label='Trình độ'
@@ -226,7 +183,7 @@ function AddLecturerModal(props: any) {
                 </Button>
                 <Button variant='contained' color='success' type='submit'>
                   <Icon icon='material-symbols:save-outline' />
-                  Tạo giảng viên
+                  Lưu
                 </Button>
               </Box>
             </form>

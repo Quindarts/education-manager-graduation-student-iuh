@@ -1,5 +1,8 @@
 import { useAuth } from '@/hooks/api/useAuth';
 import usePopup from '@/hooks/ui/usePopup';
+import { setCurrentMajor } from '@/store/slice/major.slice';
+import { setAllTerm, setCurrentTerm } from '@/store/slice/term.slice';
+import { RoleCheck } from '@/types/enum';
 import { APP_PROFILE_MENU } from '@/utils/app-config';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
@@ -9,6 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Typography from '@mui/material/Typography';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const avatarStyles = {
@@ -81,7 +85,21 @@ function ProfileMenu() {
   const navigate = useNavigate();
   const { handleActive, active, menuRef } = usePopup();
   const { lecturerStore, handleLogout } = useAuth();
-
+  const dispatch = useDispatch();
+  const handleChangeRole = () => {
+    const role = lecturerStore.currentRoleRender;
+    if (role === RoleCheck.LECTURER || role === RoleCheck.ADMIN) {
+      dispatch(setCurrentTerm({}));
+      dispatch(setAllTerm([]));
+      dispatch(
+        setCurrentMajor({
+          name: lecturerStore.me.user.majorName,
+          id: lecturerStore.me.user.majorId,
+        }),
+      );
+      
+    }
+  };
   return (
     <Box
       display='flex'
@@ -165,6 +183,11 @@ function ProfileMenu() {
                 onClick={() => {
                   if (menuItem.link === '/auth/login') {
                     handleLogout();
+                  }
+                  if (menuItem.link === '/auth/role') {
+                    handleChangeRole();
+
+                    navigate(menuItem.link);
                   } else navigate(menuItem.link);
                 }}
               >

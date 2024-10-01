@@ -1,7 +1,7 @@
 import Table from '@/components/ui/Table/Table';
 import { checkRoleLecturer, checkRoleLecturerColor } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -113,7 +113,7 @@ function TableManagementRole(props: any) {
       },
     },
     {
-      headerName: '',
+      headerName: 'Chức năng',
       field: 'updateTing',
       flex: 1,
       headerAlign: 'center',
@@ -127,11 +127,11 @@ function TableManagementRole(props: any) {
             }
           >
             <IconButton size='small'>
-              <Icon icon='uiw:setting' />
+              <Icon width={22} color='#014895' icon='uiw:setting' />
             </IconButton>
           </Tooltip>
           <Box></Box>
-          <Tooltip title='Xem Chi tiết quyền'>
+          {/* <Tooltip title='Xem Chi tiết quyền'>
             <IconButton
               color='primary'
               size='small'
@@ -139,7 +139,7 @@ function TableManagementRole(props: any) {
             >
               <Icon width={20} icon='mdi:card-account-details-star-outline' />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       ),
     },
@@ -156,7 +156,7 @@ function TableManagementRole(props: any) {
           }}
           rowHeight={80}
           columns={basicColumns}
-          totalItems={totalItems}
+          totalItems={rows.length}
           totalPages={totalPage}
           page={page}
           handleChangePage={handleChangePage}

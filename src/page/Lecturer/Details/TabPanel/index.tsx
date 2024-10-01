@@ -6,6 +6,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import DetailCalendar from './DetailCalendar';
 import DetailSupportStudent from './DetailSupportStudent';
+import GroupLecturer from './GroupLecturer';
 function TabPanelUI() {
   const [value, setValue] = React.useState('1');
 
@@ -17,13 +18,17 @@ function TabPanelUI() {
     <Box sx={{ width: '100%', typography: 'h4' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'primary.main' }}>
-          <TabList onChange={handleChange} aria-label='lab API tabs example'>
-            <Tab label='Lịch làm việc' value='1' />
-            <Tab label='Nhóm hướng dẫn' value='2' />
+          <TabList onChange={handleChange} aria-label=''>
+            <Tab label='Nhóm hướng dẫn' value='1' />
+            <Tab label='Lịch làm việc' value='2' />
+            <Tab label='Nhóm giảng viên của tôi' value='3' />
           </TabList>
         </Box>
-        <DetailCalendar value='1' />
-        <DetailSupportStudent value='2' />
+        <DetailSupportStudent value='1' />
+        <DetailCalendar value='2' />
+        <TabPanel value='3'>
+          <GroupLecturer />
+        </TabPanel>
       </TabContext>
     </Box>
   );

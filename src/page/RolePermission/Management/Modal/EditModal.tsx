@@ -22,9 +22,7 @@ function EditRoleModal(props: any) {
   const currentRole = lecturerStore.currentRoleRender;
 
   const LIST_RENDER =
-    currentRole === RoleCheck.HEAD_COURSE
-      ? LIST_ROLE
-      : LIST_ROLE.filter((role) => role !== RoleCheck.HEAD_COURSE);
+    currentRole === RoleCheck.ADMIN ? LIST_ROLE : [RoleCheck.HEAD_COURSE, RoleCheck.LECTURER];
   return (
     <Modal maxWidth='md' open={open} onClose={onClose}>
       <Box py={10} px={10}>

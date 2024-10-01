@@ -5,10 +5,10 @@ import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
-type DeleteModalType = { studentId: string };
+type DeleteModalType = { studentId: string; name: string };
 
 function DeleteModal(props: DeleteModalType & ModalProps) {
-  const { onClose, open, studentId } = props;
+  const { onClose, open, studentId, name } = props;
   const { onDeleteStudent } = useStudent();
   const { mutate: deleteStudent, isSuccess } = onDeleteStudent();
 
@@ -35,7 +35,7 @@ function DeleteModal(props: DeleteModalType & ModalProps) {
           <Icon color='#b31d1d82' height={70} width={70} icon='fa-solid:trash-restore' />{' '}
         </Box>
         <Typography variant='h3' mt={10} mb={14}>
-          Bạn có chắc chắn muốn xóa sinh viên này ?
+          Bạn có chắc chắn muốn xóa sinh viên {name} ?
         </Typography>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
           <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>

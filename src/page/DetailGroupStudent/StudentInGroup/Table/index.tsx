@@ -3,7 +3,7 @@ import Table from '@/components/ui/Table/Table';
 import { convertGroupMembersTable } from '@/utils/convertDataTable';
 import { getStatusGroup } from '@/utils/validations/groupStudent.validation';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -11,14 +11,14 @@ import EditStatusStudentTerm from '../Modal/EditStatus';
 import StudentLeaveGroup from '../Modal/LeaveGroup';
 import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import AddStudentModal from '../Modal/AddStudent';
+import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
-function TableStudentInGroup(props: any) {
+function TableStudentInGroup({ members }: any) {
   const { pathname } = useLocation();
   const current = pathname.split('/');
   const grStudentId = `${current[current.length - 1]}`;
-
-  const { handleGetMemberInGroupStudent } = useMemberGroupStudent();
-  const { data, isLoading } = handleGetMemberInGroupStudent(grStudentId);
+  const { handleUiRender } = useGroupStudent();
+  const currentRole = handleUiRender();
 
   const [openAddStudentModal, setOpenModalAddStudent] = useState(false);
 
@@ -36,8 +36,8 @@ function TableStudentInGroup(props: any) {
   });
   const handleOpenModalStatusStudent = (studentId: string, status: string) => {
     setOpenModalStatusStudent({
-      studentId,
-      status,
+      studentId: studentId,
+      status: status,
       isOpen: true,
     });
   };
@@ -62,12 +62,11 @@ function TableStudentInGroup(props: any) {
     {
       headerName: 'Thông tin chung',
       field: 'name',
-      flex: 1.7,
-      headerAlign: 'center',
+      flex: 1.5,
+      headerAlign: 'left',
       renderCell: (params: any) => {
         return (
-          <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar sizes='small' src={params.row.avatar} />
+          <Box gap={2} display={'flex'} alignItems={'center'}>
             <Box>
               <Typography component={'span'} color='primary'>
                 {params.row.isAdmin ? 'Trưởng Nhóm' : ''}
@@ -85,24 +84,18 @@ function TableStudentInGroup(props: any) {
         );
       },
     },
-    {
-      headerName: 'Lớp chuyên ngành',
-      field: 'clazzName',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-    },
+
     {
       headerName: 'Điểm Hướng dẫn',
       field: 'hd',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[0]
-              ? `${parseFloat(params.row.transcripts[0]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[0]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -112,13 +105,13 @@ function TableStudentInGroup(props: any) {
       headerName: 'Điểm Phản biện',
       field: 'pb',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[1]
-              ? `${parseFloat(params.row.transcripts[1]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[1]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -128,13 +121,13 @@ function TableStudentInGroup(props: any) {
       headerName: 'Điểm Báo cáo',
       field: 'bc',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[2]
-              ? `${parseFloat(params.row.transcripts[2]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[2]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -144,13 +137,13 @@ function TableStudentInGroup(props: any) {
       headerName: 'Điểm Trung bình',
       field: 'tb',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Typography variant='body1'>
             {params.row.transcripts.length > 0 && params.row.transcripts[3]
-              ? `${parseFloat(params.row.transcripts[3]?.avgScore.toFixed(2))}`
+              ? `${(parseFloat(params.row.transcripts[3]?.sumScore) / 10).toFixed(2)}`
               : 'Chưa có'}
           </Typography>
         );
@@ -161,20 +154,12 @@ function TableStudentInGroup(props: any) {
       headerName: 'Tình trạng',
       field: 'abc',
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
+      align: 'right',
+      headerAlign: 'right',
       renderCell: (params: any) => {
         return (
           <Box display={'flex'}>
             <Typography variant='body1'>{getStatusGroup(params.row.status)}</Typography>
-            <Tooltip title='Cập nhật trạng thái sinh viên'>
-              <IconButton
-                size='small'
-                onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
-              >
-                <Icon width={16} icon='fluent-mdl2:global-nav-button-active' />
-              </IconButton>
-            </Tooltip>
           </Box>
         );
       },
@@ -183,20 +168,35 @@ function TableStudentInGroup(props: any) {
     {
       headerName: '',
       field: 'name8',
-      flex: 1,
+      flex: currentRole.includes('crud') ? 1.2 : 0,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip title='Cho rời nhóm'>
-            <IconButton
-              size='small'
-              color='primary'
+          {currentRole.includes('crud') && (
+            <Tooltip
+              title='Cập nhật trạng thái sinh viên'
+              onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
+            >
+              <IconButton size='small'>
+                <Icon
+                  width={20}
+                  style={{ color: '#1e4990' }}
+                  icon='fluent-mdl2:global-nav-button-active'
+                />
+              </IconButton>
+            </Tooltip>
+          )}
+          {currentRole.includes('crud') && (
+            <Tooltip
+              title='Xóa khỏi nhóm'
               onClick={() => handleOpenStudentLeaveGroup(params.row.id)}
             >
-              <Icon icon='pepicons-print:leave-circle' width={20} />
-            </IconButton>
-          </Tooltip>
+              <IconButton size='small' color='primary'>
+                <Icon icon='pepicons-print:leave-circle' style={{ color: '#1e4990' }} width={20} />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
       ),
     },
@@ -204,13 +204,11 @@ function TableStudentInGroup(props: any) {
   return (
     <>
       <Box>
-        {isLoading ? (
-          <SekeletonUI />
-        ) : (
-          <Box>
+        <Box>
+          {currentRole.includes('crud') && (
             <Box display={'flex'} mt={6} mb={4} justifyContent={'end'}>
               <Button
-                disabled={data?.members.length >= 2}
+                disabled={members.length >= 2}
                 size='small'
                 color='error'
                 variant='contained'
@@ -220,42 +218,43 @@ function TableStudentInGroup(props: any) {
                 Thêm Sinh viên
               </Button>
             </Box>
-            <Table
-              rows={convertGroupMembersTable(data?.members)}
-              sx={{
-                bgcolor: 'white',
-                height: 350,
-              }}
-              minHeight={350}
-              rowHeight={100}
-              columns={basicColumns}
-              totalItems={1}
-              totalPages={1}
-              page={1}
-              handleChangePage={() => {}}
-              disableColumnMenu
-              disableColumnFilter
-              disableColumnSelector
-            />
-          </Box>
-        )}
+          )}
+          <Table
+            rows={convertGroupMembersTable(members)}
+            sx={{
+              bgcolor: 'white',
+            }}
+            minHeight={350}
+            rowHeight={80}
+            columns={basicColumns}
+            totalItems={1}
+            totalPages={1}
+            page={1}
+            handleChangePage={() => {}}
+            disableColumnFilter
+          />
+        </Box>
       </Box>
-      <EditStatusStudentTerm
-        open={openStatusStudentModal.isOpen}
-        studentId={openStatusStudentModal.studentId}
-        status={openStatusStudentModal.status}
-        onClose={handleCloseModalStatusStudent}
-      />
-      <StudentLeaveGroup
-        studentId={openStudentLeaveGroup.studentId}
-        open={openStudentLeaveGroup.isOpen}
-        onClose={handleCloseStudentLeaveGroup}
-      />
-      <AddStudentModal
-        groupStudentId={grStudentId}
-        onClose={handleCloseModalAddStudent}
-        open={openAddStudentModal}
-      />
+      {currentRole.includes('crud') && (
+        <>
+          <EditStatusStudentTerm
+            open={openStatusStudentModal.isOpen}
+            studentId={openStatusStudentModal.studentId}
+            status={openStatusStudentModal.status}
+            onClose={handleCloseModalStatusStudent}
+          />
+          <StudentLeaveGroup
+            studentId={openStudentLeaveGroup.studentId}
+            open={openStudentLeaveGroup.isOpen}
+            onClose={handleCloseStudentLeaveGroup}
+          />
+          <AddStudentModal
+            groupStudentId={grStudentId}
+            onClose={handleCloseModalAddStudent}
+            open={openAddStudentModal}
+          />
+        </>
+      )}{' '}
     </>
   );
 }

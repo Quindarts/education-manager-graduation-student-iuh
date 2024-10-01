@@ -23,12 +23,8 @@ function AddGroupStudentModal(props: any) {
     setDataSend(data);
   };
   const handleSubmit = () => {
-    if (dataSend.length < 1) {
-      enqueueSnackbar('Nhóm sinh viên tạo trống', { variant: 'error' });
-    } else {
-      const studentIds = dataSend.map((std: any) => std.studentId);
-      createGroup(studentIds);
-    }
+    const studentIds = dataSend.map((std: any) => std.studentId);
+    createGroup(studentIds);
   };
   useEffect(() => {
     if (successCreate) {

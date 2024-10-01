@@ -22,7 +22,7 @@ const CARD_ROLE_TYPE = [
   {
     icon: 'ri:admin-line',
     name: 'Quản trị viên',
-    role: EnumRole.HEAD_COURSE,
+    role: EnumRole.ADMIN,
     // numRole: 2,
     desc: 'Quyền quản trị viên quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
   },
@@ -38,7 +38,7 @@ const CARD_ROLE_TYPE = [
   {
     icon: 'grommet-icons:user-admin',
     name: 'Chủ quản môn học',
-    role: EnumRole.ADMIN,
+    role: EnumRole.HEAD_COURSE,
     // numRole: 3,
     desc: 'Trong hệ thống quản lý khóa luận, Chủ quản môn học quản lý người dùng, thiết lập hệ thống, và duy trì hoạt động.',
   },
@@ -46,25 +46,26 @@ const CARD_ROLE_TYPE = [
 
 function RolePage() {
   const { lecturerStore, handleGetMe } = useAuth();
-  const { isLoading, data, isFetching } = handleGetMe();
+  const { data, isSuccess } = handleGetMe();
   const { handleGetCurrentTerm } = useTerm();
   const dispatch = useDispatch();
 
-  handleGetMe();
-  handleGetCurrentTerm(data?.lecturer.majorId);
+  if (isSuccess) handleGetCurrentTerm(data.lecturer.majorId);
 
   const { handleGetAllMajor } = useMajor();
   const { handleGetAllTermByMajor } = useTerm();
   const { data: dataMajorFetch, isSuccess: successMajor } = handleGetAllMajor();
 
-  if(successMajor)
-  dispatch(setAllMajor(dataMajorFetch.majors));
+  useEffect(() => {
+    if (successMajor) dispatch(setAllMajor(dataMajorFetch.majors));
+  }, [successMajor]);
 
   const { data: dataTermFecth, isSuccess: successTerm } = handleGetAllTermByMajor(
     data?.lecturer.majorId,
   );
-  
-  if (successTerm) dispatch(setAllTerm(dataTermFecth.terms));
+  // if (successTerm) {
+  //   dispatch(setAllTerm(dataTermFecth.terms));
+  // }
 
   const accessToken: string = getValueFromLocalStorage('accessToken') || '';
 
@@ -86,13 +87,10 @@ function RolePage() {
           right={0}
         >
           <Paper>
-            <Typography m={5} variant='h5' fontWeight={500} color='primary'>
-              Chào mừng trở lại, vui lòng chọn vai trò{' '}
-            </Typography>
             <Box
               sx={{
-                width: 1000,
-                height: 500,
+                py: 10,
+                px: 10,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

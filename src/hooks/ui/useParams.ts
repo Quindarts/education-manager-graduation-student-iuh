@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { debounce } from 'lodash';
 
-type QueryType = "limit" | "page" | "searchField" | "keywords" | "filter" | "totalPage"
+type QueryType = "limit" | "page" | "searchField" | "keywords" | "sort" | "totalPage"
 enum QueryEnum {
     LIMIT = "limit",
     PAGE = "page",
     SEARCH_FIELD = "searchField",
     KEYWORDS = "keywords",
     FILTER = "filters",
-    TOTALPAGE = "totalPage"
+    TOTALPAGE = "totalPage",
+    SORT = "sort"
 }
 function useParams() {
     const [focused, setFocused] = useState(false)
@@ -19,21 +20,27 @@ function useParams() {
         setFocused(focus)
     }
     const onTypeSearchChange = (type: string) => {
-        if (!type) {
-            query.delete(QueryEnum.SEARCH_FIELD)
-            setSearch(query, {
-                replace: true,
-            });
-        } else {
-            query.set(QueryEnum.SEARCH_FIELD, type);
-            setSearch(query, {
-                replace: true,
-            })
-        }
+        query.set(QueryEnum.SEARCH_FIELD, type);
+        setSearch(query, {
+            replace: true,
+        })
+    }
+    const setDefaultTypeSearch = (type: string) => {
+        query.set(QueryEnum.SEARCH_FIELD, type);
+        setSearch(query, {
+            replace: true,
+        })
+
+    }
+    const setTypeSort = (type: string) => {
+        query.set(QueryEnum.SORT, type)
+        setSearch(query, {
+            replace: true,
+        })
     }
 
     const getQueryField = (type: QueryType) => {
-        return query.get(type)
+        return query.get(type) ? `${query.get(type)}` : ''
     }
 
     const onSearchChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +57,7 @@ function useParams() {
                 replace: true,
             });
         }
-    }, 300)
+    }, 400)
 
 
     const setLimit = (limit?: number) => {
@@ -94,7 +101,7 @@ function useParams() {
         }
     }
 
-    return { onSearchChange, onTypeSearchChange, getQueryField, setPage, setLimit, setTotalPage, focus, handleFocused }
+    return { onSearchChange, setDefaultTypeSearch, onTypeSearchChange, getQueryField, setPage, setTypeSort, setLimit, setTotalPage, focus, handleFocused }
 }
 
 export default useParams

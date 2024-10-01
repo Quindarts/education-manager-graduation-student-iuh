@@ -5,7 +5,7 @@ import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 
 function ResetPassword(props: any) {
-  const { onClose, open, studentId, username } = props;
+  const { onClose, open, studentId, name } = props;
   const { onResetPassword } = useStudent();
   const { mutate: reset, isSuccess } = onResetPassword();
   const handleSubmit = () => {
@@ -31,7 +31,7 @@ function ResetPassword(props: any) {
           <Icon color='#094f7482' height={70} width={70} icon='teenyicons:key-outline' />{' '}
         </Box>
         <Typography variant='h3' mt={10} mb={14}>
-          Cấp lại mật khẩu cho sinh viên này?
+          Cấp lại mật khẩu cho sinh viên {name} ?
         </Typography>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
           <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>

@@ -8,30 +8,37 @@ export enum TypeTermStatus {
     DISCUSSION = 'discussion',
     REPORT = 'report',
     PUBLIC_RESULT = 'public-result',
+    PUBLIC_TOPIC = "public-topic"
 }
 
+const URL = "/api/v1/terms"
+
 export const getAllTerm = () => {
-    return axiosConfig.get<ResponseType, any>("/api/v1/terms");
+    return axiosConfig.get<ResponseType, any>(`${URL}`);
 }
 export const getAllTermByMajor = (majorId: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/major/${majorId}`);
+    return axiosConfig.get<ResponseType, any>(`${URL}/major/${majorId}`);
 }
 
 export const getTermById = (id: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/${id}`)
+    return axiosConfig.get<ResponseType, any>(`${URL}/${id}`)
 }
 
 export const getCurrentTerm = (majorId: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/now?majorId=${majorId}`)
+    return axiosConfig.get<ResponseType, any>(`${URL}/now?majorId=${majorId}`)
+}
+
+export const getTermsByLecturer = () => {
+    return axiosConfig.get<ResponseType, any>(`${URL}/lecturer`)
 }
 
 
 export const getTermDetailWithType = (id: string, type: TypeTermStatus) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/terms/${id}/${type}`)
+    return axiosConfig.get<ResponseType, any>(`${URL}/${id}/${type}`)
 }
 
 export const updateTermWithType = (id: string, type: TypeTermStatus, data: Pick<Term, 'startDate' | 'endDate'>) => {
-    return axiosConfig.put<ResponseType, any>(`/api/v1/terms/${id}/${type}`, data)
+    return axiosConfig.put<ResponseType, any>(`${URL}/${id}/${type}`, data)
 }
 
 export const createTerm = (data: Pick<Term, 'name' | 'startDate' | 'endDate' | 'majorId'>) => {
@@ -39,10 +46,10 @@ export const createTerm = (data: Pick<Term, 'name' | 'startDate' | 'endDate' | '
 }
 
 export const updateTermById = (id: string, data: Pick<Term, 'startDate' | 'endDate'>) => {
-    return axiosConfig.put<ResponseType, any>(`/api/v1/terms/${id}`, data);
+    return axiosConfig.put<ResponseType, any>(`${URL}/${id}`, data);
 }
 
 //delete term BE
 export const deleteTerm = (id: string) => {
-    return axiosConfig.post<ResponseType, any>(`/api/v1/terms/${id}`);
+    return axiosConfig.post<ResponseType, any>(`${URL}/${id}`);
 }

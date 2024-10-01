@@ -11,16 +11,16 @@ export interface IRegister extends IAuth {
 }
 
 export interface User {
-    id?: string;
-    username?: string;
-    fullName?: string;
-    phone?: string;
-    email?: string;
-    gender?: string;
-    degree?: string;
-    isActive?: boolean;
-    majorId?: string;
-    majorName?: string;
+    id: string;
+    username: string;
+    fullName: string;
+    phone: string;
+    email: string;
+    gender: string;
+    degree: string;
+    isActive: boolean;
+    majorId: string;
+    majorName: string;
 }
 export interface IListToken {
     accessToken: string;

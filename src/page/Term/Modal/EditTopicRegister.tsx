@@ -37,7 +37,7 @@ function EditTopicRegister(props: any) {
   useEffect(() => {
     onClose();
   }, [isSuccess]);
-  
+
   useEffect(() => {
     if (data?.termDetail) {
       var checked: boolean = dayjs(data?.termDetail.endDate) <= dayjs() ? false : true;
@@ -47,7 +47,12 @@ function EditTopicRegister(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box px={10}>
-        <TitleManager mb={10} mt={4}>
+        <TitleManager
+          mb={10}
+          variant='h6'
+          icon='ant-design:field-time-outlined'
+          textTransform={'uppercase'}
+        >
           Cập nhật trạng thái đăng kí đề tài
         </TitleManager>
         {loadingDetail || isFetching ? (
@@ -140,8 +145,8 @@ function EditTopicRegister(props: any) {
                     Hủy
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
-                    <Icon icon='material-symbols:save-outline' />
-                    Lưu thông tin
+                    <Icon width={20} icon='material-symbols:save-outline' />
+                    Lưu
                     {loadingUpdate && (
                       <CircularProgress
                         size={'small'}
@@ -159,4 +164,4 @@ function EditTopicRegister(props: any) {
   );
 }
 
-export default EditTopicRegister;
+export default React.memo(EditTopicRegister);

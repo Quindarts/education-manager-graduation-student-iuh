@@ -1,15 +1,26 @@
-import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import { useRoleManager } from '@/hooks/api/useQueryRole';
+import { RoleCheck } from '@/types/enum';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 function CardRole(props: any) {
-  const { roleAssigned, roleName, currentRole, handleClose, lecturerId } = props;
+  const { roleAssigned, roleName, handleClose, lecturerId, currentRole } = props;
   const { onAssignRoleToLecturer, onUnAssignRoleToLecturer } = useRoleManager();
   const { mutate: unAssign, isSuccess: successUnAssign } = onUnAssignRoleToLecturer(lecturerId);
   const { mutate: assign, isSuccess: successAssign } = onAssignRoleToLecturer(lecturerId);
+  const [isReplaceRole, setReplaceRole] = useState(true);
+
+  useLayoutEffect(() => {
+    if (
+      (currentRole !== RoleCheck.ADMIN &&
+        (roleAssigned?.name === RoleCheck.HEAD_LECTURER || roleAssigned?.name === RoleCheck.ADMIN)) ||
+      roleAssigned?.name === RoleCheck.LECTURER
+    ) {
+      setReplaceRole(false);
+    }
+  }, [roleAssigned]);
 
   const handleAssign = () => {
     let data = {
@@ -74,11 +85,11 @@ function CardRole(props: any) {
       </Box>
 
       <Box gap={4} justifyContent={'end'} display={'flex'}>
-        {roleAssigned?.name !== 'LECTURER' && (
+        {isReplaceRole && (
           <>
             {roleAssigned ? (
               <Button onClick={handleUnAssign} color='error'>
-                Gỡ quyền
+                Gỡ quyền 
                 <Icon icon='icomoon-free:exit' />
               </Button>
             ) : (

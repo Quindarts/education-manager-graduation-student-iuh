@@ -56,4 +56,4 @@ function DeleteGroupStudentModal(props: any) {
   );
 }
 
-export default DeleteGroupStudentModal;
+export default React.memo(DeleteGroupStudentModal);

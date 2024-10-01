@@ -12,6 +12,8 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { EnumGender } from '@/types/enum';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
+import Calendar from '@/components/ui/Calendar';
+import dayjs from 'dayjs';
 
 const GenderStudent = [
   {
@@ -38,7 +40,11 @@ function AddModal(props: any) {
   const { mutate: createStudent, isSuccess: successAdd } = onCreateStudent();
 
   const handleSubmitStudent = (values: any) => {
-    createStudent(values);
+    const data = {
+      ...values,
+      dateOfBirth: dayjs(values.dateOfBirth).format('YYYY-MM-DD'),
+    };
+    createStudent(data);
   };
 
   useEffect(() => {
@@ -50,7 +56,7 @@ function AddModal(props: any) {
     <Modal maxWidth='xs' open={open} onClose={onClose}>
       <Box p={10}>
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
-          Tạo Sinh viên
+          Thêm Sinh viên
         </TitleManager>
 
         <Formik
@@ -62,6 +68,7 @@ function AddModal(props: any) {
             phone: '',
             clazzName: 'DH',
             gender: '',
+            dateOfBirth: null,
             majorId: `${majorStore.currentMajor.id}`,
             typeTraining: 'UNIVERSITY',
             termId: `${termStore.currentTerm.id}`,
@@ -70,50 +77,71 @@ function AddModal(props: any) {
         >
           {({ values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              <CustomTextField
-                label='Mã sinh viên'
-                name='username'
-                value={values.username}
-                placeholder='Ví dụ: 21089141'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.username && touched.username ? true : false}
-                helperText={`${errors.username && touched.username ? errors.username : ''}`}
-              />
-              <CustomTextField
-                value={values.fullName}
-                name='fullName'
-                label='Họ và tên'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder='Họ và tên'
-                error={errors.fullName && touched.fullName ? true : false}
-                helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
-              />
+              <Box gap={8} display={'flex'}>
+                <Box width={200}>
+                  <CustomTextField
+                    label='Mã sinh viên'
+                    name='username'
+                    required
+                    value={values.username}
+                    placeholder='Ví dụ: 20189141'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors.username && touched.username ? true : false}
+                    helperText={`${errors.username && touched.username ? errors.username : ''}`}
+                  />
+                </Box>
+                <Box width={'100%'}>
+                  <CustomTextField
+                    value={values.fullName}
+                    name='fullName'
+                    label='Họ và tên'
+                    required
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder='Họ và tên'
+                    error={errors.fullName && touched.fullName ? true : false}
+                    helperText={`${errors.fullName && touched.fullName ? errors.fullName : ''}`}
+                  />
+                </Box>
+              </Box>
+
               <Box display={'flex'} gap={8} alignContent={'center'}>
-                <Box width={'50%'}>
+                <Box width={200}>
                   <DropDown
                     sx={{ mb: 8 }}
                     label='Giới tính'
-                    value={`${values.gender ? values.gender : ''}`}
+                    value={`${values.gender}`}
                     onChange={(e) => {
                       setFieldValue('gender', e.target.value);
                     }}
                     options={GenderStudent}
                   />
                 </Box>
-                <CustomTextField
-                  value={values.clazzName}
-                  name='clazzName'
-                  label='Lớp danh nghĩa'
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder='Ví dụ: DHKTPM17C'
-                  error={errors.clazzName && touched.clazzName ? true : false}
-                  helperText={`${errors.clazzName && touched.fullName ? errors.clazzName : ''}`}
-                />
+                <Box width={'100%'}>
+                  <Calendar
+                    onChange={(value) => {
+                      setFieldValue('dateOfBirth', value);
+                    }}
+                    format='DD/MM/YYYY'
+                    name='dateOfBirth'
+                    value={values.dateOfBirth}
+                    sx={{ width: '100%', mb: 8 }}
+                    label='Ngày sinh'
+                  />
+                </Box>
               </Box>
-
+              <CustomTextField
+                value={values.clazzName}
+                name='clazzName'
+                label='Lớp danh nghĩa'
+                onChange={handleChange}
+                onBlur={handleBlur}
+                required
+                placeholder='Ví dụ: DHKTPM17C'
+                error={errors.clazzName && touched.clazzName ? true : false}
+                helperText={`${errors.clazzName && touched.clazzName ? errors.clazzName : ''}`}
+              />
               <CustomTextField
                 value={values.email}
                 name='email'
@@ -161,7 +189,7 @@ function AddModal(props: any) {
                 </Button>
                 <Button variant='contained' color='success' type='submit'>
                   <Icon icon='material-symbols:save-outline' />
-                  Lưu thông tin
+                  Lưu
                 </Button>
               </Box>
             </form>

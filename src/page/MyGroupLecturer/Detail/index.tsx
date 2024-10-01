@@ -5,6 +5,7 @@ import { Box, Paper } from '@mui/material';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import TabPanelUI from './TabPanel';
+import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 
 function MyDetailGroupLecturer() {
   const { pathname } = useLocation();
@@ -14,13 +15,15 @@ function MyDetailGroupLecturer() {
   const { data, isLoading, isFetching } = handleGetGroupLecturerById(grLecturerId);
 
   return (
-    <Paper sx={{ py: 20, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
       {isLoading || isFetching ? (
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>{data?.groupLecturer?.name}</TitleManager>
-          <Box my={4}>
+          <TitleManager>
+            {checktTypeGroupLecturer(data.groupLecturer.type.toLowerCase())} {data?.groupLecturer?.name}
+          </TitleManager>
+          <Box>
             <TabPanelUI groupLecturer={data?.groupLecturer} />
           </Box>
         </>

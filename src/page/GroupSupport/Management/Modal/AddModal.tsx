@@ -13,9 +13,7 @@ function AddModal(props: any) {
       lastName: '',
       email: '',
     },
-    onSubmit: (values: any) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+    onSubmit: (values: any) => {},
   });
   return (
     <Modal open={open} onClose={onClose}>

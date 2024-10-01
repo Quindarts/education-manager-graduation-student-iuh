@@ -2,9 +2,16 @@ import { convertRowEvaluations } from '@/utils/convertDataTable';
 import { BorderStyle, Document, HeightRule, Paragraph, ShadingType, Table, TableCell, TableRow, TextRun, UnderlineType, VerticalAlign, WidthType } from 'docx';
 
 
-function docTranscriptCouncil(evaluations: any) {
+function docTranscriptCouncil({ topicName,
+    groupStudentName,
+    students,
+    evaluatorFullName,
+    lecturerSupport,
+    evaluations,
+    fileType = 'many' }: any) {
     const rows = convertRowEvaluations(evaluations);
-
+    const fileName = 'Phiếu chấm Nhóm sv_' + groupStudentName + '_' + evaluatorFullName
+    const lineSpacing = 200
     const doc = new Document({
         sections: [
             {
@@ -124,7 +131,7 @@ function docTranscriptCouncil(evaluations: any) {
                     new Paragraph({
                         children: [
                             new TextRun({
-                                text: `     Evaluator's full name:`,
+                                text: `4. Evaluator's full name: ${evaluatorFullName}`,
                                 size: 24,
                             }),
                         ],
@@ -140,30 +147,29 @@ function docTranscriptCouncil(evaluations: any) {
                         }
                     ),
                     new Paragraph({
-                        spacing: { after: 400 },
-                        children: [
-                            new TextRun({
-                                text: '     Topic name: ',
-                                size: 24,
-                            }),
-                        ],
-
-                    }),
-                    new Paragraph({
-                        children: [
-                            new TextRun({
-                                text: '     First student full name:                                                            Student code 1: ',
-                                size: 24,
-
-
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
                         spacing: { after: 200 },
                         children: [
                             new TextRun({
-                                text: '     Second student full name:                                                            Student code 2: ',
+                                text: `1. Topic name: ${topicName} `,
+                                size: 24,
+                            }),
+                        ],
+
+                    }),
+                    new Paragraph({
+                        spacing: { after: lineSpacing },
+                        children: [
+                            new TextRun({
+                                text: `     Student code 1: ${students && students[0]?.username}                                              First student name: ${students && students[0]?.fullName}`,
+                                size: 24,
+                            }),
+                        ],
+                    }),
+                    new Paragraph({
+                        spacing: { after: lineSpacing },
+                        children: [
+                            new TextRun({
+                                text: `     Student code 2: ${students && students[1]?.username}                                              Second student name: ${students && students[1]?.fullName}`,
                                 size: 24,
                             }),
                         ],
@@ -401,7 +407,9 @@ function docTranscriptCouncil(evaluations: any) {
         ],
     });
 
-    return doc;
+    return fileType === 'many' ? { doc, fileName } : doc
+
+
 }
 
 export default docTranscriptCouncil;

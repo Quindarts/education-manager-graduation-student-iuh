@@ -3,24 +3,32 @@ import { Route, Routes } from 'react-router-dom';
 import PrivateRouter from './privateRouter';
 import { APP_ROUTES } from '@/utils/app-config';
 import { lazy } from 'react';
-const AuthLayoutTemplate = lazy(() => import('@/components/shared/layouts/AuthLayout/AuthLayout'));
-const LoginTemplate = lazy(() => import('@/page/auth/login'));
+import AuthLayout from '@/components/shared/layouts/AuthLayout/AuthLayout';
+import RolePage from '@/page/auth/role';
+import Login from '@/page/auth/login';
+import DetailNotificationPage from '@/page/DetailNotification';
+import NotFoundPage from '@/page/404';
+import ForgotPassword from '@/page/auth/forgot';
+import GuidePage from '@/page/Guide';
+import Toolconvert from '@/page/tool';
+const DetailGroupSupportPage = lazy(() => import('@/page/DetailGroupSupport'));
 const RegisterTemplate = lazy(() => import('@/page/auth/register'));
-const DashboardTemplate = lazy(() => import('@/page/Dashboard/Dashboard'));
+const DashboardTemplate = lazy(() => import('@/page/Dashboard'));
 const TermTemplate = lazy(() => import('@/page/Term'));
 const StudentTemplate = lazy(() => import('@/page/Student'));
 const TopicTemplate = lazy(() => import('@/page/Topic'));
 const ReviewManagerTemplate = lazy(() => import('@/page/ReviewManager'));
-const GroupGradingAssemblyTemplate = lazy(() => import('@/page/GroupLecturer/GroupAssembly'));
 const LecturerManagementTemplate = lazy(() => import('@/page/Lecturer/Management'));
 const DetailsLecturerTemplate = lazy(() => import('@/page/Lecturer/Details'));
+const DetailLecturerTermTemplate = lazy(() => import('@/page/LecturerTerm/Details'));
+
 const GroupStudentManagementTemplate = lazy(() => import('@/page/GroupStudent/Management'));
 const GroupStudentDetailTemplate = lazy(() => import('@/page/GroupStudent/Detail'));
 const ScoreStudentTemplate = lazy(() => import('@/page/ScoreStudent'));
 const GroupSupportManagementTemplate = lazy(() => import('@/page/GroupSupport/Management'));
-const ScoreGroupSupportTemplate = lazy(() => import('@/page/GroupSupport/ScoreManager'));
 const CreateGroupLecturerTemplate = lazy(() => import('@/page/GroupLecturer/Create'));
-const RoleTemplate = lazy(() => import('@/page/auth/role'));
+const UpdatePassPage = lazy(() => import('@/page/auth/updatePassword'));
+const CreateNotificationPage = lazy(() => import('@/page/Notification/Create'));
 const ProfileTemplate = lazy(() => import('@/page/auth/profile'));
 const MyTopicTemplate = lazy(() => import('@/page/MyTopic'));
 const MyGroupLecturerTemplate = lazy(() => import('@/page/MyGroupLecturer'));
@@ -31,10 +39,9 @@ const MyDetailGroupLecturerTemplate = lazy(() => import('@/page/MyGroupLecturer/
 const NotificationManagementTemplate = lazy(() => import('@/page/Notification/Management'));
 const RolePermissionTemplate = lazy(() => import('@/page/RolePermission'));
 const RoleDetailTemplate = lazy(() => import('@/page/RolePermission/Detail/RoleDetailPage'));
-
+const LecturerTermManagementTemplate = lazy(() => import('@/page/LecturerTerm/Management'));
 function Routing() {
   return (
-    
     <Routes>
       <Route path='/' element={<PrivateRouter />}>
         //ROUTE HOME
@@ -46,6 +53,11 @@ function Routing() {
         //ROUTE LECTURER
         <Route path={APP_ROUTES.LECTURER.MANAGEMENT} element={<LecturerManagementTemplate />} />
         <Route path={APP_ROUTES.LECTURER.DETAILS} element={<DetailsLecturerTemplate />} />
+        <Route
+          path={APP_ROUTES.LECTURER_TERM.MANAGEMENT}
+          element={<LecturerTermManagementTemplate />}
+        />
+        <Route path={APP_ROUTES.LECTURER_TERM.DETAILS} element={<DetailLecturerTermTemplate />} />
         //ROUTE STUDENT
         <Route path={APP_ROUTES.STUDENT.MANAGEMENT} element={<StudentTemplate />} />
         //ROUTE USER
@@ -67,11 +79,13 @@ function Routing() {
           path={APP_ROUTES.GROUP_SUPPORT.MANAGEMENT}
           element={<GroupSupportManagementTemplate />}
         />
-        <Route path={APP_ROUTES.GROUP_SUPPORT.SCORE} element={<ScoreGroupSupportTemplate />} />
+        <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL} element={<DetailGroupSupportPage />} />
+        {/* <Route path={APP_ROUTES.GROUP_SUPPORT.SCORE} element={<ScoreGroupSupportTemplate />} /> */}
         {/* <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL_SCORE_GROUP} element={<GroupSupportManagementTemplate />} /> */}
         //ROUTE USER
         <Route path={APP_ROUTES.USER.REGISTER} element={<RegisterTemplate />} />
         <Route path={APP_ROUTES.USER.PROFILE} element={<ProfileTemplate />} />
+        <Route path={APP_ROUTES.USER.UPDATE_PASS} element={<UpdatePassPage />} />
         //ROLE PERMISSION
         <Route
           path={APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT}
@@ -84,7 +98,6 @@ function Routing() {
           element={<GroupLecturerManagementTemplate />}
         />
         <Route path={APP_ROUTES.GROUP_LECTURER.ME} element={<MyGroupLecturerTemplate />} />
-        <Route path={APP_ROUTES.GROUP_LECTURER.REPORT} element={<GroupGradingAssemblyTemplate />} />
         <Route path={APP_ROUTES.GROUP_LECTURER.CREATE} element={<CreateGroupLecturerTemplate />} />
         <Route path={APP_ROUTES.GROUP_LECTURER.DETAIL} element={<GroupLecturerDetailTemplate />} />
         <Route
@@ -96,15 +109,21 @@ function Routing() {
           path={APP_ROUTES.NOTIFICATION.MANAGEMENT}
           element={<NotificationManagementTemplate />}
         />
+        <Route path={APP_ROUTES.NOTIFICATION.CREATE} element={<CreateNotificationPage />} />
+        <Route path={APP_ROUTES.NOTIFICATION.DETAILS} element={<DetailNotificationPage />} />
         //ROUTE SCORE_STUDENT
         <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentTemplate />} />
       </Route>
 
-      <Route path='/auth' element={<AuthLayoutTemplate />}>
-        <Route index path={APP_ROUTES.ROLE.ALL} element={<RoleTemplate />} />
-        <Route index path={APP_ROUTES.USER.LOGIN} element={<LoginTemplate />} />
+      <Route path='/auth' element={<AuthLayout />}>
+        <Route index path={APP_ROUTES.ROLE.ALL} element={<RolePage />} />
+        <Route index path={APP_ROUTES.USER.LOGIN} element={<Login />} />
+        <Route path={APP_ROUTES.USER.FORGOT} element={<ForgotPassword />} />
       </Route>
-      <Route path='*' element={<h1>404</h1>} />
+      <Route path={APP_ROUTES.TOOL} element={<Toolconvert />} />
+
+      <Route path={APP_ROUTES.GUIDE} element={<GuidePage />} />
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
 }

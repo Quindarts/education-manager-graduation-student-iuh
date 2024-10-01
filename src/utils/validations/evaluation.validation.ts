@@ -10,12 +10,12 @@ export const getTypeEvaluation = (typeEvaluation: string) => {
     return;
 };
 
-export const getFileNameExportEvaluation = (typeEvaluation: string) => {
+export const getFileNameToExportDocx = (typeEvaluation: string) => {
     switch (typeEvaluation) {
         case 'ADVISOR':
-            return 'GVHD_PhieuChamDiem_CuoiKy_KLTN';
+            return 'HD_PhieuChamDiem_CuoiKy_KLTN';
         case 'REVIEWER':
-            return 'GVPB_PhieuChamDiem_CuoiKy_KLTN';
+            return ' PB_PhieuChamDiem_CuoiKy_KLTN';
         case 'REPORT':
             return 'Hoidong_PhieuChamDiem_CuoiKy_KLTN';
     }

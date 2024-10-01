@@ -3,18 +3,28 @@ import { getCardTopicStatus } from '@/utils/validations/topic.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
-import InfoModal from '../Modal/InfoModal';
-import AcceptTopicModal from '../Modal/AcceptTopicModal';
-import RefuseTopicModal from '../Modal/RefuseTopicModal';
-import EditModal from '../Modal/EditModal';
-import { CustomToolbar } from './custom';
-import DeleteModal from '../Modal/DeleteModal';
+import React, { useMemo, useState } from 'react';
+import { useTopic } from '@/hooks/api/useQueryTopic';
+import DeleteModal from '@/components/Page/Topic/Modal/DeleteModal';
+import AddGroupStudentToTopicModal from '@/components/Page/Topic/Modal/AddGroupStudentToTopic';
+import EditModal from '@/components/Page/Topic/Modal/EditModal';
+import InfoModal from '@/components/Page/Topic/Modal/InfoModal';
+import AcceptTopicModal from '@/components/Page/Topic/Modal/AcceptTopicModal';
+import RefuseTopicModal from '@/components/Page/Topic/Modal/RefuseTopicModal';
 
 function TableManagamentTopic(props: any) {
-  const { rows, totalItems, totalPages, page, handelChangePage, isApprovePermission, ...rest } =
-    props;
-
+  const {
+    rows,
+    totalItems,
+    limit,
+    totalPage,
+    page,
+    handleChangePage,
+    handleChangeLimit,
+    isApprovePermission,
+    ...rest
+  } = props;
+  const { handleUiRender } = useTopic();
   //handle
   const [openInfoModal, setOpenEditInfoModal] = useState({ topicId: '', isOpen: false });
   const handleCloseInfoModal = () => {
@@ -25,30 +35,51 @@ function TableManagamentTopic(props: any) {
   };
 
   //handle
-  const [openDeleteModal, setOpenEditDeleteModal] = useState({ topicId: '', isOpen: false });
+  const [openAddGroupStudent, setOpenAddGroupStudent] = useState({ topic: {}, isOpen: false });
+  const handleCloseAddGroupStudent = () => {
+    setOpenAddGroupStudent({ ...openAddGroupStudent, isOpen: false });
+  };
+  const handleOpenAddGroupStudent = (topic: any) => {
+    setOpenAddGroupStudent({ topic, isOpen: true });
+  };
+
+  //handle
+  const [openDeleteModal, setOpenEditDeleteModal] = useState({
+    topicId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseDeleteModal = () => {
     setOpenEditDeleteModal({ ...openDeleteModal, isOpen: false });
   };
-  const handleOpenDeleteModal = (topicId: string) => {
-    setOpenEditDeleteModal({ topicId, isOpen: true });
+  const handleOpenDeleteModal = (topicId: string, name: string) => {
+    setOpenEditDeleteModal({ topicId, name, isOpen: true });
   };
 
   //handle
-  const [openAcceptModal, setOpenEditAcceptModal] = useState({ topicId: '', isOpen: false });
+  const [openAcceptModal, setOpenEditAcceptModal] = useState({
+    topicId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseAcceptModal = () => {
     setOpenEditAcceptModal({ ...openAcceptModal, isOpen: false });
   };
-  const handleOpenAcceptModal = (topicId: string) => {
-    setOpenEditAcceptModal({ topicId, isOpen: true });
+  const handleOpenAcceptModal = (topicId: string, name: string) => {
+    setOpenEditAcceptModal({ topicId, name, isOpen: true });
   };
 
   //handle
-  const [openRefuseModal, setOpenEditRefuseModal] = useState({ topicId: '', isOpen: false });
+  const [openRefuseModal, setOpenEditRefuseModal] = useState({
+    topicId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseRefuseModal = () => {
     setOpenEditRefuseModal({ ...openRefuseModal, isOpen: false });
   };
-  const handleOpenRefuseModal = (topicId: string) => {
-    setOpenEditRefuseModal({ topicId, isOpen: true });
+  const handleOpenRefuseModal = (topicId: string, name: string) => {
+    setOpenEditRefuseModal({ topicId, name, isOpen: true });
   };
 
   //handle
@@ -60,164 +91,177 @@ function TableManagamentTopic(props: any) {
   const handleOpenEditModal = (topicId: string) => {
     setOpenEditModal({ topicId, isOpen: true });
   };
-  const HeadLecturerColumn: GridColDef[] = [
-    {
-      headerName: 'Tên Đề tài',
-      field: 'name',
-      flex: 1.5,
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Giảng viên HD',
-      field: 'target',
-      headerAlign: 'center',
-      align: 'center',
-      flex: 0.8,
-      renderCell: (params: any) => (
-        <Typography variant='body2' color='initial'>
-          {params.row.lecturerTerm.lecturer.fullName}
-        </Typography>
-      ),
-    },
-    {
-      headerName: 'SL nhóm tối đa',
-      field: 'quantityGroupMax',
-      flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      headerName: 'Ghi chú',
-      field: 'note',
-      flex: 1,
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Tính năng thêm',
-      field: 'none',
-      flex: 0.4,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip
-            title='Chỉnh sửa thông tin đề tài'
-            onClick={() => handleOpenEditModal(params.row.id)}
-          >
-            <IconButton size='small' color='primary'>
-              <Icon icon='emojione:pencil' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xem thông tin đề tài' onClick={() => handleOpenInfoModal(params.row.id)}>
-            <IconButton size='small'>
-              <Icon icon='noto-v1:eye-in-speech-bubble' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
-            <IconButton size='small'>
-              <Icon icon='mdi:bin-empty' />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-    {
-      headerName: 'Trạng thái',
-      field: 'text2',
-      flex: 0.4,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (param) => {
-        return <Box>{getCardTopicStatus(param.row.status)}</Box>;
+
+  const HeadLecturerColumn: GridColDef[] = useMemo(
+    () => [
+      {
+        headerName: 'Mã đề tài',
+        field: 'key',
+        headerAlign: 'center',
+        align: 'center',
+        flex: 0.4,
       },
-    },
-    {
-      headerName: 'Duyệt đề tài',
-      field: 'status',
-      flex: 0.7,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return (
-          <>
-            {params.row.status === 'PENDING' && (
-              <Box display={'flex'} gap={4}>
-                <Button
-                  size='small'
-                  onClick={() => handleOpenAcceptModal(params.row.id)}
-                  color='success'
-                  variant='outlined'
-                >
-                  <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
-                  Duyệt
-                </Button>
-                <Button
-                  size='small'
-                  onClick={() => handleOpenRefuseModal(params.row.id)}
-                  color='error'
-                  variant='outlined'
-                >
-                  <Icon style={{ marginRight: 1 }} icon='lets-icons:cancel-fill' />
-                  Từ chối
-                </Button>
-              </Box>
-            )}
-          </>
-        );
+      {
+        headerName: 'Tên Đề tài',
+        field: 'name',
+        flex: 2,
+        headerAlign: 'center',
+        align: 'left',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' textTransform={'lowercase'} color='initial'>
+              {params.row.name}
+            </Typography>
+          );
+        },
       },
-    },
-  ];
+      {
+        headerName: 'Giảng viên HD',
+        field: 'fullName',
+        headerAlign: 'center',
+        align: 'left',
+        flex: 0.8,
+      },
+      {
+        headerName: 'SL nhóm',
+        field: 'quantityGroupMax',
+        flex: 0.5,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (param) => {
+          return (
+            <Box>
+              {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
+            </Box>
+          );
+        },
+      },
+      {
+        headerName: 'Trạng thái',
+        field: 'text2',
+        flex: 0.6,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (param) => {
+          return <Box>{getCardTopicStatus(param.row.status)}</Box>;
+        },
+      },
+      {
+        headerName: 'Duyệt đề tài',
+        field: 'status',
+        flex: 0.7,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (params: any) => {
+          return (
+            <>
+              {params.row.status === 'PENDING' ? (
+                <Box display={'flex'} gap={2}>
+                  <Button
+                    size='small'
+                    onClick={() => handleOpenAcceptModal(params.row.id, params.row.name)}
+                    color='success'
+                    sx={{
+                      fontSize: {
+                        md: 12,
+                        lg: 12,
+                      },
+                      px: 0,
+                    }}
+                  >
+                    <Icon style={{ marginRight: 1 }} icon='mdi:tick-outline' />
+                    Duyệt
+                  </Button>
+                  <Button
+                    size='small'
+                    onClick={() => handleOpenRefuseModal(params.row.id, params.row.name)}
+                    color='error'
+                  >
+                    <Icon style={{ marginRight: 1 }} icon='lets-icons:cancel-fill' />
+                    Từ chối
+                  </Button>
+                </Box>
+              ) : (
+                <>
+                  {params.row.status === 'APPROVED' && (
+                    <Button size='small' onClick={() => handleOpenAddGroupStudent(params.row)}>
+                      Gán/xem đề tài
+                    </Button>
+                  )}
+                </>
+              )}
+            </>
+          );
+        },
+      },
+      {
+        headerName: 'Chức năng ',
+        field: 'none',
+        flex: 0.6,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (params: any) => (
+          <Box display={'flex'} gap={2}>
+            <Tooltip
+              title='Chỉnh sửa thông tin đề tài'
+              onClick={() => handleOpenEditModal(params.row.id)}
+            >
+              <IconButton size='small' color='primary'>
+                <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title='Xem thông tin đề tài'
+              onClick={() => handleOpenInfoModal(params.row.id)}
+            >
+              <IconButton size='small'>
+                <Icon width={20} icon='flat-color-icons:view-details' />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title='Xóa đề tài'
+              onClick={() => handleOpenDeleteModal(params.row.id, params.row.name)}
+            >
+              <IconButton size='small'>
+                <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        ),
+      },
+    ],
+    [],
+  );
 
   const LecturerColumn: GridColDef[] = [
     {
+      headerName: 'Mã đề tài',
+      field: 'key',
+      headerAlign: 'center',
+      align: 'center',
+      flex: 0.4,
+    },
+    {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 1.5,
       headerAlign: 'center',
     },
     {
-      headerName: 'SL nhóm tối đa',
+      headerName: 'SL nhóm đề tài',
       field: 'quantityGroupMax',
       flex: 0.5,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (param) => {
+        return (
+          <Box>
+            {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
+          </Box>
+        );
+      },
     },
-    {
-      headerName: 'Ghi chú',
-      field: 'note',
-      flex: 1,
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Tính năng thêm',
-      field: 'none',
-      flex: 0.4,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip title='Chỉnh sửa thông tin đề tài'>
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => handleOpenEditModal(params.row.id)}
-            >
-              <Icon icon='emojione:pencil' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xem thông tin đề tài'>
-            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
-              <Icon icon='noto-v1:eye-in-speech-bubble' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xóa đề tài' onClick={() => handleOpenDeleteModal(params.row.id)}>
-            <IconButton size='small'>
-              <Icon icon='mdi:bin-empty' />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
+
     {
       headerName: 'Trạng thái',
       field: 'text2',
@@ -228,35 +272,77 @@ function TableManagamentTopic(props: any) {
         return <Box>{getCardTopicStatus(param.row.status)}</Box>;
       },
     },
+    {
+      headerName: 'Chức năng',
+      field: 'none',
+      flex: 0.7,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params: any) => (
+        <Box display={'flex'} gap={2}>
+          {params.row.status !== 'APPROVED' && (
+            <Tooltip
+              title='Chỉnh sửa thông tin đề tài'
+              onClick={() => handleOpenEditModal(params.row.id)}
+            >
+              <IconButton color='primary'>
+                <Icon icon='ph:pencil-line-fill' width={20} style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+          )}
+          <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Xem thông tin đề tài'>
+            <IconButton>
+              <Icon width={20} icon='flat-color-icons:view-details' />
+            </IconButton>
+          </Tooltip>
+          {params.row.status !== 'APPROVED' && handleUiRender().includes('crud') ? (
+            <Tooltip
+              title='Xóa đề tài'
+              onClick={() => handleOpenDeleteModal(params.row.id, params.row.name)}
+            >
+              <IconButton>
+                <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+        </Box>
+      ),
+    },
   ];
+
   return (
-    <Box {...rest}>
-      {' '}
+    <>
       <>
         <Table
-          rows={rows}
+          isLimit={isApprovePermission}
+          rows={rows.map((row: any, index: number) => ({ ...row }))}
           sx={{
-            bgcolor: 'white',
+            minHeight: 500,
           }}
-          minHeight={350}
+          rowHeight={75}
           columns={isApprovePermission ? HeadLecturerColumn : LecturerColumn}
-          totalItems={1}
-          totalPages={1}
-          page={1}
-          checkboxSelection={true}
-          handleChangePage={() => {}}
+          totalItems={rows.length}
+          totalPages={totalPage}
+          page={page}
+          handleChangeLimit={handleChangeLimit}
+          handleChangePage={handleChangePage}
           disableColumnFilter
-          slots={{
-            toolbar: CustomToolbar,
-          }}
+          limit={limit}
         />
         <DeleteModal
           open={openDeleteModal.isOpen}
+          name={openDeleteModal.name}
           onClose={handleCloseDeleteModal}
           topicId={openDeleteModal.topicId}
         />
+        <AddGroupStudentToTopicModal
+          open={openAddGroupStudent.isOpen}
+          onClose={handleCloseAddGroupStudent}
+          topic={openAddGroupStudent.topic}
+        />
         <EditModal
-          // isApprovePermission={isApprovePermission}
           open={openEditModal.isOpen}
           onClose={handleCloseEditModal}
           topicId={openEditModal.topicId}
@@ -272,19 +358,21 @@ function TableManagamentTopic(props: any) {
             <AcceptTopicModal
               key={openAcceptModal.topicId}
               open={openAcceptModal.isOpen}
+              name={openAcceptModal.name}
               onClose={handleCloseAcceptModal}
               topicId={openAcceptModal.topicId}
             />
             <RefuseTopicModal
               key={openAcceptModal.topicId}
               open={openRefuseModal.isOpen}
+              name={openRefuseModal.name}
               onClose={handleCloseRefuseModal}
               topicId={openRefuseModal.topicId}
             />
           </>
         )}
       </>
-    </Box>
+    </>
   );
 }
 

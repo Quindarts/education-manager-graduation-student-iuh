@@ -26,7 +26,7 @@ function MajorPage() {
   };
   return (
     <>
-      <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+      <Paper sx={{ py: 10, px: 10 }} elevation={0}>
         <Box display={'flex'} justifyContent={'space-between'}>
           <TitleManager mb={4} mt={2}>
             Danh sách tất cả Chuyên ngành

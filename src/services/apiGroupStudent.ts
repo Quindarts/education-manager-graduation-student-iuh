@@ -12,45 +12,65 @@ export enum TypeStatusGroup {
     PASS_REVIEWER = 'PASS_REVIEWER',
     PASS_SESSION_HOST = 'PASS_SESSION_HOST',
 }
+const URL = '/api/v1/group-students'
 //[Admin role]
-export const searchGroupStudentAdmin: any = (termId: string, limit: number, page: number, searchField: 'name', keywords: string) => {
-    return axiosConfig.get(`/api/v1/groupStudents/query?searchField=${searchField}&keywords=${keywords}&limit=${limit}&page=${page}&termId=${termId}`);
+export const searchGroupStudentAdmin: any = (termId: string) => {
+    return axiosConfig.get(`${URL}?termId=${termId}`);
+}
+
+export const getGroupByTopic: any = (termId: string, topicId: string) => {
+    return axiosConfig.get(`${URL}/topic?termId=${termId}&topicId=${topicId}`);
+}
+export const getExportGroupStudent: any = (termId: string) => {
+    return axiosConfig.get(`${URL}/export?termId=${termId}`)
+}
+export const getGroupStdsExportByLecturer = async (termId: string) => {
+    return axiosConfig.get<ResponseType, any>(`${URL}/export-me?termId=${termId}`)
 }
 //[GET]
 export const getGroupStudentByTerm: any = (termId: string, limit: number, page: number) => {
-    return axiosConfig.get(`/api/v1/group-students?termId=${termId}&page=${page}&limit=${limit}`)
+    return axiosConfig.get(`${URL}?termId=${termId}&page=${page}&limit=${limit}`)
 }
-//[GET]
-export const getGroupStudentByLecturerByTerm: any = (termId: string) => {
-    return axiosConfig.get(`/api/v1/group-students/lecturer?termId=${termId}`)
+//[]
+export const getGroupStudentByLecturerByTerm: any = (termId: string, lecturerId: string) => {
+    return axiosConfig.get(`${URL}/lecturer?termId=${termId}&lecturerId=${lecturerId}`)
 }
-//[GET]
+
+//[GET] HEAD_LECTURER COUNT
 export const getCountOfGroupStudent: any = (termId: string) => {
-    return axiosConfig.get(`/api/v1/group-students/count?termId=${termId}`)
+    return axiosConfig.get(`${URL}/count?termId=${termId}`)
+}
+//[GET] LECTURER COUNT
+export const getCountOfGroupStudentByLecturer: any = (termId: string) => {
+    return axiosConfig.get(`${URL}/count-by-lecturer?termId=${termId}`)
 }
 //[GET BY ID]
 export const getGroupStudentById: any = (id: string) => {
-    return axiosConfig.get(`/api/v1/group-students/${id}`)
+    return axiosConfig.get(`${URL}/${id}`)
 }
 
 //[UPDATE]
 export const updateTypeReportGroupStudent: any = (id: string, type_report: TypeReport) => {
-    return axiosConfig.put(`/api/v1/group-students/${id}/type-report`, type_report)
+    return axiosConfig.put(`${URL}/${id}/type-report`, type_report)
 }
 
 export const updateStatusGroupStudent: any = (id: string, statusGroupStudent: TypeStatusGroup) => {
-    return axiosConfig.put(`/api/v1/group-students/${id}/status`, statusGroupStudent)
+    return axiosConfig.put(`${URL}/${id}/status`, statusGroupStudent)
 }
 
 export const importGroupStudent: any = (termId: string) => {
-    return axiosConfig.post(`/api/v1/group-students/import`, { termId: termId })
+    return axiosConfig.post(`${URL}/import`, { termId: termId })
 }
 
 
 
 //[PUT ASSIGN TOPIC TO GROUP STUDENT]
 export const assignTopic: any = (id: string, topicId: string) => {
-    return axiosConfig.put(`/api/v1/group-students/${id}/assign-topic`, { topicId: topicId })
+    return axiosConfig.put(`${URL}/${id}/assign-topic`, { topicId: topicId })
+}
+//[PUT REMOVE ASSIGN]
+export const removeAssign: any = (id: string, topicId: string) => {
+    return axiosConfig.put(`${URL}/${id}/remove-topic`, { topicId: topicId })
 }
 
 
@@ -59,24 +79,24 @@ export const createGroupStudent: any = (data: { termId: string, studentIds: stri
     return axiosConfig.post(`/api/v1/group-students`, data)
 }
 
-export const deleteGroupStudent: any = (id: string, termId: string) => {
-    return axiosConfig.delete(`/api/v1/group-students/${id}`)
+export const deleteGroupStudent: any = (id: string) => {
+    return axiosConfig.delete(`${URL}/${id}`)
 }
 
 
 //[GET MEMBER]
 export const getMemberInGroupStudent: any = (id: string) => {
-    return axiosConfig.get(`/api/v1/group-students/${id}/member`)
+    return axiosConfig.get(`${URL}/${id}/members`)
 }
 
 
 //[ADD MEMBER]
-export const addMemberInGroup: any = (id: string) => {
-    return axiosConfig.put(`/api/v1/group-students/${id}/add-member`)
+export const addMemberInGroup: any = (id: string, data: { studentId: string, termId: string }) => {
+    return axiosConfig.put(`${URL}/${id}/add-member`, data)
 }
 
 
 //[LEAVE MEMBER]
 export const deleteMemberInGroup: any = (id: string, data: { studentId: string, termId: string }) => {
-    return axiosConfig.put(`/api/v1/group-students/${id}/delete-member`, data)
+    return axiosConfig.put(`${URL}/${id}/delete-member`, data)
 }

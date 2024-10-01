@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
+import { validateSchemaReview } from '../Context';
 
 function AddEvaluationModal(props: any) {
   const { open, onClose, termId, type } = props;
@@ -27,6 +28,7 @@ function AddEvaluationModal(props: any) {
 
         <Formik
           onSubmit={(values) => handleSubmit(values)}
+          validationSchema={validateSchemaReview}
           initialValues={{
             type: type,
             termId: termId,
@@ -36,15 +38,20 @@ function AddEvaluationModal(props: any) {
           }}
           // validationSchema={{}}
         >
-          {({ handleBlur, handleChange, handleSubmit, values, setFieldValue, touched, errors }) => (
+          {({ handleBlur, handleChange, handleSubmit, touched, values, setFieldValue, errors }) => (
             <form onSubmit={handleSubmit}>
-              <CustomTextField name='type' label='Loại đánh giá' disabled value={getTypeEvaluation(values.type)} />
+              <CustomTextField
+                name='type'
+                label='Loại đánh giá'
+                disabled
+                value={getTypeEvaluation(values.type)}
+              />
               <CustomTextField
                 name='name'
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={errors.name ? true : false}
-                helperText={errors.name}
+                error={errors.name && touched.name ? true : false}
+                helperText={errors.name && touched.name ? errors.name : ''}
                 label='Tên tiêu chí'
                 placeholder='Tên tiêu chí đánh giá'
                 value={values.name}
@@ -53,21 +60,22 @@ function AddEvaluationModal(props: any) {
                 name='scoreMax'
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={errors.scoreMax ? true : false}
-                helperText={errors.scoreMax}
+                error={errors.scoreMax && touched.scoreMax ? true : false}
+                helperText={errors.scoreMax && touched.scoreMax ? errors.scoreMax : ''}
                 label='Điểm tối đa'
+                type='number'
                 placeholder='Điểm tối đa'
                 value={values.scoreMax}
               />
               <TextEditor
                 label='Mô tả tiêu chí'
-                errors={errors.description ? true : false}
+                errors={errors.description && touched.description}
                 value={values.description}
                 onChange={(value) => {
                   setFieldValue('description', value);
                 }}
                 id='description'
-                helperText={errors.description}
+                helperText={errors.description && touched.description ? errors.description : ''}
               />
               <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
                 <Button variant='contained' color='primary' onClick={onClose}>

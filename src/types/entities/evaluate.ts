@@ -1,6 +1,6 @@
 export interface Evaluate {
   id: number;
-  type?: 'ADVISOR' | 'REVIEWER' | 'SESSION_HOST';
+  type?: 'ADVISOR' | 'REVIEWER' | 'REPORT';
   termId?: number;
   name?: string;
   gradeMax?: number;

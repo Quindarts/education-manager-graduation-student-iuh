@@ -2,8 +2,18 @@ import { Box, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from './style';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
 
+const getTypeEvaluatior = (typeEvaluation) => {};
+
 function SheetTranscriptCouncil(props: any) {
-  const { evaluations } = props;
+  const {
+    topicName,
+    groupStudentName,
+    students,
+    evaluatorFullName,
+    typeEvaluation,
+    lecturerSupport,
+    evaluations,
+  } = props;
   return (
     <Paper sx={{ p: 4, overflowY: 'auto', height: 650 }} elevation={3}>
       <Box display={'flex'} mx={10} justifyContent={'space-between'} gap={10}>
@@ -24,35 +34,29 @@ function SheetTranscriptCouncil(props: any) {
       </Box>
       <Box mx={6}>
         <Typography my={3} variant='body1' color='initial'>
-          Evaluator's full name:
+          Evaluator's full name: {evaluatorFullName}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
           Role of evaluator:  Poster Evaluator  Member of Council{' '}
         </Typography>
         <Typography my={3} variant='body1' color='initial'>
-          Topic name:
-        </Typography>
-        <Typography my={3} variant='body1' color='initial'>
-          First student name:
-        </Typography>{' '}
-        <Typography my={3} variant='body1' color='initial'>
-          Second student name:
+          Topic name: {topicName}
         </Typography>
         <Box>
           <Box display={'flex'} justifyContent={'space-between'}>
             <Typography my={3} variant='body1' color='initial'>
-              First student name: ............................
+              First student name: {students[0].fullName}
             </Typography>
             <Typography my={3} variant='body1' color='initial'>
-              Student code 1: ............................
+              Student code 1: {students[0].username}
             </Typography>
           </Box>
           <Box display={'flex'} justifyContent={'space-between'}>
             <Typography my={3} variant='body1' color='initial'>
-              Second student name: ............................
+              Second student name: {students[1].fullName}
             </Typography>
             <Typography my={3} variant='body1' color='initial'>
-              Student code 2: ............................
+              Student code 2: {students[1].username}
             </Typography>
           </Box>
           <Box component={'section'}>

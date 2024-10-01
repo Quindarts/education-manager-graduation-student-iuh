@@ -1,8 +1,8 @@
 import { ErrorResponseType, ResponseType } from './../../types/axios.type';
 import { LoginResponse } from './../../types/entities/user';
-import { getMe, login } from "@/services/apiAuth";
+import { forgotPass, getMe, login, logout, updateMe, updatePassword } from "@/services/apiAuth";
 import { RootState } from "@/store";
-import { setCurrentRoleRender, setMe } from "@/store/slice/lecturer.slice";
+import { setCurrentRoleRender, setMe, setParamTotalPageLectuerMajor, setParamTotalPageLectuerTerm } from "@/store/slice/lecturer.slice";
 import { removeValueInLocalStorage, setValueInLocalStorage } from "@/utils/localStorage";
 import { useSnackbar } from "notistack";
 import { useMutation, useQuery } from "react-query";
@@ -12,6 +12,7 @@ import { setAllTerm, setCurrentTerm } from "@/store/slice/term.slice";
 import { setAllMajor, setCurrentMajor } from "@/store/slice/major.slice";
 import { queryClient } from "@/providers/ReactQueryClientProvider";
 import { IAuth } from "@/types/entities/user";
+import { setParamTotalPage } from '@/store/slice/student.slice';
 
 export const useAuth = () => {
     const lecturerStore = useSelector((state: RootState) => state.lecturerSlice);
@@ -28,7 +29,7 @@ export const useAuth = () => {
                 setValueInLocalStorage('accessToken', data.accessToken);
                 setValueInLocalStorage('refreshToken', data.refreshToken);
                 dispatch(setMe({ user: data.user, roles: data.roles }));
-                dispatch(setCurrentMajor({ majorId: data.user.majorId, majorName: data.user.majorName }))
+                dispatch(setCurrentMajor({ majorId: data?.user.majorId, majorName: data?.user.majorName }))
                 navigate("/");
             },
             onError(error: ErrorResponseType) {
@@ -37,7 +38,6 @@ export const useAuth = () => {
         }
         )
     }
-
     //[GET ME]
     const handleGetMe = () => {
         return useQuery(['get-me'], () => getMe(), {
@@ -49,24 +49,83 @@ export const useAuth = () => {
             },
         })
     }
-
     //[LOG OUT]
-    const handleLogout = () => {
-        removeValueInLocalStorage('accessToken');
-        removeValueInLocalStorage('refreshToken');
-        enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
-        dispatch(setMe({}));
-        dispatch(setCurrentMajor({}))
-        dispatch(setAllMajor([]))
-        dispatch(setAllTerm([]));
-        dispatch(setCurrentTerm({}));
-        dispatch(setCurrentRoleRender(''))
-        queryClient.clear()
-        navigate('/auth/login');
+    const handleLogout = async () => {
+        const data = await logout()
+        if (data) {
+            removeValueInLocalStorage('accessToken');
+            removeValueInLocalStorage('refreshToken');
+            enqueueSnackbar('Đăng xuất thành công', { variant: 'success' });
+            dispatch(setMe({}));
+            dispatch(setCurrentMajor({}))
+            dispatch(setAllMajor([]))
+            dispatch(setAllTerm([]));
+            dispatch(setCurrentTerm({}));
+            dispatch(setCurrentRoleRender(''))
+            dispatch(setParamTotalPageLectuerMajor(0))
+            dispatch(setParamTotalPageLectuerTerm(0))
+            dispatch(setParamTotalPage(0))
+
+            queryClient.clear()
+            navigate('/auth/login');
+        }
+
+    }
+    const onUpdatePassword = () => {
+        return useMutation(
+            (data: { password: string, newPassword: string }) => updatePassword(data),
+            {
+                onSuccess: () => {
+                    enqueueSnackbar('Cập nhật mật khẩu thành công', { variant: "success" });
+                    navigate('/profile')
+
+                },
+                onError: (error: any) => {
+                    if (error.status >= 500)
+                        enqueueSnackbar('Hệ thống không thể xử lý yêu cầu của bạn. Thử lại sau', { variant: "warning" });
+                    else
+                        enqueueSnackbar(error.message, { variant: "error" });
+                }
+            }
+        )
+    }
+    const onForgotPassword = () => {
+        return useMutation((username: string) => forgotPass(username), {
+            onSuccess: () => {
+                enqueueSnackbar('Mật khẩu mới đã gửi về email của bạn.', { variant: "success" });
+                navigate('/auth/login')
+            },
+            onError: (error: any) => {
+                if (error.status >= 500)
+                    enqueueSnackbar('Hệ thống không thể xử lý yêu cầu của bạn. Thử lại sau', { variant: "warning" });
+                else
+                    enqueueSnackbar(error.message, { variant: "error" });
+            }
+        })
+    }
+    const onUpdateMe = () => {
+        return useMutation((data: {
+            fullName: string,
+            email: string,
+            phone: string,
+            gender: string
+        }) => updateMe(data), {
+            onSuccess: () => {
+                enqueueSnackbar('Cập nhật thông tin thành công.', { variant: "success" });
+            },
+            onError: (error: any) => {
+                if (error.status >= 500)
+                    enqueueSnackbar('Hệ thống không thể xử lý yêu cầu của bạn. Thử lại sau', { variant: "warning" });
+                else
+                    enqueueSnackbar(error.message, { variant: "error" });
+            }
+        })
     }
 
-
     return {
+        onForgotPassword,
+        onUpdatePassword,
+        onUpdateMe,
         handleLogin,
         handleGetMe,
         handleLogout,

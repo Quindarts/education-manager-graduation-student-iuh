@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import GridGroupLecturer from './Grid';
 import TitleManager from '@/components/ui/Title';
@@ -12,24 +12,56 @@ function MyGroupLecturer() {
   const [typeGroupLecturer, setTypeGroupLecturer] = useState<string>(
     `${ENUM_GROUP_LECTURER[0]?._id}`,
   );
-
   const { data, isLoading, isFetching } = handleGetGroupLecturerByLecturerId(typeGroupLecturer);
 
   return (
-    <Paper sx={{ p: 10 }} elevation={3}>
-      <TitleManager mb={4}>Danh sách nhóm giảng viên của bạn</TitleManager>
-      <DropDown
-        onChange={(e: any) => {
-          setTypeGroupLecturer(e.target.value);
+    <Paper sx={{ p: 10, minHeight: 500 }} elevation={0}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 10,
+          alignItems: 'center',
         }}
-        value={typeGroupLecturer}
-        options={ENUM_GROUP_LECTURER}
-      />
+      >
+        <TitleManager mb={4}>Danh sách nhóm giảng viên của bạn</TitleManager>
+        <DropDown
+          onChange={(e: any) => {
+            setTypeGroupLecturer(e.target.value);
+          }}
+          value={typeGroupLecturer}
+          options={ENUM_GROUP_LECTURER}
+        />
+      </Box>
+
       <Box my={10}>
         {isLoading || isFetching ? (
           <SekeletonUI />
-        ) : (
+        ) : data?.groupLecturers && data.groupLecturers?.length > 0 ? (
           <GridGroupLecturer groupLecturers={data?.groupLecturers} />
+        ) : (
+          <Box
+            mx={'auto'}
+            display={'flex'}
+            flexDirection={'column'}
+            alignContent={'center'}
+            justifyContent={'center'}
+            textAlign={'center'}
+            py={20}
+            width={'100%'}
+          >
+            <Box>
+              <img
+                style={{ opacity: 0.7 }}
+                width={200}
+                height={200}
+                src='/images/nodata.webp'
+                alt='nodata'
+              />
+            </Box>
+            <Typography variant='h6' sx={{ mt: 2 }}>
+              Không có dữ liệu ( Data not found)
+            </Typography>
+          </Box>
         )}
       </Box>
     </Paper>

@@ -1,25 +1,23 @@
 import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
-import { Box, Button, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, TextField, Tooltip } from '@mui/material';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import AddModal from '../Modal/AddModal';
 import ModalUpload from '@/components/ui/Upload';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import useSearch from '@/hooks/ui/useParams';
-const DROP_SEARCH_VALUE = [
+import SplitButton from '@/components/ui/SplitButton';
+import { useStudent } from '@/hooks/api/useQueryStudent';
+import ExportExcelButton from '@/components/ui/Export';
+const SEARCH_DROP_VALUE = [
   {
     _id: 'full_name',
-    name: 'Tên Sinh viên',
+    name: 'Họ tên sinh viên',
   },
   {
     _id: 'username',
     name: 'Mã Sinh viên',
-  },
-  {
-    _id: 'phone',
-    name: 'Số điện thoại',
   },
   {
     _id: 'email',
@@ -27,7 +25,6 @@ const DROP_SEARCH_VALUE = [
   },
 ];
 function HeaderStudent() {
-  const { termStore } = useTerm();
   const { majorStore } = useMajor();
 
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -38,20 +35,45 @@ function HeaderStudent() {
     setOpenAddModal(true);
   };
 
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused } = useSearch();
+  const {
+    onSearchChange,
+    getQueryField,
+    onTypeSearchChange,
+    handleFocused,
+    setTypeSort,
+    setDefaultTypeSearch,
+  } = useSearch();
+
+  useLayoutEffect(() => {
+    if (getQueryField('searchField').length === 0) setDefaultTypeSearch('full_name');
+  }, []);
+  const [sort, setSort] = useState('ASC');
+  const optionSort = ['Tăng dần', 'Giảm dần'];
+  const handleClick = (index: number) => {
+    if (index === 0) setSort('ASC');
+    else if (index === 1) setSort('DESC');
+  };
+  useEffect(() => {
+    setTypeSort(sort);
+  }, [sort]);
+  const { handleGetStudentsToExport } = useStudent();
+  const { data, isSuccess: successStudents, refetch } = handleGetStudentsToExport();
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <>
       <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
         <Box flex={1} display={'flex'} gap={2} width={'full'}>
-          <Box width={200}>
+          <Box display={'flex'} gap={2}>
             <DropDown
-              placeholder='Tìm kiếm theo'
-              defaultValue={
-                getQueryField('searchField') ? getQueryField('searchField') : 'username'
-              }
+              value={getQueryField('searchField') ? getQueryField('searchField') : 'full_name'}
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
-              options={DROP_SEARCH_VALUE}
+              options={SEARCH_DROP_VALUE}
             />
+            <Box width={118}>
+              <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
+            </Box>
           </Box>
           <TextField
             fullWidth
@@ -63,35 +85,28 @@ function HeaderStudent() {
           />
         </Box>
 
-        <Button
-          size='small'
-          onClick={handleOpenModal}
-          color='error'
-          type='button'
-          variant='contained'
-        >
-          <Icon icon='lets-icons:add-round' width={20} />
-          Tạo sinh viên
-        </Button>
-        <ModalUpload entityUpload={TypeEntityUpload.STUDENT} majorId={majorStore.currentMajor.id} />
-        <Button
-          size='small'
-          color='warning'
-          type='button'
-          sx={{ color: 'white' }}
-          variant='contained'
-        >
-          <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
-        </Button>
-        <Button
-          size='small'
-          onClick={handleOpenModal}
-          color='primary'
-          type='button'
-          variant='contained'
-        >
-          Khóa tài khoản
-        </Button>
+        <Tooltip onClick={handleOpenModal} title='Thêm sinh viên'>
+          <Button size='small' color='error' type='button' variant='contained'>
+            <Icon icon='lets-icons:add-round' width={20} />
+          </Button>
+        </Tooltip>
+
+        <ModalUpload
+          label=''
+          labelToolTip='Thêm sinh viên bằng file excel'
+          entityUpload={TypeEntityUpload.STUDENT}
+          majorId={majorStore.currentMajor.id}
+          fileNameModel='Mẫu file excel danh sách sinh viên KLTN'
+          sheetName='Danh sách sinh viên KLTN'
+          title='Tải xuống mẫu file'
+        />
+        {successStudents && (
+          <ExportExcelButton
+            data={data.students}
+            entity='student'
+            labelTooltip='Tải danh sách sinh viên'
+          />
+        )}
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
     </>

@@ -1,23 +1,28 @@
 import Table from '@/components/ui/Table/Table';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import EditInfoModal from '../Modal/EditInfoModal';
 import { useNavigate } from 'react-router-dom';
 import { checkGender } from '@/utils/validations/person.validation';
-import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
-import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import DeleteModal from '../Modal/DeleteModal';
+import ResetPassword from '../Modal/ResetPassword';
 
 function TableManagamentLecturer(props: any) {
-  const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
+  const {
+    rows,
+    totalItems,
+    currentTermId,
+    limit,
+    handleChangeLimit,
+    totalPage,
+    page,
+    handleChangePage,
+  } = props;
   const navigate = useNavigate();
-  const { onImportLecturerTerm } = useLecturer();
-  const { mutate: importLecturer } = onImportLecturerTerm();
 
   const [openEditInfoModal, setOpenEditInfoModal] = useState({ lecturerId: '', isOpen: false });
-
   const handleCloseEditInfoModal = () => {
     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
   };
@@ -25,140 +30,129 @@ function TableManagamentLecturer(props: any) {
     setOpenEditInfoModal({ lecturerId, isOpen: true });
   };
 
-  const [openDeleteModal, setOpenDeleteModal] = useState({ lecturerId: '', isOpen: false });
-
+  const [openDeleteModal, setOpenDeleteModal] = useState({
+    lecturerId: '',
+    name: '',
+    isOpen: false,
+  });
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal({ ...openDeleteModal, isOpen: false });
   };
-  const handleOpenDeleteModal = (lecturerId: string) => {
-    setOpenDeleteModal({ lecturerId, isOpen: true });
+  const handleOpenDeleteModal = (lecturerId: string, name: string) => {
+    setOpenDeleteModal({ lecturerId, name, isOpen: true });
   };
 
-  const handleImport = () => {
-    importLecturer(currentTermId);
-  };
+  const [openResetPasswordStudentModal, setOpenResetPasswordStudentModal] = useState({
+    lecturerId: '',
+    name: '',
+    username: '',
+    isOpen: false,
+  });
 
+  const handleCloseResetPasswordStudentModal = () => {
+    setOpenResetPasswordStudentModal({ ...openResetPasswordStudentModal, isOpen: false });
+  };
+  const handleOpenResetPasswordStudentModal = (
+    lecturerId: string,
+    name: string,
+    username: string,
+  ) => {
+    setOpenResetPasswordStudentModal({ lecturerId, name, username, isOpen: true });
+  };
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'Mã Giảng Viên',
+      headerName: 'Mã giảng viên',
       field: 'username',
       flex: 0.6,
       headerAlign: 'center',
       align: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontWeight={600} color='primary'>
+          <Typography variant='h6' fontWeight={500}>
             {params.row.username}
           </Typography>
         );
       },
     },
     {
-      headerName: 'Họ & Tên đệm',
+      headerName: 'Họ & tên đệm',
       field: 'firstName',
-      flex: 0.7,
-      headerAlign: 'center',
-      renderCell(params) {
-        return (
-          <Typography variant='body1' color='initial'>
-            {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
-          </Typography>
-        );
-      },
+      flex: 1,
+      headerAlign: 'left',
+      align: 'left',
     },
     {
       headerName: 'Tên',
-      field: 'lastname',
+      field: 'lastName',
       flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell(params) {
-        return (
-          <Typography variant='body1' color='initial'>
-            {params.row.fullName.trim().split(' ').pop()}
-          </Typography>
-        );
-      },
+      headerAlign: 'left',
+      align: 'left',
     },
 
     {
       headerName: 'Giới tính',
       field: 'gender',
-      flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
+      flex: 0.6,
+      headerAlign: 'left',
+      align: 'left',
       renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
+        return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
       },
     },
-    // {
-    //   headerName: 'Cấp bậc',
-    //   field: 'role',
-    //   flex: 0.5,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   renderCell: (params: any) => {
-    //     return <Typography variant='body1'>{checkRoleLecturer(params.row.role)}</Typography>;
-    //   },
-    // },
-    {
-      headerName: 'SĐT',
-      field: 'phone',
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{params.row.phone}</Typography>;
-      },
-    },
+
     {
       headerName: 'Email',
       field: 'email',
       flex: 1.2,
+      headerAlign: 'left',
+      align: 'left',
+      renderCell: (params: any) => {
+        return <Typography variant='h6'>{params.row.email}</Typography>;
+      },
+    },
+    {
+      headerName: 'SĐT',
+      field: 'phone',
+      flex: 0.6,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
-        return <Typography variant='body1'>{params.row.email}</Typography>;
+        return <Typography variant='h6'>{params.row.phone}</Typography>;
       },
     },
-    // {
-    //   headerName: 'Chuyên ngành',
-    //   field: 'none2',
-    //   flex: 1,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   renderCell: (params: any) => <Typography variant='body1'>{params.row.majorName}</Typography>,
-    // },
     {
-      headerName: '',
+      headerName: 'Chức năng',
       field: 'updateTing',
       flex: 1,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          <Tooltip title='Cập nhật thông tin'>
-            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
-              <Icon icon='emojione:pencil' />
+          <Tooltip
+            onClick={() =>
+              handleOpenResetPasswordStudentModal(
+                params.row.id,
+                params.row.fullName,
+                params.row.username,
+              )
+            }
+            title='Cấp lại mật khẩu'
+          >
+            <IconButton color='primary' size='small'>
+              <Icon icon='carbon:password' width={20} style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
-          <Box></Box>
-          <Tooltip title='Xem Chi tiết'>
-            <IconButton
-              color='primary'
-              size='small'
-              onClick={() => navigate(`/lecturers/detail/${params.row.id}`)}
-            >
-              <Icon width={20} icon='fluent:apps-list-detail-20-filled' />
+          <Tooltip onClick={() => handleOpenInfoModal(params.row.id)} title='Cập nhật thông tin'>
+            <IconButton>
+              <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xóa giảng viên'>
-            <IconButton
-              color='error'
-              size='small'
-              onClick={() => handleOpenDeleteModal(params.row.id)}
-            >
-              <Icon width={20} icon='ic:baseline-delete' />
+          <Tooltip
+            onClick={() => handleOpenDeleteModal(params.row.id, params.row.fullName)}
+            title='Xóa giảng viên'
+          >
+            <IconButton color='error'>
+              <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -167,35 +161,26 @@ function TableManagamentLecturer(props: any) {
   ];
 
   return (
-    <>
-      <Box>
-        <Table
-          rows={rows}
-          sx={{
-            bgcolor: 'white',
-            width: '100%',
-          }}
-          columns={basicColumns}
-          totalItems={totalItems}
-          totalPages={totalPage}
-          page={page}
-          handleChangePage={handleChangePage}
-          disableColumnMenu
-          disableColumnFilter
-          disableColumnSelector
-          minHeight={400}
-          noData={
-            rows.length <= 0 ? (
-              <Button color='primary' variant='contained' onClick={handleImport}>
-                <Icon icon='fe:import' />
-                Tải dữ liệu giảng viên lên học kì mới.
-              </Button>
-            ) : (
-              <></>
-            )
-          }
-        />
-      </Box>
+    <Box>
+      <Table
+        rows={rows}
+        isLimit={true}
+        sx={{
+          bgcolor: 'white',
+          width: '100%',
+          minHeight: 500,
+        }}
+        columns={basicColumns}
+        totalItems={totalItems}
+        totalPages={totalPage}
+        handleChangeLimit={handleChangeLimit}
+        handleChangePage={handleChangePage}
+        page={page}
+        limit={limit}
+        disableColumnFilter
+        minHeight={400}
+      />
+
       <EditInfoModal
         lecturerId={openEditInfoModal.lecturerId}
         open={openEditInfoModal.isOpen}
@@ -206,8 +191,16 @@ function TableManagamentLecturer(props: any) {
         lecturerId={openDeleteModal.lecturerId}
         open={openDeleteModal.isOpen}
         onClose={handleCloseDeleteModal}
+        name={openDeleteModal.name}
       />
-    </>
+      <ResetPassword
+        name={openResetPasswordStudentModal.name}
+        lecturerId={openResetPasswordStudentModal.lecturerId}
+        open={openResetPasswordStudentModal.isOpen}
+        onClose={handleCloseResetPasswordStudentModal}
+        username={openResetPasswordStudentModal.username}
+      />
+    </Box>
   );
 }
 

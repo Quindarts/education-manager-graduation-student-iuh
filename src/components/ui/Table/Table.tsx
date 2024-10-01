@@ -1,19 +1,30 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { DataGrid, DataGridProps } from '@mui/x-data-grid';
-import React from 'react';
+import {
+  DataGrid,
+  DataGridProps,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  viVN,
+} from '@mui/x-data-grid';
+import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import LinearProgress from '@mui/material/LinearProgress';
 import IconButton from '@mui/material/IconButton';
 import DropDown from '../Dropdown';
 interface Props extends DataGridProps {
   minHeight?: number;
-  page: number;
+  page?: number;
   totalPages: number;
   totalItems: number;
-  handleChangePage: (page: number) => void;
+  limit?: number;
+  handleChangePage?: (page: number) => void;
   needReset?: boolean;
+  isLimit?: boolean;
+  slots?: any;
   onReset?: () => void;
+  handleChangeLimit?: (limit: number) => void;  
   noData?: React.ReactNode;
 }
 
@@ -25,13 +36,15 @@ export default function Table(props: Props) {
     totalPages,
     totalItems,
     needReset,
+    limit,
+    isLimit,
     handleChangePage,
+    handleChangeLimit,
     onReset,
     noData,
+    slots,
     ...rest
   } = props;
-
-  
   return (
     <Box
       style={{ minWidth: 0 }}
@@ -43,7 +56,29 @@ export default function Table(props: Props) {
       <DataGrid
         disableRowSelectionOnClick
         hideFooter
+        componentsProps={{
+          cell: {
+            style: {
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.5em',
+              overflow: 'visible',
+            },
+          },
+        }}
+        localeText={{
+          ...viVN.components.MuiDataGrid.defaultProps.localeText,
+          toolbarColumns: 'Điều chỉnh Cột hiển thị',
+          toolbarDensity: 'Thay đổi độ cao của dòng',
+        }}
         slots={{
+          ...slots,
+          toolbar: () => (
+            <GridToolbarContainer>
+              <GridToolbarColumnsButton />
+              <GridToolbarDensitySelector />
+            </GridToolbarContainer>
+          ),
           noRowsOverlay: () => (
             <Box
               mx={'auto'}
@@ -60,11 +95,11 @@ export default function Table(props: Props) {
                   style={{ opacity: 0.7 }}
                   width={200}
                   height={200}
-                  src='/images/nodata.png'
+                  src='/images/nodata.webp'
                   alt='nodata'
                 />
               </Box>
-              <Typography variant='h3' sx={{ mt: 2 }}>
+              <Typography variant='h6' sx={{ mt: 2 }}>
                 Không có dữ liệu ( Data not found)
               </Typography>
               <Box>{noData}</Box>
@@ -73,11 +108,28 @@ export default function Table(props: Props) {
           loadingOverlay: () => <LinearProgress />,
         }}
         sx={{
-          fontSize: 12,
-          cursor: 'pointer',
+          fontSize: {
+            xs: 12,
+            md: 12,
+            xl: 14,
+          },
+          color: 'black',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
             outline: 'none !important',
           },
+          '& .MuiDataGrid-toolbarContainer': {
+            bgcolor: '#f2f1f1',
+
+            '& .MuiButton-text': {
+              color: 'grey.600',
+              fontSize: 13,
+              '&:hover': {
+                bgcolor: '#d2d2d2',
+                color: 'grey.700',
+              },
+            },
+          },
+
           '& .MuiDataGrid-virtualScrollerContent': {
             minHeight,
             width: '100%',
@@ -86,8 +138,10 @@ export default function Table(props: Props) {
             borderColor: 'text.disabled',
             bgcolor: 'primary.dark',
             color: 'white',
+            height: '50px!important',
+            minHeight: '50px!important',
+            fontSize: 14,
           },
-
           '& .MuiDataGrid-virtualScroller': {
             minHeight,
             overflowX: 'auto',
@@ -114,17 +168,25 @@ export default function Table(props: Props) {
       />
       <Box display='flex' alignItems='center' justifyContent='space-between' mr={2} mt={4}>
         <Box display='flex' alignItems='center'>
-          {/* <Box width={190}> */}
-            {/* <DropDown
-              value={5}
-              options={[
-                { _id: 5, name: 'Hiển thị 5 dòng' },
-                { _id: 10, name: 'Hiển thị 10 dòng' },
-                { _id: 15, name: 'Hiển thị 15 dòng' },  
-                { _id: 20, name: 'Hiển thị 20 dòng' },
-              ]}
-            /> */}
-          {/* </Box> */}
+          {isLimit && (
+            <Box width={190}>
+              <DropDown
+                onChange={(e: any) => {
+                  handleChangeLimit(e.target.value);
+                }}
+                value={limit}
+                options={[
+                  { _id: '10', name: 'Hiển thị 10 dòng' },
+                  { _id: '15', name: 'Hiển thị 15 dòng' },
+                  { _id: '20', name: 'Hiển thị 20 dòng' },
+                  { _id: '30', name: 'Hiển thị 30 dòng' },
+                  { _id: '50', name: 'Hiển thị 50 dòng' },
+                  { _id: '100', name: 'Hiển thị 100 dòng' },
+                  { _id: '300', name: 'Hiển thị 300 dòng' },
+                ]}
+              />
+            </Box>
+          )}
           <Typography variant='body1' sx={{ mx: 2 }} display='flex'>
             Tổng số dòng:{'  '}
             <Typography variant='body1' fontWeight={600}>

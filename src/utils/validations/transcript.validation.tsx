@@ -2,10 +2,10 @@ import { Icon } from '@iconify/react';
 import { Box } from '@mui/material';
 
 export const ENUM_SCORE_STUDENT = [
-  // {
-  //     name: 'Chấm Hướng dẫn',
-  //     _id: 'ADVISOR',
-  // },
+  {
+    name: 'Chấm Hướng dẫn',
+    _id: 'ADVISOR',
+  },
   {
     name: 'Chấm Phản biện',
     _id: 'REVIEWER',
@@ -22,7 +22,8 @@ export const ENUM_SCORE_STUDENT = [
 export const checkTypeEvaluation = (typeScore: string) => {
   if (typeScore === 'REPORT_COUNCIL' || typeScore === 'REPORT_POSTER') {
     return 'REPORT';
-  } else return 'REVIEWER';
+  } else if (typeScore === 'ADVISOR') return 'ADVISOR';
+  else return 'REVIEWER';
 };
 
 export const getNameStatus = (value: string) => {

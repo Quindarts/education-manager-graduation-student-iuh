@@ -1,6 +1,6 @@
 import CustomTextField from '@/components/ui/CustomTextField';
-import { Box, Button, Chip, LinearProgress, Paper, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Box, Button, Chip, Paper, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import CardLecturer from '../Card/CardLecturer';
 import { Icon } from '@iconify/react';
 import SekeletonUI from '@/components/ui/Sekeleton';
@@ -8,6 +8,9 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import { ENUM_STATUS_LECTURER } from '@/utils/validations/groupLecturer.validation';
+import TitleManager from '@/components/ui/Title';
+import { removeVietnameseTones } from '@/utils/search';
+import SearchInput from './SearchInput';
 
 const convertLecturerGroup = (data: any[]) => {
   if (!data) {
@@ -15,21 +18,28 @@ const convertLecturerGroup = (data: any[]) => {
   }
   const newData: any = [];
   data.map((lecturerTerm: any) => {
-    let lec = lecturerTerm.lecturer;
-    newData.push({ ...lec, lecturerTerm, status: ENUM_STATUS_LECTURER.NO_GROUP });
+    newData.push({ ...lecturerTerm, status: ENUM_STATUS_LECTURER.NO_GROUP });
   });
   return newData;
 };
 
+const handleSearch = (keywords: string, lecturers: any[]) => {
+  if (keywords.length === 0) {
+    return lecturers;
+  }
+  return lecturers.filter((lec) =>
+    removeVietnameseTones(lec.fullName.toLowerCase()).includes(
+      removeVietnameseTones(keywords.toLowerCase()),
+    ),
+  );
+};
 function CreateInstructorGroupPage() {
   const [task, setTask] = React.useState<any[]>();
   const { onCreateGroupLecturer } = useGroupLecturer();
   const { handleGetListLecturerTerms } = useLecturerTerm();
   const { termStore } = useTerm();
 
-  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms(
-    termStore.currentTerm.id,
-  );
+  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms();
 
   const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer('reviewer');
 
@@ -37,7 +47,7 @@ function CreateInstructorGroupPage() {
     let dataLecturerGradingAssembly = task?.filter(
       (data: any) => data.status === ENUM_STATUS_LECTURER.HAVE_GROUP,
     );
-    const lecturers = dataLecturerGradingAssembly?.map((lec) => lec.id);
+    const lecturers = dataLecturerGradingAssembly?.map((lec) => lec.lecturerId);
     create({ termId: termStore.currentTerm.id, lecturers: lecturers });
   };
   useEffect(() => {
@@ -78,7 +88,7 @@ function CreateInstructorGroupPage() {
     let data = evt.dataTransfer.getData('text/plain');
 
     let updated = task?.map((task: any) => {
-      if (task?.id?.toString() === data?.toString()) {
+      if (task?.lecturerId?.toString() === data?.toString()) {
         task.status = status;
       }
       return task;
@@ -92,8 +102,13 @@ function CreateInstructorGroupPage() {
     (data: any) => data.status === ENUM_STATUS_LECTURER.NO_GROUP,
   );
 
+  //TODO: handle search
+  const [keywords, setKeywords] = useState('');
+  const changeSearch = (s: string) => {
+    setKeywords(s);
+  };
   return (
-    <Box display={'flex'} py={10} px={0} gap={20} justifyContent={'space-between'}>
+    <Box display={'flex'} pt={10} px={0} gap={10} justifyContent={'space-between'}>
       <Paper
         onDragLeave={(e: any) => handleOnDragLeave(e)}
         onDragEnter={(e) => handleOnDragEnter(e)}
@@ -105,25 +120,31 @@ function CreateInstructorGroupPage() {
         }}
         elevation={1}
       >
-        <Box px={10} bgcolor={'grey.200'} py={4} mb={4}>
-          <Typography mb={4} variant='h6' color='primary'>
-            <Icon icon='ic:baseline-list' />
-            Danh sách giảng viên trống lịch
-          </Typography>
-          <Box bgcolor='white'>
-            <CustomTextField placeholder='Tim kiem giang vien' />
+        <Box px={10} bgcolor={'grey.50'} pt={2} pb={4} mb={4}>
+          <TitleManager
+            fontWeight={'bold'}
+            mb={4}
+            variant='h5'
+            color={'grey.800'}
+            icon='fluent-emoji-flat:man-student-light'
+          >
+            Danh sách giảng viên
+          </TitleManager>
+
+          <Box mt={10} bgcolor='white'>
+            <SearchInput changeSearch={changeSearch} keywords={keywords} />
           </Box>
         </Box>
 
-        <Box sx={{ overflowY: 'auto' }} height={500} px={4}>
+        <Box sx={{ overflowY: 'auto' }} height={400} px={2}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (
             <Box>
-              {dataLecturerNoGroup?.map((task: any) => (
+              {handleSearch(keywords, dataLecturerNoGroup)?.map((task: any) => (
                 <CardLecturer
-                  key={task.id}
-                  id={task.id}
+                  key={task.lecturerId}
+                  id={task.lecturerId}
                   lecturer={task}
                   draggable
                   onDragStart={(e: any) => handleOnDrageStart(e)}
@@ -139,8 +160,7 @@ function CreateInstructorGroupPage() {
           flex: 1,
           px: 6,
           height: 400,
-          py: 10,
-          borderTop: '5px solid #0052b1',
+          pb: 10,
         }}
         onDragLeave={(e: any) => handleOnDragLeave(e)}
         onDragEnter={(e) => handleOnDragEnter(e)}
@@ -148,17 +168,24 @@ function CreateInstructorGroupPage() {
         onDragOver={(e) => handleOnDragOver(e)}
         onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.HAVE_GROUP)}
       >
-        <Typography variant='h6' color='primary'>
-          <Icon icon='gridicons:create' />
-          Tạo nhóm chấm phản biện
+        <Typography mt={4} fontWeight={'bold'} color={'primary'} variant='h5'>
+          <Icon style={{ marginRight: 2 }} icon='gridicons:create' />
+          Thông tin nhóm phản biện:
         </Typography>
         {dataLecturerGradingAssembly && dataLecturerGradingAssembly.length < 1 ? (
-          <Box display={'flex'} sx={{ cursor: 'progress' }} flexDirection={'column'} height={500}>
-            <Box display={'flex'} flexDirection={'column'} gap={10} alignItems={'center'}>
-              <Typography color='grey.500' variant='h6' mt={20}>
-                Vui lòng kéo thả giảng viên...
+          <Box display={'flex'} flexDirection={'column'} height={500}>
+            <Box
+              display={'flex'}
+              flexDirection={'column'}
+              justifyContent={'center'}
+              gap={10}
+              alignItems={'center'}
+              height={300}
+            >
+              <img width={150} src='/images/nodata.webp' />
+              <Typography color='grey.600' variant='h6' mt={1}>
+                Để chọn giảng viên cần tạo nhóm, vui lòng kéo thả vào bảng này
               </Typography>
-              <Icon color='#dfdfdf' width={100} icon='icon-park-solid:hand-left' />
             </Box>
           </Box>
         ) : (
@@ -182,57 +209,60 @@ function CreateInstructorGroupPage() {
                     backgroundColor: '#D3FFEF',
                   },
                 }}
-                key={task.id}
-                id={task.id}
+                key={task.lecturerId}
+                id={task.lecturerId}
                 draggable
                 onDragStart={(e) => handleOnDrageStart(e)}
                 onDragEnd={(e) => handleOnDrageStart(e)}
               >
                 <Box px={10}>
-                  <Typography variant='body1' fontWeight={500} color='grey.700'>
-                    Tên giảng viên
-                    <Typography mx={4} component='span'>
-                      {task.fullName}
-                    </Typography>
-                    <Typography ml={10} component='span' textAlign={'end'}>
-                      {/* Trình độ: {task.degree} */}
+                  <Typography variant='h6' fontWeight={600} color='grey.700'>
+                    Giảng viên
+                    <Typography mx={4} fontSize={14} component='span'>
+                      {task.fullName} - {task.username}
                     </Typography>
                   </Typography>
-                  <Typography variant='body1' fontWeight={500} color='grey.700'>
-                    Mã giảng viên
-                    <Typography mx={4} component='span'>
-                      {task.username}
-                    </Typography>
+                  <Typography variant='body1' color={'grey.600'}>
+                    Ngành: <Typography component='span'>{task.majorName}</Typography>
                   </Typography>
-                </Box>
-                <Box>
-                  <Chip sx={{ color: 'white' }} color='warning' label='Chọn để chấm' />
                 </Box>
               </Paper>
             ))}{' '}
-            {dataLecturerGradingAssembly?.length === 2 && (
-              <Typography component={'span'} variant='body1' mt={10} fontWeight={'500'} color='error.main'>
-                <Icon icon='material-symbols-light:warning-outline' />
-                Đã đạt số lượng thành viên tối đa
+            {dataLecturerGradingAssembly?.length >= 2 && (
+              <Typography
+                component={'span'}
+                variant='body1'
+                mt={10}
+                fontWeight={'500'}
+                color='warning.main'
+              >
+                Cảnh báo: Nhóm đã đủ thành viên!
               </Typography>
             )}
-            <Typography variant='body1' mt={6} color='primary'>
-              Số lượng thành viên:{' '}
-              <Typography component={'span'} variant='body1' mt={10} color='initial'>
-                {dataLecturerGradingAssembly?.length} /2
-              </Typography>
-            </Typography>
-            <Box display={'flex'} justifyContent={'end'} mr={4} mt={10}>
-              <Button
-                disabled={dataLecturerGradingAssembly && dataLecturerGradingAssembly?.length > 2}
-                color='success'
-                variant='contained'
-                onClick={handleCreateGroup}
-              >
-                <Icon icon='dashicons:saved' />
-                Tạo nhóm
-              </Button>
-            </Box>
+            {dataLecturerGradingAssembly?.length > 0 && (
+              <>
+                <Typography variant='h6' mt={2} fontWeight={'bold'} color='grey.800'>
+                  Số lượng :{' '}
+                  <Typography component={'span'} variant='h6' mt={10} color='initial'>
+                    {dataLecturerGradingAssembly?.length} / 2 thành viên
+                  </Typography>
+                </Typography>
+                <Box display={'flex'} justifyContent={'end'} mr={4} mt={10}>
+                  <Button
+                    disabled={
+                      dataLecturerGradingAssembly && dataLecturerGradingAssembly?.length > 2
+                    }
+                    color='success'
+                    variant='contained'
+                    size='medium'
+                    onClick={handleCreateGroup}
+                  >
+                    <Icon width={24} icon='dashicons:saved' />
+                    Tạo nhóm
+                  </Button>
+                </Box>
+              </>
+            )}
           </Box>
         )}
       </Paper>

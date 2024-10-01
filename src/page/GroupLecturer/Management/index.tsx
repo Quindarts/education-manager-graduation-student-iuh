@@ -12,19 +12,25 @@ function GroupLecturerManagementPage() {
     setCheckType(checkType);
   };
   const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
-  const { data, isSuccess, isLoading, isFetching } = handleGetAllGroupLecturerByTypeGroup(checkType);
+  const { data, isSuccess, isLoading, isFetching } =
+    handleGetAllGroupLecturerByTypeGroup(checkType);
   return (
-    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-      <TitleManager icon='quill:list' mb={0} mt={2}>
-        Danh sách nhóm giảng viên
-      </TitleManager>
-      <HeaderGroupLecturer handleTypeGroupLecturer={handleTypeGroupLecturer} />
+    <Paper sx={{ py: 10, px: 10 }} elevation={0}>
+      <Box justifyContent={'space-between'} mb={2} display={'flex'}>
+        <TitleManager icon='quill:list' mb={0}>
+          Danh sách nhóm giảng viên
+        </TitleManager>
+        <HeaderGroupLecturer handleTypeGroupLecturer={handleTypeGroupLecturer} />
+      </Box>
 
       <Box width={'full'} my={4}>
-        {isLoading ||isFetching ? (
+        {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (
-          <TableManagamentGroupLecturer rows={convertGroupLecturerTable(data?.groupLecturers)} />
+          <TableManagamentGroupLecturer
+            groupType={checkType}
+            rows={convertGroupLecturerTable(data?.groupLecturers)}
+          />
         )}
       </Box>
     </Paper>

@@ -1,16 +1,21 @@
 import axiosConfig from "./axiosConfig"
 
-export const createAssignByType: any = async (type: string, data: { groupLecturerId: string, listGroupStudentId: string[] }) => {
-    return axiosConfig.post(`/api/v1/assigns/type-evaluation/${type}`, data)
-}
-export const getGroupStudentNoAssign: any = async (type: string, termId: string) => {
-    return axiosConfig.get(`/api/v1/assigns/type-evaluation/${type}/group-student/no-assign?termId=${termId}`);
+const URL = "/api/v1/assigns"
+
+export const createAssignByType: any = async (data: { groupLecturerId: string, listGroupStudentId: string[], type: string }) => {
+    return axiosConfig.post(`${URL}`, data)
 }
 
-const updateAssign = async () => { }
-const getAllAssigns = async () => { }
-const getAssignByLecturerId = async () => { }
-const getAssignById = async () => { }
-const getAssignByType = async () => { }
+export const updateAssignByType: any = async (data: { groupLecturerId: string, listGroupStudentId: string[], type: string }) => {
+    return axiosConfig.put(`${URL}`, data)
+}
+export const getGroupStudentNoAssign: any = async (type: string, termId: string) => {
+    return axiosConfig.get(`${URL}/type-evaluation/${type}/group-student/no-assign?termId=${termId}`);
+}
+
+export const getExportAssignGroup: any = async (termId: string, type: string) => {
+    return axiosConfig.get(`${URL}/export?termId=${termId}&type=${type}`)
+}
+
 
 

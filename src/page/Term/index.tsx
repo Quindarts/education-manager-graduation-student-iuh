@@ -1,5 +1,5 @@
-import { Box, LinearProgress, Paper, Skeleton } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Paper } from '@mui/material';
+import React, { useEffect } from 'react';
 import TableManagamentTerm from './Table';
 import HeaderTerm from './Header';
 import TitleManager from '@/components/ui/Title';
@@ -10,14 +10,20 @@ import { useMajor } from '@/hooks/api/useQueryMajor';
 function TermPage() {
   const { handleGetAllTermByMajor } = useTerm();
   const { majorStore } = useMajor();
-  const { data, isLoading, isFetching } = handleGetAllTermByMajor();
+  const { data, isLoading, isFetching, refetch } = handleGetAllTermByMajor();
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <>
-      <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-        <TitleManager icon='quill:list' mb={8} mt={2}>
-          Danh sách học kì {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
-        </TitleManager>
-        <HeaderTerm />
+      <Paper sx={{ py: 10, px: 10 }} elevation={0}>
+        <Box justifyContent={'space-between'} display={'flex'}>
+          <TitleManager icon='quill:list' mb={0}>
+            Danh sách học kì {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
+          </TitleManager>
+          <HeaderTerm />
+        </Box>
+
         {isLoading || isFetching ? (
           <SekeletonUI />
         ) : (

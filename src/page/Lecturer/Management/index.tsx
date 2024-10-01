@@ -1,65 +1,83 @@
 import { Box, Paper } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TableManagamentLecturer from './Table';
 import TitleManager from '@/components/ui/Title';
 import HeaderLecturer from './Header';
 import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import { convertLecturer } from '@/utils/convertDataTable';
-import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 import { useMajor } from '@/hooks/api/useQueryMajor';
+import useParams from '@/hooks/ui/useParams';
+import { useDispatch } from 'react-redux';
+import { setParamTotalPageLectuerMajor } from '@/store/slice/lecturer.slice';
 
 function LecturerManagementPage() {
-  const { handleManagerRenderActionLecturer, params } = useLecturer();
   const { majorStore } = useMajor();
+  const dispatch = useDispatch();
+
+  //[FETCH]
+  const { handleGetAllLecturer, paramTotalPage } = useLecturer();
+  const { data, isLoading, isFetching, refetch } = handleGetAllLecturer();
+
+  //[PARAMS]
   const [currentLimit, setCurrentLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(params?.page);
-  const [keywords, setKeywords] = useState('');
-  const [typeSearch, setTypeSearch] = useState<ENUM_RENDER_LECTURER>(ENUM_RENDER_LECTURER.ALL);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { setLimit, setPage, getQueryField, setTotalPage } = useParams();
 
-  const { data, isLoading, isFetching } = handleManagerRenderActionLecturer(
-    currentLimit,
-    currentPage,
-    typeSearch,
-    keywords,
-  );
-
-  const handleChangePage = (value: string | Number) => {
+  const handleChangePage = (value: number) => {
+    refetch();
     setCurrentPage(value);
   };
-  const handleChangeDropSearch = (value: ENUM_RENDER_LECTURER) => {
-    setTypeSearch(value);
+  const handleChangeLimit = (value: number) => {
+    setCurrentLimit(value);
   };
-  const handleChangeKeywords = (value: string) => {
-    setKeywords(value);
-  };
-  const onClearSearch = () => {
-    setCurrentPage(1);
-    setKeywords('');
-    setTypeSearch(ENUM_RENDER_LECTURER.ALL);
-  };
+
+  useEffect(() => {
+    setLimit(currentLimit);
+    setPage(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    setLimit(currentLimit);
+    setPage(1);
+    refetch();
+  }, [currentLimit]);
+
+  useEffect(() => {
+    if (data !== null) {
+      const total = data ? data.params.totalPage : 0;
+      dispatch(setParamTotalPageLectuerMajor(total));
+      setTotalPage(total);
+    }
+  }, [data]);
+  useEffect(() => {
+    setLimit(currentLimit);
+    setPage(1);
+    if (getQueryField('keywords') === '') {
+      refetch();
+    }
+  }, [getQueryField('keywords')]);
   return (
-    <Paper sx={{ py: 10, px: 10 }} elevation={1}>
+    <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <TitleManager mb={8} mt={2}>
         Danh sách giảng viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
       </TitleManager>
       <>
-        <HeaderLecturer
-          typeSearch={typeSearch}
-          handleChangeKeywords={handleChangeKeywords}
-          handleChangeDropSearch={handleChangeDropSearch}
-          onClearSearch={onClearSearch}
-        />
-        {isLoading && !isFetching ? (
+        <HeaderLecturer />
+        {isLoading ? (
           <SekeletonUI />
         ) : (
-          <TableManagamentLecturer
-            rows={convertLecturer(data?.lecturers)}
-            totalPage={params.totalPage}
-            totalItems={data?.lecturers.length}
-            handleChangePage={handleChangePage}
-            page={currentPage}
-          />
+          <Box width={'full'} my={4}>
+            <TableManagamentLecturer
+              rows={convertLecturer(data?.lecturers)}
+              totalPage={paramTotalPage}
+              totalItems={data?.lecturers.length}
+              handleChangePage={handleChangePage}
+              handleChangeLimit={handleChangeLimit}
+              page={currentPage}
+              limit={currentLimit}
+            />
+          </Box>
         )}
       </>
     </Paper>

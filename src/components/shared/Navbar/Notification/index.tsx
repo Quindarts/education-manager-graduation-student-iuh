@@ -4,10 +4,27 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
-import { Button, Paper } from '@mui/material';
+import { Button, CircularProgress, Paper } from '@mui/material';
+import { useNotification } from '@/hooks/api/useQueryNotification';
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
+import { useNotificationLecturer } from '@/hooks/api/useQueryNotificationLecturer';
+import { useState } from 'react';
 
 function Notification() {
   const { handleActive, active, menuRef } = usePopup();
+  const [limit, setLimit] = useState(5);
+  const { handleGetMyNotification } = useNotificationLecturer();
+  const { data, isLoading, isFetching } = handleGetMyNotification(limit.toString());
+  const navigate = useNavigate();
+
+  const handleChangeLimit = () => {
+    setLimit((pre) => pre + 5);
+  };
+  const handleNavigate = (id: string) => {
+    navigate(`/notifications/${id}`);
+    handleActive();
+  };
   return (
     <Box
       position='relative'
@@ -22,8 +39,6 @@ function Notification() {
         onClick={handleActive}
         className={`${active && 'active'}`}
         sx={{
-          padding: 2,
-
           '& svg': {
             color: 'text.secondary',
           },
@@ -32,7 +47,9 @@ function Notification() {
         color='info'
       >
         <Badge
-          badgeContent={4}
+          badgeContent={
+            data ? data?.notifications.filter((noti: any) => noti.isRead === 0).length : 0
+          }
           color='error'
           sx={{
             height: '100%',
@@ -49,7 +66,7 @@ function Notification() {
 
       {active && (
         <Box
-          top={'100%'}
+          top={'80%'}
           right={0}
           boxShadow={
             ' rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;'
@@ -61,7 +78,7 @@ function Notification() {
               xs: '100vw',
               sm: 450,
             },
-            height: 700,
+            height: active ? 500 : 0,
             position: {
               xs: 'fixed',
               sm: 'absolute',
@@ -73,187 +90,96 @@ function Notification() {
           <Box
             display='flex'
             justifyContent='space-between'
-            padding={8}
+            padding={4}
             height={54}
             borderRadius='8px 8px 0 0 '
             sx={{ backgroundColor: 'primary.dark' }}
           >
-            <Typography fontWeight={500} variant='body1' color={'white'}>
+            <Typography m={4} mt={4} fontWeight={500} variant='body1' color={'white'}>
               Thông báo mới
             </Typography>
             <Box borderRadius={1} alignSelf={'center'} px={4} py={2}>
               <Typography fontWeight={500} variant='body2' color='white'>
-                4 Thông báo
+                {data ? data?.notifications?.length : 0} Thông báo
               </Typography>
             </Box>
           </Box>
-          <Box sx={{ overflowY: 'auto', height: '80%', px: 4 }} m={4}>
-            <Paper sx={{ p: 4, my: 6 }} elevation={1}>
-              <Box display={'flex'} justifyContent={'space-between'} mb={4}>
-                <Box>
-                  <Typography variant='body1' fontWeight={'600'} color='initial'>
-                    Người gửi: Nguyễn Thị Hạnh
-                  </Typography>
-                  <Typography variant='body2' color='grey.600'>
-                    Trưởng bộ môn
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography component={'i'} variant='body2' color='success.main'>
-                    Ngày 05/07/2024
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box>
-                <Typography variant='body1' fontWeight={600} color='grey.700'>
-                  {' '}
-                  Nội dung:
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Vừa tạo học kì mới HK1 2024-2025
-                </Typography>
-              </Box>
-            </Paper>{' '}
-            <Paper sx={{ p: 4, my: 6 }} elevation={1}>
-              <Box display={'flex'} justifyContent={'space-between'} mb={4}>
-                <Box>
-                  <Typography variant='body1' fontWeight={'600'} color='initial'>
-                    Người gửi: Nguyễn Thị Hạnh
-                  </Typography>
-                  <Typography variant='body2' color='grey.600'>
-                    Trưởng bộ môn
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography component={'i'} variant='body2' color='success.main'>
-                    Ngày 05/07/2024
+          <Box sx={{ overflowY: 'auto', height: '80%', px: 2 }}>
+            {isLoading || isFetching ? (
+              <CircularProgress />
+            ) : data?.notifications?.length < 1 ? (
+              <Box width={'100%'}>
+                <Box textAlign={'center'} m={'auto'} p='auto' width={240}>
+                  <img width={100} src='/public/images/bell-alarm.webp' alt='' />
+                  <Typography
+                    variant='h6'
+                    fontWeight={'500'}
+                    textTransform={'uppercase'}
+                    color='grey.600'
+                  >
+                    Không có thông báo mới
                   </Typography>
                 </Box>
               </Box>
-
-              <Box>
-                <Typography variant='body1' fontWeight={600} color='grey.700'>
-                  {' '}
-                  Nội dung:
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Vừa tạo học kì mới HK1 2024-2025
-                </Typography>
-              </Box>
-            </Paper>
-            <Paper sx={{ p: 4, my: 6 }} elevation={1}>
-              <Box display={'flex'} justifyContent={'space-between'} mb={4}>
-                <Box>
-                  <Typography variant='body1' fontWeight={'600'} color='initial'>
-                    Người gửi: Nguyễn Thị Hạnh
-                  </Typography>
-                  <Typography variant='body2' color='grey.600'>
-                    Trưởng bộ môn
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography component={'i'} variant='body2' color='success.main'>
-                    Ngày 05/07/2024
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box>
-                <Typography variant='body1' fontWeight={600} color='grey.700'>
-                  {' '}
-                  Nội dung:
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Vừa tạo học kì mới HK1 2024-2025
-                </Typography>
-              </Box>
-            </Paper>{' '}
-            <Paper sx={{ p: 4, my: 6 }} elevation={1}>
-              <Box display={'flex'} justifyContent={'space-between'} mb={4}>
-                <Box>
-                  <Typography variant='body1' fontWeight={'600'} color='initial'>
-                    Người gửi: Nguyễn Thị Hạnh
-                  </Typography>
-                  <Typography variant='body2' color='grey.600'>
-                    Trưởng bộ môn
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography component={'i'} variant='body2' color='success.main'>
-                    Ngày 05/07/2024
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box>
-                <Typography variant='body1' fontWeight={600} color='grey.700'>
-                  {' '}
-                  Nội dung:
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Vừa tạo học kì mới HK1 2024-2025
-                </Typography>
-              </Box>
-            </Paper>{' '}
-            <Paper sx={{ p: 4, my: 6 }} elevation={1}>
-              <Box display={'flex'} justifyContent={'space-between'} mb={4}>
-                <Box>
-                  <Typography variant='body1' fontWeight={'600'} color='initial'>
-                    Người gửi: Nguyễn Thị Hạnh
-                  </Typography>
-                  <Typography variant='body2' color='grey.600'>
-                    Trưởng bộ môn
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography component={'i'} variant='body2' color='success.main'>
-                    Ngày 05/07/2024
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box>
-                <Typography variant='body1' fontWeight={600} color='grey.700'>
-                  {' '}
-                  Nội dung:
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Vừa tạo học kì mới HK1 2024-2025
-                </Typography>
-              </Box>
-            </Paper>{' '}
-            <Paper sx={{ p: 4, my: 6 }} elevation={1}>
-              <Box display={'flex'} justifyContent={'space-between'} mb={4}>
-                <Box>
-                  <Typography variant='body1' fontWeight={'600'} color='initial'>
-                    Người gửi: Nguyễn Thị Hạnh
-                  </Typography>
-                  <Typography variant='body2' color='grey.600'>
-                    Trưởng bộ môn
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography component={'i'} variant='body2' color='success.main'>
-                    Ngày 05/07/2024
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Box>
-                <Typography variant='body1' fontWeight={600} color='grey.700'>
-                  {' '}
-                  Nội dung:
-                </Typography>
-                <Typography variant='body1' color='initial'>
-                  Vừa tạo học kì mới HK1 2024-2025
-                </Typography>
-              </Box>
-            </Paper>
+            ) : (
+              <>
+                {data?.notifications.map((noti: any) => (
+                  <Paper
+                    sx={{
+                      my: 2,
+                      px: 4,
+                      py: 2,
+                      cursor: 'pointer',
+                      '&:hover': {
+                        bgcolor: '#f5f8ff',
+                      },
+                    }}
+                    onClick={() => handleNavigate(noti.id)}
+                    elevation={1}
+                  >
+                    <Typography
+                      textAlign={'end'}
+                      width={'120px'}
+                      variant='body2'
+                      component={'i'}
+                      color='grey.600'
+                      sx={{}}
+                    >
+                      {dayjs(noti.createdAt).format('DD/MM/YYYY hh:ss')}
+                    </Typography>
+                    <Typography variant='body1' color='grey.700'>
+                      {noti.title}
+                    </Typography>
+                    <Box justifyContent={'end'} display={'flex'}>
+                      <>
+                        {noti.isRead ? (
+                          <Typography component={'i'} variant='body2' color='success.dark'>
+                            Đã xem
+                            <Icon style={{ marginLeft: 2 }} width={10} icon='subway:tick' />
+                          </Typography>
+                        ) : (
+                          <Typography component={'i'} variant='body2' color='error.dark'>
+                            Chưa đọc
+                          </Typography>
+                        )}
+                      </>
+                    </Box>
+                  </Paper>
+                ))}
+              </>
+            )}
           </Box>
-          <Box px={4} height={'10%'} display={'flex'} alignItems={'center'} justifyContent={'end'} borderRadius={'0 0 8px 8px '} bgcolor={'#f6fcff'}>
-            <Button variant='contained' size='small' color='primary'>
-              Xem toàn bộ thông báo
+          <Box
+            px={4}
+            height={'10%'}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'end'}
+            borderRadius={'0 0 8px 8px '}
+            bgcolor={'#f6fcff'}
+          >
+            <Button onClick={handleChangeLimit} size='small' color='warning'>
+              Xem thêm
             </Button>
           </Box>
         </Box>

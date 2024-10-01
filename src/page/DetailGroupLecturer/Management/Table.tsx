@@ -5,9 +5,10 @@ import { checkDegree } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
 import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import LecturerLeaveGroupModal from './Modal/LeaveGroup';
 import AddMemberGroupLecturerModal from './Modal/AddMember';
+import { TypeGroupLecturer } from '@/services/apiGroupLecturer';
 
 function TableManagementGroupLecturer(props: any) {
   const { rows, groupType } = props;
@@ -33,111 +34,96 @@ function TableManagementGroupLecturer(props: any) {
   const handleCloseAddMemberModal = () => {
     setIsOpenAddMember(false);
   };
-  const LecturerColumns: GridColDef[] = [
-    {
-      headerName: 'Thông tin chung',
-      field: 'name',
-      flex: 1.5,
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return (
-          <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar sizes='small' src={params.row.avatar} />
-            <Box>
-              <Typography fontWeight={600} variant='body1'>
-                {params.row.fullName}
-              </Typography>
+  const LecturerColumns: GridColDef[] = useMemo(
+    () => [
+      {
+        headerName: 'Mã giảng viên',
+        field: 'username',
+        flex: 0.4,
+        headerAlign: 'center',
+        align: 'center',
+      },
+      {
+        headerName: 'Tên giảng viên',
+        field: 'fullName',
+        flex: 0.6,
+        headerAlign: 'left',
+      },
+      {
+        headerName: 'Chuyên ngành',
+        field: 'majorName',
+        flex: 1,
+        align: 'center',
+        headerAlign: 'center',
+      },
+      {
+        headerName: 'Trình độ',
+        field: 'degree',
+        flex: 1,
+        align: 'center',
+        headerAlign: 'center',
+        renderCell: (params: any) => {
+          return <Box>{checkDegree(params.row.degree)}</Box>;
+        },
+      },
+    ],
+    [],
+  );
+  const HeadLecturerColumns: GridColDef[] = useMemo(
+    () => [
+      {
+        headerName: 'Thông tin chung',
+        field: 'name',
+        flex: 1.5,
+        headerAlign: 'center',
+        renderCell: (params: any) => {
+          return (
+            <Box gap={4} display={'flex'} alignItems={'center'}>
+              <Avatar sizes='small' src={params.row.avatar} />
+              <Box>
+                <Typography fontWeight={600} variant='body1'>
+                  {params.row.fullName}
+                </Typography>
 
-              <Typography>
-                Mã SV: {'  '}
-                <Typography component={'span'}>{params.row.username}</Typography>
-              </Typography>
+                <Typography>
+                  Mã SV: {'  '}
+                  <Typography component={'span'}>{params.row.username}</Typography>
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-        );
+          );
+        },
       },
-    },
-    {
-      headerName: 'Chuyên ngành',
-      field: 'majorName',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Trình độ',
-      field: 'degree',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return <Box>{checkDegree(params.row.degree)}</Box>;
+      {
+        headerName: 'Chuyên ngành',
+        field: 'majorName',
+        flex: 1,
+        align: 'center',
+        headerAlign: 'center',
       },
-    },
-  ];
-  const HeadLecturerColumns: GridColDef[] = [
-    {
-      headerName: 'Thông tin chung',
-      field: 'name',
-      flex: 1.5,
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return (
-          <Box gap={4} display={'flex'} alignItems={'center'}>
-            <Avatar sizes='small' src={params.row.avatar} />
-            <Box>
-              <Typography fontWeight={600} variant='body1'>
-                {params.row.fullName}
-              </Typography>
-
-              <Typography>
-                Mã SV: {'  '}
-                <Typography component={'span'}>{params.row.username}</Typography>
-              </Typography>
-            </Box>
-          </Box>
-        );
+      {
+        headerName: 'Trình độ',
+        field: 'degree',
+        flex: 1,
+        align: 'center',
+        headerAlign: 'center',
+        renderCell: (params: any) => {
+          return <Box>{checkDegree(params.row.degree)}</Box>;
+        },
       },
-    },
-    {
-      headerName: 'Chuyên ngành',
-      field: 'majorName',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Trình độ',
-      field: 'degree',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return <Box>{checkDegree(params.row.degree)}</Box>;
+      {
+        headerName: '',
+        field: 'name8',
+        flex: 0.5,
+        align: 'center',
+        headerAlign: 'center',
+        renderCell: (params: any) => (
+          <Button onClick={() => handleOpenLeaveGroupModal(params.row.id)}>Rời nhóm</Button>
+        ),
       },
-    },
-    {
-      headerName: '',
-      field: 'name8',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip title='Mời rời nhóm'>
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => handleOpenLeaveGroupModal(params.row.id)}
-            >
-              <Icon icon='pepicons-print:leave-circle' width={20} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ];
-
+    ],
+    [],
+  );
   return (
     <>
       <Box>
@@ -148,7 +134,12 @@ function TableManagementGroupLecturer(props: any) {
                 size='small'
                 onClick={handleOpenAddMemberModal}
                 color='error'
-                disabled={rows.length >= 2 ? true : false}
+                disabled={
+                  (rows.length >= 2 && groupType?.toLowerCase() === TypeGroupLecturer.REVIEWER) ||
+                  (rows.length >= 3 && groupType?.toLowerCase().split('_')[0] === TypeGroupLecturer.REPORT)
+                    ? true
+                    : false
+                }
                 variant='contained'
               >
                 <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
@@ -160,9 +151,8 @@ function TableManagementGroupLecturer(props: any) {
             rows={rows}
             sx={{
               bgcolor: 'white',
-              height: 250,
             }}
-            minHeight={250}
+            minHeight={400}
             columns={currentRole.includes('all') ? HeadLecturerColumns : LecturerColumns}
             totalItems={1}
             totalPages={1}
@@ -171,6 +161,7 @@ function TableManagementGroupLecturer(props: any) {
             disableColumnMenu
             disableColumnFilter
             disableColumnSelector
+            disableDensitySelector
           />
         </Box>
         {/* )} */}

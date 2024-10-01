@@ -1,36 +1,13 @@
 import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
 import SekeletonUI from '@/components/ui/Sekeleton';
-import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
-import { useLecturer } from '@/hooks/api/useQueryLecturer';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import useMemberGroupLecturer from '@/hooks/api/useQueryMemberGroupLecturer';
 import { Icon } from '@iconify/react';
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import TitleManager from '@/components/ui/Title';
+import { Box, Button, FormControl } from '@mui/material';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 const convertLecturer = (lterms: any) => {
   let updateLecturers: any[] = [];
@@ -39,8 +16,8 @@ const convertLecturer = (lterms: any) => {
   } else
     lterms?.map((lect: any) => {
       updateLecturers.push({
-        _id: lect.lecturer?.id,
-        name: lect.lecturer?.fullName + ' - ' + lect?.lecturer?.username,
+        _id: lect?.lecturerId,
+        name: lect?.username + ' - ' + lect?.fullName,
       });
     });
   return updateLecturers;
@@ -48,12 +25,13 @@ const convertLecturer = (lterms: any) => {
 function AddMemberGroupLecturerModal(props: any) {
   const { onClose, open, groupType } = props;
   const [lecturer, setlecturer] = useState<string>('');
-  const { handleGetListLecturerTerms } = useLecturerTerm();
   const { pathname } = useLocation();
   const current = pathname.split('/');
   const grLecturerId = `${current[current.length - 1]}`;
 
+  const { handleGetListLecturerTerms } = useLecturerTerm();
   const { data, isLoading, isFetching } = handleGetListLecturerTerms();
+
   const { onAddMemberToGroupLecturer } = useMemberGroupLecturer();
   const { mutate: addMember } = onAddMemberToGroupLecturer(grLecturerId);
   const handleSubmit = () => {
@@ -62,15 +40,16 @@ function AddMemberGroupLecturerModal(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box m={10}>
-        <Typography mb={4} fontWeight={600} variant='h3'>
-          Thêm Giảng viên vào nhóm
-        </Typography>
+        <TitleManager mb={10} icon='mdi:user-add' variant='h6' textTransform={'uppercase'}>
+          Thêm giảng viên
+        </TitleManager>
         <Box my={10}>
           {isLoading || isFetching ? (
             <SekeletonUI />
           ) : (
             <FormControl sx={{ width: '100%' }}>
               <DropDown
+                placeholder='Danh sách giảng viên hướng dẫn '
                 onChange={(e: any) => {
                   setlecturer(e.target.value);
                 }}

@@ -1,5 +1,4 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider'
-import { createStudent, deleteStudent, getStudentById, getStudentOfSearch, lockOnlyStudent, resetPasswordStudent, updateStudent } from '@/services/apiStudent'
 import { useSnackbar } from 'notistack'
 import { useMutation, useQuery } from 'react-query'
 import { useSelector } from 'react-redux'
@@ -8,125 +7,244 @@ import { useMajor } from './useQueryMajor';
 import useParams from '../ui/useParams';
 import { ResponseType } from '@/types/axios.type'
 import { Student } from '@/types/entities'
-
+import { useDispatch } from 'react-redux'
+import { setParamTotalPage } from '@/store/slice/student.slice'
+import * as StudentServices from "@/services/apiStudent"
+//[KEYS]
 export enum QueryStudent {
     getAllStudent = 'getAllStudent',
+    getSearchStudentBasic = "getSearchStudentBasic",
     getStudentById = 'getStudentById',
     searchStudentByField = 'searchStudentByField',
-    managerActionStudent = 'managerActionStudent'
+    managerActionStudent = 'managerActionStudent',
+    getCountOfStudent = "getCountOfStudent",
+    getStudentsToExport = "getStudentsToExport"
 }
 export const useStudent = () => {
-    const { enqueueSnackbar } = useSnackbar()
+
+    //[REDUX]
     const studentStore = useSelector((state: any) => state.studentSlice)
     const { termStore } = useTerm()
     const { majorStore } = useMajor()
-    const { getQueryField, setTotalPage } = useParams()
+    const dispatch = useDispatch()
 
+    //[PARAMS URL]
+    const { paramTotalPage } = studentStore
+    const majorId = majorStore.currentMajor.id
+    const termId = termStore.currentTerm.id
+    const { getQueryField, setTotalPage, setLimit, setPage } = useParams()
 
-    //[GET ALL]
-    const handleGetAllStudent = (termId?: string, majorId?: string) => {
-        const currentMajor = majorId ? majorId : majorStore.currentMajor.id
-        const currentTerm = termId ? termId : termStore.currentTerm.id
+    //[OTHER]
+    const { enqueueSnackbar } = useSnackbar()
 
+    //[GET]
+    const handleGetSearchStudentBasic = (keywords: string, searchField: string) => {
+        return useQuery([QueryStudent.getSearchStudentBasic, termId, keywords, searchField], () => StudentServices.getSearchStudentBasic(termId, keywords, searchField), {
+            staleTime: 1000 * (60 * 10), // 10 min,
+            refetchInterval: 1000 * (60 * 20),
+            keepPreviousData: true,
+            cacheTime: 1000,
+            // cacheTime: 1000
+        })
+    }
+
+    //[GET]
+    const handleGetAllStudent = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
         return useQuery
-            ([QueryStudent.getAllStudent, currentTerm, currentMajor,
-            getQueryField('limit'), getQueryField('page'), getQueryField('totalPage'), getQueryField('searchField'), getQueryField('keywords')],
-                () => getStudentOfSearch(currentTerm, currentMajor, getQueryField('limit'),
-                    getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')), {
-                onSuccess(data: any) {
-                    setTotalPage(data.params ? data.params.totalPage : 0)
-                },
-            })
+            ([QueryStudent.getAllStudent,
+                termId,
+                majorId,
+            getQueryField('limit'),
+            getQueryField('page'),
+            getQueryField('searchField'),
+            getQueryField('sort'),
+            getQueryField('keywords')],
+                () => StudentServices.getStudentOfSearch(
+                    termId,
+                    majorId,
+                    getQueryField('limit'),
+                    getQueryField('page'),
+                    getQueryField('searchField'),
+                    getQueryField('sort'),
+                    getQueryField('keywords')),
+                {
+                    onSuccess(data: any) {
+                        const total = data.params ? data.params.totalPage : 0
+                        dispatch(setParamTotalPage(total))
+                        setTotalPage(total)
+                    },
+                    staleTime: 1000 * (60 * 10), // 10 min,
+                    cacheTime: 1000,
+                    refetchInterval: 1000 * (60 * 20),
+                    keepPreviousData: true,
+                    refetchOnMount: true,
+                })
+    }
+
+    const handleGetCountOfStudent = () => {
+        return useQuery([QueryStudent.getCountOfStudent], () => StudentServices.getCountOfStudent(termId), {
+            staleTime: 1000 * (60 * 10),
+            refetchInterval: 100 * (60 * 20),
+            enabled: !!termId
+        })
     }
 
     //[GET BY ID]
     const handleGetStudentById = (id: string) => {
-        return useQuery([QueryStudent.getStudentById, id], () => getStudentById(id), {
-            enabled: !!id
+        return useQuery([QueryStudent.getStudentById, id], () => StudentServices.getStudentById(id), {
+            enabled: !!id,
+            cacheTime: 1000 * (60 * 1)
         })
     }
 
-    //[UPDATE]
+    //[PUT]
     const onUpdateStudent = (id: string) => {
-        return useMutation((data: Partial<Student>) => updateStudent(id, data), {
+        return useMutation((data: Partial<Student>) => StudentServices.updateStudent(id, data), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
-                if (data.student)
-                    enqueueSnackbar('Cập nhật sinh viên thành công', { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
+                enqueueSnackbar('Cập nhật sinh viên thành công', { variant: 'success' })
+                queryClient.invalidateQueries({
+                    queryKey: [QueryStudent.getAllStudent,
+                        termId,
+                        majorId,
+                    getQueryField('limit'),
+                    getQueryField('page'),
+                    getQueryField('searchField'),
+                    getQueryField('sort'),
+                    getQueryField('keywords')]
+                })
                 queryClient.invalidateQueries({ queryKey: [QueryStudent.getStudentById, id] })
-            }
-            ,
-            onError() {
-                enqueueSnackbar('Cập nhật sinh viên thất bại, thử lại', { variant: 'error' })
-
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
+
+    //[PUT]
     const onLockOnlyStudent = (id: string) => {
-        return useMutation((status: boolean) => lockOnlyStudent(id, status), {
+        return useMutation((status: boolean) => StudentServices.lockOnlyStudent(id, status), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar(`sinh viên thành công!`, { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryStudent.getAllStudent,
+                            termId,
+                            majorId,
+                        getQueryField('limit'),
+                        getQueryField('page'),
+                        getQueryField('searchField'),
+                        getQueryField('sort'),
+                        getQueryField('keywords')]
+                    })
                     queryClient.invalidateQueries({ queryKey: [`get-student-by-id`, id] })
                 }
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
+
+    //[POST]
     const onCreateStudent = () => {
-        return useMutation((data: Partial<Student>) => createStudent(data), {
+        return useMutation((data: Partial<Student>) => StudentServices.createStudent(data), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar('Tạo sinh viên thành công', { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryStudent.getAllStudent,
+                            termId,
+                            majorId,
+                        getQueryField('limit'),
+                        getQueryField('page'),
+                        getQueryField('searchField'),
+                        getQueryField('sort'),
+                        getQueryField('keywords')]
+                    })
+                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getCountOfStudent] })
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryStudent.getCountOfStudent]
+                    })
                 }
             }
             ,
-            onError() {
-                enqueueSnackbar('Tạo sinh viên thất bại, thử lại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
+    const handleGetStudentsToExport = () => {
+        return useQuery([QueryStudent.getStudentsToExport, termId, majorId], () => StudentServices.getStudentsToExport(termId, majorId))
+    }
+    //[DELETE]
     const onDeleteStudent = () => {
-        return useMutation((id: string) => deleteStudent(id), {
+        return useMutation((id: string) => StudentServices.deleteStudent(id), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
-                if (data.success) {
-                    enqueueSnackbar("Xóa sinh viên ra khỏi học kì.", { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termStore.currentTerm.id, majorStore.currentMajor.id, getQueryField('limit'), getQueryField('page'), getQueryField('totalPage')] })
-                }
+                enqueueSnackbar("Xóa sinh viên ra khỏi học kì.", { variant: 'success' })
+                queryClient.invalidateQueries({
+                    queryKey: [QueryStudent.getAllStudent,
+                        termId,
+                        majorId,
+                    getQueryField('limit'),
+                    getQueryField('page'),
+                    getQueryField('searchField'),
+                    getQueryField('sort'),
+                    getQueryField('keywords')]
+                })
+                queryClient.invalidateQueries({
+                    queryKey: [QueryStudent.getCountOfStudent]
+                })
             }
             ,
-            onError() {
-                enqueueSnackbar('Tạo sinh viên thất bại, thử lại', { variant: 'error' })
-
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
 
+    //[PUT]
     const onResetPassword = () => {
-        return useMutation((username: string) => resetPasswordStudent(username), {
+        return useMutation((username: string) => StudentServices.resetPasswordStudent(username), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
                 if (data.success) {
                     enqueueSnackbar('Cấp lại mật khẩu thành công', { variant: 'success' })
                 }
             },
-            onError(error: any) {
-                if (error.status === 404)
-                    enqueueSnackbar(error.message, { variant: 'error' })
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
                 else
-                    enqueueSnackbar("Cập nhật mật khẩu thất bại", { variant: 'error' })
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
             }
         })
     }
 
     return {
+        paramTotalPage,
         studentStore,
-        onResetPassword,
-        onLockOnlyStudent,
         handleGetStudentById,
+        handleGetAllStudent,
+        handleGetSearchStudentBasic,
+        handleGetCountOfStudent,
+        handleGetStudentsToExport,
+        onDeleteStudent,
         onUpdateStudent,
         onCreateStudent,
-        handleGetAllStudent, onDeleteStudent
+        onResetPassword,
+        onLockOnlyStudent,
     }
 }

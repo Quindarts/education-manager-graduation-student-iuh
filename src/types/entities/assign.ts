@@ -1,9 +1,7 @@
-import Student from './student';
-import Topic from './topic';
 export enum TypeEvalution {
   ADVISOR = 'ADVISOR',
   REVIEWER = 'REVIEWER',
-  SESSION_HOST = 'SESSION_HOST',
+  REPORT = 'REPORT',
 }
 export default interface Assign {
   id: number;

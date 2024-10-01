@@ -1,12 +1,28 @@
 import { Student } from "@/types/entities";
 import axiosConfig from "./axiosConfig"
 
+//[GET] STUDENT
+export const getCountOfStudent: any = (termId: string) => {
+    return axiosConfig.get(`/api/v1/students/count?termId=${termId}`)
+}
+
+//[GET]
+export const getSearchStudentBasic: any = (termId: string, keywords: string, searchField: string) => {
+    const searchFieldSender = searchField ? searchField : 'studentName'
+    const keywordsSender = keywords ? keywords : ""
+    return axiosConfig.get(`/api/v1/students/search?termId=${termId}&keywords=${keywordsSender}&searchField=${searchFieldSender}`)
+}
+//[GET]
+export const getStudentsToExport: any = (termId: string, majorId: string) => {
+    return axiosConfig.get(`/api/v1/students/export?termId=${termId}&majorId=${majorId}`)
+}
 
 //[Admin role]
-export const getStudentOfSearch: any = (termId: string, majorId: string, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string) => {
-    let searchFieldSend = searchField ? searchField : "";
+export const getStudentOfSearch: any = (termId: string, majorId: string, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', sort: string, keywords: string) => {
+    let searchFieldSend = searchField ? searchField : "full_name";
     let keywordSend = keywords ? keywords : ""
-    return axiosConfig.get<ResponseType, any>(`/api/v1/students/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
+    let sortSend = sort ? sort : "ASC"
+    return axiosConfig.get<ResponseType, any>(`/api/v1/students/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}}&sort=${sortSend}`);
 }
 //[GET]
 export const getStudentsNoHaveGroup: any = (termId: string) => {

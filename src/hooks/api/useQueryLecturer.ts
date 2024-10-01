@@ -1,164 +1,217 @@
 import { queryClient } from '@/providers/ReactQueryClientProvider';
-import { createLecturer, deleteLecturerById, getAllLecturer, getLecturerById, searchLecturerAdmin, updateLecturerById } from "@/services/apiLecturer"
-import { importLecturerTerm } from '@/services/apiLecturerTerm';
-import { setKeywords, setParams, setTypeRender } from '@/store/slice/lecturer.slice';
 import { useSnackbar } from 'notistack';
 import { useMutation, useQuery } from "react-query"
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useTerm } from './useQueryTerm';
 import { QueryKeysGroupLecturer } from './useQueryGroupLecturer';
 import { useMajor } from './useQueryMajor';
 import { Lecturer } from '@/types/entities';
 import { ResponseType } from '@/types/axios.type';
+import useParams from '../ui/useParams';
+import { setParamTotalPageLectuerMajor } from '@/store/slice/lecturer.slice';
+import { useDispatch } from 'react-redux';
+import { useTerm } from './useQueryTerm';
+import { QueryKeysLecturerTerm } from './useQueryLecturerTerm';
+import * as LecturerServices from '@/services/apiLecturer'
 
 export enum QueryKeysLecturer {
     getAllLecturer = 'getAllLecturer',
     createLecturer = 'createLecturer',
     getLecturerById = "getLecturerById",
     searchLecturerByField = 'searchLecturerByField',
-    managerActionLecturer = 'managerActionLecturer'
+    getCountOfMajorLecturer = "getCountOfMajorLecturer",
+    getLecturerToExport = "getLecturerToExport"
+
 }
 
 export const useLecturer = () => {
-    const { enqueueSnackbar } = useSnackbar()
-    const lecturers = useSelector((state: any) => state.lecturerSlice)
-    const { params, me, currentRoleRender, renderUi, keywords } = lecturers
-    const dispatch = useDispatch()
-    const { termStore } = useTerm()
+    //[REDUX]
+    const lecturerStore = useSelector((state: any) => state.lecturerSlice)
     const { majorStore } = useMajor()
+    const { termStore } = useTerm()
+    const majorId = majorStore.currentMajor.id
+    const termId = termStore.currentTerm.id
+    const { me, currentRoleRender, renderUi, paramTotalPage } = lecturerStore
+    const dispatch = useDispatch()
 
-    const handleManagerRenderActionLecturer = (limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email' | 'all',
-        keywords: string | number) => {
-        return useQuery([QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, majorStore.currentMajor.id, limit, page, renderUi, keywords], () => {
-            if (searchField !== 'all' && keywords != '')
-                return searchLecturerAdmin(termStore.currentTerm.id, majorStore.currentMajor.id, limit, page, searchField, keywords)
-            else
-                return getAllLecturer(termStore.currentTerm.id, majorStore.currentMajor.id, limit, page)
-        }, {
-            onSuccess(data: any) {
-                dispatch(setParams(data.params))
-                dispatch(setTypeRender(searchField))
-                dispatch(setKeywords(keywords))
-            },
-            staleTime: 10000,
+    //[PARAMS URL] 
+    const { getQueryField, setTotalPage, setLimit, setPage, setDefaultTypeSearch } = useParams()
+
+    //[OTHER]
+    const { enqueueSnackbar } = useSnackbar()
+
+    //[GET]
+    const handleGetCountOfMajorLecturer = () => {
+        return useQuery([QueryKeysLecturer.getCountOfMajorLecturer, majorId],
+            () => LecturerServices.getCountOfMajorLecturer(majorId), {
+            staleTime: 1000 * (60 * 20), // 10 min,
+            refetchInterval: 1000 * (60 * 20), //20 min
         })
     }
-    // [GET ALL]
-    // const handleGetAllLecturer = (termId: string | number, limit: number, page: number) => {
-    //     return useQuery([QueryKeysLecturer.getAllLecturer, ENUM_RENDER_LECTURER.ALL, termId, limit, page], () => getAllLecturer(termId, limit, page), {
 
-    //         onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
-    //             dispatch(setParams(data.params))
-    //             dispatch(setTypeRender(ENUM_RENDER_LECTURER.ALL))
-    //         },
-    //         staleTime: 10000,
-    //     })
-    // }
-    // [SEARCH ROLE ADMIN]
-    // const handleSearchLecturerAdmin = (termId: string | number, limit: number, page: number, searchField: 'full_name' | 'username' | 'phone' | 'email', keywords: string | number) => {
-    //     return useQuery([QueryKeysLecturer.searchLecturerByField, termId, limit, page, searchField, keywords], () => searchLecturerAdmin(termId, limit, page, searchField, keywords), {
-    //         onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
-    //             console.log(data.params);
-    //             dispatch(setParams(data.params))
-    //             dispatch(setTypeRender(ENUM_RENDER_LECTURER.SEARCH_FULLNAME))
-    //         },
-    //         staleTime: 10000,
-    //     })
-    // }
-
-
+    //[GET ALL]
+    const handleGetAllLecturer = () => {
+        getQueryField('limit') ? getQueryField('limit') : setLimit(10)
+        getQueryField('page') ? getQueryField('page') : setPage(1)
+        return useQuery(
+            [
+                QueryKeysLecturer.getAllLecturer,
+                majorId,
+                getQueryField('limit'),
+                getQueryField('page'),
+                getQueryField('searchField'),
+                getQueryField('sort'),
+                getQueryField('keywords')
+            ],
+            () => LecturerServices.getAllLecturer(
+                majorId,
+                getQueryField('limit'),
+                getQueryField('page'),
+                getQueryField('searchField'),
+                getQueryField('sort'),
+                getQueryField('keywords')
+            ),
+            {
+                onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params' | 'lecturers'>) {
+                    const total = data.params ? data.params.totalPage : 0
+                    setTotalPage(total)
+                    dispatch(setParamTotalPageLectuerMajor(total))
+                },
+                staleTime: 1000 * (60 * 10), // 10 min,
+                refetchInterval: 1000 * (60 * 20), //20 min
+                cacheTime: 1000,
+                keepPreviousData: true,
+            })
+    }
+    //[GET TO EXPORT]
+    const handleGetLecturerToExport = () => {
+        return useQuery([QueryKeysLecturer.getLecturerToExport, majorId], () => LecturerServices.getLecturerToExport(majorId), {
+            enabled: !!majorId
+        })
+    }
     //[GET BY ID]
     const handleGetLecturerById = (id: string) => {
-        return useQuery([QueryKeysLecturer.getLecturerById, id], () => getLecturerById(id), {
-            enabled: !!id
+        return useQuery([QueryKeysLecturer.getLecturerById, id], () => LecturerServices.getLecturerById(id), {
+            enabled: !!id,
+            cacheTime: 1000 * (60 * 1),
         })
     }
-    //[CREATE]
+
+    //[POST]
     const onCreateLecturer = () => {
-        return useMutation((lecturer: Lecturer) => createLecturer(lecturer), {
-            onSuccess() {
-                enqueueSnackbar("Tạo giang vien thành công", { variant: 'success' })
-                queryClient.invalidateQueries(
-                    {
-                        queryKey: [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, majorStore.currentMajor.id, params.limit, params.page, renderUi, keywords ? keywords : '']
+        return useMutation((lecturer: Partial<Lecturer>) => LecturerServices.createLecturer(lecturer),
+            {
+                onSuccess() {
+                    enqueueSnackbar("Thêm giang vien thành công", { variant: 'success' })
+                    queryClient.invalidateQueries(
+                        [QueryKeysLecturer.getAllLecturer, majorId,
+                        getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')]
+                    );
+                    queryClient.invalidateQueries(
+                        [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId]
+                    );
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
+
+                },
+                onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                    if (err.status < 500) {
+                        enqueueSnackbar(err.message, { variant: 'error' })
                     }
-                );
+                    else
+                        enqueueSnackbar("Thêm giảng vien thất bại", { variant: 'error' })
+                },
             },
-            onError() {
-                enqueueSnackbar("Tạo giảng vien thất bại", { variant: 'error' })
-            },
-        },
         );
     }
 
-    //[UPDATE]
-    const onUpdateLecturer = (id: string) => {
-        return useMutation((lecturer: Lecturer) => updateLecturerById(id, lecturer), {
-            onSuccess() {
-                enqueueSnackbar("Cập nhật giảng viên thành công", { variant: 'success' })
-                queryClient.invalidateQueries(
-                    {
-                        queryKey: [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, majorStore.currentMajor.id, params.limit, params.page, renderUi, keywords ? keywords : '']
+    //[POST]
+    const onResetPassword = () => {
+        return useMutation((lecturerId: string) => LecturerServices.resetPassword(lecturerId),
+            {
+                onSuccess() {
+                    enqueueSnackbar("Reset mật khẩu giảng viên thành công", { variant: 'success' })
+                },
+                onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                    if (err.status < 500) {
+                        enqueueSnackbar(err.message, { variant: 'error' })
                     }
-                );
-                queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getLecturerById, id] });
-                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, 'reviewer'] })
+                    else
+                        enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+                },
 
+            })
+    }
+    
 
-            },
-            onError() {
-                enqueueSnackbar("Cập nhật giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
-            },
+    //[PUT]
+    const onUpdateLecturer = (id?: string) => {
+        const lecturerId = id ? id : me.user.id
+        return useMutation((lecturer: Lecturer) => LecturerServices.updateLecturerById(lecturerId, lecturer),
+            {
+                onSuccess() {
+                    enqueueSnackbar("Cập nhật giảng viên thành công", { variant: 'success' })
+                    if (lecturerId === me.user.id) {
+                        queryClient.invalidateQueries({ queryKey: ['get-me'] });
+                    }
+                    queryClient.invalidateQueries(
+                        [QueryKeysLecturer.getAllLecturer, majorId,
+                        getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')]
+                    );
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturer.getLecturerById, id] });
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, 'reviewer'] })
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.getAllLectuerTermByParams, termId, "10", "1", "", "", ""]);
+                    queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
 
-        })
+                },
+                onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                    if (err.status < 500) {
+                        enqueueSnackbar(err.message, { variant: 'error' })
+                    }
+                    else
+                        enqueueSnackbar("Thêm giảng vien thất bại", { variant: 'error' })
+                },
+            })
     }
 
     //[DELETE]
     const onDeleteLecturer = () => {
-        return useMutation((id: string) => deleteLecturerById(id), {
+        return useMutation((id: string) => LecturerServices.deleteLecturerById(id), {
             onSuccess() {
                 enqueueSnackbar("Xóa giảng viên thành công", { variant: 'success' })
                 queryClient.invalidateQueries(
-                    {
-                        queryKey: [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, majorStore.currentMajor.id, params.limit, params.page, renderUi, keywords ? keywords : '']
-                    }
+                    [QueryKeysLecturer.getAllLecturer, majorId,
+                    getQueryField('limit'), 1, getQueryField('searchField'), getQueryField('keywords')]
                 );
-            },
-            onError() {
-                enqueueSnackbar("Xóa giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
-            }
-        })
-    }
+                queryClient.invalidateQueries(
+                    [QueryKeysLecturer.getAllLecturer, majorId,
+                    getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('keywords')]
+                );
+                queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
 
-    //[IMPORT]
-    const onImportLecturerTerm = () => {
 
-        return useMutation(() => importLecturerTerm(termStore.currentTerm.id, majorStore.currentMajor.id), {
-            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'params'>) {
-                if (data.success) {
-                    enqueueSnackbar("Cập nhật danh sách giảng viên thành công", { variant: 'success' })
-                    queryClient.invalidateQueries(
-                        [QueryKeysLecturer.managerActionLecturer, termStore.currentTerm.id, majorStore.currentMajor.id, params.limit, params.page, renderUi, keywords ? keywords : '']
-                    );
-                };
             },
-            onError() {
-                enqueueSnackbar("Cập nhật danh sách giảng viên thất bại vui lòng thử lại sau", { variant: 'error' })
-            }
+            onError(err: Pick<ResponseType, 'status' | 'message'>) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+            },
         })
     }
 
     return {
-        params,
         me,
         currentRoleRender,
         renderUi,
+        paramTotalPage: paramTotalPage.lecturerMajor,
+        handleGetLecturerById,
+        handleGetAllLecturer,
+        handleGetCountOfMajorLecturer,
+        handleGetLecturerToExport,
         onCreateLecturer,
+        onResetPassword,
         onDeleteLecturer,
         onUpdateLecturer,
-        onImportLecturerTerm,
-        handleGetLecturerById, handleManagerRenderActionLecturer
     }
 }
 

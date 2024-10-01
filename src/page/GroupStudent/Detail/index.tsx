@@ -5,21 +5,26 @@ import { Paper } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import { useEffect } from 'react';
 
 function GroupStudentDetailPage() {
   const { pathname } = useLocation();
   const current = pathname.split('/');
   const grStudentId = `${current[current.length - 1]}`;
   const { handleGetGroupStudentById } = useGroupStudent();
-  const { data, isLoading, isFetching } = handleGetGroupStudentById(grStudentId);
-
+  const { data, isLoading, isFetching, refetch } = handleGetGroupStudentById(grStudentId);
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={1}>
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager icon='mingcute:group-fill'>{data.groupStudent.name}</TitleManager>
+          <TitleManager icon='mingcute:group-fill'>
+            Chi tiết nhóm sinh viên {data.groupStudent.info.name}
+          </TitleManager>
           <Box mt={4}>
             <TabPanelUI groupStudent={data.groupStudent} />
           </Box>

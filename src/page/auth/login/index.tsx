@@ -13,18 +13,29 @@ import { Icon } from '@iconify/react';
 import { useAuth } from '@/hooks/api/useAuth';
 import { CircularProgress, Link } from '@mui/material';
 import { IAuth } from '@/types/entities/user';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 
+const LoginValidationSchema = Yup.object({
+  username: Yup.string()
+    .matches(/^\d{6,}$/, 'Tên đăng nhập chỉ gồm chữ số và lớn hơn 6 ký tự')
+    .required('Tên đăng nhập không được để trống'),
+  password: Yup.string()
+    .min(8, 'Mật khẩu chứa ít nhất 8 ký tự')
+    .required('Mật khẩu không được để trống'),
+});
 export default function Login() {
   const { handleLogin } = useAuth();
   const { mutate: mutateLogin, isLoading } = handleLogin();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show: boolean) => !show);
-
+  const navigate = useNavigate();
   const formik = useFormik<IAuth>({
     initialValues: {
       username: '',
       password: '',
     },
+    validationSchema: LoginValidationSchema,
     onSubmit: (values: IAuth, {}: FormikHelpers<IAuth>) => {
       mutateLogin(values);
     },
@@ -46,7 +57,7 @@ export default function Login() {
                 pt: 14,
               }}
             >
-              <img width={150} height={60} src='/images/logo-light.png' alt='logo_app' />
+              <img width={150} height={60} src='/images/logo-light.webp' alt='logo_app' />
               <Typography
                 mt={10}
                 variant='h4'
@@ -119,9 +130,11 @@ export default function Login() {
                 }}
               />
               <Box textAlign={'end'}>
-                <Link sx={{ cursor: 'pointer' }}>Quên mật khẩu?</Link>
+                <Link onClick={() => navigate('/auth/forgot-password')} sx={{ cursor: 'pointer' }}>
+                  Quên mật khẩu?
+                </Link>
               </Box>
-              <Button
+              {/* <Button
                 variant='contained'
                 type='submit'
                 size='large'
@@ -129,6 +142,23 @@ export default function Login() {
                 fullWidth
                 color='primary'
               >
+
+              <Typography
+                variant='body1'
+                mb={4}
+                onClick={() => navigate('/auth/forgot-password')}
+                sx={{
+                  '&:hover': {
+                    color: 'primary.dark',
+                    cursor: 'pointer',
+                  },
+                }}
+                color='initial'
+                textAlign={'end'}
+              >
+                Quên mật khẩu ?
+              </Typography> */}
+              <Button variant='contained' type='submit' fullWidth color='primary'>
                 Đăng nhập
                 {isLoading && (
                   <CircularProgress

@@ -1,6 +1,6 @@
 import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Tooltip } from '@mui/material';
 import AddModal from '../Modal/AddModal';
 import React, { useState } from 'react';
 
@@ -15,20 +15,18 @@ function HeaderTerm() {
 
   return (
     <>
-      <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={4}>
-        <Box flex={1} display={'flex'} gap={2} width={'full'}>
-          <Box width={200}>
-            <DropDown placeholder='Tìm kiếm theo' options={[]} />
-          </Box>
-          <TextField fullWidth size='small' placeholder='Tim kiếm học kì..' />
-        </Box>
-        <Button size='small' onClick={handleOpenModal} color='error' type='button' variant='contained'>
-          <Icon icon='lets-icons:add-round' width={20} />
-          Tạo mới học kì
-        </Button>
-        <Button size='small' color='warning' type='button' sx={{ color: 'white' }} variant='contained'>
-          <Icon icon='carbon:clean' color='yellow' width={20} /> Làm mới
-        </Button>
+      <Box mb={4} display={'flex'} justifyContent={'end'} flexWrap={'wrap'} gap={4}>
+        <Tooltip onClick={handleOpenModal} title='Tạo học kì'>
+          <Button
+            sx={{ p: 0, height: 30}}
+            size='small'
+            color='error'
+            type='button'
+            variant='contained'
+          >
+            <Icon icon='lets-icons:add-round' width={20} />
+          </Button>
+        </Tooltip>
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
     </>

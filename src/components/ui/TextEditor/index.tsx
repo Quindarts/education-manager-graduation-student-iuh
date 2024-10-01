@@ -8,9 +8,10 @@ interface TextEditorPropsType extends ReactQuillProps {
   value: string;
   errors?: boolean;
   helperText?: string;
+  height?: number | string;
 }
 function TextEditor(props: TextEditorPropsType) {
-  const { label, handleSetValue, id, value, errors, helperText, ...rest } = props;
+  const { label, handleSetValue, id, value, errors, helperText, height, ...rest } = props;
   return (
     <FormControl sx={{ width: '100%' }}>
       {label && <FormLabel sx={{ color: 'grey.900', fontWeight: 600, mb: 2 }}>{label}</FormLabel>}
@@ -18,7 +19,7 @@ function TextEditor(props: TextEditorPropsType) {
         {...rest}
         theme='snow'
         id={id}
-        style={{ border: errors ? '1px solid #fb605d' : '', borderRadius: 6 }}
+        style={{ border: errors ? '1px solid #fb605d' : '', borderRadius: 6, height: height }}
         value={`${value}`}
       />
       {errors && <FormHelperText sx={{ color: 'error.main' }}>{helperText}</FormHelperText>}

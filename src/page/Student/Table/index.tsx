@@ -1,44 +1,34 @@
 import Table from '@/components/ui/Table/Table';
-import { dummyStudentData } from '@/dummy';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import EditInfoModal from '../Modal/EditInfoModal';
 import EditStatus from '../Modal/EditStatus';
 import DeleteModal from '../Modal/DeleteModal';
 import { checkGender } from '@/utils/validations/person.validation';
-import ModalUpload from '@/components/ui/Upload';
-import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import ResetPassword from '../Modal/ResetPassword';
 import EditStatusMuiltiStudent from '../Modal/EditStatusMuiltiStudentModal';
 import { CustomToolbar } from './custom';
 
-const TRAINING_DROP_VALUE = [
-  { _id: 'UNIVERSITY', name: 'Đại học' },
-  { _id: 'COLLEGE', name: 'Cao đẳng' },
-];
-const convertTraning = (tran: string) => {
-  if (tran === 'UNIVERSITY') return 'Đại học';
-  else return 'Cao đẳng';
-};
 function TableManagamentStudent(props: any) {
-  const { rows, totalItems, currentTermId, totalPage, page, handleChangePage } = props;
-
-  const [openEditInfoModal, setOpenEditInfoModal] = useState({ studentId: '', isOpen: false });
-
-  const { termStore } = useTerm();
+  const { rows, totalItems, limit, handleChangeLimit, totalPage, page, handleChangePage } = props;
+  const [openEditInfoModal, setOpenEditInfoModal] = useState({
+    studentId: '',
+    name: '',
+    isOpen: false,
+  });
 
   const handleCloseEditInfoModal = () => {
     setOpenEditInfoModal({ ...openEditInfoModal, isOpen: false });
   };
-  const handleOpenInfoModal = (studentId: string) => {
-    setOpenEditInfoModal({ studentId, isOpen: true });
+  const handleOpenInfoModal = (studentId: string, name: string) => {
+    setOpenEditInfoModal({ studentId, name, isOpen: true });
   };
 
   const [openEditStatusStudentModal, setOpenEditStatusStudentModal] = useState({
     studentId: '',
+    name: '',
     status: true,
     isOpen: false,
   });
@@ -46,13 +36,14 @@ function TableManagamentStudent(props: any) {
   const handleCloseEditStatusStudentModal = () => {
     setOpenEditStatusStudentModal({ ...openEditStatusStudentModal, isOpen: false });
   };
-  const handleOpenStatusStudentModal = (studentId: string, status: boolean) => {
-    setOpenEditStatusStudentModal({ studentId, status, isOpen: true });
+  const handleOpenStatusStudentModal = (studentId: string, name: string, status: boolean) => {
+    setOpenEditStatusStudentModal({ studentId, status, name, isOpen: true });
   };
 
   //
   const [openResetPasswordStudentModal, setOpenResetPasswordStudentModal] = useState({
     studentId: '',
+    name: '',
     username: '',
     isOpen: false,
   });
@@ -60,20 +51,25 @@ function TableManagamentStudent(props: any) {
   const handleCloseResetPasswordStudentModal = () => {
     setOpenResetPasswordStudentModal({ ...openResetPasswordStudentModal, isOpen: false });
   };
-  const handleOpenResetPasswordStudentModal = (studentId: string, username: string) => {
-    setOpenResetPasswordStudentModal({ studentId, username, isOpen: true });
+  const handleOpenResetPasswordStudentModal = (
+    studentId: string,
+    name: string,
+    username: string,
+  ) => {
+    setOpenResetPasswordStudentModal({ studentId, name, username, isOpen: true });
   };
 
   const [openDeleteStudentModal, setOpenDeleteStudentModal] = useState({
     studentId: '',
+    name: '',
     isOpen: false,
   });
 
   const handleCloseDeleteStudentModal = () => {
     setOpenDeleteStudentModal({ ...openDeleteStudentModal, isOpen: false });
   };
-  const handleOpenDeleteStudentModal = (studentId: string) => {
-    setOpenDeleteStudentModal({ studentId, isOpen: true });
+  const handleOpenDeleteStudentModal = (studentId: string, name: string) => {
+    setOpenDeleteStudentModal({ studentId, name, isOpen: true });
   };
 
   const [openEditStatusMultiStudent, setOpenEditStatusMultiStudent] = useState<{
@@ -91,135 +87,148 @@ function TableManagamentStudent(props: any) {
     setOpenEditStatusMultiStudent({ listStudent, isOpen: true });
   };
 
-  const basicColumns: GridColDef[] = [
-    {
-      headerName: 'MSSV',
-      field: 'username',
-      flex: 0.6,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell(params) {
-        return (
-          <Typography variant='body1' fontWeight={600} color='primary'>
-            {params.row.username}
-          </Typography>
-        );
+  const basicColumns: GridColDef[] = useMemo(
+    () => [
+      {
+        headerName: 'MSSV',
+        field: 'username',
+        flex: 0.5,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' fontWeight={500}>
+              {params.row.username}
+            </Typography>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Họ & Tên đệm',
-      field: 'firstName',
-      flex: 0.7,
-      headerAlign: 'center',
-      renderCell(params) {
-        return (
-          <Typography variant='body1' color='initial'>
-            {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
-          </Typography>
-        );
+      {
+        headerName: 'Họ & Tên đệm',
+        field: 'firstName',
+        flex: 0.7,
+        headerAlign: 'center',
+        align: 'left',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' color='initial'>
+              {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
+            </Typography>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Tên',
-      field: 'lastname',
-      flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell(params) {
-        return (
-          <Typography variant='body1' color='initial'>
-            {params.row.fullName.trim().split(' ').pop()}
-          </Typography>
-        );
+      {
+        headerName: 'Tên',
+        field: 'lastName',
+        flex: 0.5,
+        headerAlign: 'center',
+        align: 'left',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' color='initial'>
+              {params.row.fullName.trim().split(' ').pop()}
+            </Typography>
+          );
+        },
       },
-    },
 
-    {
-      headerName: 'Email',
-      field: 'email',
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Giới tính',
-      field: 'gender',
-      flex: 0.5,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => {
-        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
+      {
+        headerName: 'Email',
+        field: 'email',
+        flex: 1.5,
+        align: 'left',
+        headerAlign: 'center',
+        renderCell(params) {
+          return (
+            <Typography variant='h6' fontSize='14px' color='grey.900'>
+              {params.row.email ? params.row.email : 'Chưa có thông tin'}
+            </Typography>
+          );
+        },
       },
-    },
-    {
-      headerName: 'Lớp danh nghĩa',
-      field: 'clazzName',
-      flex: 0.7,
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      headerName: 'Trạng thái',
-      field: 'isActive',
-      flex: 0.7,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params: any) => (
-        <Box>
-          <Button
-            variant='contained'
-            sx={{ py: 0, fontSize: 12 }}
-            onClick={() => handleOpenStatusStudentModal(params.row.id, params.row.isActive)}
-            color={params.row.isActive ? 'success' : 'error'}
-          >
-            {' '}
-            <Icon
-              width={20}
-              icon={params.row.isActive ? 'bi:unlock' : 'material-symbols:lock-outline'}
-            />
-            {params.row.isActive ? 'Đang mở' : 'Bị khóa'}
-          </Button>
-        </Box>
-      ),
-    },
-    {
-      headerName: 'Chức năng',
-      field: 'name8',
-      flex: 0.6,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params: any) => (
-        <Box display={'flex'} gap={2}>
-          <Tooltip title='Cập nhật thông tin'>
-            <IconButton size='small' onClick={() => handleOpenInfoModal(params.row.id)}>
-              <Icon icon='emojione:pencil' />
-            </IconButton>
-          </Tooltip>
-          <Box></Box>
-          <Tooltip title='Cấp lại mật khẩu'>
-            <IconButton
-              color='primary'
-              size='small'
+      {
+        headerName: 'Giới tính',
+        field: 'gender',
+        flex: 0.5,
+        align: 'left',
+
+        headerAlign: 'center',
+        renderCell: (params: any) => {
+          return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
+        },
+      },
+      {
+        headerName: 'Lớp danh nghĩa',
+        field: 'clazzName',
+        flex: 0.7,
+        align: 'left',
+
+        headerAlign: 'center',
+      },
+      {
+        headerName: 'Chức năng',
+        field: 'name8',
+        flex: 1,
+        align: 'center',
+        headerAlign: 'center',
+        renderCell: (params: any) => (
+          <Box display={'flex'} gap={3}>
+            <Tooltip
               onClick={() =>
-                handleOpenResetPasswordStudentModal(params.row.id, params.row.username)
+                handleOpenStatusStudentModal(
+                  params.row.id,
+                  params.row.fullName,
+                  params.row.isActive,
+                )
               }
+              title={params.row.isActive ? 'Tài khoản đang hoạt động' : 'Tài khoản đã bị khóa'}
             >
-              <Icon width={20} icon='wpf:password1' />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Xóa sinh viên'>
-            <IconButton
-              color='error'
-              size='small'
-              onClick={() => handleOpenDeleteStudentModal(params.row.id)}
+              <IconButton size='small' color={params.row.isActive ? 'success' : 'error'}>
+                <Icon
+                  width={20}
+                  style={{ color: '#034eb1' }}
+                  icon={params.row.isActive ? 'bi:unlock' : 'material-symbols:lock-outline'}
+                />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip
+              onClick={() => handleOpenInfoModal(params.row.id, params.row.fullName)}
+              title='Cập nhật thông tin'
             >
-              <Icon icon='mdi:trash' />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ];
+              <IconButton size='small'>
+                <Icon width={20} icon='fa-solid:user-edit' style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+            <Box></Box>
+            <Tooltip
+              onClick={() =>
+                handleOpenResetPasswordStudentModal(
+                  params.row.id,
+                  params.row.fullName,
+                  params.row.username,
+                )
+              }
+              title='Cấp lại mật khẩu'
+            >
+              <IconButton color='primary' size='small'>
+                <Icon icon='carbon:password' width={20} style={{ color: '#0288d1' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              onClick={() => handleOpenDeleteStudentModal(params.row.id, params.row.fullName)}
+              title='Xóa sinh viên'
+            >
+              <IconButton color='error' size='small'>
+                <Icon width={20} icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        ),
+      },
+    ],
+    [],
+  );
   const [rowSelectionModel, setRowSelectionModel] = React.useState<GridRowSelectionModel>([]);
 
   return (
@@ -242,30 +251,24 @@ function TableManagamentStudent(props: any) {
           sx={{
             bgcolor: 'white',
           }}
+          isLimit={true}
           columns={basicColumns}
           totalItems={totalItems}
           totalPages={totalPage}
-          page={page}
+          handleChangeLimit={handleChangeLimit}
           handleChangePage={handleChangePage}
-          disableColumnMenu
+          page={page}
+          limit={limit}
           disableColumnFilter
-          checkboxSelection
-          slots={{
-            toolbar: CustomToolbar,
-          }}
+          minHeight={400}
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
           }}
           rowSelectionModel={rowSelectionModel}
-          noData={
-            <ModalUpload
-              entityUpload={TypeEntityUpload.STUDENT}
-              termId={termStore.currentTerm.id}
-            />
-          }
         />
       </Box>
       <ResetPassword
+        name={openResetPasswordStudentModal.name}
         studentId={openResetPasswordStudentModal.studentId}
         open={openResetPasswordStudentModal.isOpen}
         onClose={handleCloseResetPasswordStudentModal}
@@ -277,12 +280,14 @@ function TableManagamentStudent(props: any) {
         onClose={handleCloseEditInfoModal}
       />
       <EditStatus
+        name={openEditStatusStudentModal.name}
         status={openEditStatusStudentModal.status}
         open={openEditStatusStudentModal.isOpen}
         onClose={handleCloseEditStatusStudentModal}
         studentId={openEditStatusStudentModal.studentId}
       />
       <DeleteModal
+        name={openDeleteStudentModal.name}
         open={openDeleteStudentModal.isOpen}
         onClose={handleCloseDeleteStudentModal}
         studentId={openDeleteStudentModal.studentId}

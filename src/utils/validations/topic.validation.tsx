@@ -60,8 +60,9 @@ export const getCardTopicStatus = (text: string) => {
 
   return (
     <Box
-      px={4}
-      py={2}
+      px={2}
+      width={'100%'}
+      py={1}
       textAlign={'center'}
       my={'auto'}
       borderRadius={1}

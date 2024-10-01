@@ -13,6 +13,7 @@ import { statusOfDate } from '@/utils/validations/term.validation';
 import EditInstruction from '../Modal/EditInstruction';
 import EditTopicReport from '../Modal/EditTopicReport';
 import EditTermDate from '../Modal/EditTermDate';
+import EditPreviewTopic from '../Modal/EditPreviewTopic';
 
 const checkStatusGroup = (startDate: any, endDate: any) => {
   let data: {
@@ -88,6 +89,22 @@ function TableManagamentTerm(props: any) {
   const handleOpenEditTopicRegister = (termId: any) => {
     setOpenModalEditTopicRegister({ termId: termId, isOpen: true });
   };
+
+  //Handle
+  const [openModalPublicTopicRegister, setOpenModalPublicTopicRegister] = useState({
+    isOpen: false,
+    termId: 0,
+  });
+  const handleClosePublicTopicRegister = () => {
+    setOpenModalPublicTopicRegister({
+      ...openModalPublicTopicRegister,
+      isOpen: false,
+    });
+  };
+  const handleOpenPublicTopicRegister = (termId: any) => {
+    setOpenModalPublicTopicRegister({ termId: termId, isOpen: true });
+  };
+
   //Handle
   const [openModalInstruction, setOpenModalInstruction] = useState({
     isOpen: false,
@@ -157,21 +174,15 @@ function TableManagamentTerm(props: any) {
     {
       headerName: 'Tên Học Kỳ',
       field: 'name',
-      flex: 1.4,
+      flex: 1,
       headerAlign: 'center',
       align: 'center',
     },
-    // {
-    //   headerName: 'Chuyên ngành',
-    //   field: 'majorId',
-    //   flex: 1.4,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    // },
+
     {
-      headerName: 'Ngày Bắt đầu   -  Ngày kết thúc',
+      headerName: 'Ngày bắt đầu   -  kết thúc',
       field: 'startDate',
-      flex: 2,
+      flex: 1.5,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
@@ -206,12 +217,36 @@ function TableManagamentTerm(props: any) {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
             {checkStatusGroup(params.row.startChooseGroupDate, params.row.endChooseGroupDate)}
-            <Tooltip title='Cập nhật đăng ký nhóm'>
-              <IconButton
-                onClick={() => handleOpenEditGroupRegister(params.row.id)}
-                color='primary'
-                size='small'
-              >
+            <Tooltip
+              onClick={() => handleOpenEditGroupRegister(params.row.id)}
+              title='Cập nhật đăng ký nhóm'
+            >
+              <IconButton color='primary' size='small'>
+                <Icon icon='flat-color-icons:info' />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+    {
+      headerName: 'Công bố Đề tài',
+      field: 'startPublicTopicDate',
+      flex: 1,
+      headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          <Box display={'flex'} gap={4} alignItems={'center'}>
+            {checkStatusGroup(
+              formatDates(params.row.startPublicTopicDate),
+              formatDates(params.row.endPublicTopicDate),
+            )}
+            <Tooltip
+              onClick={() => handleOpenPublicTopicRegister(params.row.id)}
+              title='Cập nhật Công bố Đề tài'
+            >
+              <IconButton color='primary' size='small'>
                 <Icon icon='flat-color-icons:info' />
               </IconButton>
             </Tooltip>
@@ -232,12 +267,11 @@ function TableManagamentTerm(props: any) {
               formatDates(params.row.startChooseTopicDate),
               formatDates(params.row.endChooseTopicDate),
             )}
-            <Tooltip title='Cập nhật đăng ký Đề tài'>
-              <IconButton
-                onClick={() => handleOpenEditTopicRegister(params.row.id)}
-                color='primary'
-                size='small'
-              >
+            <Tooltip
+              onClick={() => handleOpenEditTopicRegister(params.row.id)}
+              title='Cập nhật đăng ký Đề tài'
+            >
+              <IconButton color='primary' size='small'>
                 <Icon icon='flat-color-icons:info' />
               </IconButton>
             </Tooltip>
@@ -258,7 +292,10 @@ function TableManagamentTerm(props: any) {
               formatDates(params.row.startDiscussionDate),
               formatDates(params.row.endDiscussionDate),
             )}
-            <Tooltip title='Cập nhật Phản biện'>
+            <Tooltip
+              onClick={() => handleOpenEditTopicRegister(params.row.id)}
+              title='Cập nhật Phản biện'
+            >
               <IconButton
                 onClick={() => handleOpenInstruction(params.row.id)}
                 color='primary'
@@ -281,8 +318,8 @@ function TableManagamentTerm(props: any) {
         return (
           <Box display={'flex'} gap={4} alignItems={'center'}>
             {checkStatusGroup(
-              formatDates(params.row.startPublicResultDate),
-              formatDates(params.row.endPublicResultDate),
+              formatDates(params.row.startReportDate),
+              formatDates(params.row.endReportDate),
             )}
             <Tooltip
               onClick={() => handleOpenTopicReport(params.row.id)}
@@ -297,7 +334,7 @@ function TableManagamentTerm(props: any) {
       },
     },
     {
-      headerName: 'Công bố kết quả',
+      headerName: 'Công bố KQ',
       field: 'name8',
       flex: 1,
       headerAlign: 'center',
@@ -309,7 +346,10 @@ function TableManagamentTerm(props: any) {
               formatDates(params.row.startPublicResultDate),
               formatDates(params.row.endPublicResultDate),
             )}
-            <Tooltip title='Cập nhật công bố kết quả'>
+            <Tooltip
+              onClick={() => handleOpenPublicResult(params.row.id)}
+              title='Cập nhật công bố kết quả'
+            >
               <IconButton
                 onClick={() => handleOpenPublicResult(params.row.id)}
                 color='primary'
@@ -323,21 +363,21 @@ function TableManagamentTerm(props: any) {
       },
     },
     {
-      headerName: '',
-      field: 'name9',
-      flex: 1,
+      headerName: 'Chức năng',
+      field: 'feature',
+      flex: 0.8,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={6}>
-          <Tooltip title='Xem thông tin học kì'>
-            <IconButton
-              onClick={() => {
-                handleOpenTermDetail(params.row.id);
-              }}
-              size='small'
-            >
-              <Icon icon='noto-v1:eye-in-speech-bubble' />
+          <Tooltip
+            onClick={() => {
+              handleOpenTermDetail(params.row.id);
+            }}
+            title='Xem thông tin học kì'
+          >
+            <IconButton size='small'>
+              <Icon width={20} icon='flat-color-icons:view-details' />
             </IconButton>
           </Tooltip>
           {/* <Tooltip title='Xóa học kì'>
@@ -362,17 +402,14 @@ function TableManagamentTerm(props: any) {
         rows={rows}
         sx={{
           bgcolor: 'white',
-          height: 600,
         }}
-        
+        minHeight={350}
         columns={basicColumns}
-        totalItems={1}
+        totalItems={rows.length}
         totalPages={1}
         page={1}
         handleChangePage={() => {}}
-        disableColumnMenu
         disableColumnFilter
-        disableColumnSelector
       />
       <EditTermDate
         termId={openModalEditTermDate.termId}
@@ -384,6 +421,12 @@ function TableManagamentTerm(props: any) {
         open={openModalEditGroupRegister.isOpen}
         onClose={handleCloseEditGroupRegister}
         termId={openModalEditGroupRegister.termId}
+      />
+      <EditPreviewTopic
+        id={openModalPublicTopicRegister.termId}
+        termId={openModalPublicTopicRegister.termId}
+        open={openModalPublicTopicRegister.isOpen}
+        onClose={handleClosePublicTopicRegister}
       />
       <EditTopicRegister
         id={openModalEditTopicRegister.termId}

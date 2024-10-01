@@ -15,6 +15,7 @@ const ROUTE_LABELS: { [key: string]: string } = {
 
   '/students': 'Quản lý Sinh viên',
   '/notifications': 'Quản lý Thông báo',
+  '/notifications/create': 'Tạo thông báo',
   '/my-group-lecturers': 'Nhóm giảng viên',
   '/my-group-lecturers/detail': 'Chi tiết Nhóm giảng viên của tôi',
   '/group-students': 'Quản lý Nhóm Sinh viên',
@@ -29,6 +30,7 @@ const ROUTE_LABELS: { [key: string]: string } = {
   '/reviews': 'Quản lý Tiêu chí đánh giá',
 
   '/group-supports': 'Quản lý Nhóm hướng dẫn',
+  '/group-supports/detail': 'Chi tiết nhóm hướng dẫn',
   '/group-supports/score': 'Điểm Nhóm hướng dẫn',
   '/group-supports/score/group_student_id': 'Chi tiết điểm nhóm',
   '/files': 'Tệp đã tải lên',
@@ -36,6 +38,7 @@ const ROUTE_LABELS: { [key: string]: string } = {
   '/users/:userId': 'Chi tiết người dùng',
 
   '/profile': 'Thông tin cá nhân',
+  '/profile/update-password': 'Cập nhật mật khẩu',
   '/auth/register': 'Đăng ký',
   '/auth/login': 'Đăng nhập',
   '/auth/role': 'Vai trò',

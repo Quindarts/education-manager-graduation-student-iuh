@@ -14,7 +14,10 @@ interface CalendarPropsType extends DatePickerProps<any> {
 }
 const ErrorStyled = styled(ErrorMessage)`
   div {
-    color: 'red!important';
+    color: '#ca4f36';
+    font-size: '12px';
+    margin-top: '6px';
+    margin-left: '16px';
   }
 `;
 function Calendar(props: CalendarPropsType) {
@@ -25,7 +28,7 @@ function Calendar(props: CalendarPropsType) {
         {label && (
           <InputLabel
             htmlFor={id}
-            sx={{ mb: 4, color: 'grey.900', fontWeight: '500', fontSize: '13px' }}
+            sx={{ mb: 4, color: 'grey.900', fontWeight: 'bold', fontSize: '13px' }}
           >
             {label}
           </InputLabel>
@@ -43,13 +46,13 @@ function Calendar(props: CalendarPropsType) {
           }}
         />
         {error && (
-          <ErrorStyled
-            style={{
-              color: '#ca4f36',
-              fontSize: '12px',
-              marginTop: '6px',
-              marginLeft: '16px',
-            }}
+          <ErrorMessage
+            // style={{
+            //   color: '#ca4f36',
+            //   fontSize: '12px',
+            //   marginTop: '6px',
+            //   marginLeft: '16px',
+            // }}
             name={`${name}`}
             component={'span'}
           />
