@@ -11,7 +11,7 @@ import { FormikHelpers, useFormik } from 'formik';
 import CustomTextField from '@/components/ui/CustomTextField';
 import { Icon } from '@iconify/react';
 import { useAuth } from '@/hooks/api/useAuth';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Link } from '@mui/material';
 import { IAuth } from '@/types/entities/user';
 
 export default function Login() {
@@ -34,7 +34,7 @@ export default function Login() {
   return (
     <Grid container spacing={2} pb={8}>
       <Grid item xs={12}>
-        <Card>
+        <Card sx={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;' }}>
           <CardContent>
             <Box
               sx={{
@@ -42,31 +42,33 @@ export default function Login() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyItems: 'center',
+                px: 10,
+                pt: 14,
               }}
             >
               <img width={150} height={60} src='/images/logo-light.png' alt='logo_app' />
               <Typography
                 mt={10}
-                variant='h3'
+                variant='h4'
                 align='center'
                 lineHeight={1.6}
-                fontWeight={700}
+                fontWeight={600}
                 color='error.dark'
               >
                 TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH
               </Typography>
               <Typography
-                variant='h5'
+                variant='h6'
                 mt={4}
                 fontWeight={600}
                 align='center'
-                color={'primary.main'}
+                color={'primary.dark'}
                 mb={6}
               >
                 Đăng nhập vào trang quản lý khóa luận
               </Typography>
             </Box>
-            <Box component='form' onSubmit={handleSubmit} mt={8} p={4} method='POST'>
+            <Box component='form' onSubmit={handleSubmit} mt={8} pb={20} px={4} method='POST'>
               <CustomTextField
                 label='Tên đăng nhập'
                 error={Boolean(errors.username) && touched.username}
@@ -75,11 +77,15 @@ export default function Login() {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 placeholder='Nhập tên đăng nhập'
+                required
+                // size='medium'
                 id='username'
                 name='username'
               />
               <CustomTextField
                 label='Mật khẩu'
+                required
+                // size='medium'
                 error={Boolean(errors.password) && touched.password}
                 helperText={touched.password && errors.password}
                 onBlur={handleBlur}
@@ -112,7 +118,17 @@ export default function Login() {
                   ),
                 }}
               />
-              <Button variant='contained' type='submit' fullWidth color='primary'>
+              <Box textAlign={'end'}>
+                <Link sx={{ cursor: 'pointer' }}>Quên mật khẩu?</Link>
+              </Box>
+              <Button
+                variant='contained'
+                type='submit'
+                size='large'
+                sx={{ mt: 10 }}
+                fullWidth
+                color='primary'
+              >
                 Đăng nhập
                 {isLoading && (
                   <CircularProgress
