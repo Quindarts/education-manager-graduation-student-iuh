@@ -40,7 +40,7 @@ function MainLayout() {
                   maxWidth: '100vw',
                   width: '100%',
                   minHeight: '100vh',
-                  backgroundColor: 'grey.100',
+                  backgroundColor: '#f8f9fd',
                 }}
               >
                 <Box

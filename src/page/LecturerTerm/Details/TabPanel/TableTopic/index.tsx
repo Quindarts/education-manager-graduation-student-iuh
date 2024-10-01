@@ -10,22 +10,23 @@ function TableTopic(props) {
     {
       headerName: 'Mã đề tài',
       field: 'key',
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'right',
+      align: 'right',
       flex: 0.2,
     },
     {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 2,
-      headerAlign: 'center',
+      headerAlign: 'left',
+      align: "left",
     },
     {
       headerName: 'SL nhóm đề tài',
       field: 'quantityGroupMax',
       flex: 0.5,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'right',
+      align: 'right',
       renderCell: (param) => {
         return (
           <Box>

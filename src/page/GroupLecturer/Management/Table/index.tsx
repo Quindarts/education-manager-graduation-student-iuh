@@ -25,7 +25,7 @@ function TableManagamentGroupLecturer(props: any) {
     {
       headerName: 'Mã nhóm',
       field: 'name',
-      flex: 0.2,
+      flex: 0.3,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params: any) => {
@@ -39,7 +39,7 @@ function TableManagamentGroupLecturer(props: any) {
       },
     },
     {
-      headerName: 'Thành viên ',
+      headerName: 'Thông tin thành viên ',
       field: 'name3',
       headerAlign: 'left',
       flex: 1,

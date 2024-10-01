@@ -19,7 +19,7 @@ const StudentTemplate = lazy(() => import('@/page/Student'));
 const TopicTemplate = lazy(() => import('@/page/Topic'));
 const ReviewManagerTemplate = lazy(() => import('@/page/ReviewManager'));
 const LecturerManagementTemplate = lazy(() => import('@/page/Lecturer/Management'));
-const DetailsLecturerTemplate = lazy(() => import('@/page/Lecturer/Details'));
+// const DetailsLecturerTemplate = lazy(() => import('@/page/Lecturer/Details'));
 const DetailLecturerTermTemplate = lazy(() => import('@/page/LecturerTerm/Details'));
 
 const GroupStudentManagementTemplate = lazy(() => import('@/page/GroupStudent/Management'));
@@ -52,7 +52,7 @@ function Routing() {
         <Route path={APP_ROUTES.TERM.MANAGEMENT} element={<TermTemplate />} />
         //ROUTE LECTURER
         <Route path={APP_ROUTES.LECTURER.MANAGEMENT} element={<LecturerManagementTemplate />} />
-        <Route path={APP_ROUTES.LECTURER.DETAILS} element={<DetailsLecturerTemplate />} />
+        {/* <Route path={APP_ROUTES.LECTURER.DETAILS} element={<DetailsLecturerTemplate />} /> */}
         <Route
           path={APP_ROUTES.LECTURER_TERM.MANAGEMENT}
           element={<LecturerTermManagementTemplate />}

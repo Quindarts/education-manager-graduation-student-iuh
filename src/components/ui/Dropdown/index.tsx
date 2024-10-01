@@ -34,7 +34,7 @@ const DropDown: React.FC<SelectPropsType> = (props: SelectPropsType) => {
         fullWidth
         {...restProps}
         sx={{
-          transition: 'all 0.3s ease-in-out',
+          transition: 'all 0.5s ease-in-out',
           background: 'white',
           height: 38,
         }}

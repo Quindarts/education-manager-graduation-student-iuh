@@ -1,8 +1,7 @@
 import Table from '@/components/ui/Table/Table';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import { useState } from 'react';
 
 function TableManagementGroupAssign(props: any) {
   const { rows } = props;
@@ -14,8 +13,8 @@ function TableManagementGroupAssign(props: any) {
       headerName: 'Mã nhóm',
       field: 'name',
       flex: 0.6,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'right',
+      align: 'right',
     },
     {
       headerName: 'Giảng viên hướng dẫn',
@@ -53,7 +52,7 @@ function TableManagementGroupAssign(props: any) {
     {
       headerName: 'Mã nhóm',
       field: 'name',
-      flex: 0.6,
+      flex: 0.5,
       headerAlign: 'center',
       align: 'center',
     },
@@ -83,7 +82,7 @@ function TableManagementGroupAssign(props: any) {
           <Box>
             {params.row.members.map((mem: any) => (
               <Typography variant='body1' color='initial'>
-                MSSV: {mem.username} - {mem.fullName}
+                {mem.username} - {mem.fullName}
               </Typography>
             ))}
           </Box>

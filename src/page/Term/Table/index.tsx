@@ -174,17 +174,17 @@ function TableManagamentTerm(props: any) {
     {
       headerName: 'Tên Học Kỳ',
       field: 'name',
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
+      flex: 1.2,
+      headerAlign: 'left',
+      align: 'left',
     },
 
     {
-      headerName: 'Ngày bắt đầu   -  kết thúc',
+      headerName: 'Ngày bắt đầu  -  kết thúc',
       field: 'startDate',
-      flex: 1.5,
-      headerAlign: 'center',
-      align: 'center',
+      flex: 1.7,
+      headerAlign: 'left',
+      align: 'left',
       renderCell: (params) => {
         return (
           <>

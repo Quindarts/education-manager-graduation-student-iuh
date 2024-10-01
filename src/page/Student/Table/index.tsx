@@ -92,12 +92,12 @@ function TableManagamentStudent(props: any) {
       {
         headerName: 'MSSV',
         field: 'username',
-        flex: 0.5,
-        headerAlign: 'center',
-        align: 'center',
+        flex: 0.4,
+        headerAlign: 'right',
+        align: 'right',
         renderCell(params) {
           return (
-            <Typography variant='h6' fontWeight={500}>
+            <Typography variant='body1' fontWeight={400}>
               {params.row.username}
             </Typography>
           );
@@ -106,12 +106,12 @@ function TableManagamentStudent(props: any) {
       {
         headerName: 'Họ & Tên đệm',
         field: 'firstName',
-        flex: 0.7,
-        headerAlign: 'center',
+        flex: 0.9,
+        headerAlign: 'left',
         align: 'left',
         renderCell(params) {
           return (
-            <Typography variant='h6' color='initial'>
+            <Typography variant='body1' color='initial'>
               {params.row.fullName.trim().split(' ').slice(0, -1).join(' ')}
             </Typography>
           );
@@ -121,11 +121,11 @@ function TableManagamentStudent(props: any) {
         headerName: 'Tên',
         field: 'lastName',
         flex: 0.5,
-        headerAlign: 'center',
+        headerAlign: 'left',
         align: 'left',
         renderCell(params) {
           return (
-            <Typography variant='h6' color='initial'>
+            <Typography variant='body1' color='initial'>
               {params.row.fullName.trim().split(' ').pop()}
             </Typography>
           );
@@ -137,10 +137,10 @@ function TableManagamentStudent(props: any) {
         field: 'email',
         flex: 1.5,
         align: 'left',
-        headerAlign: 'center',
+        headerAlign: 'left',
         renderCell(params) {
           return (
-            <Typography variant='h6' fontSize='14px' color='grey.900'>
+            <Typography variant='body1' color='grey.900'>
               {params.row.email ? params.row.email : 'Chưa có thông tin'}
             </Typography>
           );
@@ -151,10 +151,9 @@ function TableManagamentStudent(props: any) {
         field: 'gender',
         flex: 0.5,
         align: 'left',
-
-        headerAlign: 'center',
+        headerAlign: 'left',
         renderCell: (params: any) => {
-          return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
+          return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
         },
       },
       {
@@ -163,7 +162,7 @@ function TableManagamentStudent(props: any) {
         flex: 0.7,
         align: 'left',
 
-        headerAlign: 'center',
+        headerAlign: 'left',
       },
       {
         headerName: 'Chức năng',

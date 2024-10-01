@@ -111,7 +111,7 @@ export default function Table(props: Props) {
           fontSize: {
             xs: 12,
             md: 12,
-            xl: 14,
+            xl: 13,
           },
           color: 'black',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
@@ -137,7 +137,7 @@ export default function Table(props: Props) {
           '& .MuiDataGrid-columnHeaders': {
             borderColor: 'text.disabled',
             bgcolor: 'primary.dark',
-            color: 'white',
+            color: 'grey.400',
             height: '50px!important',
             minHeight: '50px!important',
             fontSize: 14,

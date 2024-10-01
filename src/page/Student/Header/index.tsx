@@ -71,7 +71,7 @@ function HeaderStudent() {
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={SEARCH_DROP_VALUE}
             />
-            <Box width={118}>
+            <Box width={122}>
               <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
             </Box>
           </Box>

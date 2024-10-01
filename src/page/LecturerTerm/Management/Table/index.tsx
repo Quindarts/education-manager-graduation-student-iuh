@@ -28,12 +28,12 @@ function TableManagamentLecturer(props: any) {
     {
       headerName: 'Mã GV',
       field: 'username',
-      flex: 0.6,
-      headerAlign: 'center',
-      align: 'center',
+      flex:0.6,
+      headerAlign: 'right',
+      align: 'right',
       renderCell(params) {
         return (
-          <Typography variant='h6' fontWeight={500}>
+          <Typography variant='body1' fontWeight={400}>
             {params.row.username}
           </Typography>
         );

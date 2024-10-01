@@ -13,21 +13,21 @@ import { setAllTerm } from '@/store/slice/term.slice';
 
 const CARD_ROLE_TYPE = [
   {
-    icon: 'fluent-mdl2:party-leader',
+    icon: 'icomoon-free:user-tie',
     name: 'Chủ nhiệm ngành',
     role: EnumRole.HEAD_LECTURER,
     // numRole: 2,
     desc: 'Quyền Chủ nhiệm ngành lãnh đạo, quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
   },
   {
-    icon: 'ri:admin-line',
+    icon: 'eos-icons:admin-outlined',
     name: 'Quản trị viên',
     role: EnumRole.ADMIN,
     // numRole: 2,
     desc: 'Quyền quản trị viên quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
   },
   {
-    icon: 'ph:chalkboard-teacher',
+    icon: 'fa6-solid:user-graduate',
     name: 'Giảng viên',
     // numRole: 1,
 
@@ -36,7 +36,7 @@ const CARD_ROLE_TYPE = [
     desc: 'Trong hệ thống quản lý khóa luận, giảng viên hướng dẫn sinh viên, theo dõi tiến độ, và đánh giá chất lượng công trình.',
   },
   {
-    icon: 'grommet-icons:user-admin',
+    icon: 'vaadin:calendar-user',
     name: 'Chủ quản môn học',
     role: EnumRole.HEAD_COURSE,
     // numRole: 3,
@@ -63,9 +63,6 @@ function RolePage() {
   const { data: dataTermFecth, isSuccess: successTerm } = handleGetAllTermByMajor(
     data?.lecturer.majorId,
   );
-  // if (successTerm) {
-  //   dispatch(setAllTerm(dataTermFecth.terms));
-  // }
 
   const accessToken: string = getValueFromLocalStorage('accessToken') || '';
 
@@ -79,37 +76,35 @@ function RolePage() {
           display={'flex'}
           justifyContent={'center'}
           alignItems={'center'}
-          bgcolor={'rgba(0,0,0,0.5)'}
+          bgcolor={'rgba(0,0,0,0.1)'}
           zIndex={9999}
           top={0}
           bottom={0}
           left={0}
           right={0}
         >
-          <Paper>
-            <Box
-              sx={{
-                py: 10,
-                px: 10,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 10,
-              }}
-            >
-              {CARD_ROLE_TYPE.filter((item) => lecturerStore.me.roles.includes(item.role)).map(
-                (item, key) => (
-                  <CardRole
-                    name={item.name}
-                    desc={item.desc}
-                    role={item.role}
-                    icon={item.icon}
-                    key={key}
-                  />
-                ),
-              )}
-            </Box>
-          </Paper>
+          <Box
+            sx={{
+              py: 30,
+              px: 20,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 14,
+            }}
+          >
+            {CARD_ROLE_TYPE.filter((item) => lecturerStore.me.roles.includes(item.role)).map(
+              (item, key) => (
+                <CardRole
+                  name={item.name}
+                  desc={item.desc}
+                  role={item.role}
+                  icon={item.icon}
+                  key={key}
+                />
+              ),
+            )}
+          </Box>
         </Box>
       )}
       ;

@@ -64,11 +64,11 @@ function TableManagamentLecturer(props: any) {
       headerName: 'Mã giảng viên',
       field: 'username',
       flex: 0.6,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'right',
+      align: 'right',
       renderCell(params) {
         return (
-          <Typography variant='h6' fontWeight={500}>
+          <Typography variant='body1' fontWeight={400}>
             {params.row.username}
           </Typography>
         );
@@ -93,10 +93,10 @@ function TableManagamentLecturer(props: any) {
       headerName: 'Giới tính',
       field: 'gender',
       flex: 0.6,
-      headerAlign: 'left',
-      align: 'left',
+      headerAlign: 'center',
+      align: 'center',
       renderCell: (params: any) => {
-        return <Typography variant='h6'>{checkGender(params.row.gender)}</Typography>;
+        return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
       },
     },
 
@@ -107,17 +107,17 @@ function TableManagamentLecturer(props: any) {
       headerAlign: 'left',
       align: 'left',
       renderCell: (params: any) => {
-        return <Typography variant='h6'>{params.row.email}</Typography>;
+        return <Typography variant='body1'>{params.row.email}</Typography>;
       },
     },
     {
       headerName: 'SĐT',
       field: 'phone',
       flex: 0.6,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: 'right',
+      align: 'right',
       renderCell: (params: any) => {
-        return <Typography variant='h6'>{params.row.phone}</Typography>;
+        return <Typography variant='body1'>{params.row.phone}</Typography>;
       },
     },
     {

@@ -21,7 +21,6 @@ import TitleManager from '@/components/ui/Title';
 import useSidebar from '@/hooks/ui/useSidebar';
 import { keyframes } from '@emotion/react';
 
-
 const homePageIndex = 0;
 const drawerWidth = '250px';
 const hidedDrawerWidth = '76px';
@@ -146,7 +145,7 @@ export default function SidebarManager() {
   useLayoutEffect(() => {
     dispatch(setAllTerm(data?.terms));
   }, [majorSelectValue]);
-  
+
   useEffect(() => {
     fetchingCurrentTerm();
     if (
@@ -188,53 +187,66 @@ export default function SidebarManager() {
               display={'flex'}
               alignItems={'center'}
               justifyContent={'center'}
-              textTransform={'uppercase'}
+              // textTransform={'uppercase'}
               flexDirection={'column'}
               sx={{
-                background: 'linear-gradient(135deg, #083880, #001f3f, #00274d, #003366)',
                 transition: '0.3s all ease',
                 transform: isOpen ? 'translateX(0)' : 'translateX(-100px)',
                 opacity: isOpen ? 1 : 0,
               }}
               borderBottom={'0px solid #1467db'}
-              height={200}
+              height={240}
             >
-              <Box sx={{ mb: 10 }}>
+              <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                <img width={150} src='/images/logo_bg_white.webp' />
                 <Typography
                   textAlign={'center'}
                   variant='body1'
                   color={'grey.100'}
-                  fontWeight={500}
+                  fontWeight={600}
                   sx={{
                     opacity: 0.7,
-                    mb: 10,
+                    mb: 4,
+                    mt: 10,
+                    textTransform: 'uppercase',
                   }}
                 >
                   Danh mục quản lý
                 </Typography>
-                <Box sx={{ my: 10 }}>
+                <Box>
                   {isAdminRole ? (
-                    <DropDown
-                      onChange={(e: any) => {
-                        handleSelectMajor(e.target.value);
-                      }}
-                      defaultValue={majorSelectValue}
-                      options={convertMajorDropdown(majorStore.allMajor)}
-                    />
+                    <Box width={220}>
+                      <DropDown
+                        fullWidth
+                        onChange={(e: any) => {
+                          handleSelectMajor(e.target.value);
+                        }}
+                        defaultValue={majorSelectValue}
+                        options={convertMajorDropdown(majorStore.allMajor)}
+                      />
+                    </Box>
                   ) : (
-                    <TitleManager mb={10} color={'grey.300'} fontWeight={500} textAlign={'center'}>
-                      {lecturerStore.me.user.majorName}
+                    <TitleManager
+                      mb={10}
+                      color={'grey.400'}
+                      fontWeight={500}
+                      variant='h6'
+                      textTransform={'uppercase'}
+                      textAlign={'center'}
+                    >
+                      Ngành {lecturerStore.me.user.majorName}
                     </TitleManager>
                   )}
                 </Box>
-
-                <DropDown
-                  onChange={(e: any) => {
-                    handleSelectTerm(e.target.value);
-                  }}
-                  value={termSelectValue}
-                  options={convertTermDropdown(termStore.allTerm)}
-                />
+                <Box width={220}>
+                  <DropDown
+                    onChange={(e: any) => {
+                      handleSelectTerm(e.target.value);
+                    }}
+                    value={termSelectValue}
+                    options={convertTermDropdown(termStore.allTerm)}
+                  />
+                </Box>
               </Box>
             </Box>
             <Drawer
@@ -313,7 +325,12 @@ export default function SidebarManager() {
                       expandIcon={
                         <>
                           {item.children && isOpen && (
-                            <Icon width={20} height={20} icon='ic:outline-keyboard-arrow-down' />
+                            <Icon
+                              width={20}
+                              height={20}
+                              color='#2471e3'
+                              icon='ic:outline-keyboard-arrow-down'
+                            />
                           )}
                         </>
                       }
@@ -376,7 +393,7 @@ export default function SidebarManager() {
                         />
                         <Typography
                           variant='body1'
-                          fontWeight={500}
+                          fontWeight={400}
                           sx={{
                             flex: 1,
                             textWrap: 'nowrap',

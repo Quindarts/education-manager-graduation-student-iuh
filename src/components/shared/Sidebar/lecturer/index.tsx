@@ -145,7 +145,7 @@ export default function SidebarLecturer() {
   const [selectedTerm, setSelectedTerm] = useState(termStore.currentTerm.id);
   const { handleGetTermsByLecturer } = useTerm();
   const { data: termsLecturer, isSuccess: successTerms } = handleGetTermsByLecturer();
-  
+
   //TODO: lay major hien tai => lay term hien tai
   //?Render first
   useEffect(() => {
@@ -245,28 +245,28 @@ export default function SidebarLecturer() {
             textTransform={'uppercase'}
             flexDirection={'column'}
             sx={{
-              background: 'linear-gradient(135deg, #083880, #001f3f, #00274d, #003366)',
               transition: '0.3s all ease',
               transform: isOpen ? 'translateX(0)' : 'translateX(-100px)',
               opacity: isOpen ? 1 : 0,
             }}
             borderBottom={'0px solid #1467db'}
-            height={200}
+            height={240}
           >
-            <Box sx={{ mb: 10 }}>
+            <Box sx={{ mb: 10, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+              <img width={100} src='/images/logo_bg_white.webp' />
               <Typography
                 textAlign={'center'}
                 variant='body1'
                 color={'grey.100'}
                 fontWeight={500}
+                mt={3}
                 sx={{
                   opacity: 0.7,
-                  mb: 10,
                 }}
               >
                 Danh mục quản lý
               </Typography>
-              <Box sx={{ my: 10 }}>
+              <Box sx={{ width: 220, mb:4,mt:10 }}>
                 <DropDown
                   onChange={(e: any) => {
                     handleSelectedMajor(e.target.value);
@@ -275,12 +275,13 @@ export default function SidebarLecturer() {
                   options={majorsOfLecturer}
                 />
               </Box>
-
-              <DropDown
-                onChange={(e) => handleSelectedTerm(`${e.target.value}`)}
-                value={selectedTerm}
-                options={termsOfLecturer ? convertTermDropdown(termsOfLecturer) : []}
-              />
+              <Box width={220}>
+                <DropDown
+                  onChange={(e) => handleSelectedTerm(`${e.target.value}`)}
+                  value={selectedTerm}
+                  options={termsOfLecturer ? convertTermDropdown(termsOfLecturer) : []}
+                />
+              </Box>
             </Box>
           </Box>
           <Drawer

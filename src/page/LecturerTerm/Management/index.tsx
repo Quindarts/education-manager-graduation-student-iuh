@@ -68,8 +68,8 @@ function LecturerTermManagement() {
           Danh sách giảng viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''} -{' '}
           {termStore.currentTerm.name}
         </TitleManager>
-        <Typography variant='h5' fontWeight={700} mt={4} color='#636363'>
-          Số giảng viên HD: {countSuccess && countFetch?.count}
+        <Typography variant='body1' fontWeight={600} mt={4} color='grey.800'>
+          Tổng số lượng: {countSuccess && countFetch?.count} giảng viên
         </Typography>
       </Box>
       <HeaderLecturerTerm />

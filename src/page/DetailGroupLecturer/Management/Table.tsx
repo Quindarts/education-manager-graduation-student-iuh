@@ -1,9 +1,8 @@
-import SekeletonUI from '@/components/ui/Sekeleton';
 import Table from '@/components/ui/Table/Table';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { checkDegree } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
-import { Avatar, Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useMemo, useState } from 'react';
 import LecturerLeaveGroupModal from './Modal/LeaveGroup';
@@ -40,8 +39,8 @@ function TableManagementGroupLecturer(props: any) {
         headerName: 'Mã giảng viên',
         field: 'username',
         flex: 0.4,
-        headerAlign: 'center',
-        align: 'center',
+        headerAlign: 'left',
+        align: 'left',
       },
       {
         headerName: 'Tên giảng viên',
@@ -53,15 +52,15 @@ function TableManagementGroupLecturer(props: any) {
         headerName: 'Chuyên ngành',
         field: 'majorName',
         flex: 1,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'left',
+        headerAlign: 'left',
       },
       {
         headerName: 'Trình độ',
         field: 'degree',
         flex: 1,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'left',
+        headerAlign: 'left',
         renderCell: (params: any) => {
           return <Box>{checkDegree(params.row.degree)}</Box>;
         },
@@ -78,7 +77,7 @@ function TableManagementGroupLecturer(props: any) {
         headerAlign: 'center',
         renderCell: (params: any) => {
           return (
-            <Box gap={4} display={'flex'} alignItems={'center'}>
+            <Box gap={10} display={'flex'} alignItems={'left'}>
               <Avatar sizes='small' src={params.row.avatar} />
               <Box>
                 <Typography fontWeight={600} variant='body1'>
@@ -98,15 +97,15 @@ function TableManagementGroupLecturer(props: any) {
         headerName: 'Chuyên ngành',
         field: 'majorName',
         flex: 1,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'left',
+        headerAlign: 'left',
       },
       {
         headerName: 'Trình độ',
         field: 'degree',
         flex: 1,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'left',
+        headerAlign: 'left',
         renderCell: (params: any) => {
           return <Box>{checkDegree(params.row.degree)}</Box>;
         },
@@ -115,8 +114,8 @@ function TableManagementGroupLecturer(props: any) {
         headerName: '',
         field: 'name8',
         flex: 0.5,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'left',
+        headerAlign: 'left',
         renderCell: (params: any) => (
           <Button onClick={() => handleOpenLeaveGroupModal(params.row.id)}>Rời nhóm</Button>
         ),
@@ -128,7 +127,7 @@ function TableManagementGroupLecturer(props: any) {
     <>
       <Box>
         <Box>
-          <Box display={'flex'} mt={6} mb={4} justifyContent={'end'}>
+          <Box display={'flex'} mt={2} mb={4} justifyContent={'end'}>
             {currentRole.includes('all') && (
               <Button
                 size='small'
@@ -136,7 +135,8 @@ function TableManagementGroupLecturer(props: any) {
                 color='error'
                 disabled={
                   (rows.length >= 2 && groupType?.toLowerCase() === TypeGroupLecturer.REVIEWER) ||
-                  (rows.length >= 3 && groupType?.toLowerCase().split('_')[0] === TypeGroupLecturer.REPORT)
+                  (rows.length >= 3 &&
+                    groupType?.toLowerCase().split('_')[0] === TypeGroupLecturer.REPORT)
                     ? true
                     : false
                 }
@@ -164,7 +164,6 @@ function TableManagementGroupLecturer(props: any) {
             disableDensitySelector
           />
         </Box>
-        {/* )} */}
       </Box>
       <LecturerLeaveGroupModal
         onClose={handleCloseLeaveGroupModal}

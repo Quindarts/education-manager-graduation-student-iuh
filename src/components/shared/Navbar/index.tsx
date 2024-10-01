@@ -31,7 +31,7 @@ function Navbar() {
       px={8}
       display='flex'
       position='fixed'
-      zIndex={20}
+      zIndex={9999}
       top={0}
       bottom={0}
       width='100vw'

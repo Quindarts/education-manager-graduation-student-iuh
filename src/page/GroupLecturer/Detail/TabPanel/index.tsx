@@ -5,10 +5,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import { TabPanel } from '@mui/lab';
 import TableManagementGroupLecturer from '@/page/DetailGroupLecturer/Management/Table';
-import { Paper, Typography } from '@mui/material';
-import CustomTextField from '@/components/ui/CustomTextField';
-import { Icon } from '@iconify/react';
-import { useTopic } from '@/hooks/api/useQueryTopic';
+
 import TableManagementGroupAssign from '@/page/DetailGroupLecturer/GroupAssign/Table';
 
 function TabPanelUI(props: any) {

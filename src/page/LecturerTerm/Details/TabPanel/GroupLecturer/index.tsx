@@ -1,12 +1,10 @@
 import { Box, Paper, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import GridGroupLecturer from './Grid';
-import TitleManager from '@/components/ui/Title';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { ENUM_GROUP_LECTURER } from '@/utils/validations/groupLecturer.validation';
 import DropDown from '@/components/ui/Dropdown';
 import SekeletonUI from '@/components/ui/Sekeleton';
-import { useLocation } from 'react-router-dom';
 
 function GroupLecturer({ lecturerId }: any) {
   const { handleGetGroupLecturerByLecturerId } = useGroupLecturer();
