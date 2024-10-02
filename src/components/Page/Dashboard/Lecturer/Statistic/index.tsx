@@ -50,7 +50,6 @@ function StatisticManager() {
                 value={stat.value}
                 icon={stat.icon}
                 link={stat.link}
-                sx={{ bgcolor: 'background.paper', boxShadow: 3 }}
               />
             </Box>
           </Grid>

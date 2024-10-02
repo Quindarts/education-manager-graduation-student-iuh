@@ -103,7 +103,7 @@ export const useLecturerTerm = () => {
                         [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
                         getQueryField('limit'), getQueryField('page'), getQueryField("searchField"), getQueryField('keywords')]
                     );
-                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorId])
                     queryClient.invalidateQueries([QueryKeysLecturerTerm.getCountOfLecturerTerm, termId])
                     queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
 
@@ -135,7 +135,7 @@ export const useLecturerTerm = () => {
                         [QueryKeysLecturerTerm.getAllLectuerTermByParams, termId,
                         getQueryField('limit'), getQueryField('page'), getQueryField("searchField"), getQueryField('keywords')]
                     );
-                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorStore.currentMajor.id])
+                    queryClient.invalidateQueries([QueryKeysLecturerTerm.lecturerTermsToAdd, termId, majorId])
                     queryClient.invalidateQueries([QueryKeysLecturerTerm.getCountOfLecturerTerm, termId])
                     queryClient.invalidateQueries({ queryKey: [QueryKeysLecturerTerm.listLecturerTerms, termId] })
 

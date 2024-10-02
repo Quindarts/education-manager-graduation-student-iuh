@@ -37,24 +37,27 @@ function AddLecturerModal(props: any) {
   const { onCreateNotificationOfLecturerIds } = useNotificationLecturer();
   const { mutate: createNotifys } = onCreateNotificationOfLecturerIds();
   const { handleLecturerTermsToAdd, onCreateLecturerTerm } = useLecturerTerm();
-  const { data: lecturerFetch, isSuccess, isLoading } = handleLecturerTermsToAdd();
+  const {
+    data: lecturerFetch,
+    isSuccess,
+    isLoading,
+    isFetching,
+    refetch,
+  } = handleLecturerTermsToAdd();
   const { mutate: create, isSuccess: successCreate } = onCreateLecturerTerm();
-  const [currentLecturer, setCurrentLecturer] = useState<{ label: string; id: string }>({
-    label: '',
-    id: '',
-  });
+
   const [keywords, setKeywords] = useState('');
   const [lecturers, setLecturers] = useState([]);
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isFetching) {
       setLecturers(lecturerFetch?.lecturerTerms?.map((l: any) => ({ ...l, checked: false })));
     }
-  }, [isSuccess]);
+  }, [isSuccess, isFetching]);
 
   const handleSubmitCreateLecturer = () => {
     const listLecturers = lecturers
-      .filter((l) => l.checked)
-      .map((l) => ({ lecturerId: l.lecturerId, termId: `${currentTerm.id}` }));
+      ?.filter((l) => l.checked)
+      ?.map((l) => ({ lecturerId: l.lecturerId, termId: `${currentTerm.id}` }));
 
     listLecturers.map((data) => {
       create(data);
@@ -69,11 +72,8 @@ function AddLecturerModal(props: any) {
     onClose();
   }, [successCreate]);
   useEffect(() => {
-    if (!open) {
-      setCurrentLecturer({
-        label: '',
-        id: '',
-      });
+    if (open) {
+      refetch();
     }
   }, [open]);
 
@@ -151,7 +151,7 @@ function AddLecturerModal(props: any) {
                 >
                   Chọn tất cả
                 </Button>
-                {lecturers.filter((l) => l.checked).length > 0 && (
+                {lecturers?.filter((l) => l.checked).length > 0 && (
                   <Button
                     color='error'
                     onClick={() => {
@@ -168,7 +168,7 @@ function AddLecturerModal(props: any) {
                   variant='body1'
                   fontWeight={'bold'}
                 >
-                  Đã chọn : {lecturers.filter((l) => l.checked).length} giảng viên
+                  Đã chọn : {lecturers?.filter((l) => l.checked).length} giảng viên
                 </Typography>
               </Box>
             </Box>

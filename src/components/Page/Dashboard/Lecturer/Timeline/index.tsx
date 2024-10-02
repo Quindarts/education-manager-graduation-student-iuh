@@ -1,13 +1,13 @@
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
-import { Box, Button, keyframes, Tooltip, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, keyframes, Tooltip, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { getTimeDifference } from './context';
 import dayjs from 'dayjs';
 import DetailModal from './DetailModal';
 import useSidebar from '@/hooks/ui/useSidebar';
 
-const basicColor = '#37b48c';
+const basicColor = '#3761B4FF';
 const progressColor = '#e9f1fc';
 const fadeInScale = keyframes`
   0% {
@@ -26,7 +26,13 @@ function TimeLine() {
 
   const currentDate = getTimeDifference(currentTerm.startDate, dayjs().toString());
   const allDate = getTimeDifference(currentTerm.startDate, currentTerm.endDate);
-  const precent = (currentDate / allDate) * 100;
+
+  const [precent, setPrecent] = useState(0);
+
+  useEffect(() => {
+    const precent = (currentDate / allDate) * 100;
+    setPrecent(precent);
+  }, []);
 
   const max = 100;
   const space = 7;
@@ -116,10 +122,16 @@ function TimeLine() {
       >
         <Box
           height={18}
-          sx={{ transition: 'width 0.5s ease-in-out' }}
-          borderRadius={10}
-          width={`${precent}%`}
-          bgcolor={basicColor}
+          sx={{
+            transition: 'width 1s ease-in-out, background-color 0.5s ease-in-out',
+            borderRadius: 10,
+            width: `${precent}%`,
+            backgroundImage: 'linear-gradient(135deg, #0d5db6, #6a11cb, #2575fc, #7bdcb5)',
+
+            '&:hover': {
+              backgroundImage: 'linear-gradient(135deg, #0d5db6, #6a11cb, #2575fc, #7bdcb5)',
+            },
+          }}
         ></Box>
 
         {partContent.map((part, index) => (
@@ -140,8 +152,8 @@ function TimeLine() {
                 top={-26}
                 width={150}
                 variant='h6'
-                fontWeight={'bold'}
-                color={basicColor}
+                fontWeight={'500'}
+                color={'primary.main'}
               >
                 {dayjs(part.date).format('DD/MM/YYYY')}
               </Typography>
@@ -153,7 +165,7 @@ function TimeLine() {
                 justifyContent='center'
                 height={52}
                 borderRadius={50}
-                border={!part.isActive ? '5px solid white' : '5px solid #37b48c'}
+                border={!part.isActive ? '5px solid white' : '5px solid #3761B4FF'}
                 bgcolor={!part.isActive ? basicColor : 'white'}
                 position={'absolute'}
                 sx={{
@@ -169,7 +181,7 @@ function TimeLine() {
                   },
                 }}
               >
-                <Icon width={24} icon={part.icon} color={!part.isActive ? 'white' : '#37b48c'} />
+                <Icon width={30} icon={part.icon} color={!part.isActive ? 'white' : '#3761B4FF'} />
               </Box>
               <Typography
                 position={'relative'}

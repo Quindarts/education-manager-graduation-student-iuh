@@ -3,15 +3,16 @@ import React from 'react';
 import PromotionTextContent from '@/components/ui/PromotionTextContent';
 import StatisticManager from './Statistic';
 import CalendarSection from './Calendar';
+import { BarChart, PieChart } from '@mui/x-charts';
 
 export default function DashboardOfAdmin() {
   return (
-    <Box sx={{ px: 10, bgcolor: 'white', py: 2, minHeight: '60vh' }}>
+    <Box sx={{ px: 10, bgcolor: 'white', py: 10, minHeight: '60vh' }}>
       <>
         <Box mt={8} display={'flex'} gap={8}>
           <Box>
-            <Typography fontWeight={700} color='text.primary' component={'h5'} variant='h4'>
-              Tổng quan dữ liệu trang Quản lý Khóa luận Tốt nghiệp Học kì I 2024 - 2025
+            <Typography fontWeight={700} color='black ' component={'h5'} variant='h5'>
+              Danh sách quản lý
             </Typography>
           </Box>
         </Box>
@@ -23,17 +24,42 @@ export default function DashboardOfAdmin() {
             <Paper sx={{ px: 10, py: 4, width: '100%' }}>
               {' '}
               <Typography mb={6} mt={10} variant='h6' fontWeight={'bold'} color='grey.700'>
-                Sự kiện
+                Thống kê
               </Typography>
               <Box>
-                <PromotionTextContent />
+                <BarChart
+                  series={[
+                    { data: [35, 44, 24, 34] },
+                    { data: [51, 6, 49, 30] },
+                    { data: [15, 25, 30, 50] },
+                    { data: [60, 50, 15, 25] },
+                  ]}
+                  height={290}
+                  xAxis={[{ data: ['Q1', 'Q2', 'Q3', 'Q4'], scaleType: 'band' }]}
+                  margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+                />
               </Box>
             </Paper>
-            <Paper sx={{ px: 10, py: 4, width: '40%' }}>
+            <Paper sx={{ px: 10, py: 4, width: '30%' }}>
+              {/* 
+              <CalendarSection /> */}
               <Typography mb={6} mt={10} variant='h6' fontWeight={'bold'} color='grey.700'>
-                Lịch làm việc của tôi{' '}
+                Phổ điểm 
               </Typography>
-              <CalendarSection />
+              <PieChart
+                series={[
+                  {
+                    data: [
+                      { id: 0, value: 9 },
+                      { id: 1, value: 8 },
+                      { id: 2, value: 6.5 },
+                      { id: 3, value: 6.5 },
+                    ],
+                  },
+                ]}
+                width={400}
+                height={200}
+              />
             </Paper>
           </Box>
         </Box>
