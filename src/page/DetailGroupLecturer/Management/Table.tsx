@@ -38,7 +38,7 @@ function TableManagementGroupLecturer(props: any) {
       {
         headerName: 'Mã giảng viên',
         field: 'username',
-        flex: 0.4,
+        flex: 0.5,
         headerAlign: 'left',
         align: 'left',
       },

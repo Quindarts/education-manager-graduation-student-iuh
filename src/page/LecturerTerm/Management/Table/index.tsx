@@ -28,7 +28,7 @@ function TableManagamentLecturer(props: any) {
     {
       headerName: 'Mã GV',
       field: 'username',
-      flex:0.6,
+      flex: 0.6,
       headerAlign: 'right',
       align: 'right',
       renderCell(params) {
@@ -119,7 +119,7 @@ function TableManagamentLecturer(props: any) {
         sx={{
           bgcolor: 'white',
           width: '100%',
-          minHeight: 500,
+          minHeight: 600,
         }}
         columns={basicColumns}
         totalItems={totalItems}
@@ -129,7 +129,6 @@ function TableManagamentLecturer(props: any) {
         page={page}
         limit={limit}
         disableColumnFilter
-        minHeight={400}
       />
 
       <DeleteModal

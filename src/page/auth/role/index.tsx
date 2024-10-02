@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box} from '@mui/material';
 import React, { useEffect } from 'react';
 import CardRole from './Card';
 import { EnumRole } from '@/types/enum';
@@ -9,7 +9,6 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useDispatch } from 'react-redux';
 import { setAllMajor } from '@/store/slice/major.slice';
-import { setAllTerm } from '@/store/slice/term.slice';
 
 const CARD_ROLE_TYPE = [
   {
@@ -68,7 +67,7 @@ function RolePage() {
 
   return (
     <>
-      {!accessToken ? (
+      {!accessToken && lecturerStore.currentRoleRender === '' ? (
         <Navigate to='/auth/login' />
       ) : (
         <Box

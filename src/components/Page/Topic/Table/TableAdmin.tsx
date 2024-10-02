@@ -27,11 +27,11 @@ const TableTopicAdmin = (props: any) => {
         headerName: 'Tên Đề tài',
         field: 'name',
         flex: 2,
-        headerAlign: 'center',
+        headerAlign: 'left',
         align: 'left',
         renderCell(params) {
           return (
-            <Typography variant='h6' textTransform={'lowercase'} color='initial'>
+            <Typography variant='body1' textTransform={'lowercase'}>
               {params.row.name}
             </Typography>
           );
@@ -40,7 +40,7 @@ const TableTopicAdmin = (props: any) => {
       {
         headerName: 'Giảng viên HD',
         field: 'fullName',
-        headerAlign: 'center',
+        headerAlign: 'left',
         align: 'left',
         flex: 0.8,
       },
@@ -48,8 +48,8 @@ const TableTopicAdmin = (props: any) => {
         headerName: 'SL nhóm',
         field: 'quantityGroupMax',
         flex: 0.5,
-        headerAlign: 'center',
-        align: 'center',
+        headerAlign: 'right',
+        align: 'right',
         renderCell: (param) => (
           <Box>
             {param.row.quantityGroup} / {param.row.quantityGroupMax}

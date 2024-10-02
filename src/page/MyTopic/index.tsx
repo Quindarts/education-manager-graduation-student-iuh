@@ -7,6 +7,7 @@ import { useTopic } from '@/hooks/api/useQueryTopic';
 import { removeVietnameseTones } from '@/utils/search';
 import useParams from '@/hooks/ui/useParams';
 import HeaderTopic from './Header';
+import TableTopicLecturer from '@/components/Page/Topic/Table/TableLecturer';
 
 export const handleSearch = (data: any[], typeSearch: string, keywords: string) => {
   const dataSort = data?.slice().sort((a, b) => a.key.localeCompare(b.key));
@@ -36,7 +37,7 @@ function MyTopic() {
           <SekeletonUI />
         ) : (
           <Box width={'full'} my={4}>
-            <TableManagamentTopic
+            <TableTopicLecturer
               totalItems={
                 data
                   ? handleSearch(

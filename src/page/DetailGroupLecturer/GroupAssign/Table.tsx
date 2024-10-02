@@ -12,9 +12,9 @@ function TableManagementGroupAssign(props: any) {
     {
       headerName: 'Mã nhóm',
       field: 'name',
-      flex: 0.6,
-      headerAlign: 'right',
-      align: 'right',
+      flex: 0.7,
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       headerName: 'Giảng viên hướng dẫn',

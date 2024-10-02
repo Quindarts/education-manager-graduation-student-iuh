@@ -38,7 +38,12 @@ function CardRole({ icon, role, name, desc }: Partial<CardRolePropType>) {
     >
       <CardContent sx={{ display: 'flex', flexDirection: 'column', alignContent: 'center' }}>
         <Typography mx={'auto'} textAlign={'center'} mt={10} component='div'>
-          <Icon width={74} icon={`${icon}`} color='#195192FF' />
+          <Icon
+            style={{ filter: 'drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.5))' }}
+            width={74}
+            icon={`${icon}`}
+            color='#195192FF'
+          />
         </Typography>
         <Typography
           sx={{ fontSize: 14, mt: 14, fontWeight: '600' }}

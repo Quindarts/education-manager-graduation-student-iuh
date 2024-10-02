@@ -9,15 +9,20 @@ function CardGroupLecturer(props: any) {
     <Card
       onClick={() => navigate(`/group-lecturers/details/${group.groupLecturerId}`)}
       sx={{
+        border: '1px solid white',
         '&:hover': {
-          bgcolor: 'primary.dark',
-          boxShadow: '0 14px 18px 0 rgba(158, 200, 246, 0.2)',
-          transition: 'all 0.2s ease-in',
+          // bgcolor: '#E1EDFCFF',
+          background: ' linear-gradient(135deg, #0d5db6, #33aae0)',
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
+          transition: 'all 0.3s ease-in',
           '.MuiTypography-root': {
             color: 'white',
           },
           cursor: 'pointer',
+          border: '1px solid #DAE9FAFF',
         },
+        minHeight: 200,
+        maxHeight: 300,
       }}
     >
       <CardMedia

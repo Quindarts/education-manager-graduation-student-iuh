@@ -215,7 +215,6 @@ export default function SidebarLecturer() {
       setActiveItemIndexes([...activeItemIndexes, indexNumber]);
     }
   };
-
   return (
     <Box
       sx={{
@@ -258,7 +257,7 @@ export default function SidebarLecturer() {
                 textAlign={'center'}
                 variant='body1'
                 color={'grey.100'}
-                fontWeight={500}
+                fontWeight={400}
                 mt={3}
                 sx={{
                   opacity: 0.7,
@@ -266,7 +265,7 @@ export default function SidebarLecturer() {
               >
                 Danh mục quản lý
               </Typography>
-              <Box sx={{ width: 220, mb:4,mt:10 }}>
+              <Box sx={{ width: 220, mb: 4, mt: 10 }}>
                 <DropDown
                   onChange={(e: any) => {
                     handleSelectedMajor(e.target.value);
@@ -317,15 +316,15 @@ export default function SidebarLecturer() {
                   margin: 0,
                 },
                 '& .MuiTypography-root': {
-                  color: 'white',
+                  color: 'grey.400',
 
                   overFlow: 'hidden',
                   '&.active': {
                     fontWeight: 600,
-                    color: 'white',
+                    color: 'grey.400',
 
                     '& svg': {
-                      color: 'white',
+                      color: 'grey.400',
                     },
                     '&:hover': {
                       fontSize: 'body2',
@@ -367,38 +366,38 @@ export default function SidebarLecturer() {
                     sx={{
                       overflow: 'hidden',
                       height: 50,
-                      px: 4,
+                      px: 10,
                       '&.Mui-expanded': {
                         minHeight: 0,
                       },
 
                       '&:hover': {
-                        bgcolor: '#333',
+                        bgcolor: '#0d5db6',
                         transform: 'scale(1.02)',
                         transition: '0.2s all ease-in',
                         '.MuiTypography-root': {
-                          color: 'white',
+                          color: 'grey.400',
                         },
                         '& .MuiAccordionSummary-content': {
                           '& svg': {
-                            color: 'white',
+                            color: 'grey.400',
                           },
                         },
                       },
                       '& .MuiAccordionSummary-content': {
                         margin: 0,
                         '& svg': {
-                          color: 'white',
+                          color: 'grey.400',
                         },
                       },
                       '& svg': {
-                        color: 'white',
+                        color: 'grey.400',
                       },
                       '&.active': {
                         color: '#0859db',
                         bgcolor: '#06275c',
                         '& svg': {
-                          color: 'white',
+                          color: 'grey.400',
                         },
                       },
                     }}
@@ -418,7 +417,7 @@ export default function SidebarLecturer() {
                       <Icon onClick={handleToggleSidebar} icon={item.icon} width={20} height={20} />
                       <Typography
                         variant='body1'
-                        fontWeight={500}
+                        fontWeight={400}
                         sx={{
                           flex: 1,
                           textWrap: 'nowrap',
@@ -460,7 +459,7 @@ export default function SidebarLecturer() {
                                 transform: 'scale(1.02)',
                                 transition: '0.2s all ease-in',
                                 '& .MuiTypography-root': {
-                                  color: 'white',
+                                  color: 'grey.400',
                                 },
                               },
                             }}
@@ -477,7 +476,7 @@ export default function SidebarLecturer() {
                                   bgcolor: 'rgba(15, 124, 249, 0.8)',
                                   borderRadius: 2,
                                   '& svg': {
-                                    color: '#333',
+                                    color: '#0d5db6',
                                   },
                                 },
                               }}
@@ -533,15 +532,15 @@ export default function SidebarLecturer() {
                 margin: 0,
               },
               '& .MuiTypography-root': {
-                color: 'white',
+                color: 'grey.400',
 
                 overFlow: 'hidden',
                 '&.active': {
-                  fontWeight: 600,
-                  color: 'white',
+                  fontWeight: 500,
+                  color: 'grey.400',
 
                   '& svg': {
-                    color: 'white',
+                    color: 'grey.400',
                   },
                   '&:hover': {
                     fontSize: 'body2',
@@ -580,32 +579,32 @@ export default function SidebarLecturer() {
                       minHeight: 0,
                     },
                     '&:hover': {
-                      bgcolor: '#333',
+                      bgcolor: '#0d5db6',
                       transform: 'scale(1.2)',
                       transition: '0.2s all ease-in',
                       '.MuiTypography-root': {
-                        color: 'white',
+                        color: 'grey.400',
                       },
                       '& .MuiAccordionSummary-content': {
                         '& svg': {
-                          color: 'white',
+                          color: 'grey.400',
                         },
                       },
                     },
                     '& .MuiAccordionSummary-content': {
                       margin: 0,
                       '& svg': {
-                        color: 'white',
+                        color: 'grey.400',
                       },
                     },
                     '& svg': {
-                      color: 'white',
+                      color: 'grey.400',
                     },
                     '&.active': {
                       color: '#0859db',
                       bgcolor: '#06275c',
                       '& svg': {
-                        color: 'white',
+                        color: 'grey.400',
                       },
                     },
                   }}

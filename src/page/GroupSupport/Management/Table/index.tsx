@@ -33,8 +33,8 @@ function TableManagamentGroupStudent(props: any) {
         headerName: 'Số lượng thành viên',
         field: 'name4',
         flex: 1,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'right',
+        headerAlign: 'right',
         renderCell: (params: any) => {
           return <Typography>{params.row.numOfMembers}</Typography>;
         },

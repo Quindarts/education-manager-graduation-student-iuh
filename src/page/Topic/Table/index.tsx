@@ -97,15 +97,15 @@ function TableManagamentTopic(props: any) {
       {
         headerName: 'Mã đề tài',
         field: 'key',
-        headerAlign: 'right',
-        align: 'right',
+        headerAlign: 'center',
+        align: 'center',
         flex: 0.4,
       },
       {
         headerName: 'Tên Đề tài',
         field: 'name',
         flex: 2,
-        headerAlign: 'left',
+        headerAlign: 'center',
         align: 'left',
         renderCell(params) {
           return (
@@ -118,11 +118,24 @@ function TableManagamentTopic(props: any) {
       {
         headerName: 'Giảng viên HD',
         field: 'fullName',
-        headerAlign: 'left',
+        headerAlign: 'center',
         align: 'left',
         flex: 0.8,
       },
-
+      {
+        headerName: 'SL nhóm',
+        field: 'quantityGroupMax',
+        flex: 0.5,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (param) => {
+          return (
+            <Box>
+              {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
+            </Box>
+          );
+        },
+      },
       {
         headerName: 'Trạng thái',
         field: 'text2',
@@ -131,20 +144,6 @@ function TableManagamentTopic(props: any) {
         align: 'center',
         renderCell: (param) => {
           return <Box>{getCardTopicStatus(param.row.status)}</Box>;
-        },
-      },
-      {
-        headerName: 'SL nhóm',
-        field: 'quantityGroupMax',
-        flex: 0.5,
-        headerAlign: 'right',
-        align: 'right',
-        renderCell: (param) => {
-          return (
-            <Box>
-              {param.row.quantityGroup} / {param.row.quantityGroupMax}{' '}
-            </Box>
-          );
         },
       },
       {
@@ -246,7 +245,7 @@ function TableManagamentTopic(props: any) {
       headerName: 'Tên Đề tài',
       field: 'name',
       flex: 1.5,
-      headerAlign: 'center',
+      headerAlign: 'left',
     },
     {
       headerName: 'SL nhóm đề tài',

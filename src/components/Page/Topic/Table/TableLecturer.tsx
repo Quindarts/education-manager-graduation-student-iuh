@@ -60,14 +60,15 @@ function TableTopicLecturer(props: any) {
         headerName: 'Tên Đề tài',
         field: 'name',
         flex: 1.5,
-        headerAlign: 'center',
+        headerAlign: 'left',
+        align: 'left',
       },
       {
         headerName: 'SL nhóm đề tài',
         field: 'quantityGroupMax',
         flex: 0.5,
-        headerAlign: 'center',
-        align: 'center',
+        headerAlign: 'right',
+        align: 'right',
         renderCell: (param) => (
           <Box>
             {param.row.quantityGroup} / {param.row.quantityGroupMax}
@@ -77,7 +78,7 @@ function TableTopicLecturer(props: any) {
       {
         headerName: 'Trạng thái',
         field: 'text2',
-        flex: 0.4,
+        flex: 0.6,
         headerAlign: 'center',
         align: 'center',
         renderCell: (param) => <Box>{getCardTopicStatus(param.row.status)}</Box>,
@@ -85,7 +86,7 @@ function TableTopicLecturer(props: any) {
       {
         headerName: 'Chức năng',
         field: 'none',
-        flex: 0.7,
+        flex: 0.4,
         headerAlign: 'center',
         align: 'center',
         renderCell: (params: any) => (

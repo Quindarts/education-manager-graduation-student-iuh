@@ -9,15 +9,20 @@ function CardGroupLecturer(props: any) {
     <Card
       onClick={() => navigate(`/my-group-lecturers/detail/${group.groupLecturerId}`)}
       sx={{
+        border: '1px solid white',
         '&:hover': {
-          bgcolor: 'primary.dark',
-          boxShadow: '0 14px 18px 0 rgba(158, 200, 246, 0.2)',
-          transition: 'all 0.2s ease-in',
+          // bgcolor: '#E1EDFCFF',
+          background: ' linear-gradient(135deg, #0d5db6, #33aae0)',
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
+          transition: 'all 0.3s ease-in',
           '.MuiTypography-root': {
             color: 'white',
           },
           cursor: 'pointer',
+          border: '1px solid #DAE9FAFF',
         },
+        minHeight: 200,
+        maxHeight: 300,
       }}
     >
       <CardMedia
@@ -28,19 +33,20 @@ function CardGroupLecturer(props: any) {
         sx={{
           objectFit: 'contain',
         }}
-        image='/images/group_student_2.webp'
+        image='/images/group_student_3.webp'
       />
       <CardContent>
-        <Typography gutterBottom variant='h5' color='primary' fontWeight={600} component='div'>
+        <Typography gutterBottom variant='h5' color='primary.dark' fontWeight={600} component='div'>
           {checktTypeGroupLecturer(group.type.toLowerCase())} - {group.name}
         </Typography>
 
         <Typography variant='h6' fontWeight={500} color='primary.dark'>
-          Số lượng thành viên : {group?.members.length}
+          Thành viên :
         </Typography>
         <Box>
           {group?.members.map((mem) => (
             <Typography variant='body1' color='text.grey.500'>
+              {mem.username} {' - '}
               {mem.fullName}
             </Typography>
           ))}
