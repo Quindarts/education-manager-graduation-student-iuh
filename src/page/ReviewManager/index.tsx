@@ -21,7 +21,7 @@ function ReviewManagerPage() {
   const { handleGetEvalutationByType, handleUiRender } = useEvaluation();
   const currentRole = handleUiRender();
 
-  const { data, isLoading, isSuccess, isFetching } = handleGetEvalutationByType(
+  const { data, isLoading, isSuccess } = handleGetEvalutationByType(
     termStore.currentTerm.id,
     currentTypeReview,
   );
@@ -99,7 +99,7 @@ function ReviewManagerPage() {
                   />
                 </>
               )}
-              {/* {currentRole.includes('crud') && ( */}
+        
               <Tooltip title='Xuất phiếu chấm'>
                 <Button
                   disabled={data?.evaluations.length < 1}

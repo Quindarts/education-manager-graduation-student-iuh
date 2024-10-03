@@ -24,7 +24,7 @@ interface Props extends DataGridProps {
   isLimit?: boolean;
   slots?: any;
   onReset?: () => void;
-  handleChangeLimit?: (limit: number) => void;  
+  handleChangeLimit?: (limit: number) => void;
   noData?: React.ReactNode;
 }
 
@@ -111,7 +111,7 @@ export default function Table(props: Props) {
           fontSize: {
             xs: 12,
             md: 12,
-            xl: 13,
+            xl: 14,
           },
           color: 'black',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {

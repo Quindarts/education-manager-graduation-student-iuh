@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderGroupLecturer from './Header';
 import TitleManager from '@/components/ui/Title';
 import TableManagamentGroupLecturer from './Table';
@@ -12,8 +12,12 @@ function GroupLecturerManagementPage() {
     setCheckType(checkType);
   };
   const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
-  const { data, isSuccess, isLoading, isFetching } =
+  const { data, isSuccess, isLoading, isFetching, refetch } =
     handleGetAllGroupLecturerByTypeGroup(checkType);
+
+  useEffect(() => {
+    refetch();
+  }, [checkType]);
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box justifyContent={'space-between'} mb={2} display={'flex'}>
