@@ -3,7 +3,7 @@ import TableManagerReviewScore from './Table';
 import { useState } from 'react';
 import DropDown from '@/components/ui/Dropdown';
 import TitleManager from '@/components/ui/Title';
-import ModalUpload from '@/components/ui/Upload';
+import ModalUpload from '@/components/ui/UploadExcel';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
@@ -99,7 +99,7 @@ function ReviewManagerPage() {
                   />
                 </>
               )}
-        
+
               <Tooltip title='Xuất phiếu chấm'>
                 <Button
                   disabled={data?.evaluations.length < 1}

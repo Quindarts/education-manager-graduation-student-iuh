@@ -2,16 +2,12 @@ import { Box, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from './style';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
 
-const getTypeEvaluatior = (typeEvaluation) => {};
 
 function SheetTranscriptCouncil(props: any) {
   const {
     topicName,
-    groupStudentName,
     students,
     evaluatorFullName,
-    typeEvaluation,
-    lecturerSupport,
     evaluations,
   } = props;
   return (

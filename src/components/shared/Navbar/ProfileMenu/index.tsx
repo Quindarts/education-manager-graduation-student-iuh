@@ -3,7 +3,7 @@ import usePopup from '@/hooks/ui/usePopup';
 import { setCurrentMajor } from '@/store/slice/major.slice';
 import { setAllTerm, setCurrentTerm } from '@/store/slice/term.slice';
 import { RoleCheck } from '@/types/enum';
-import { APP_PROFILE_MENU } from '@/utils/app-config';
+import { APP_PROFILE_MENU, APP_ROUTES } from '@/utils/app-config';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
 import { Icon } from '@iconify/react';
 import Avatar from '@mui/material/Avatar';
@@ -14,78 +14,22 @@ import MenuList from '@mui/material/MenuList';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { avatarStyles, imgStyles, keyframes, statusCircleStyles, statusStyles } from './style';
 
-const avatarStyles = {
-  width: 40,
-  height: 40,
-  borderRadius: '50%',
-  margin: 'auto',
-  position: 'relative',
-};
-
-const imgStyles = {
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
-  borderRadius: '50%',
-};
-
-const statusStyles = {
-  position: 'absolute',
-  bottom: '0px',
-  right: '0px',
-  width: '1rem',
-  height: '1rem',
-  borderRadius: '50%',
-  animation: 'border-animation 1s infinite',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    bottom: '-2px',
-    right: '0rem',
-    width: '1rem',
-    height: '1rem',
-    animation: 'border-animation 1s infinite',
-    background: '#fafafc',
-    borderRadius: '50%',
-  },
-};
-
-const statusCircleStyles = {
-  backgroundColor: '#1de327',
-  width: 12,
-  height: 12,
-  position: 'absolute',
-  bottom: '1px',
-  right: '2px',
-  borderRadius: '50%',
-  transition: '1s ease-in-out',
-};
-
-const keyframes = `
-  @keyframes border-animation {
-    0% {
-      background: #fcfafc;
-    }
-    25% {
-      background: #d5d3d5;
-    }
-    50% {
-      background: #a19fa1;
-    }
-    75% {
-      background: #bab9ba;
-    }
-    100% {
-      background: #cacaca;
-    }
-  }
-`;
 function ProfileMenu() {
-  const navigate = useNavigate();
+  //TODO [HOOK UI]
   const { handleActive, active, menuRef } = usePopup();
+
+  //TODO [HOOK STORE]
   const { lecturerStore, handleLogout } = useAuth();
+
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+
+
+  //TODO [HANDLE EVENT]
   const handleChangeRole = () => {
     const role = lecturerStore.currentRoleRender;
     if (role === RoleCheck.LECTURER || role === RoleCheck.ADMIN) {
@@ -97,9 +41,19 @@ function ProfileMenu() {
           id: lecturerStore.me.user.majorId,
         }),
       );
-      
     }
   };
+  const handleClickMenuItem = (menuItem: any) => {
+    if (menuItem?.link === APP_ROUTES.USER.LOGIN) {
+      handleLogout();
+    }
+    if (menuItem?.link === APP_ROUTES.USER.ROLE) {
+      handleChangeRole();
+      navigate(menuItem?.link);
+    }
+    navigate(menuItem?.link);
+  };
+
   return (
     <Box
       display='flex'
@@ -180,16 +134,7 @@ function ProfileMenu() {
             {APP_PROFILE_MENU.map((menuItem) => (
               <MenuItem
                 sx={{ '.MuiListItemIcon-root ': { minWidth: 24 }, my: 2 }}
-                onClick={() => {
-                  if (menuItem.link === '/auth/login') {
-                    handleLogout();
-                  }
-                  if (menuItem.link === '/auth/role') {
-                    handleChangeRole();
-
-                    navigate(menuItem.link);
-                  } else navigate(menuItem.link);
-                }}
+                onClick={() => handleClickMenuItem(menuItem)}
               >
                 <ListItemIcon sx={{ color: 'text.secondary' }}>
                   <Icon width={18} height={22} icon={menuItem.icon} />

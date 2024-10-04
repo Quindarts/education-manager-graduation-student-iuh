@@ -20,7 +20,8 @@ export const getUnTranscriptGroupStudentsByType: any = (termId: string, type: st
     return axiosConfig.get(`/api/v1/group-students/assign?termId=${termId}&type=${type}`)
 }
 export const getTranscriptOfStudentInGroup: any = (termId: string, type: string, groupStudentId: string) => {
-    return axiosConfig.get(`/api/v1/transcripts?termId=${termId}&type=${type}&groupStudentId=${groupStudentId}`)
+    const typeSend = type.includes('REPORT') ? "REPORT" : type
+    return axiosConfig.get(`/api/v1/transcripts?termId=${termId}&type=${typeSend}&groupStudentId=${groupStudentId}`)
 }
 
 export const getTranscriptsByTypeEvaluation: any = (termId: string, type: string, studentId: string) => {

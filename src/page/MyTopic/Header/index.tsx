@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import { Box, Button, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import ModalUpload from '@/components/ui/Upload';
+import ModalUpload from '@/components/ui/UploadExcel';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import useSearch from '@/hooks/ui/useParams';
@@ -9,16 +9,6 @@ import ExportExcelButton from '@/components/ui/Export';
 import AddModal from '@/components/Page/Topic/Modal/AddModal';
 import SearchInput from './SearchInput';
 
-const SEARCH_DROP_VALUE = [
-  {
-    name: 'Tên Đề tài',
-    _id: 'name',
-  },
-  {
-    name: 'Tên Giảng viên HD',
-    _id: 'lecturerName',
-  },
-];
 function HeaderTopic() {
   const [openAddModal, setOpenAddModal] = useState(false);
 
@@ -30,8 +20,7 @@ function HeaderTopic() {
   };
 
   const { handleGetTopicLecturerToExport } = useTopic();
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
-    useSearch();
+  const { setTypeSort } = useSearch();
   const [sort, setSort] = useState('ASC');
 
   useEffect(() => {

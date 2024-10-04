@@ -54,6 +54,10 @@ export const lockOnlyStudent = async (id: string, status: boolean) => {
     const locker = status ? 'lock' : 'unlock'
     return axiosConfig.post<ResponseType, any>(`/api/v1/students/${locker}`, { id: id })
 }
+//[LOCK ACCOUNT]
+export const lockAllStudents = async (termId: string) => {
+    return axiosConfig.post<ResponseType, any>(`/api/v1/students/lock`, { termId })
+}
 
 //[CREATE STUNDENT]
 export const createStudent = async (data: Partial<Student>) => {

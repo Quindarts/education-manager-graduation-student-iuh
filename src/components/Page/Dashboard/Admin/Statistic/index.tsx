@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Container, Grid, Paper } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { Person, Group, Book, School } from '@mui/icons-material';
-import StatisticsCard from './Card';
+import StatisticsCard from '../../Card';
 import useStatistical from '@/hooks/api/useQueryStatistical';
 
 function StatisticManager() {

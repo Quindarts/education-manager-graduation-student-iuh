@@ -3,13 +3,14 @@ import { Icon } from '@iconify/react';
 import { Box, Button, TextField, Tooltip } from '@mui/material';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import AddModal from '../Modal/AddModal';
-import ModalUpload from '@/components/ui/Upload';
+import ModalUpload from '@/components/ui/UploadExcel';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import useSearch from '@/hooks/ui/useParams';
 import SplitButton from '@/components/ui/SplitButton';
 import { useStudent } from '@/hooks/api/useQueryStudent';
 import ExportExcelButton from '@/components/ui/Export';
+import LockAccountModal from '../Modal/LockAccountModal';
 const SEARCH_DROP_VALUE = [
   {
     _id: 'full_name',
@@ -35,14 +36,16 @@ function HeaderStudent() {
     setOpenAddModal(true);
   };
 
-  const {
-    onSearchChange,
-    getQueryField,
-    onTypeSearchChange,
-    handleFocused,
-    setTypeSort,
-    setDefaultTypeSearch,
-  } = useSearch();
+  const [openLockStudents, setOpenLockStudents] = useState(false);
+  const handleCloseLockModal = () => {
+    setOpenLockStudents(false);
+  };
+  const handleOpenLockModal = () => {
+    setOpenLockStudents(true);
+  };
+
+  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort, setDefaultTypeSearch } =
+    useSearch();
 
   useLayoutEffect(() => {
     if (getQueryField('searchField').length === 0) setDefaultTypeSearch('full_name');
@@ -80,7 +83,6 @@ function HeaderStudent() {
             size='small'
             defaultValue={getQueryField('keywords')}
             onChange={onSearchChange}
-            onBlur={() => handleFocused(false)}
             placeholder='Tim kiếm sinh viên theo..'
           />
         </Box>
@@ -107,8 +109,14 @@ function HeaderStudent() {
             labelTooltip='Tải danh sách sinh viên'
           />
         )}
+        <Tooltip onClick={handleOpenLockModal} title='Khóa tài khoản toàn bộ sinh viên'>
+          <Button size='small' color='primary' type='button' variant='contained'>
+            <Icon icon='ic:sharp-lock' width={20} />
+          </Button>
+        </Tooltip>
       </Box>
       <AddModal open={openAddModal} onClose={handleCloseAddModal} />
+      <LockAccountModal open={openLockStudents} onClose={handleCloseLockModal} />
     </>
   );
 }

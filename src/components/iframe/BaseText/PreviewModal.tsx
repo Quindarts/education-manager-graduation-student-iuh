@@ -4,11 +4,10 @@ import SheetTranscriptReviewer from '../PageWord/SheetTranscriptReviewer';
 import { Box, Button } from '@mui/material';
 import TitleManager from '@/components/ui/Title';
 import useDocx from '@/hooks/ui/useDocx';
-import docTranscriptReviewer from '../PageWord/docUtils/docTranscriptReviewer';
+import docTranscriptReviewer from '../PageWord/doc/docTranscriptReviewer';
 import useEvaluation from '@/hooks/api/useQueryEvalutaion';
 import { useAuth } from '@/hooks/api/useAuth';
-import { TypeEvaluation } from '@/services/apiEvaluation';
-import docTranscriptCouncil from '../PageWord/docUtils/docTranscriptCouncil';
+import docTranscriptCouncil from '../PageWord/doc/docTranscriptCouncil';
 function PreviewModal({
   open,
   onClose,

@@ -2,13 +2,14 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
 import { Box, keyframes, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { getTimeDifference } from './context';
 import dayjs from 'dayjs';
 import DetailModal from './DetailModal';
 import useSidebar from '@/hooks/ui/useSidebar';
+import { getTimeDifference } from '@/utils/convertDataTable';
 
 const basicColor = '#3761B4FF';
 const progressColor = '#e9f1fc';
+
 const fadeInScale = keyframes`
   0% {
     opacity: 0;

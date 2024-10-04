@@ -1,4 +1,4 @@
-import UploadFileExcel from '@/components/ui/Upload';
+import UploadFileExcel from '@/components/ui/UploadExcel';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { Box, Button } from '@mui/material';
 import React from 'react';
@@ -11,7 +11,6 @@ function Application() {
         fileNameModel='Mẫu file excel tiêu chí đánh giá KLTN'
         sheetName='tiêu chí'
         title='Tải xuống mẫu file'
-
       />
       <Button variant='contained' color='warning'>
         Xuất phiếu chấm

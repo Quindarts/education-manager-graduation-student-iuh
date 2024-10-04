@@ -3,36 +3,6 @@ import { Box, Typography } from '@mui/material';
 import Chart from 'react-apexcharts';
 
 const data = [50, 30, 20, 40];
-const labels = ['Transactions', 'Payouts', 'Sales', 'Reports'];
-const colors = ['#2499EF', '#8C8DFF', '#FFC675', '#8CA3BA'];
-var options = {
-  series: [44, 55, 13, 33],
-  chart: {
-    width: 380,
-    type: 'donut',
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  responsive: [
-    {
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 200,
-        },
-        legend: {
-          show: false,
-        },
-      },
-    },
-  ],
-  legend: {
-    position: 'right',
-    offsetY: 0,
-    height: 230,
-  },
-};
 
 const PieChart = () => {
   return (

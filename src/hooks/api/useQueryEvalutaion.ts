@@ -6,7 +6,6 @@ import { useAuth } from "./useAuth"
 import { RoleCheck } from "@/types/enum"
 import { EvaluationLecturer, GroupLecturerServiceKeys } from "@/page/ReviewManager/Entity/EvaluationManager"
 import { useTerm } from './useQueryTerm';
-import { TypeEvalution } from '@/types/entities/assign';
 
 export enum QueryEvaluation {
     getEvaluationByType = 'getEvaluationByType',
@@ -17,9 +16,12 @@ const useEvaluation = () => {
     const { enqueueSnackbar } = useSnackbar()
     const { lecturerStore } = useAuth();
     const { termStore } = useTerm();
+
     const termId = termStore.currentTerm.id
     const lecturerId = lecturerStore.me.user.id
     const currentRole = lecturerStore.currentRoleRender;
+
+    //? [UI]
     const handleUiRender = (): string[] => {
         var permissions: string[] = []
         if (currentRole === RoleCheck.HEAD_COURSE || currentRole === RoleCheck.HEAD_LECTURER) {
@@ -30,6 +32,7 @@ const useEvaluation = () => {
         }
         return permissions
     }
+    //? [GET]
     const handleGetDataToExportReportDocx = async (typeEvaluation: string) => {
         const EvaluationAPIClass = new EvaluationLecturer(typeEvaluation);
         let apiName: GroupLecturerServiceKeys
@@ -51,17 +54,20 @@ const useEvaluation = () => {
         const res = await EvaluationAPIClass.apiGetGroupLecturer(apiName, params);
         return res
     }
+    //? [GET]
     const handleGetEvalutationByType = (termId?: string, type?: TypeEvaluation) => {
         return useQuery([QueryEvaluation.getEvaluationByType, termId, type], () => getEvaluationByTermByType(termId, type), {
             staleTime: 1000 * (60 * 20)
         })
     }
 
+    //? [GET]
     const handleGetEvaluationById = (evaluationId?: string) => {
         return useQuery([QueryEvaluation.getEvaluationById, evaluationId], () => getEvaluationById(evaluationId), {
             enabled: !!evaluationId
         })
     }
+    //? [POST]
     const onCreateEvaluation = (termId?: string, type?: TypeEvaluation) => {
         return useMutation((data: EvaluationDataRequestType) => createEvaluation(data), {
             onSuccess() {
@@ -76,6 +82,7 @@ const useEvaluation = () => {
             }
         })
     }
+    //? [PUT]
     const onUpdateEvaluationById = (termId?: string, type?: TypeEvaluation, evaluationId?: string) => {
         return useMutation((data: EvaluationDataRequestType) => updateEvaluation(evaluationId, data), {
             onSuccess() {
@@ -92,6 +99,7 @@ const useEvaluation = () => {
             }
         })
     }
+    //? [DELETE]
     const onDeleteEvaluationById = (termId?: string, type?: TypeEvaluation, evaluationId?: string) => {
         return useMutation(() => deleteEvaluation(evaluationId), {
             onSuccess() {

@@ -1,22 +1,16 @@
-import { useAuth } from '@/hooks/api/useAuth';
-import { RoleCheck } from '@/types/enum';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
-import { Document, HeightRule, Paragraph, ShadingType, Table, TableCell, TableRow, TextRun, VerticalAlign, WidthType } from 'docx';
+import { BorderStyle, Document, HeightRule, Paragraph, ShadingType, Table, TableCell, TableRow, TextRun, UnderlineType, VerticalAlign, WidthType } from 'docx';
 
-export default function docTranscriptReviewer({
+
+function docTranscriptCouncil({
     topicName,
     groupStudentName,
     students,
     evaluatorFullName,
-    lecturerSupport,
     evaluations,
-    fileType = 'many',
-    role
-}: any) {
-    const isLecturer = role === RoleCheck.LECTURER
-    const nameEvaluatorExport = isLecturer ? evaluatorFullName : evaluatorFullName.split('_')[1]
-    const fileName = 'PhảnBiện_NhómSV' + groupStudentName + '_' + evaluatorFullName
+    fileType = 'many' }: any) {
     const rows = convertRowEvaluations(evaluations);
+    const fileName = 'Phiếu chấm Nhóm sv_' + groupStudentName + '_' + evaluatorFullName
     const lineSpacing = 200
     const doc = new Document({
         sections: [
@@ -32,53 +26,145 @@ export default function docTranscriptReviewer({
                     }
                 },
                 children: [
+                    new Table({
+                        width: {
+                            size: 100,
+                            type: WidthType.PERCENTAGE,
+                        },
+                        rows: [
+                            new TableRow({
+                                children: [
+                                    new TableCell({
+                                        borders: {
+                                            top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                            bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                            left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                            right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                        },
+                                        children: [
+                                            new Paragraph(
+                                                {
+                                                    alignment: 'center',
+                                                    children: [
+                                                        new TextRun({
+                                                            text: 'INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY',
+                                                            size: 22,
+                                                        })
+                                                    ],
+                                                }
+                                            ),
+                                            new Paragraph(
+                                                {
+                                                    alignment: 'center',
+                                                    children: [
+                                                        new TextRun({
+                                                            text: 'FACULTY OF INFORMATION TECHNOLOGY',
+                                                            size: 22,
+                                                        })
+                                                    ],
+                                                }),
+                                            new Paragraph(
+                                                {
+                                                    alignment: 'center',
+                                                    children: [
+                                                        new TextRun({
+                                                            text: 'SOFTWARE ENGINEER MAJOR',
+                                                            size: 22,
+                                                            underline: {
+                                                                type: UnderlineType.SINGLE,
+                                                            },
+                                                        })
+                                                    ],
+                                                }),
+                                        ],
+                                        verticalAlign: 'top',
+                                    }),
+                                    new TableCell({
+                                        borders: {
+                                            top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                            bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                            left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                            right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+                                        },
+                                        children: [
+                                            new Paragraph(
+                                                {
+                                                    alignment: 'center',
+                                                    children: [
+                                                        new TextRun({
+                                                            text: 'CONG HOA XA HOI CHU NGHIA VIETNAM',
+                                                            size: 22,
+                                                        })
+                                                    ],
+                                                }),
+                                            new Paragraph(
+                                                {
+                                                    alignment: 'center',
+                                                    children: [
+                                                        new TextRun({
+                                                            text: 'Doc lap - Tu do - Hanh phuc',
+                                                            size: 22,
+                                                            underline: {
+                                                                type: UnderlineType.SINGLE,
+                                                            },
+                                                        })
+                                                    ],
+                                                }),
+                                        ],
+                                        verticalAlign: 'top',
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
                     new Paragraph({
                         alignment: 'center',
-                        spacing: { after: lineSpacing },
+                        spacing: { before: 400, after: 400 },
                         children: [
                             new TextRun({
-                                text: 'INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY',
+                                text: 'GRADUATION THESIS EVALUATION FORM',
                                 bold: true,
                                 size: 28,
                             }),
                         ],
                     }),
                     new Paragraph({
-                        alignment: 'center',
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: '\nFACULTY OF INFORMATION TECHNOLOGY',
-                                size: 28,
+                                text: `1. Evaluator's full name: ${fileType === 'many' ? evaluatorFullName?.split('_')[1] : evaluatorFullName
+                                    }`,
+                                size: 24,
                             }),
                         ],
                     }),
-                    new Paragraph({
-                        alignment: 'center',
-                        spacing: { after: lineSpacing },
-                        children: [
-                            new TextRun({
-                                text: '=======//======',
-                                size: 28,
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        alignment: 'center',
-                        spacing: { before: 200, after: 200 },
-                        children: [
-                            new TextRun({
-                                text: 'CAPSTONE PROJECT EVALUATION FORM',
-                                bold: true,
-                                size: 28,
-                            }),
-                        ],
-                    }),
+                    new Paragraph(
+
+                        {
+                            spacing: { after: lineSpacing },
+                            children: [
+                                new TextRun({
+                                    text: '2. Role of evaluator:    Member',
+                                    size: 24,
+                                }),
+                            ],
+                        }
+                    ),
                     new Paragraph({
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `1. Topic name: ${topicName} `,
+                                text: `3. Topic name: ${topicName} `,
+                                size: 24,
+                            }),
+                        ],
+
+                    }),
+                    new Paragraph({
+                        spacing: { after: lineSpacing },
+                        children: [
+                            new TextRun({
+                                text: `   Student code 1: ${students && students[0]?.username}                                              First student name: ${students && students[0]?.fullName}`,
                                 size: 24,
                             }),
                         ],
@@ -87,63 +173,7 @@ export default function docTranscriptReviewer({
                         spacing: { after: lineSpacing },
                         children: [
                             new TextRun({
-                                text: `2. Instructors: ${lecturerSupport}`,
-                                size: 24,
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        spacing: { after: lineSpacing },
-                        children: [
-                            new TextRun({
-                                text: `3. Team: ${groupStudentName}`,
-                                size: 24,
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        spacing: { after: lineSpacing },
-                        children: [
-                            new TextRun({
-                                text: `     Student code 1: ${students && students[0]?.username}                                              First student name: ${students && students[0]?.fullName}`,
-                                size: 24,
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        spacing: { after: lineSpacing },
-                        children: [
-                            new TextRun({
-                                text: `     Student code 2: ${students && students[1]?.username}                                              Second student name: ${students && students[1]?.fullName}`,
-                                size: 24,
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        spacing: { after: lineSpacing },
-                        children: [
-                            new TextRun({
-                                text: `4. Evaluator's full name: ${fileType === 'many' ? nameEvaluatorExport : evaluatorFullName}`,
-                                size: 24,
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        spacing: { after: lineSpacing },
-                        children: [
-                            new TextRun({
-                                text: '5. Role of the evaluator:  Reviewer ',
-                                size: 24,
-                            }),
-                        ],
-                    }),
-                    new Paragraph({
-                        alignment: 'center',
-                        spacing: { after: lineSpacing },
-                        children: [
-                            new TextRun({
-                                text: 'CONTENTS',
-                                bold: true,
+                                text: `   Student code 2: ${students && students[1]?.username}                                              Second student name: ${students && students[1]?.fullName} `,
                                 size: 24,
                             }),
                         ],
@@ -154,6 +184,7 @@ export default function docTranscriptReviewer({
                             type: WidthType.PERCENTAGE,
                         },
                         columnWidths: [4000, 5505],
+
                         rows: [
                             new TableRow({
                                 height: {
@@ -161,6 +192,7 @@ export default function docTranscriptReviewer({
                                     rule: HeightRule.EXACT,
                                 },
                                 children: [
+
                                     new TableCell({
                                         width: {
                                             size: 5,
@@ -168,7 +200,7 @@ export default function docTranscriptReviewer({
                                         },
                                         shading: {
                                             type: ShadingType.SOLID,
-                                            color: "#d9ecfb",
+                                            color: "#d9ecfb", // Màu nền
                                         },
                                         verticalAlign: VerticalAlign.CENTER,
                                         children: [new Paragraph({ children: [new TextRun({ text: 'CLO', size: 23 })], alignment: 'center', })],
@@ -180,7 +212,7 @@ export default function docTranscriptReviewer({
                                         },
                                         shading: {
                                             type: ShadingType.SOLID,
-                                            color: "#d9ecfb",
+                                            color: "#d9ecfb", // Màu nền
                                         },
                                         verticalAlign: VerticalAlign.CENTER,
                                         children: [new Paragraph({ children: [new TextRun({ text: 'Content', size: 23 })], alignment: 'center', })]
@@ -193,7 +225,7 @@ export default function docTranscriptReviewer({
                                         },
                                         shading: {
                                             type: ShadingType.SOLID,
-                                            color: "#d9ecfb",
+                                            color: "#d9ecfb", // Màu nền
                                         },
                                         children: [new Paragraph({ children: [new TextRun({ text: 'Max point', size: 23 })], alignment: 'center' })]
                                     }),
@@ -205,7 +237,7 @@ export default function docTranscriptReviewer({
                                         verticalAlign: VerticalAlign.CENTER,
                                         shading: {
                                             type: ShadingType.SOLID,
-                                            color: "#d9ecfb",
+                                            color: "#d9ecfb", // Màu nền
                                         },
                                         children: [new Paragraph({ children: [new TextRun({ text: 'Score student 1', size: 23 })], alignment: 'center', })]
                                     }),
@@ -213,7 +245,7 @@ export default function docTranscriptReviewer({
                                         verticalAlign: VerticalAlign.CENTER,
                                         shading: {
                                             type: ShadingType.SOLID,
-                                            color: "#d9ecfb",
+                                            color: "#d9ecfb", // Màu nền
                                         },
                                         width: {
                                             type: WidthType.PERCENTAGE,
@@ -228,7 +260,7 @@ export default function docTranscriptReviewer({
                                         },
                                         shading: {
                                             type: ShadingType.SOLID,
-                                            color: "#d9ecfb",
+                                            color: "#d9ecfb", // Màu nền
                                         },
                                         verticalAlign: VerticalAlign.CENTER,
                                         children: [new Paragraph({
@@ -238,7 +270,7 @@ export default function docTranscriptReviewer({
                                     }),
                                 ],
                             }),
-                            ...rows.map((row, index) => (
+                            ...rows.map((row: any, index: number) => (
                                 new TableRow({
                                     height: {
                                         value: 700,
@@ -260,6 +292,7 @@ export default function docTranscriptReviewer({
                                     rule: HeightRule.EXACT,
                                 },
                                 children: [
+
                                     new TableCell({
                                         width: {
                                             size: 5,
@@ -301,15 +334,19 @@ export default function docTranscriptReviewer({
                                         children: [new Paragraph({ children: [new TextRun({ text: '', size: 23 })], alignment: 'center', })]
                                     }),
                                     new TableCell({
-                                        verticalAlign: VerticalAlign.CENTER,
                                         width: {
                                             type: WidthType.PERCENTAGE,
                                             size: 20,
                                         },
-                                        children: [new Paragraph({ children: [new TextRun({ text: '', size: 23 })], alignment: 'center', })]
+                                        verticalAlign: VerticalAlign.CENTER,
+                                        children: [new Paragraph({
+                                            alignment: 'center',
+                                            children: [new TextRun({ text: ' ', size: 20 })]
+                                        })]
                                     }),
                                 ],
-                            }),
+
+                            })
                         ],
                     }),
                     new Paragraph({
@@ -363,17 +400,20 @@ export default function docTranscriptReviewer({
 
                         children: [
                             new TextRun({
-                                text: '                                                                                                                    Evaluator',
+                                text: '                                                                                                                      Evaluator',
                                 bold: true,
                                 size: 24,
                             }),
                         ],
                     }),
                 ],
-
-
             },
         ],
     });
+
     return fileType === 'many' ? { doc, fileName } : doc
-};
+
+
+}
+
+export default docTranscriptCouncil;

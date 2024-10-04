@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { APP_SIDEBAR, AppSiderBarType } from '@/utils/app-config';
 import { Icon } from '@iconify/react';
 import DropDown from '@/components/ui/Dropdown';
-import { TermQueryKey, useTerm } from '@/hooks/api/useQueryTerm';
+import { useTerm } from '@/hooks/api/useQueryTerm';
 import { convertMajorDropdown, convertTermDropdown } from '@/utils/convertDataTable';
 import { useDispatch } from 'react-redux';
 import { setAllTerm, setCurrentTerm } from '@/store/slice/term.slice';
@@ -19,45 +19,14 @@ import { RoleCheck } from '@/types/enum';
 import { useAuth } from '@/hooks/api/useAuth';
 import TitleManager from '@/components/ui/Title';
 import useSidebar from '@/hooks/ui/useSidebar';
-import { keyframes } from '@emotion/react';
-
-const homePageIndex = 0;
-const drawerWidth = '250px';
-const hidedDrawerWidth = '76px';
-
-const opacity__animations_out = keyframes`
-  0% {
-   transform: translateX(0); 
-  }
-  100% {
-      transform: translateX(0); 
-  }
-`;
-
-const opacity__animations_in = keyframes`
-  0% {
-   transform: translateX('0px'); 
-  }
-  100% {
-    transform: translateX(0); 
-  }
-`;
-
-const majorPayload = (majorId: string, majors: any[]) => {
-  let major = {
-    id: '',
-    name: '',
-  };
-  majors.map((m: any) => {
-    if (majorId === m._id) {
-      major = {
-        id: m._id,
-        name: m.name,
-      };
-    }
-  });
-  return major;
-};
+import {
+  homePageIndex,
+  drawerWidth,
+  hidedDrawerWidth,
+  opacity__animations_out,
+  opacity__animations_in,
+  majorPayload,
+} from '../context';
 
 export default function SidebarManager() {
   const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
@@ -81,13 +50,13 @@ export default function SidebarManager() {
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
 
+  //TODO find out route have selected
   useEffect(() => {
     if (location.pathname === '/') {
       setActiveItemIndexes([homePageIndex]);
       setCurrentSidebarItemIndex(homePageIndex);
       return;
     }
-
     currentSidebarRole.forEach((item: any, itemIndex: number) => {
       if (item.children) {
         item.children.forEach((subItem: any) => {
@@ -118,24 +87,21 @@ export default function SidebarManager() {
   const { majorStore } = useMajor();
   const { termStore, handleGetAllTermByMajor, handleGetCurrentTerm } = useTerm();
 
-  //TODO -> this change
-  const {
-    data: currentTerm,
-    isSuccess: finishCurrentTerm,
-    refetch: fetchingCurrentTerm,
-  } = handleGetCurrentTerm(majorStore.currentMajor.id);
+  //TODO -> saved term now to store and show on dropdown
+  const { data: currentTerm, refetch: fetchingCurrentTerm } = handleGetCurrentTerm(
+    majorStore.currentMajor.id,
+  );
   const [termSelectValue, setTermSelectValue] = useState(currentTerm?.term?.id);
-  //TODO -> this change
-
   const [majorSelectValue, setMajorSelectValue] = useState(majorStore.currentMajor.id);
 
-  //Handle Term dropdown
-  const handleSelectTerm = (termId) => {
+  //TODO Handle Term dropdown
+  const handleSelectTerm = (termId: string) => {
     dispatch(setCurrentTerm({}));
     setTermSelectValue(termId);
     const payload = termStore.allTerm.filter((term: any) => term.id === termId)[0];
     dispatch(setCurrentTerm(payload));
   };
+  //TODO Handle Major dropdown
   const { data } = handleGetAllTermByMajor(majorSelectValue);
   const handleSelectMajor = (majorId) => {
     setMajorSelectValue(majorId);
@@ -146,19 +112,20 @@ export default function SidebarManager() {
     dispatch(setAllTerm(data?.terms));
   }, [majorSelectValue]);
 
+  //TODO re-fetch when re-render or render component
   useEffect(() => {
     fetchingCurrentTerm();
+    
     if (
-      lecturerStore.currentRoleRender === RoleCheck.HEAD_COURSE ||
-      lecturerStore.currentRoleRender === RoleCheck.HEAD_LECTURER
-    ) {
+      lecturerStore.currentRoleRender !== RoleCheck.HEAD_COURSE &&
+      lecturerStore.currentRoleRender !== RoleCheck.HEAD_LECTURER
+    )
       dispatch(
         setCurrentMajor({
           name: lecturerStore.me.user.majorName,
           id: lecturerStore.me.user.majorId,
         }),
       );
-    }
   }, []);
 
   return (

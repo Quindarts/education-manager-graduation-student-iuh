@@ -34,7 +34,7 @@ function HeaderLecturerTerm() {
     importLecturer();
   };
 
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
+  const { onSearchChange, getQueryField, onTypeSearchChange,  setTypeSort } =
     useSearch();
   const [sort, setSort] = useState('ASC');
   const optionSort = ['Tăng dần', 'Giảm dần'];
@@ -66,7 +66,6 @@ function HeaderLecturerTerm() {
             size='small'
             defaultValue={getQueryField('keywords')}
             onChange={onSearchChange}
-            onBlur={() => handleFocused(false)}
             placeholder='Tim kiếm giảng viên HD theo..'
           />
         </Box>

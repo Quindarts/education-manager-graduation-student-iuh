@@ -6,11 +6,10 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 function UnAssignModal(props: any) {
-  const { onClose, open, grStudentId, grName, topicName } = props;
+  const { onClose, open, grName, topicName } = props;
   const {} = useAssign();
   const { pathname } = useLocation();
   const current = pathname.split('/');
-  const grLecturerId = `${current[current.length - 1]}`;
 
   return (
     <Modal onClose={onClose} open={open}>

@@ -30,18 +30,23 @@ function ResetPassword(props: any) {
         <Box borderRadius='50%' padding={10} sx={{ background: 'rgba(49, 155, 255, 0.2)' }}>
           <Icon color='#094f7482' height={70} width={70} icon='teenyicons:key-outline' />{' '}
         </Box>
-        <Typography variant='h3' mt={10} mb={14}>
-          Cấp lại mật khẩu cho sinh viên {name} ?
+        <Typography variant='h6' textAlign={'center'} mt={10} mb={14}>
+          Cấp lại mật khẩu cho sinh viên{' '}
+          <Typography variant='h6' component={'span'} fontWeight={'bold'} color='success.main'>
+            {' '}
+            {name}
+          </Typography>{' '}
+          ?
         </Typography>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
-          <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>
+          <Button onClick={onClose} sx={{ width: '20%' }} color='primary' variant='contained'>
             <Icon width={20} style={{ marginRight: 4 }} icon='mdi:cancel-outline' />
             Hủy
           </Button>
           <Button
             type='submit'
             onClick={handleSubmit}
-            sx={{ width: '50%' }}
+            sx={{ width: '80%' }}
             color='success'
             variant='contained'
           >

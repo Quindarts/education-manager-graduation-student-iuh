@@ -5,7 +5,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Chip,
   Paper,
   Typography,
 } from '@mui/material';

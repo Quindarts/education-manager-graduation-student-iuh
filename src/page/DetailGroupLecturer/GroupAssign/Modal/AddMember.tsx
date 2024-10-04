@@ -4,35 +4,12 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import useMemberGroupLecturer from '@/hooks/api/useQueryMemberGroupLecturer';
 import { Icon } from '@iconify/react';
-import TitleManager from '@/components/ui/Title';
 
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import { Box, Button, FormControl } from '@mui/material';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
 
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const convertLecturer = (lterms: any) => {
+const lecturersFromDB = (lterms: any) => {
   let updateLecturers: any[] = [];
   if (lterms == null) {
     return [];
@@ -46,7 +23,7 @@ const convertLecturer = (lterms: any) => {
   return updateLecturers;
 };
 function AddMemberGroupLecturerModal(props: any) {
-  const { onClose, open, groupType } = props;
+  const { onClose, open } = props;
   const [lecturer, setlecturer] = useState<string>('');
   const { pathname } = useLocation();
   const current = pathname.split('/');
@@ -63,8 +40,6 @@ function AddMemberGroupLecturerModal(props: any) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box m={10}>
-    
-
         <Box my={10}>
           {isLoading || isFetching ? (
             <SekeletonUI />
@@ -74,7 +49,7 @@ function AddMemberGroupLecturerModal(props: any) {
                 onChange={(e: any) => {
                   setlecturer(e.target.value);
                 }}
-                options={convertLecturer(data.lecturerTerms)}
+                options={lecturersFromDB(data.lecturerTerms)}
               />
             </FormControl>
           )}

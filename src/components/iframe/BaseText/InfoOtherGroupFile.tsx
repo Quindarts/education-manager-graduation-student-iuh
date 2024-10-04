@@ -8,14 +8,16 @@ import PreviewModal from './PreviewModal';
 import TitleManager from '@/components/ui/Title';
 import { getFileNameToExportDocx } from '@/utils/validations/evaluation.validation';
 import SearchInput from './SearchInput';
-import { useAuth } from '@/hooks/api/useAuth';
-import { RoleCheck } from '@/types/enum';
-import { TypeEvaluation } from '@/services/apiEvaluation';
+import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 
-const processingDataResponse = (data: any[]) => {
+const convertDataResToDropValue = (data: any[]) => {
   if (!data) {
     return [];
-  } else return data.map((gr: any) => ({ name: gr.name, _id: gr.id ? gr.id : gr.groupLecturerId }));
+  } else
+    return data.map((gr: any) => ({
+      name: checktTypeGroupLecturer(gr.type.toLowerCase()) + '_' + gr.name,
+      _id: gr.id ? gr.id : gr.groupLecturerId,
+    }));
 };
 
 const CardGrLecturerMember = (members: any[]) => {
@@ -78,8 +80,8 @@ const CardStudents = ({
     </Box>
   );
 };
-//!: Bao gồm phản biện, poster, hội đồng.
 
+//!: Bao gồm phản biện, poster, hội đồng.
 function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluation }: any) {
   //TODO: HOOKS
   const [isLoading, setLoading] = useState(false);
@@ -91,11 +93,8 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
   //TODO CALL API
   const { handleGetGroupLecturerById } = useGroupLecturer();
   const { handleGetDataToExportReportDocx } = useEvaluation();
-  const { lecturerStore } = useAuth();
-  const currentRole = lecturerStore.currentRoleRender;
   const {
     data: fetchGrLecturer,
-    isLoading: loadingGrL,
     isSuccess: successfetchGrLecturer,
     refetch,
   } = handleGetGroupLecturerById(currentGrId);
@@ -103,10 +102,10 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
   useEffect(() => {
     setLoading(true);
     handleGetDataToExportReportDocx(typeEvaluation).then((data) => {
-      setGroupLecturersDropdown(processingDataResponse(data?.groupLecturers));
+      setGroupLecturersDropdown(convertDataResToDropValue(data?.groupLecturers));
       changeCurrentGrLecturers(data?.groupLecturers);
       setGroupLecturers(
-        data?.groupLecturers.map((gr) => {
+        data?.groupLecturers.map((gr: any) => {
           if (gr.groupLecturerId) {
             return {
               ...gr,
@@ -223,6 +222,7 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
                   .filter((gr) => gr.id === currentGrId)
                   .map((gr) => CardGrLecturerMember(gr.members))}
             </Box>
+            
             {currentGrId === '1111' ? (
               <Box
                 display={'flex'}
@@ -298,7 +298,6 @@ function InfoOtherGroupFile({ evaluations, changeCurrentGrLecturers, typeEvaluat
           </>
         )}
       </Box>
-
       <PreviewModal
         onClose={handleClosePreview}
         open={openPreview.isOpen}

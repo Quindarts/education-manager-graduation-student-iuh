@@ -52,8 +52,8 @@ function EditInfoModal(props: ModalProps & EditModalType) {
 
   return (
     <Modal maxWidth='xs' open={open} onClose={onClose}>
-      <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+      <Box px={10} py={6}>
+        <TitleManager mb={6} variant='h5' icon='ph:student-fill' textTransform={'uppercase'}>
           Cập nhật thông tin Sinh viên
         </TitleManager>
         {isLoading && !isFetched ? (
@@ -182,14 +182,14 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                     placeholder='Chuyên ngành'
                   />
                 </Box>
-                <DropDown
+                {/* <DropDown
                   label='Loại đào tạo'
                   value={`${values.typeTraining}`}
                   onChange={(e) => {
                     setFieldValue('typeTraning', e.target.value);
                   }}
                   options={TRAINING_DROP_VALUE}
-                />
+                /> */}
                 <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
                   <Button variant='contained' color='primary' onClick={onClose}>
                     <Icon icon='mdi:close-outline' />
@@ -197,7 +197,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   </Button>
                   <Button variant='contained' color='success' type='submit'>
                     <Icon icon='material-symbols:save-outline' />
-                    Lưu 
+                    Lưu
                   </Button>
                 </Box>
               </form>

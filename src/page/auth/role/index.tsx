@@ -15,30 +15,24 @@ const CARD_ROLE_TYPE = [
     icon: 'icomoon-free:user-tie',
     name: 'Chủ nhiệm ngành',
     role: EnumRole.HEAD_LECTURER,
-    // numRole: 2,
     desc: 'Quyền Chủ nhiệm ngành lãnh đạo, quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
   },
   {
     icon: 'eos-icons:admin-outlined',
     name: 'Quản trị viên',
     role: EnumRole.ADMIN,
-    // numRole: 2,
     desc: 'Quyền quản trị viên quản lý hoạt động giảng dạy và đồ án tốt nghiệp, đảm bảo chất lượng và phát triển chuyên môn.',
   },
   {
     icon: 'fa6-solid:user-graduate',
     name: 'Giảng viên',
-    // numRole: 1,
-
     role: EnumRole.LECTURER,
-
     desc: 'Trong hệ thống quản lý khóa luận, giảng viên hướng dẫn sinh viên, theo dõi tiến độ, và đánh giá chất lượng công trình.',
   },
   {
     icon: 'vaadin:calendar-user',
     name: 'Chủ quản môn học',
     role: EnumRole.HEAD_COURSE,
-    // numRole: 3,
     desc: 'Trong hệ thống quản lý khóa luận, Chủ quản môn học quản lý người dùng, thiết lập hệ thống, và duy trì hoạt động.',
   },
 ];
@@ -59,9 +53,12 @@ function RolePage() {
     if (successMajor) dispatch(setAllMajor(dataMajorFetch.majors));
   }, [successMajor]);
 
+
+  //!<... DON'T REMOVE
   const { data: dataTermFecth, isSuccess: successTerm } = handleGetAllTermByMajor(
     data?.lecturer.majorId,
   );
+  //! DON'T REMOVE..>
 
   const accessToken: string = getValueFromLocalStorage('accessToken') || '';
 

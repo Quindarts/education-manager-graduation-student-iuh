@@ -26,8 +26,7 @@ function SearchInput({ sx }: BoxProps) {
     onTypeSearchChange(typeSearch);
   }, [sort, typeSearch]);
 
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
-    useParams();
+  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort } = useParams();
 
   return (
     <Box sx={{ ...sx, display: 'flex', gap: 3, width: '100%' }}>

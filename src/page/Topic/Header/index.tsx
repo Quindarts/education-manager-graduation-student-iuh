@@ -2,7 +2,7 @@ import DropDown from '@/components/ui/Dropdown';
 import { Icon } from '@iconify/react';
 import { Box, Button, TextField, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import ModalUpload from '@/components/ui/Upload';
+import ModalUpload from '@/components/ui/UploadExcel';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import useSearch from '@/hooks/ui/useParams';
@@ -40,8 +40,7 @@ function HeaderTopic() {
 
   const { handleUiRender, handleGetTopicToExport } = useTopic();
   const currentRole = handleUiRender();
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
-    useSearch();
+  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort } = useSearch();
 
   const [sort, setSort] = useState('ASC');
 
@@ -83,7 +82,6 @@ function HeaderTopic() {
                   size='small'
                   defaultValue={getQueryField('keywords')}
                   onChange={onSearchChange}
-                  onBlur={() => handleFocused(false)}
                   placeholder='Tim kiếm đề tài theo tên đề tài, tên giảng viên'
                 />
               </Box>{' '}

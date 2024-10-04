@@ -3,6 +3,14 @@ import Major from "@/types/entities/major";
 import { Term } from "@/types/entities/term";
 
 
+export function getTimeDifference(startDate: string, endDate: string) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffInMs = end.getTime() - start.getTime();
+    return diffInMs;
+}
+
+
 export const convertTermDropdown = (terms?: any[]
 ) => {
     let newTerms: any[] = [];

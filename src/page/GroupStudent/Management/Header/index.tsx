@@ -1,8 +1,7 @@
 import { Icon } from '@iconify/react';
 import { Box, Button, Tooltip } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AddGroupStudentModal from '../Modal/AddModal/Add';
-import useParams from '@/hooks/ui/useParams';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import ExportExcelButton from '@/components/ui/Export';
 import SearchInput from './SearchInput';
@@ -22,9 +21,6 @@ function HeaderGroupStudent({ countGroups }) {
     importGr();
   };
   const { data: fetchGroup } = handleGetExportGroupStudent();
-
-  const { onSearchChange, getQueryField, onTypeSearchChange, handleFocused, setTypeSort } =
-    useParams();
 
   return (
     <Box mb={4} display={'flex'} justifyContent={'end'} flexWrap={'wrap'} gap={2}>

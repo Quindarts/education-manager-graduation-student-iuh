@@ -34,18 +34,23 @@ function DeleteModal(props: DeleteModalType & ModalProps) {
         <Box borderRadius='50%' padding={3} sx={{ background: 'rgba(255,49,111,0.2)' }}>
           <Icon color='#b31d1d82' height={70} width={70} icon='fa-solid:trash-restore' />{' '}
         </Box>
-        <Typography variant='h3' mt={10} mb={14}>
-          Bạn có chắc chắn muốn xóa sinh viên {name} ?
+        <Typography variant='h6' mt={10} mb={14} textAlign={'center'}>
+          Bạn có chắc chắn muốn xóa sinh viên
+          <Typography variant='h6' component={'span'} fontWeight={'bold'} color='error'>
+            {' '}
+            {name}
+          </Typography>
+          ?
         </Typography>
         <Box width='100%' display='flex' gap={6} marginTop={1}>
-          <Button onClick={onClose} sx={{ width: '50%' }} color='primary' variant='contained'>
+          <Button onClick={onClose} sx={{ width: '20%' }} color='primary' variant='contained'>
             <Icon width={20} style={{ marginRight: 4 }} icon='mdi:cancel-outline' />
             Hủy
           </Button>
           <Button
             type='submit'
             onClick={handleSubmit}
-            sx={{ width: '50%' }}
+            sx={{ width: '80%' }}
             color='error'
             variant='contained'
           >

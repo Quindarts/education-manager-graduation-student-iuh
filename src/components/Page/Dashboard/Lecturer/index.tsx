@@ -2,12 +2,9 @@ import { Box, Paper, Typography } from '@mui/material';
 import React from 'react';
 import PromotionTextContent from '@/components/ui/PromotionTextContent';
 import StatisticManager from './Statistic';
-import { useStudent } from '@/hooks/api/useQueryStudent';
 import TimeLine from './Timeline';
 
 export default function DashboardOfLecturer() {
-  const { handleGetCountOfStudent } = useStudent();
-
   return (
     <Box sx={{ px: 10, bgcolor: 'white', py: 15, minHeight: '60vh' }}>
       <>

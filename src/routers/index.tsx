@@ -12,7 +12,6 @@ import ForgotPassword from '@/page/auth/forgot';
 import GuidePage from '@/page/Guide';
 import Toolconvert from '@/page/tool';
 const DetailGroupSupportPage = lazy(() => import('@/page/DetailGroupSupport'));
-const RegisterTemplate = lazy(() => import('@/page/auth/register'));
 const DashboardTemplate = lazy(() => import('@/page/Dashboard'));
 const TermTemplate = lazy(() => import('@/page/Term'));
 const StudentTemplate = lazy(() => import('@/page/Student'));
@@ -83,7 +82,6 @@ function Routing() {
         {/* <Route path={APP_ROUTES.GROUP_SUPPORT.SCORE} element={<ScoreGroupSupportTemplate />} /> */}
         {/* <Route path={APP_ROUTES.GROUP_SUPPORT.DETAIL_SCORE_GROUP} element={<GroupSupportManagementTemplate />} /> */}
         //ROUTE USER
-        <Route path={APP_ROUTES.USER.REGISTER} element={<RegisterTemplate />} />
         <Route path={APP_ROUTES.USER.PROFILE} element={<ProfileTemplate />} />
         <Route path={APP_ROUTES.USER.UPDATE_PASS} element={<UpdatePassPage />} />
         //ROLE PERMISSION

@@ -1,8 +1,6 @@
 import TitleManager from '@/components/ui/Title';
-
 import { Icon } from '@iconify/react';
 import { Box, CircularProgress, Paper, Typography } from '@mui/material';
-
 import React, { useState } from 'react';
 import TableStudentScore from './Table';
 import DropDown from '@/components/ui/Dropdown';
@@ -15,15 +13,11 @@ function ScoreStudentPage() {
   const [currentDataRow, setCurrentDataRow] = useState(null);
   const [currentRowSelectId, setCurrentRowSelectId] = useState('');
   const [typeScoreStudent, setTypeScoreStudent] = useState<string>(`${ENUM_SCORE_STUDENT[0]?._id}`);
-
   const { hanleGetEvalutaionsForScoring, handleGetUnTranscriptGroupStudentsByType } =
     useQueryTranscript();
-
   const { data, isSuccess } = hanleGetEvalutaionsForScoring(checkTypeEvaluation(typeScoreStudent));
-
   const { data: groups, isLoading: loadingGrStudent } =
     handleGetUnTranscriptGroupStudentsByType(typeScoreStudent);
-
   const handleRowClick = (params: any) => {
     setCurrentDataRow(params.row);
     setCurrentRowSelectId(params.id);

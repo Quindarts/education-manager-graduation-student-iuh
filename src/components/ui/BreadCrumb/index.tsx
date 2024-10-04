@@ -1,6 +1,6 @@
-import { Box, Breadcrumbs, Typography } from '@mui/material';
+import {  Breadcrumbs, Typography } from '@mui/material';
 import React from 'react';
-import { Link, matchPath, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 const ROUTE_LABELS: { [key: string]: string } = {
   '/': ' ',
   '/terms': 'Quản lý Học kì',
@@ -65,7 +65,6 @@ function BreadCrumbRouting() {
 
   return (
     <Breadcrumbs aria-label='breadcrumb'>
-      {/* <Link style={{ color: '#0052b1', fontWeight: '500', fontSize: 14 }} to='/'></Link> */}
       {validPaths.map((path, index) => {
         const breadcrumbName = findBreadcrumbName(path);
         return index === validPaths.length - 1 ? (

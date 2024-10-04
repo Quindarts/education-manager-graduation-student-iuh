@@ -32,12 +32,10 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ title, value, link, ico
       <CardContent sx={{ flex: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box sx={{ mr: 2 }}>{icon}</Box>
-          <Typography color={'grey.200'} variant='h6'>
-            {title}
-          </Typography>
+          <Typography variant='body1'>{title}</Typography>
         </Box>
         <Box mt={4} display={'flex'} justifyContent={'space-between'}>
-          <Typography variant='h2' fontWeight={'800'} color='grey.200'>
+          <Typography variant='h4' fontWeight={'800'} color='grey.200'>
             {value}
           </Typography>
           <Link to={link} style={{ color: 'white', fontSize: 12 }}>
@@ -49,4 +47,4 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ title, value, link, ico
   );
 };
 
-export default StatisticsCard;
+export default React.memo(StatisticsCard);

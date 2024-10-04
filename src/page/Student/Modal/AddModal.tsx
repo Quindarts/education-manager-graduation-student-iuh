@@ -54,8 +54,8 @@ function AddModal(props: any) {
   }, [successAdd]);
   return (
     <Modal maxWidth='xs' open={open} onClose={onClose}>
-      <Box p={10}>
-        <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
+      <Box px={10} py={6}>
+        <TitleManager mb={6} variant='h5' icon='ph:student-fill' textTransform={'uppercase'}>
           Thêm Sinh viên
         </TitleManager>
 
@@ -174,14 +174,14 @@ function AddModal(props: any) {
                   placeholder='Chuyên ngành'
                 />
               </Box>
-              <DropDown
+              {/* <DropDown
                 label='Loại đào tạo'
                 value={`${values.typeTraining}`}
                 onChange={(e) => {
                   setFieldValue('typeTraining', e.target.value);
                 }}
                 options={TRAINING_DROP_VALUE}
-              />
+              /> */}
               <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
                 <Button variant='contained' color='primary' onClick={onClose}>
                   <Icon icon='mdi:close-outline' />

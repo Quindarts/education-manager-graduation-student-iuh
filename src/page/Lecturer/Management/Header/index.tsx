@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button, TextField, Tooltip } from '@mui/material';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import AddLecturerModal from '../Modal/AddModal';
-import ModalUpload from '@/components/ui/Upload';
+import ModalUpload from '@/components/ui/UploadExcel';
 import { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import useSearch from '@/hooks/ui/useParams';
@@ -36,7 +36,7 @@ const SEARCH_DROP_VALUE = [
 function HeaderLecturer() {
   const [openAddModal, setOpenAddModal] = useState(false);
 
-  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort, handleFocused } =
+  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort } =
     useSearch();
 
   const handleCloseAddModal = () => {
@@ -81,7 +81,6 @@ function HeaderLecturer() {
             size='small'
             defaultValue={getQueryField('keywords')}
             onChange={onSearchChange}
-            onBlur={() => handleFocused(false)}
             placeholder='Tim kiếm giảng viên theo..'
           />
         </Box>

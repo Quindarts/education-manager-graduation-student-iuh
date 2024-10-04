@@ -11,8 +11,8 @@ import {
   getTypeEvaluation,
 } from '@/utils/validations/evaluation.validation';
 import SheetTranscriptAdvisor from '@/components/iframe/PageWord/SheetTranscriptAdvisor';
-import docTranscriptAdvisor from '@/components/iframe/PageWord/docUtils/docTranscriptAdvisor';
-import docTranscriptReviewer from '@/components/iframe/PageWord/docUtils/docTranscriptReviewer';
+import docTranscriptAdvisor from '@/components/iframe/PageWord/doc/docTranscriptAdvisor';
+import docTranscriptReviewer from '@/components/iframe/PageWord/doc/docTranscriptReviewer';
 import { useGlobalContextReview } from '../Context';
 import InfoGroupSupportFile from '@/components/iframe/BaseText/InfoGroupSupportFile';
 import { TypeEvaluation } from '@/services/apiEvaluation';
@@ -20,6 +20,7 @@ import InfoOtherGroupFile from '@/components/iframe/BaseText/InfoOtherGroupFile'
 import * as GroupLecturerServices from '@/services/apiGroupLecturer';
 import { useAuth } from '@/hooks/api/useAuth';
 import { RoleCheck } from '@/types/enum';
+import docTranscriptCouncil from '@/components/iframe/PageWord/doc/docTranscriptCouncil';
 interface ExportWordModalProps {
   open: boolean;
   onClose: () => void;
@@ -34,6 +35,7 @@ const useExportMultiDocs = async (groupLecturers: any[], evaluations: any[], typ
   const role = lecturerStore.currentRoleRender;
   const isLecturerExport = role === RoleCheck.LECTURER;
   const [resultCall, setResultCall] = useState([]);
+
   const fetchGroupLecturers = async () => {
     try {
       const initApis = groupLecturers.map((gr: any) =>
@@ -51,6 +53,7 @@ const useExportMultiDocs = async (groupLecturers: any[], evaluations: any[], typ
   const filterData = resultCall.filter(
     (gr: any) => gr.groupStudents && gr.groupStudents.length !== 0,
   );
+
   const processData = filterData.flatMap((group: any) => {
     return group.groupStudents.flatMap((studentGroup: any) => {
       if (Array.isArray(group.members) && group.members.length > 0 && !isLecturerExport) {
@@ -80,11 +83,19 @@ const useExportMultiDocs = async (groupLecturers: any[], evaluations: any[], typ
       }
     });
   });
-  return Promise.all(
-    processData.map((container: any) => {
-      return docTranscriptReviewer({ ...container, role });
-    }),
-  );
+
+  if (typeEvaluation === 'REPORT') {
+    return Promise.all(
+      processData.map((container: any) => {
+        return docTranscriptCouncil({ ...container, role });
+      }),
+    );
+  } else
+    return Promise.all(
+      processData.map((container: any) => {
+        return docTranscriptReviewer({ ...container, role });
+      }),
+    );
 };
 
 function ExportWordModal(props: ExportWordModalProps) {
@@ -101,7 +112,9 @@ function ExportWordModal(props: ExportWordModalProps) {
     groupMember,
     onClearData,
   } = useGlobalContextReview();
+
   const { onExportDocxFile, onExportMultiDocxFiles } = useDocx();
+
   const changeCurrentGrLecturers = (currentGrLecturers: any[]) => {
     setCurrentGrLecturers(currentGrLecturers);
   };

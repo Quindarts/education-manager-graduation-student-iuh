@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TextField,
   Box,
@@ -7,7 +7,6 @@ import {
   Select,
   FormControl,
   InputLabel,
-  InputProps,
   BoxProps,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';

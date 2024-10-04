@@ -1,8 +1,6 @@
 import { Box, Paper, Typography } from '@mui/material';
 import React from 'react';
-import PromotionTextContent from '@/components/ui/PromotionTextContent';
 import StatisticManager from './Statistic';
-import CalendarSection from './Calendar';
 import { BarChart, PieChart } from '@mui/x-charts';
 
 export default function DashboardOfAdmin() {
@@ -41,10 +39,8 @@ export default function DashboardOfAdmin() {
               </Box>
             </Paper>
             <Paper sx={{ px: 10, py: 4, width: '30%' }}>
-              {/* 
-              <CalendarSection /> */}
               <Typography mb={6} mt={10} variant='h6' fontWeight={'bold'} color='grey.700'>
-                Phổ điểm 
+                Phổ điểm
               </Typography>
               <PieChart
                 series={[

@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from '../Modal';
 import {
   Box,
   Button,
   Card,
-  LinearProgress,
-  LinearProgressProps,
   Paper,
   Skeleton,
   Tooltip,
   Typography,
-  Fab,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import TitleManager from '../Title';
@@ -19,25 +16,8 @@ import useUploadExcel, { TypeEntityUpload } from '@/hooks/ui/useUploadExcel';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useAuth } from '@/hooks/api/useAuth';
-import LecturerExcelDemo from './Demo/Lecturer';
-import StudentExcelDemo from './Demo/Student';
-import TopicExcelDemo from './Demo/Topic';
 import ExportExcelModelButton from './Model';
-
-function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 1 }}>
-        <LinearProgress variant='determinate' {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography variant='body2' color='text.secondary'>{`${Math.round(
-          props.value,
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+import LinearProgressWithLabel from './LinearProgress';
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -50,6 +30,8 @@ const VisuallyHiddenInput = styled('input')({
   width: '100%',
   backgroundColor: 'red',
 });
+
+
 interface ModalUploadPropsType {
   entityUpload: TypeEntityUpload;
   termId?: string;
@@ -76,9 +58,12 @@ function ModalUpload(props: ModalUploadPropsType) {
     fileNameModel,
     havedModelExcel = true,
   } = props;
+
   const { termStore } = useTerm();
   const { majorStore } = useMajor();
   const { lecturerStore } = useAuth();
+
+  //TODO: event Modal
   const [isOpen, setIsOpen] = useState(false);
   const handleOpenUpload = () => {
     setIsOpen(true);
@@ -93,9 +78,11 @@ function ModalUpload(props: ModalUploadPropsType) {
     setValueLoading('');
     setCurrentFile(undefined);
   };
+
+
+  //TODO: HOOK LOGIC UPLOAD EXCEL
   const {
     importExcel,
-    // exportExcel,
     valueLoading,
     totalSize,
     currentFile,
@@ -113,7 +100,7 @@ function ModalUpload(props: ModalUploadPropsType) {
     typeEvaluation: typeEvaluation,
     handleCloseUpload: handleCloseUpload,
   });
-
+  
   return (
     <Box>
       <Tooltip arrow title={labelToolTip}>
@@ -255,6 +242,7 @@ function ModalUpload(props: ModalUploadPropsType) {
               <Skeleton />
             )}
           </Box>
+
           {havedModelExcel && (
             <Box mt={10}>
               <ExportExcelModelButton
@@ -265,6 +253,7 @@ function ModalUpload(props: ModalUploadPropsType) {
               />
             </Box>
           )}
+          
           <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
             <Button variant='contained' color='primary' onClick={handleCloseUpload}>
               <Icon icon='mdi:close-outline' />

@@ -12,14 +12,7 @@ interface CalendarPropsType extends DatePickerProps<any> {
   label?: string;
   error?: boolean;
 }
-const ErrorStyled = styled(ErrorMessage)`
-  div {
-    color: '#ca4f36';
-    font-size: '12px';
-    margin-top: '6px';
-    margin-left: '16px';
-  }
-`;
+
 function Calendar(props: CalendarPropsType) {
   const { className, label, id, name, error, sx, ...rest } = props;
   return (

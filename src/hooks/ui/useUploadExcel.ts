@@ -1,4 +1,3 @@
-import { bytesForHuman } from '@/components/ui/Upload/func';
 import { queryClient } from '@/providers/ReactQueryClientProvider';
 import axiosConfig from '@/services/axiosConfig';
 import { getValueFromLocalStorage } from '@/utils/localStorage';
@@ -11,12 +10,7 @@ import { QueryStudent } from '../api/useQueryStudent';
 import { QueryTopic } from '../api/useQueryTopic';
 import { User } from '@/types/entities/user';
 import { env } from '@/utils/env';
-import * as XLSX from 'xlsx';
-import FileSaver from 'file-saver';
-
-
-
-
+import { bytesForHuman } from '@/utils/file';
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
 export enum TypeEntityUpload {
@@ -32,6 +26,7 @@ const axiosUpload = axios.create({
   },
 })
 
+//TODO [MIDDLEWARE]
 axiosUpload.interceptors.request.use(
   (config) => {
     const accessToken = getValueFromLocalStorage("accessToken");
@@ -68,13 +63,18 @@ axiosUpload.interceptors.response.use(
     return Promise.reject(error.response.data);
   },
 );
+//TODO [MIDDLEWARE]
+
+
 
 interface UploadHandler {
   entityUpload: string, termId: string, majorId: string, me: User, typeEvaluation?: string, handleCloseUpload?: () => void;
 }
-
 const useUploadExcel = (props: UploadHandler) => {
+
+
   const { entityUpload, termId, majorId, me, typeEvaluation, handleCloseUpload } = props
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fileName, setFileName] = useState<string>('');
@@ -84,22 +84,13 @@ const useUploadExcel = (props: UploadHandler) => {
 
   //axios
   const [valueLoading, setValueLoading] = useState<any>(0)
-
   const getExention = (file: any) => {
     const parts = file.name.split('.');
     const extension = parts[parts.length - 1];
     return EXTENSIONS.includes(extension);
   };
 
-  // const exportExcel = () => {
-  //   const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-  //   const fileExtension = '.xlsx';
-  //   const ws = XLSX.utils.json_to_sheet(csvData);
-  //   const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-  //   const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  //   const data = new Blob([excelBuffer], { type: fileType });
-  //   FileSaver.saveAs(data, fileName + fileExtension);
-  // }
+  //TODO  [IMPORT DATA FROM EXCEL FILE]
   const importExcel = async (e: any) => {
     //read file
     const file = e.target.files[0];
@@ -109,40 +100,35 @@ const useUploadExcel = (props: UploadHandler) => {
     setSuccess(false);
     setLoading(true);
 
-
     //validate file
-    if (file) {
-      setCurrentFile(file)
-      if (getExention(file)) {
-        reader.readAsBinaryString(file);
-      } else {
-        enqueueSnackbar('File tải lên không đúng định dạng Excel, CSV file', {
-          variant: 'error',
-        });
-      }
-    } else {
-      enqueueSnackbar('Đã có lỗi khi tải lên, vui lòng thử lại sau...', {
+    if (!file) {
+      return enqueueSnackbar('Đã có lỗi khi tải lên, vui lòng thử lại sau...', {
         variant: 'error',
       });
     }
-
-
+    if (!getExention(file)) {
+      return enqueueSnackbar('File tải lên không đúng định dạng Excel, CSV file', {
+        variant: 'error',
+      });
+    }
+    setCurrentFile(file)
+    reader.readAsBinaryString(file);
   };
 
   //saved file
   const savedFileToDatabase = async (file: any) => {
-    const bodyRequestBasic =
+    const bodyWithOtherEntity =
     {
       file: file,
       termId: termId,
       majorId: majorId,
     }
-    const bodyRequestEval = {
+    const bodyWithEvaluation = {
       termId: termId,
       file: file,
       type: typeEvaluation
     }
-    return axiosUpload.post(`${env.API_URL}/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyRequestBasic : bodyRequestEval, {
+    return axiosUpload.post(`${env.API_URL}/api/v1/${entityUpload}/import`, entityUpload !== TypeEntityUpload.EVALUATION ? bodyWithOtherEntity : bodyWithEvaluation, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -159,9 +145,10 @@ const useUploadExcel = (props: UploadHandler) => {
             });
             queryClient.invalidateQueries(
               [QueryKeysLecturer.getAllLecturer, majorId,
-                "10", "1", '', '','']
+                "10", "1", '', '', '']
             );
             handleCloseUpload()
+
           }
           if (entityUpload === TypeEntityUpload.EVALUATION) {
             enqueueSnackbar('Lưu danh sách tiêu chí từ excel file thành công', {
@@ -174,7 +161,7 @@ const useUploadExcel = (props: UploadHandler) => {
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, "10", "1", '', '',''] })
+            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, "10", "1", '', '', ''] })
             queryClient.invalidateQueries({ queryKey: [QueryStudent.getCountOfStudent] })
             handleCloseUpload()
 
@@ -183,13 +170,14 @@ const useUploadExcel = (props: UploadHandler) => {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", '', '',''] });
+            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", '', '', ''] });
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, me.id, termId] })
             queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
             handleCloseUpload()
           }
         }
       })
+
       .catch(function (error) {
         enqueueSnackbar(error.message, {
           variant: 'error',
@@ -197,7 +185,6 @@ const useUploadExcel = (props: UploadHandler) => {
       })
   }
   return {
-    // exportExcel,
     importExcel,
     setFileName,
     setTotalSize,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -17,6 +17,7 @@ const ForgotValidationSchema = Yup.object({
     .matches(/^\d{6,}$/, 'Mã giảng viên chỉ gồm chữ số và lớn hơn 6 ký tự')
     .required('Mã giảng viên không được để trống'),
 });
+
 function ForgotPassword() {
   const { onForgotPassword } = useAuth();
   const { mutate: forgotPass, isLoading } = onForgotPassword();
@@ -30,6 +31,8 @@ function ForgotPassword() {
       forgotPass(values.username);
     },
   });
+
+  
   const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
   const navigate = useNavigate();
 

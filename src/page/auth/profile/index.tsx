@@ -6,14 +6,13 @@ import { EnumGender } from '@/types/enum';
 import { Icon } from '@iconify/react';
 import { Box, Button, Paper } from '@mui/material';
 import { convertMajorDropDown } from '@/utils/convertDataTable';
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { useAuth } from '@/hooks/api/useAuth';
 import { validateSchemaLecturer } from '@/page/Lecturer/context';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 
-const GenderLecturer = [
+const GENDERS = [
   {
     _id: EnumGender.FEMALE,
     name: 'Nữ',
@@ -23,7 +22,8 @@ const GenderLecturer = [
     name: 'Nam',
   },
 ];
-const DEGREE_DROP_VALUE = [
+
+const DEGREES = [
   { name: 'Tiến sĩ', _id: 'MASTER' },
   { name: 'Thạc sĩ', _id: 'DOCTOR' },
 ];
@@ -31,7 +31,6 @@ const DEGREE_DROP_VALUE = [
 function ProfilePage() {
   const { majorStore } = useMajor();
   const { lecturerStore, onUpdateMe } = useAuth();
-  const {} = useLecturer();
   const { mutate: updateLecturer } = onUpdateMe();
 
   const handleSubmitEditLecturer = (values: any) => {
@@ -117,7 +116,7 @@ function ProfilePage() {
                               setFieldValue('gender', e.target.value);
                             }}
                             label='Giới tính'
-                            options={GenderLecturer}
+                            options={GENDERS}
                           />
                         </Box>
                       </Box>
@@ -128,7 +127,7 @@ function ProfilePage() {
                           onChange={(e) => {
                             setFieldValue('degree', e.target.value);
                           }}
-                          options={DEGREE_DROP_VALUE}
+                          options={DEGREES}
                         />
                       </Box>{' '}
                     </Box>

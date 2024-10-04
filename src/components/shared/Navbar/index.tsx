@@ -7,9 +7,12 @@ import { useEffect, useState } from 'react';
 import useSidebar from '@/hooks/ui/useSidebar';
 
 function Navbar() {
-  const { handleToggleSidebar, isOpen } = useSidebar();
-  const [bgColor, setBgColor] = useState('rgba(255, 255, 255, 0.9)');
 
+  //TODO HOOK STORE
+  const { handleToggleSidebar, isOpen } = useSidebar();
+
+  //TODO: HANDLE UI
+  const [bgColor, setBgColor] = useState('rgba(255, 255, 255, 0.9)');
   const handleScroll = () => {
     if (window.scrollY > 50) {
       setBgColor('grey.100');
@@ -17,7 +20,6 @@ function Navbar() {
       setBgColor('rgba(255, 255, 255, 0.9)');
     }
   };
-
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -25,6 +27,7 @@ function Navbar() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
   return (
     <Box
       sx={{ backgroundColor: bgColor, zIndex: 900, transition: 'all 1s ease-in' }}
@@ -92,7 +95,7 @@ function Navbar() {
             </Typography>
           </Box>
         </Box>
-
+            
         <Box display='flex' alignItems='center' gap={6}>
           <Notification />
           <ProfileMenu />

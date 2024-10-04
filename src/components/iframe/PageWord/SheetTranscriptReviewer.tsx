@@ -1,7 +1,6 @@
 import { Box, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from './style';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
-import { useAuth } from '@/hooks/api/useAuth';
 
 function SheetTranscriptReviewer({
   topicName,
@@ -14,11 +13,6 @@ function SheetTranscriptReviewer({
   return (
     <Paper sx={{ px: 4, overflowY: 'auto', height: 'auto' }} elevation={0}>
       <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
-        {/* <Typography textAlign={'center'} variant='body2' color='initial'>
-          <b>INDUSTRIAL UNIVERSITY OF HO CHI MINH CITY</b>
-          <br /> FACULTY OF INFORMATION TECHNOLOGY <br />
-          =======//======
-        </Typography> */}
       </Box>
       <Box>
         <Typography textAlign={'center'} my={3} variant='body1' fontWeight={800} color='initial'>

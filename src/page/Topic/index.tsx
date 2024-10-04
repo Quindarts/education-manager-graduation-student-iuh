@@ -1,5 +1,5 @@
 import { Box, Paper, Typography } from '@mui/material';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TableManagamentTopic from './Table';
 import HeaderTopic from './Header';
 import TitleManager from '@/components/ui/Title';
@@ -70,7 +70,7 @@ function TopicPage() {
           <TableManagamentTopic
             isApprovePermission={true}
             rows={
-              data?.topics ? data.topics.map((topic: any, index: number) => ({ ...topic })) : []
+              data?.topics ? data.topics.map((topic: any) => ({ ...topic })) : []
             }
             handleChangeLimit={handleChangeLimit}
             handleChangePage={handleChangePage}

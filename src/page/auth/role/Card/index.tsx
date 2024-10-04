@@ -1,8 +1,7 @@
-import { useTerm } from '@/hooks/api/useQueryTerm';
 import { setCurrentRoleRender } from '@/store/slice/lecturer.slice';
 import { RoleCheck } from '@/types/enum';
 import { Icon } from '@iconify/react';
-import { Card, CardActions, CardContent, Typography, Button } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 

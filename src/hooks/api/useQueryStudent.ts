@@ -152,7 +152,32 @@ export const useStudent = () => {
             }
         })
     }
-
+    //[PUT]
+    const onLockAllStudents = () => {
+        return useMutation(() => StudentServices.lockAllStudents(termId), {
+            onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'student'>) {
+                if (data.success) {
+                    enqueueSnackbar(`Khóa tài khoản tất cả sinh viên!`, { variant: 'success' })
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryStudent.getAllStudent,
+                            termId,
+                            majorId,
+                        getQueryField('limit'),
+                        getQueryField('page'),
+                        getQueryField('searchField'),
+                        getQueryField('sort'),
+                        getQueryField('keywords')]
+                    })
+                }
+            },
+            onError(err: any) {
+                if (err.status < 500)
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                else
+                    enqueueSnackbar('Cập nhật thất bại, thử lại', { variant: 'warning' })
+            }
+        })
+    }
     //[POST]
     const onCreateStudent = () => {
         return useMutation((data: Partial<Student>) => StudentServices.createStudent(data), {
@@ -245,6 +270,6 @@ export const useStudent = () => {
         onUpdateStudent,
         onCreateStudent,
         onResetPassword,
-        onLockOnlyStudent,
+        onLockOnlyStudent, onLockAllStudents
     }
 }

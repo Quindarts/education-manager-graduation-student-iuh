@@ -16,31 +16,17 @@ import { setCurrentTerm } from '@/store/slice/term.slice';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 import { setCurrentMajor } from '@/store/slice/major.slice';
 import { RoleCheck } from '@/types/enum';
-import { useAuth } from '@/hooks/api/useAuth';
 import useSidebar from '@/hooks/ui/useSidebar';
-import { keyframes } from '@emotion/react';
-const opacity__animations_in = keyframes`
-  0% {
-   transform: translateX('0px'); 
-  }
-  100% {
-    transform: translateX(0); 
-  }
-`;
-const opacity__animations_out = keyframes`
-  0% {
-   transform: translateX(0); 
-  }
-  100% {
-      transform: translateX(0); 
-  }
-`;
+import {
+  homePageIndex,
+  drawerWidth,
+  hidedDrawerWidth,
+  opacity__animations_out,
+  opacity__animations_in,
+  majorPayload,
+} from '../context';
 
-const homePageIndex = 0;
-const drawerWidth = '250px';
-const hidedDrawerWidth = '76px';
-
-const setDropdown = (termsLecturer: any[]) => {
+const handleResTermsAndMajors = (termsLecturer: any[]) => {
   let majors = [];
   let terms = [];
   if (!termsLecturer) {
@@ -53,20 +39,21 @@ const setDropdown = (termsLecturer: any[]) => {
     });
     terms.push({ ...term });
   });
+
   return {
     majors,
     terms,
   };
 };
-const filterMainTerms = (terms, mainMajorId) => {
-  let filterTerms = { majorId: mainMajorId, listTerm: [] };
-  filterTerms.listTerm = terms?.filter(
+const findTermsBySelectedMajor = (terms: any[], mainMajorId: string) => {
+  let resultFind = { majorId: mainMajorId, listTerm: [] };
+  resultFind.listTerm = terms?.filter(
     (termsInMainMajor: any) => termsInMainMajor.majorId === mainMajorId,
   )[0]?.terms;
 
-  return filterTerms;
+  return resultFind;
 };
-const termPayload = (termId, terms) => {
+const termPayload = (termId: string, terms: any[]) => {
   let term = {
     id: '',
     name: '',
@@ -109,26 +96,13 @@ const termPayload = (termId, terms) => {
   });
   return term;
 };
-const majorPayload = (majorId, majors) => {
-  let major = {
-    id: '',
-    name: '',
-  };
-  majors.map((m: any) => {
-    if (majorId === m._id) {
-      major = {
-        id: m._id,
-        name: m.name,
-      };
-    }
-  });
-  return major;
-};
+
 export default function SidebarLecturer() {
   //TODO HOOKS
+  const location = useLocation();
+
   const [currentSidebarRole, setCurrentSidebarRole] = useState<AppSiderBarType[]>([]);
   const { isOpen, handleToggleSidebar } = useSidebar();
-  const location = useLocation();
   const [activeItemIndexes, setActiveItemIndexes] = useState<number[]>([]);
   const [currentSidebarItemIndex, setCurrentSidebarItemIndex] = useState<number>(0);
 
@@ -150,16 +124,16 @@ export default function SidebarLecturer() {
   //?Render first
   useEffect(() => {
     if (successTerms) {
-      const data = setDropdown(termsLecturer.terms);
+      const data = handleResTermsAndMajors(termsLecturer.terms);
       setInitTerms(termsLecturer.terms);
       setMajorsOfLecturer(data.majors);
-      setTermsOfLecturer(filterMainTerms(data.terms, majorStore.currentMajor.id).listTerm);
+      setTermsOfLecturer(findTermsBySelectedMajor(data.terms, majorStore.currentMajor.id).listTerm);
     }
   }, [successTerms]);
 
   //?Re-render change major
   useLayoutEffect(() => {
-    setTermsOfLecturer(filterMainTerms(initTerms, selectedMajor)?.listTerm);
+    setTermsOfLecturer(findTermsBySelectedMajor(initTerms, selectedMajor)?.listTerm);
   }, [selectedMajor]);
 
   const handleSelectedTerm = (termId: string) => {

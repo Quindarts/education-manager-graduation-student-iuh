@@ -9,6 +9,39 @@ import LecturerLeaveGroupModal from './Modal/LeaveGroup';
 import AddMemberGroupLecturerModal from './Modal/AddMember';
 import { TypeGroupLecturer } from '@/services/apiGroupLecturer';
 
+const LecturerColumns: GridColDef[] = [
+  {
+    headerName: 'Mã giảng viên',
+    field: 'username',
+    flex: 0.5,
+    headerAlign: 'left',
+    align: 'left',
+  },
+  {
+    headerName: 'Tên giảng viên',
+    field: 'fullName',
+    flex: 0.6,
+    headerAlign: 'left',
+  },
+  {
+    headerName: 'Chuyên ngành',
+    field: 'majorName',
+    flex: 1,
+    align: 'left',
+    headerAlign: 'left',
+  },
+  {
+    headerName: 'Trình độ',
+    field: 'degree',
+    flex: 1,
+    align: 'left',
+    headerAlign: 'left',
+    renderCell: (params: any) => {
+      return <Box>{checkDegree(params?.row?.degree)}</Box>;
+    },
+  },
+];
+
 function TableManagementGroupLecturer(props: any) {
   const { rows, groupType } = props;
   const [isOpenLeaveGroupModal, setIsOpenLeaveGroupModal] = useState({
@@ -33,41 +66,7 @@ function TableManagementGroupLecturer(props: any) {
   const handleCloseAddMemberModal = () => {
     setIsOpenAddMember(false);
   };
-  const LecturerColumns: GridColDef[] = useMemo(
-    () => [
-      {
-        headerName: 'Mã giảng viên',
-        field: 'username',
-        flex: 0.5,
-        headerAlign: 'left',
-        align: 'left',
-      },
-      {
-        headerName: 'Tên giảng viên',
-        field: 'fullName',
-        flex: 0.6,
-        headerAlign: 'left',
-      },
-      {
-        headerName: 'Chuyên ngành',
-        field: 'majorName',
-        flex: 1,
-        align: 'left',
-        headerAlign: 'left',
-      },
-      {
-        headerName: 'Trình độ',
-        field: 'degree',
-        flex: 1,
-        align: 'left',
-        headerAlign: 'left',
-        renderCell: (params: any) => {
-          return <Box>{checkDegree(params.row.degree)}</Box>;
-        },
-      },
-    ],
-    [],
-  );
+
   const HeadLecturerColumns: GridColDef[] = useMemo(
     () => [
       {
@@ -123,51 +122,51 @@ function TableManagementGroupLecturer(props: any) {
     ],
     [],
   );
+
   return (
     <>
-      <Box>
-        <Box>
-          <Box display={'flex'} mt={2} mb={4} justifyContent={'end'}>
-            {currentRole.includes('all') && (
-              <Button
-                size='small'
-                onClick={handleOpenAddMemberModal}
-                color='error'
-                disabled={
-                  (rows.length >= 2 && groupType?.toLowerCase() === TypeGroupLecturer.REVIEWER) ||
-                  (rows.length >= 3 &&
-                    groupType?.toLowerCase().split('_')[0] === TypeGroupLecturer.REPORT)
-                    ? true
-                    : false
-                }
-                variant='contained'
-              >
-                <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
-                Thêm Giảng viên
-              </Button>
-            )}
-          </Box>
-          <Table
-            rows={rows}
-            sx={{
-              bgcolor: 'white',
-            }}
-            minHeight={400}
-            columns={currentRole.includes('all') ? HeadLecturerColumns : LecturerColumns}
-            totalItems={1}
-            totalPages={1}
-            page={1}
-            handleChangePage={() => {}}
-            disableColumnMenu
-            disableColumnFilter
-            disableColumnSelector
-            disableDensitySelector
-          />
+      <Box id='header'>
+        <Box display={'flex'} mt={2} mb={4} justifyContent={'end'}>
+          {currentRole.includes('all') && (
+            <Button
+              size='small'
+              onClick={handleOpenAddMemberModal}
+              color='error'
+              disabled={
+                (rows.length >= 2 && groupType?.toLowerCase() === TypeGroupLecturer.REVIEWER) ||
+                (rows.length >= 3 &&
+                  groupType?.toLowerCase().split('_')[0] === TypeGroupLecturer.REPORT)
+                  ? true
+                  : false
+              }
+              variant='contained'
+            >
+              <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
+              Thêm Giảng viên
+            </Button>
+          )}
         </Box>
+        <Table
+          rows={rows}
+          sx={{
+            bgcolor: 'white',
+          }}
+          minHeight={400}
+          columns={currentRole.includes('all') ? HeadLecturerColumns : LecturerColumns}
+          totalItems={1}
+          totalPages={1}
+          page={1}
+          handleChangePage={() => {}}
+          disableColumnMenu
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+        />
       </Box>
       <LecturerLeaveGroupModal
         onClose={handleCloseLeaveGroupModal}
         open={isOpenLeaveGroupModal.isOpen}
+        countOfMembers={rows?.length}
         lecturerId={isOpenLeaveGroupModal.lecturerId}
       />
       <AddMemberGroupLecturerModal

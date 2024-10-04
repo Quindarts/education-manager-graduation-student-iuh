@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import React from 'react';
 import TableStudentInGroup from './Table';
 import TitleManager from '@/components/ui/Title';

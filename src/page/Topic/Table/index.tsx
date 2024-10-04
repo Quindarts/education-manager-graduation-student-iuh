@@ -317,7 +317,7 @@ function TableManagamentTopic(props: any) {
       <>
         <Table
           isLimit={isApprovePermission}
-          rows={rows.map((row: any, index: number) => ({ ...row }))}
+          rows={rows.map((row: any) => ({ ...row }))}
           sx={{
             minHeight: 500,
           }}

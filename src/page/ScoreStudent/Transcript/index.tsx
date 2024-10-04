@@ -158,7 +158,6 @@ function TranscriptOfGroupStudent(props: any) {
   //[Saved Create or Update ]
   const handleSubmit = () => {
     let data = convertDataRequest(initTranscripts.transcripts, termStore.currentTerm.id);
-    console.log('🚀 ~ handleSubmit ~ data:', initTranscripts);
     !initTranscripts.isExistTranscripts ? createTranscripts(data) : updateTranscripts(data);
   };
   useEffect(() => {

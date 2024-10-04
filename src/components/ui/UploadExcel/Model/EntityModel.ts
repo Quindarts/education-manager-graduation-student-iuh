@@ -1,4 +1,3 @@
-import { Row } from "exceljs";
 import { EntityExportExcel } from "../../Export/Entity/EntityExportExcel";
 
 export class ExportExcelModel extends EntityExportExcel {
