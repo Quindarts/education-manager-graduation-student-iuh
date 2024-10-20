@@ -11,7 +11,6 @@ function CardGroupLecturer(props: any) {
       sx={{
         border: '1px solid white',
         '&:hover': {
-          // bgcolor: '#E1EDFCFF',
           background: ' linear-gradient(135deg, #0d5db6, #33aae0)',
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
           transition: 'all 0.3s ease-in',
