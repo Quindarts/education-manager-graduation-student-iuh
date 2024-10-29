@@ -30,7 +30,7 @@ function AddMemberGroupLecturerModal(props: any) {
   const grLecturerId = `${current[current.length - 1]}`;
 
   const { handleGetListLecturerTerms } = useLecturerTerm();
-  const { data, isLoading, isFetching } = handleGetListLecturerTerms();
+  const { data, isLoading, isFetching } = handleGetListLecturerTerms('default');
 
   const { onAddMemberToGroupLecturer } = useMemberGroupLecturer();
   const { mutate: addMember } = onAddMemberToGroupLecturer(grLecturerId);

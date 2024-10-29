@@ -98,7 +98,7 @@ export const useGroupLecturer = () => {
                     enqueueSnackbar(err.message, { variant: 'error' })
                 }
                 else
-                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+                    enqueueSnackbar("Tạo nhóm thất bại", { variant: 'warning' })
             },
         })
     }

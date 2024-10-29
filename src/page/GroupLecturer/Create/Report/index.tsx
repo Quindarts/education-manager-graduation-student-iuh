@@ -1,5 +1,4 @@
-import CustomTextField from '@/components/ui/CustomTextField';
-import { Box, Button, Chip, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import CardLecturer from '../Card/CardLecturer';
 import { Icon } from '@iconify/react';
@@ -12,29 +11,19 @@ import {
   ENUM_GROUP_LECTURER_REPORT,
   ENUM_STATUS_LECTURER,
 } from '@/utils/validations/groupLecturer.validation';
-import TitleManager from '@/components/ui/Title';
-import { removeVietnameseTones } from '@/utils/search';
 import SearchInput from './SearchInput';
-const handleSearch = (keywords: string, lecturers: any[]) => {
-  if (keywords.length === 0) {
-    return lecturers;
-  }
-  return lecturers.filter((lec) =>
-    removeVietnameseTones(lec.fullName.toLowerCase()).includes(
-      removeVietnameseTones(keywords.toLowerCase()),
-    ),
-  );
-};
-const convertLecturerGroup = (data: any[]) => {
-  if (!data) {
-    return [];
-  }
-  const newData: any = [];
-  data.map((lecturerTerm: any) => {
-    newData.push({ ...lecturerTerm, status: ENUM_STATUS_LECTURER.NO_GROUP });
-  });
-  return newData;
-};
+
+import {
+  getUniqueKeywords,
+  handleTags,
+  convertToTagList,
+  convertLecturerGroup,
+  handleSearch,
+  mergedArrays,
+} from '@/page/GroupLecturer/Context';
+import { INDUSTRIES } from '@/utils/constants';
+import ChipTag from '@/components/ui/Badge';
+import { checkIndustry } from '@/utils/validations/lecturer.validation';
 
 function CreateReportGroupPage() {
   const [currentGroup, setCurrentGroup] = useState<string>(
@@ -44,25 +33,52 @@ function CreateReportGroupPage() {
   const { onCreateGroupLecturer } = useGroupLecturer();
   const { handleGetListLecturerTerms } = useLecturerTerm();
   const { termStore } = useTerm();
-  const [isDrag, setIsDrag] = useState(false);
-  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms();
 
+  //TODO: [TAGS]
+  const [tags, setTags] = useState<String[]>(convertToTagList(INDUSTRIES));
+
+  const handleAddTags = (tag: string) => {
+    setTags((tags) =>
+      tags.map((t: any) => {
+        if (t.id === tag) {
+          let newT = { ...t, selected: !t.selected };
+          return newT;
+        } else return t;
+      }),
+    );
+  };
+  const handleClearTags = () => {
+    setTags(convertToTagList(INDUSTRIES));
+  };
+
+  //TODO: POST DATA
   const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer(`${currentGroup}`);
-
   const handleCreateGroup = () => {
     let dataLecturerGradingAssembly = task?.filter(
       (data: any) => data.status === ENUM_STATUS_LECTURER.HAVE_GROUP,
     );
     const lecturers = dataLecturerGradingAssembly?.map((lec) => lec.lecturerId);
-    create({ termId: termStore.currentTerm.id, lecturers: lecturers });
+    const keywords = getUniqueKeywords(dataLecturerGradingAssembly).join(',');
+    create({ termId: termStore.currentTerm.id, lecturers, keywords });
   };
 
+  //TODO: [GET DATA]
+  const {
+    data: listLecturersDefault,
+    isFetched,
+    isLoading,
+  } = handleGetListLecturerTerms('default');
+  const { data: listLecturersKey } = handleGetListLecturerTerms('keyword');
+
   useEffect(() => {
-    setTask(convertLecturerGroup(data?.lecturerTerms));
-  }, [successCreate, isFetched]);
+    const data_merged = mergedArrays(
+      listLecturersDefault?.lecturerTerms,
+      listLecturersKey?.lecturerTerms,
+    );
+    setTask(convertLecturerGroup(data_merged));
+  }, [successCreate, listLecturersDefault, listLecturersKey]);
 
   const handleOnDrageStart = (evt: any) => {
-    setIsDrag(true);
     let element = evt.currentTarget;
     element.classList.add('dragged');
     evt.dataTransfer.setData('text/plain', evt.currentTarget.id);
@@ -91,7 +107,6 @@ function CreateReportGroupPage() {
     evt.dataTransfer.dropEffect = 'move';
   };
   const handleOnDrop = (evt: any, value: any, status: any) => {
-    setIsDrag(false);
     evt.preventDefault();
     evt.currentTarget.classList.remove('dragged-over');
     let data = evt.dataTransfer.getData('text/plain');
@@ -116,7 +131,7 @@ function CreateReportGroupPage() {
     setKeywords(s);
   };
   return (
-    <Box display={'flex'} pt={10} px={0} gap={10} justifyContent={'space-between'}>
+    <Box display={'flex'} gap={5} justifyContent={'space-between'}>
       <Paper
         onDragLeave={(e: any) => handleOnDragLeave(e)}
         onDragEnter={(e) => handleOnDragEnter(e)}
@@ -128,31 +143,49 @@ function CreateReportGroupPage() {
         }}
       >
         {' '}
-        <Box px={10} bgcolor={'grey.50'} py={1} mb={4}>
-          <TitleManager
-            fontWeight={'bold'}
-            mb={4}
-            variant='h5'
-            color={'grey.800'}
-            icon='fluent-emoji-flat:man-student-light'
-          >
-            Danh sách giảng viên
-          </TitleManager>
-
-          <Box mt={10} bgcolor='white'>
-            <SearchInput changeSearch={changeSearch} keywords={keywords} />
+        <Box px={4} bgcolor={'grey.100'} py={2} mb={4}>
+          <Box mt={10}>
+            <SearchInput
+              sx={{ bgcolor: 'white' }}
+              changeSearch={changeSearch}
+              keywords={keywords}
+            />
+          </Box>
+          <Box sx={{ mb: 6, mt: 6 }}>
+            <Typography variant='body1' fontWeight={'600'} color={'primary.dark'}>
+              Chọn chuyên môn:{' '}
+            </Typography>
+            {tags?.map((k: any) => (
+              <ChipTag
+                onClick={() => handleAddTags(k.id)}
+                sx={{ mx: 2, my: 2 }}
+                variant={k.selected ? 'filled' : 'outlined'}
+                color={k.selected ? 'primary' : 'default'}
+                label={k.name}
+              />
+            ))}
+            {tags.filter((t: any) => t.selected === true).length !== 0 && (
+              <Button
+                sx={{ mx: 10, my: 2, borderRadius: 12 }}
+                color='error'
+                onClick={() => handleClearTags()}
+              >
+                Hủy lọc
+              </Button>
+            )}
           </Box>
         </Box>
-        <Box sx={{ overflowY: 'auto' }} height={400} px={2}>
+        <Box sx={{ overflowY: 'auto', px: 20, bgcolor: 'grey.50' }} height={380} px={2}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (
             <Box>
-              {handleSearch(keywords, dataLecturerNoGroup)?.map((task: any) => (
+              {handleTags(tags, handleSearch(keywords, dataLecturerNoGroup))?.map((task: any) => (
                 <CardLecturer
                   key={task.lecturerId}
                   id={task.lecturerId}
                   lecturer={task}
+                  keywords={task.keywords}
                   draggable
                   onDragStart={(e: any) => handleOnDrageStart(e)}
                   onDragEnd={(e: any) => handleOnDrageStart(e)}
@@ -176,18 +209,24 @@ function CreateReportGroupPage() {
         onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.HAVE_GROUP)}
       >
         <Box display={'flex'} justifyContent={'space-between'}>
-          <Typography mt={0} fontWeight={'bold'} color={'primary'} variant='h5'>
-            <Icon style={{ marginRight: 2 }} icon='gridicons:create' />
-            Thông tin nhóm báo cáo:
-          </Typography>
-          <Box>
-            <DropDown
-              value={currentGroup}
-              onChange={(e: any) => {
-                setCurrentGroup(e.target.value);
-              }}
-              options={ENUM_GROUP_LECTURER_REPORT}
-            />
+          <DropDown
+            value={currentGroup}
+            onChange={(e: any) => {
+              setCurrentGroup(e.target.value);
+            }}
+            options={ENUM_GROUP_LECTURER_REPORT}
+          />
+        </Box>
+        <Box>
+          <Box sx={{ justifyContent: 'end', display: 'flex' }}>
+            {getUniqueKeywords(dataLecturerGradingAssembly).map((keyword: any) => (
+              <ChipTag
+                sx={{ mx: 1, my: 2 }}
+                color='info'
+                size='small'
+                label={checkIndustry(keyword)}
+              />
+            ))}
           </Box>
         </Box>
         {dataLecturerGradingAssembly && dataLecturerGradingAssembly.length < 1 ? (

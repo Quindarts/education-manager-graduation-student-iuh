@@ -35,4 +35,14 @@ export enum QueryKeys {
   evaluate = 'evaluate',
 }
 
-export { EnumRole, EnumGender, EnumUser, RoleCheck };
+enum EnumIndustryKey {
+  WEB = 'WEB',
+  APP = 'APP',
+  SYSTEM = 'SYSTEM',
+  AI = 'AI',
+  DATA = 'DATA',
+  SECURITY = 'SECURITY',
+  OTHER = 'OTHER',
+  NETWORK = 'NETWORK',
+}
+export { EnumRole, EnumGender, EnumUser, RoleCheck, EnumIndustryKey };

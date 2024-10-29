@@ -1,5 +1,4 @@
-import CustomTextField from '@/components/ui/CustomTextField';
-import { Box, Button, Chip, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import CardLecturer from '../Card/CardLecturer';
 import { Icon } from '@iconify/react';
@@ -8,51 +7,67 @@ import { useTerm } from '@/hooks/api/useQueryTerm';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import { ENUM_STATUS_LECTURER } from '@/utils/validations/groupLecturer.validation';
-import TitleManager from '@/components/ui/Title';
-import { removeVietnameseTones } from '@/utils/search';
 import SearchInput from './SearchInput';
+import ChipTag from '@/components/ui/Badge';
+import { checkIndustry } from '@/utils/validations/lecturer.validation';
+import { INDUSTRIES } from '@/utils/constants';
+import {
+  getUniqueKeywords,
+  handleTags,
+  convertToTagList,
+  convertLecturerGroup,
+  handleSearch,
+  mergedArrays,
+} from '@/page/GroupLecturer/Context';
 
-const convertLecturerGroup = (data: any[]) => {
-  if (!data) {
-    return [];
-  }
-  const newData: any = [];
-  data.map((lecturerTerm: any) => {
-    newData.push({ ...lecturerTerm, status: ENUM_STATUS_LECTURER.NO_GROUP });
-  });
-  return newData;
-};
-
-const handleSearch = (keywords: string, lecturers: any[]) => {
-  if (keywords.length === 0) {
-    return lecturers;
-  }
-  return lecturers.filter((lec) =>
-    removeVietnameseTones(lec.fullName.toLowerCase()).includes(
-      removeVietnameseTones(keywords.toLowerCase()),
-    ),
-  );
-};
 function CreateInstructorGroupPage() {
   const [task, setTask] = React.useState<any[]>();
+  //TODO: [TAGS]
+  const [tags, setTags] = useState<String[]>(convertToTagList(INDUSTRIES));
+  const handleAddTags = (tag: string) => {
+    setTags((tags) =>
+      tags.map((t: any) => {
+        if (t.id === tag) {
+          let newT = { ...t, selected: !t.selected };
+          return newT;
+        } else return t;
+      }),
+    );
+  };
+  const handleClearTags = () => {
+    setTags(convertToTagList(INDUSTRIES));
+  };
+
   const { onCreateGroupLecturer } = useGroupLecturer();
   const { handleGetListLecturerTerms } = useLecturerTerm();
   const { termStore } = useTerm();
 
-  const { data, isLoading, isSuccess, isFetched } = handleGetListLecturerTerms();
+  const {
+    data: listLecturersDefault,
+    isFetched,
+    isLoading,
+  } = handleGetListLecturerTerms('default');
+  const { data: listLecturersKey } = handleGetListLecturerTerms('keyword');
 
+  //TODO: [METHOD POST FORM]
   const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer('reviewer');
-
   const handleCreateGroup = () => {
     let dataLecturerGradingAssembly = task?.filter(
       (data: any) => data.status === ENUM_STATUS_LECTURER.HAVE_GROUP,
     );
-    const lecturers = dataLecturerGradingAssembly?.map((lec) => lec.lecturerId);
-    create({ termId: termStore.currentTerm.id, lecturers: lecturers });
+    const keywords = getUniqueKeywords(dataLecturerGradingAssembly).join(',');
+    const lecturers = dataLecturerGradingAssembly?.map((lec) => lec?.lecturerId);
+    create({ termId: termStore.currentTerm.id, lecturers: lecturers, keywords });
   };
+
+  //TODO: [GET DATA]
   useEffect(() => {
-    setTask(convertLecturerGroup(data?.lecturerTerms));
-  }, [successCreate, isFetched]);
+    const data_merged = mergedArrays(
+      listLecturersDefault?.lecturerTerms,
+      listLecturersKey?.lecturerTerms,
+    );
+    setTask(convertLecturerGroup(data_merged));
+  }, [successCreate, listLecturersDefault, listLecturersKey]);
 
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
@@ -107,8 +122,9 @@ function CreateInstructorGroupPage() {
   const changeSearch = (s: string) => {
     setKeywords(s);
   };
+
   return (
-    <Box display={'flex'} pt={10} px={0} gap={10} justifyContent={'space-between'}>
+    <Box display={'flex'} gap={5} justifyContent={'space-between'}>
       <Paper
         onDragLeave={(e: any) => handleOnDragLeave(e)}
         onDragEnter={(e) => handleOnDragEnter(e)}
@@ -120,32 +136,52 @@ function CreateInstructorGroupPage() {
         }}
         elevation={1}
       >
-        <Box px={10} bgcolor={'grey.50'} pt={2} pb={4} mb={4}>
-          <TitleManager
-            fontWeight={'bold'}
-            mb={4}
-            variant='h5'
-            color={'grey.800'}
-            icon='fluent-emoji-flat:man-student-light'
-          >
-            Danh sách giảng viên
-          </TitleManager>
-
-          <Box mt={10} bgcolor='white'>
-            <SearchInput changeSearch={changeSearch} keywords={keywords} />
+        <Box px={4} bgcolor={'grey.100'} pt={2} pb={4} mb={3}>
+          <Box mt={10}>
+            <Box sx={{ display: 'flex', gap: 4 }}>
+              <SearchInput
+                changeSearch={changeSearch}
+                sx={{ bgcolor: 'white' }}
+                keywords={keywords}
+              />
+            </Box>
+            <Box sx={{ mb: 6, mt: 6 }}>
+              <Typography variant='body1' fontWeight={'600'} color={'primary.dark'}>
+                Chọn chuyên môn:{' '}
+              </Typography>
+              {tags?.map((k: any) => (
+                <ChipTag
+                  onClick={() => handleAddTags(k.id)}
+                  sx={{ mx: 2, my: 2 }}
+                  variant={k.selected ? 'filled' : 'outlined'}
+                  color={k.selected ? 'primary' : 'default'}
+                  label={k.name}
+                />
+              ))}
+              {tags.filter((t: any) => t.selected === true).length !== 0 && (
+                <Button
+                  sx={{ mx: 10, my: 2, borderRadius: 12 }}
+                  color='error'
+                  onClick={() => handleClearTags()}
+                >
+                  Hủy lọc
+                </Button>
+              )}
+            </Box>
           </Box>
         </Box>
 
-        <Box sx={{ overflowY: 'auto' }} height={400} px={2}>
+        <Box sx={{ overflowY: 'auto', px: 20, bgcolor: 'grey.50' }} height={380} px={2}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (
             <Box>
-              {handleSearch(keywords, dataLecturerNoGroup)?.map((task: any) => (
+              {handleTags(tags, handleSearch(keywords, dataLecturerNoGroup))?.map((task: any) => (
                 <CardLecturer
                   key={task.lecturerId}
                   id={task.lecturerId}
                   lecturer={task}
+                  keywords={task.keywords}
                   draggable
                   onDragStart={(e: any) => handleOnDrageStart(e)}
                   onDragEnd={(e: any) => handleOnDrageStart(e)}
@@ -168,9 +204,9 @@ function CreateInstructorGroupPage() {
         onDragOver={(e) => handleOnDragOver(e)}
         onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.HAVE_GROUP)}
       >
-        <Typography mt={4} fontWeight={'bold'} color={'primary'} variant='h5'>
+        <Typography mt={4} fontWeight={'bold'} variant='h5'>
           <Icon style={{ marginRight: 2 }} icon='gridicons:create' />
-          Thông tin nhóm phản biện:
+          Thông tin tạo nhóm
         </Typography>
         {dataLecturerGradingAssembly && dataLecturerGradingAssembly.length < 1 ? (
           <Box display={'flex'} flexDirection={'column'} height={500}>
@@ -190,6 +226,22 @@ function CreateInstructorGroupPage() {
           </Box>
         ) : (
           <Box sx={{ minHeight: 200 }}>
+            {dataLecturerGradingAssembly?.length > 0 && (
+              <>
+                <Box>
+                  <Box sx={{ justifyContent: 'end', display: 'flex' }}>
+                    {getUniqueKeywords(dataLecturerGradingAssembly).map((keyword: any) => (
+                      <ChipTag
+                        sx={{ mx: 1, my: 2 }}
+                        color='info'
+                        size='small'
+                        label={checkIndustry(keyword)}
+                      />
+                    ))}
+                  </Box>
+                </Box>
+              </>
+            )}
             {dataLecturerGradingAssembly?.map((task: any) => (
               <Paper
                 sx={{
@@ -234,35 +286,29 @@ function CreateInstructorGroupPage() {
                 variant='body1'
                 mt={10}
                 fontWeight={'500'}
-                color='warning.main'
+                color='error.main'
               >
                 Cảnh báo: Nhóm đã đủ thành viên!
               </Typography>
             )}
-            {dataLecturerGradingAssembly?.length > 0 && (
-              <>
-                <Typography variant='h6' mt={2} fontWeight={'bold'} color='grey.800'>
-                  Số lượng :{' '}
-                  <Typography component={'span'} variant='h6' mt={10} color='initial'>
-                    {dataLecturerGradingAssembly?.length} / 2 thành viên
-                  </Typography>
-                </Typography>
-                <Box display={'flex'} justifyContent={'end'} mr={4} mt={10}>
-                  <Button
-                    disabled={
-                      dataLecturerGradingAssembly && dataLecturerGradingAssembly?.length > 2
-                    }
-                    color='success'
-                    variant='contained'
-                    size='medium'
-                    onClick={handleCreateGroup}
-                  >
-                    <Icon width={24} icon='dashicons:saved' />
-                    Tạo nhóm
-                  </Button>
-                </Box>
-              </>
-            )}
+            <Typography variant='h6' mt={2}>
+              Số lượng :{' '}
+              <Typography component={'span'} variant='h6' mt={10}>
+                {dataLecturerGradingAssembly?.length} / 2 thành viên
+              </Typography>
+            </Typography>
+            <Box display={'flex'} justifyContent={'end'} mr={4} mt={10}>
+              <Button
+                disabled={dataLecturerGradingAssembly && dataLecturerGradingAssembly?.length > 2}
+                color='success'
+                variant='contained'
+                size='medium'
+                onClick={handleCreateGroup}
+              >
+                <Icon width={24} icon='dashicons:saved' />
+                Tạo nhóm
+              </Button>
+            </Box>
           </Box>
         )}
       </Paper>

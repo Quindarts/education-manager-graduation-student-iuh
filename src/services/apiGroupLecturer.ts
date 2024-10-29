@@ -49,9 +49,8 @@ export const getGroupLecturerById: any = (id: string) => {
 export const deleteGroupLecturerById: any = (id: string | number) => {
     return axiosConfig.delete(`${URL}/${id}`)
 }
-
 //[CREATE]
-export const createGroupLecturer: any = (type: string, data: { termId: string, lecturers: string[], type: string }) => {
+export const createGroupLecturer: any = (type: string, data: { termId: string, lecturers: string[], type: string, keywords?: string }) => {
     return axiosConfig.post(`${URL}`, { type, ...data })
 }
 

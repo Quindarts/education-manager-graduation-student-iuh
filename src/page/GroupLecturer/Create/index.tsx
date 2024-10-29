@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import React from 'react';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -15,8 +15,8 @@ function CreateGroupLecturer() {
   };
 
   return (
-    <Paper sx={{ py: 6, px: 10 }} elevation={0}>
-      <Box sx={{ width: '100%', typography: 'body1' }}>
+    <Paper sx={{ px: 4 }} elevation={0}>
+      <Box sx={{ width: '100%', typography: 'body1', mt: 4 }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleChange} aria-label='lab API tabs example'>
@@ -26,7 +26,7 @@ function CreateGroupLecturer() {
                     bgcolor: 'rgb(0, 82, 177,0.1)',
                     ' > .MuiTypography-root': {
                       color: 'primary.dark',
-                      fontWeight: 'bold',
+                      fontWeight: '600',
                     },
                   },
                 }}
@@ -43,7 +43,7 @@ function CreateGroupLecturer() {
                     bgcolor: 'rgb(0, 82, 177,0.1)',
                     ' > .MuiTypography-root': {
                       color: 'primary.dark',
-                      fontWeight: 'bold',
+                      fontWeight: '600',
                     },
                   },
                 }}

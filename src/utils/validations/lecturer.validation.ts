@@ -1,11 +1,21 @@
-import { EnumRole } from "@/types/enum";
+import { EnumIndustryKey, EnumRole } from "@/types/enum";
 
 export const checkDegree = (value: string) => {
     if (value === 'MASTER') return 'Tiến sĩ';
     if (value === 'DOCTOR') return 'Thạc sĩ';
     return;
 };
-
+export const checkIndustry = (value: string) => {
+    if (value === EnumIndustryKey.WEB) return 'Web';
+    if (value === EnumIndustryKey.APP) return 'Ứng dụng di động';
+    if (value === EnumIndustryKey.SYSTEM) return 'Hệ thống và quản lý';
+    if (value === EnumIndustryKey.AI) return 'Trí tuệ nhân tạo';
+    if (value === EnumIndustryKey.DATA) return 'Dữ liệu lớn';
+    if (value === EnumIndustryKey.SECURITY) return 'Bảo mật & giám sát';
+    if (value === EnumIndustryKey.NETWORK) return 'Mạng';
+    if (value === EnumIndustryKey.OTHER) return 'Khác';
+    return;
+}
 export const checkRoleLecturer = (value: string) => {
     if (value === EnumRole.LECTURER) return 'Giảng viên';
     if (value === EnumRole.HEAD_LECTURER) return 'Chủ nhiệm ngành';

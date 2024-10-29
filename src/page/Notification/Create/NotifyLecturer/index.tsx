@@ -31,7 +31,7 @@ function CreateLecturerNotifyForm() {
 
   //[Lecturer Handler]
   const { handleGetListLecturerTerms } = useLecturerTerm();
-  const { data, isLoading } = handleGetListLecturerTerms();
+  const { data, isLoading } = handleGetListLecturerTerms('default');
 
   const { onCreateAllNotificationLecturerTerms, onCreateNotificationOfLecturerIds } =
     useNotificationLecturer();

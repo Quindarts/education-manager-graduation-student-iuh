@@ -1,20 +1,10 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import {
-  DialogTitle,
-  DialogActions,
-  Button,
-  Box,
-  Typography,
-  Paper,
-  CircularProgress,
-  Link,
-} from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
+import { DialogTitle, Button, Box, Typography, CircularProgress, Paper } from '@mui/material';
 import Modal from '@/components/ui/Modal';
 import { useSnackbar } from 'notistack';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
 import useAssign from '@/hooks/api/useQueryAssign';
 import TitleManager from '@/components/ui/Title';
-import { Icon } from '@iconify/react';
 import {
   isExistLecturerSupport,
   startInitGrHaveAssigned,
@@ -25,6 +15,19 @@ import {
 import SearchInput from './SearchInput';
 
 import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
+import { checkIndustry } from '@/utils/validations/lecturer.validation';
+import ChipTag from '@/components/ui/Badge';
+
+const convertToTagList = (data: any) => {
+  if (!data) return [];
+  return data.map((d: any) => {
+    return {
+      id: d,
+      name: checkIndustry(d),
+      selected: false,
+    };
+  });
+};
 
 export function removeVietnameseTones(str: string) {
   return str
@@ -47,6 +50,16 @@ export const handleSearch = (
     return val.includes(query);
   });
 };
+const handleTags = (tags: any[], topicsOfGroup: any[]) => {
+  if (tags.filter((t: any) => t.selected).every((v) => v === false)) return topicsOfGroup;
+  return topicsOfGroup.filter((project) =>
+    tags
+      .filter((t: any) => t.selected === true)
+      .map((t: any) => t.id)
+      .includes(project.keyword),
+  );
+};
+
 function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: any) {
   //TODO: [Api hooks]
   const { handleGetGroupLecturerById } = useGroupLecturer();
@@ -81,12 +94,13 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
     name: groupName,
     totalAssigns: totalAssigns,
     members: [],
+    keywords: [''],
   });
   const [currentDrag, setCurrentDrag] = useState({
     type: 'NONE',
     value: false,
   });
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(true);
   //TODO [Handle event]
   const { enqueueSnackbar } = useSnackbar();
 
@@ -179,23 +193,44 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
     },
     [grHaveAssigned, grNeedAssign],
   );
-  //TODO: [Search by type]
+  //TODO: [Search by type and  keytag]
   const [searchType, setSearchType] = useState('topicName');
   const [searchTerm, setSearchTerm] = useState('');
   const [isClear, setIsClear] = useState(false);
+  const [tags, setTags] = useState<String[]>([]);
   const handleSearchType = (searchType) => {
     setSearchType(searchType);
   };
-
   const handleKeywords = (searchTerm) => {
     setSearchTerm(searchTerm);
   };
   const handleClearSearch = (clear: boolean) => {
     setIsClear(clear);
   };
+  const handleAddTags = (tag: string) => {
+    setTags((tags) =>
+      tags.map((t: any) => {
+        if (t.id === tag) {
+          let newT = { ...t, selected: !t.selected };
+          return newT;
+        } else return t;
+      }),
+    );
+  };
+  // alert(JSON.stringify(tags));
+  const handleClearTags = () => {
+    setTags([]);
+  };
+  const onClearAll = () => {
+    handleClearTags();
+  };
   useEffect(() => {
     if (successGetGrLecturer && successGetGrStd) {
-      setInfoGroupLecturer((pre) => ({ ...pre, members: fetchGrLecturer?.groupLecturer?.members }));
+      setInfoGroupLecturer((pre) => ({
+        ...pre,
+        members: fetchGrLecturer?.groupLecturer?.members,
+      }));
+      setTags(convertToTagList(fetchGrLecturer?.groupLecturer?.keywords?.split(',')));
       // [Assigned]
       const dataConvert = stylingGrHaveAssigned(fetchGrLecturer?.groupLecturer);
       const initGrHavedAssign = startInitGrHaveAssigned(dataConvert);
@@ -253,42 +288,38 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
             </TitleManager>
           </DialogTitle>
 
-          <Box position={'relative'} sx={{ bgcolor: 'white', px: 6, borderRadius: 4 }}>
+          <Box sx={{ bgcolor: 'white', px: 6, borderRadius: 4 }}>
             <Box className='container' width={'full'} display={'flex'} gap={12}>
-              <Box flex={1}>
-                <Box alignItems={'center'} gap={4} mx={4} mb={2} display={'flex'}>
-                  <Typography variant='h5' fontWeight={'500'} color='grey.700'>
-                    Nhóm sinh viên chưa được phân công chấm điểm
-                  </Typography>
-                  <Box justifyItems={'flex-end'}>
-                    <Button onClick={() => setShowSearch((pre) => !pre)} color='primary'>
-                      Tìm kiếm
-                      <Icon
-                        width={20}
-                        style={{ marginBottom: 'auto', marginLeft: 4 }}
-                        icon={showSearch ? 'icon-park-solid:down-one' : 'iconamoon:arrow-up-2-fill'}
-                      />
-                    </Button>
-                    {searchTerm.length > 0 && showSearch && (
-                      <Button onClick={() => handleClearSearch(true)} color='error'>
-                        Xóa tìm kiếm
-                        <Icon
-                          width={20}
-                          style={{ marginBottom: 'auto', marginLeft: 4 }}
-                          icon={'ic:twotone-clear'}
-                        />
-                      </Button>
-                    )}
-                  </Box>
-                </Box>
-                {showSearch && (
+              <Paper sx={{ flex: 1 }} elevation={1}>
+                <Box sx={{ bgcolor: 'grey.100', pt: 2, px: 2, pb: 6, borderRadius: 1 }}>
+                  <Box alignItems={'center'} gap={4} mx={4} mb={2} display={'flex'}></Box>
                   <SearchInput
                     handleSearchType={handleSearchType}
                     handleKeywords={handleKeywords}
                     handleClearSearch={handleClearSearch}
+                    sx={{ bgcolor: 'white' }}
                     isClear={isClear}
                   />
-                )}
+                  <Box sx={{ mx: 2 }}>
+                    <Typography
+                      sx={{ mx: 4, mb: 2, mt: 4 }}
+                      variant='body1'
+                      fontWeight={600}
+                      color='primary.dark'
+                    >
+                      Gợi ý từ khóa:
+                    </Typography>
+                    {tags?.map((k: any) => (
+                      <ChipTag
+                        onClick={() => handleAddTags(k.id)}
+                        variant={k.selected ? 'filled' : 'outlined'}
+                        color={k.selected ? 'primary' : 'default'}
+                        label={k.name}
+                        sx={{ mx: 2 }}
+                      />
+                    ))}
+                  </Box>
+                </Box>
                 <Box
                   onDragLeave={(e: any) => handleOnDragLeave(e)}
                   onDragEnter={(e) => handleOnDragEnter(e)}
@@ -299,11 +330,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                   sx={{
                     overflowY: 'auto',
                     bgcolor: currentDrag.type === 'STUDENT' && currentDrag.value ? '#fef9f9 ' : '',
-
                     transition: '0.3s ease-in',
-                    px: 4,
-                    py: 4,
-                    mt: 2,
                     '&::-webkit-scrollbar': {
                       width: 4,
                     },
@@ -314,9 +341,9 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                       color: 'grey.400',
                     },
                   }}
-                  height={400}
+                  height={360}
                 >
-                  <Box className=''>
+                  <Box>
                     {grNeedAssign.length === 0 ? (
                       <Box
                         alignItems={'center'}
@@ -330,60 +357,71 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                         </Typography>
                       </Box>
                     ) : (
-                      handleSearch(grNeedAssign, searchType, searchTerm)?.map(
-                        (group: any, index: number) => (
-                          <Box
-                            sx={{
-                              bgcolor: 'grey.100',
-                              borderRadius: 2,
-                              p: 4,
-                              color: 'white',
-                              my: 3, // Điều chỉnh khoảng cách
-                              cursor: 'pointer',
-                              border: '2px solid #f2f2f2',
-                              '&:hover': {
-                                border: '2px solid #2acf8a',
-                                boxShadow:
-                                  '0 10px 20px rgba(166, 165, 165, 0.3), 0 6px 6px rgba(235, 235, 235, 0.23)',
-                                bgcolor: '#e8fef5',
-                                transition: '0.2s ease-in',
-                              },
-                            }}
-                            key={group.id}
-                            id={group.id}
-                            draggable
-                            onDragStart={(e) => handleOnDrageStart(e, 'LECTURER')}
-                            onDragEnd={(e) => handleOnDrageStart(e, 'LECTURER')}
-                          >
-                            <Box>
-                              <Typography variant='body1' color={'primary.dark'} fontWeight={'500'}>
-                                Nhóm sinh viên {group?.name}
-                              </Typography>
-                              <Typography variant='body1' color={'primary.dark'} fontWeight={'400'}>
-                                <span>Tên Đề tài : {'  '}</span>
-                                {group?.topicName}
-                              </Typography>
-                              <Typography variant='body1' color={'grey.700'} fontWeight={'500'}>
-                                <span>Giảng viên hướng dẫn : {'  '}</span>
-                                {group?.lecturerName}
-                              </Typography>
+                      <Box sx={{ px: 15, py: 10, bgcolor: 'grey.50' }}>
+                        {handleTags(tags, handleSearch(grNeedAssign, searchType, searchTerm)).map(
+                          (group: any, index: number) => (
+                            <Box
+                              key={group.id}
+                              id={group.id}
+                              sx={{
+                                bgcolor: 'white',
+                                borderRadius: 2,
+                                px: 10,
+                                py: 4,
+                                color: 'white',
+                                my: 5, // Điều chỉnh khoảng cách
+                                cursor: 'pointer',
+                                border: '2px solid #E1E0E0FF',
+                                '&:hover': {
+                                  border: '2px solid #2acf8a',
+                                  boxShadow:
+                                    '0 10px 20px rgba(166, 165, 165, 0.3), 0 6px 6px rgba(235, 235, 235, 0.23)',
+                                  bgcolor: '#e8fef5',
+                                  transition: '0.2s ease-in',
+                                },
+                              }}
+                              draggable
+                              onDragStart={(e) => handleOnDrageStart(e, 'LECTURER')}
+                              onDragEnd={(e) => handleOnDrageStart(e, 'LECTURER')}
+                            >
+                              <Box>
+                                <Typography
+                                  variant='body1'
+                                  color={'primary.dark'}
+                                  fontWeight={'500'}
+                                >
+                                  Nhóm sinh viên {group?.name}
+                                </Typography>
+                                <Typography
+                                  variant='body1'
+                                  color={'primary.dark'}
+                                  fontWeight={'400'}
+                                >
+                                  <span>Tên Đề tài : {'  '}</span>
+                                  {group?.topicName}
+                                </Typography>
+                                <Typography variant='body1' color={'grey.700'} fontWeight={'500'}>
+                                  <span>Giảng viên hướng dẫn : {'  '}</span>
+                                  {group?.lecturerName}
+                                </Typography>
+                              </Box>
                             </Box>
-                          </Box>
-                        ),
-                      )
+                          ),
+                        )}
+                      </Box>
                     )}
                   </Box>
                 </Box>
-                <Box mb={4} mt={10} pt={6} borderTop={'1px solid #f6f6f6'}>
+                <Box mb={4} mx={10} mt={10} pt={6} borderTop={'1px solid #f6f6f6'}>
                   <Typography variant='body1' color='grey.700' fontWeight={'500'}>
-                    Số lượng nhóm sinh viên : {'      '}
+                    Số nhóm sinh viên : {'      '}
                     <span style={{ color: 'black' }}>
                       {' '}
-                      {handleSearch(grNeedAssign, searchType, searchTerm)?.length}
+                      {handleTags(tags, handleSearch(grNeedAssign, searchType, searchTerm))?.length}
                     </span>
                   </Typography>
                 </Box>
-              </Box>
+              </Paper>
               <Box flex={1}>
                 <Box justifyContent={'space-between'} display={'flex'} mb={10}>
                   <Typography variant='h5' fontWeight={'700'} color='error.main'>
@@ -397,6 +435,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                     ))}
                   </Box>
                 </Box>
+
                 <Box
                   sx={{
                     bgcolor: currentDrag.type === 'LECTURER' && currentDrag.value ? '#f9fefd ' : '',
@@ -415,7 +454,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                       color: 'grey.400',
                     },
                   }}
-                  height={'50vh'}
+                  height={400}
                   flex={1}
                   onDragLeave={(e: any) => handleOnDragLeave(e)}
                   onDragEnter={(e) => handleOnDragEnter(e)}
@@ -520,7 +559,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
               </Box>
             </Box>
           </Box>
-          <DialogActions>
+          <Box sx={{ display: 'flex', justifyContent: 'end', gap: 4, mr: 10, mb: 10 }}>
             <Button onClick={onClose} variant='contained' color='primary'>
               Đóng
             </Button>
@@ -542,7 +581,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                 Lưu
               </Button>
             )}
-          </DialogActions>
+          </Box>
         </Box>
       )}
     </Modal>

@@ -63,7 +63,6 @@ export const isExistLecturerSupport = (
     thisGrStudentNeedAssign: any,
     typeAssign?: string,
 ) => {
-  
     //  Case poster, phan bien
     if (groupLecturer !== null && groupLecturer !== undefined && ['', ''].includes(typeAssign)) {
         const lecturerInGroupIds = groupLecturer?.members.map((mem: any) => mem.id);

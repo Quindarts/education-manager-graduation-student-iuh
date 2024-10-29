@@ -17,7 +17,7 @@ export enum QueryKeysLecturerTerm {
     getAllLectuerTermByParams = 'getAllLectuerTermByParams',
     getCountOfLecturerTerm = "getCountOfLecturerTerm",
     getLecturerTermById = "getLecturerTermById",
-    getLecturerTermToExport = "getLecturerTermToExport"
+    getLecturerTermToExport = "getLecturerTermToExport",
 }
 
 export const useLecturerTerm = () => {
@@ -85,8 +85,8 @@ export const useLecturerTerm = () => {
         })
     }
     //[GET LIST LECTURER]
-    const handleGetListLecturerTerms = () => {
-        return useQuery([QueryKeysLecturerTerm.listLecturerTerms, termId], () => LecturerTermServices.getListLecturerTerm(termId), {
+    const handleGetListLecturerTerms = (keyword: string) => {
+        return useQuery([QueryKeysLecturerTerm.listLecturerTerms, termId, keyword], () => LecturerTermServices.getListLecturerTerm(termId, keyword), {
 
         })
     }

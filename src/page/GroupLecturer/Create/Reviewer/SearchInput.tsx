@@ -1,6 +1,5 @@
 import { TextField, Box, InputAdornment, BoxProps } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-
 interface SearchType extends BoxProps {
   changeSearch: (s: string) => void;
   keywords: string;

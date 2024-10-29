@@ -11,11 +11,11 @@ export default defineConfig({
     'process.env': {}
   },
   server: {
-    port: 5000,
+    port: 5173,
     host: true
   },
   build: {
-    minify: "esbuild", // Sử dụng 'esbuild' để minify JavaScript
-    cssCodeSplit: true, // Tách riêng CSS thành các tệp riêng
+    minify: "esbuild",
+    cssCodeSplit: true, 
   },
 });

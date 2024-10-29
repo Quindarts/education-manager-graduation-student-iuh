@@ -1,3 +1,5 @@
+export const INDUSTRIES = ['WEB', 'APP', 'SYSTEM', 'AI', 'NETWORK', 'DATA', 'SECURITY', 'OTHER'];
+
 export const LIST_ROLE = [
   {
     name: 'All',
