@@ -22,6 +22,7 @@ const components: Components = {
       })
     }
   },
+  
   MuiInputBase: {
     styleOverrides: {
       root: ({ theme }: any) => ({

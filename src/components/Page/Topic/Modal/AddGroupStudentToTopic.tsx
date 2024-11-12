@@ -49,15 +49,14 @@ function AddGroupStudentToTopicModal(props: any) {
     isLoading: loadingGroups,
     isSuccess: successGroup,
   } = hanldeGetGroupsByTopic(topic.id);
-  const {
-    data: fetchStudents,
-    isLoading: loadingStudents,
-    isFetching: fetchingStudents,
-  } = handleGetSearchStudentBasic(keysend, searchField);
+  const { data: fetchStudents, isLoading: loadingStudents } = handleGetSearchStudentBasic(
+    keysend,
+    searchField,
+  );
 
   //[CHANGE]
-  const { mutate: assign, isSuccess: successAssign } = onAssignTopicGroupStudent(topic.id);
-  const { mutate: unAssign, isSuccess: successUnAssign } = onUnAssignTopicGroupStudent(topic.id);
+  const { mutate: assign } = onAssignTopicGroupStudent(topic.id);
+  const { mutate: unAssign } = onUnAssignTopicGroupStudent(topic.id);
 
   //Hanlde submit code
   const hanldeSubmit = () => {
@@ -65,7 +64,6 @@ function AddGroupStudentToTopicModal(props: any) {
   };
   const handleUnAssign = (groupId: string) => {
     unAssign(groupId);
-  
   };
 
   const handleStudents = (std: any) => {
@@ -92,7 +90,13 @@ function AddGroupStudentToTopicModal(props: any) {
   return (
     <Modal maxWidth='xl' open={open} onClose={onClose}>
       <Paper sx={{ px: 10, py: 4 }}>
-        <TitleManager icon='fluent:people-team-add-24-filled' variant='h6' textTransform={'uppercase'}>Gán đề tài cho nhóm sinh viên</TitleManager>
+        <TitleManager
+          icon='fluent:people-team-add-24-filled'
+          variant='h6'
+          textTransform={'uppercase'}
+        >
+          Gán đề tài cho nhóm sinh viên
+        </TitleManager>
         <Box gap={20} display={'flex'} my={10}>
           {' '}
           <Box width={'40%'}>
@@ -135,7 +139,7 @@ function AddGroupStudentToTopicModal(props: any) {
                 <Box sx={{ height: 400, bgcolor: 'grey.50', px: 6, overflowY: 'auto' }}>
                   <Box sx={{ height: 'auto' }}>
                     <Box>
-                      {fetchingStudents || loadingStudents ? (
+                      {loadingStudents ? (
                         <Box
                           display={'flex'}
                           alignItems={'center'}

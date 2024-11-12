@@ -1,35 +1,7 @@
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import { Icon } from '@iconify/react';
-import { Box, Button, Link, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-
-const listStudent = [
-  {
-    fullName: 'Le Minh Quang',
-    mssv: 21089141,
-    group: '100',
-  },
-  {
-    fullName: 'Le Minh Long',
-    mssv: 21089133,
-    group: 'NO_GROUP',
-  },
-  {
-    fullName: 'Phan Minh',
-    mssv: 21094873,
-    group: '100',
-  },
-  {
-    fullName: 'Phan Lang',
-    mssv: 21285831,
-    group: 'NO_GROUP',
-  },
-  {
-    fullName: 'Phan rang',
-    mssv: 23123123,
-    group: 'NO_GROUP',
-  },
-];
 
 const convertStudents = (data: any[]) => {
   if (!data) {
@@ -48,7 +20,7 @@ function TaskAddStudent(props: any) {
 
   const [taskAddStudent, setTaskAddStudent] = useState<any[]>();
   const { handleGetStudentNoHaveGroup } = useGroupStudent();
-  const { data, isLoading, isFetching, isSuccess } = handleGetStudentNoHaveGroup();
+  const { data, isFetching, isLoading } = handleGetStudentNoHaveGroup();
 
   const handleOnDrageStart = (evt: any) => {
     let element = evt.currentTarget;
@@ -94,8 +66,8 @@ function TaskAddStudent(props: any) {
   const dataStudenInGroup = taskAddStudent?.filter((data: any) => data.group === nameGroup);
   const dataStudentNoGroup = taskAddStudent?.filter((data: any) => data.group === 'NO_GROUP');
   useEffect(() => {
-    if (isSuccess) setTaskAddStudent(convertStudents(data?.students));
-  }, [isLoading, isFetching]);
+    setTaskAddStudent(convertStudents(data?.students));
+  }, [isFetching, isLoading]);
 
   useEffect(() => {
     handleSetData(taskAddStudent?.filter((data: any) => data.group === nameGroup));
@@ -310,7 +282,6 @@ function TaskAddStudent(props: any) {
                 Nhóm sinh viên tối đa 2 thành viên
               </Typography>
             )}
-           
           </Box>
         </Box>
       </Box>

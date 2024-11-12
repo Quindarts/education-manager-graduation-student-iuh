@@ -58,7 +58,7 @@ export default function SplitButton(props: any) {
             color: 'black',
             bgcolor: 'white',
             boxShadow: '0px!important',
-            border: '1px solid #8d8d8d',
+            border: '1px solid #E0E0E0',
             height: 37,
             fontSize: 14,
           }}

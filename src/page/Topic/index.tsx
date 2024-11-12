@@ -1,5 +1,5 @@
 import { Box, Paper, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import TableManagamentTopic from './Table';
 import HeaderTopic from './Header';
 import TitleManager from '@/components/ui/Title';
@@ -8,6 +8,7 @@ import SekeletonUI from '@/components/ui/Sekeleton';
 import useParams from '@/hooks/ui/useParams';
 import { useDispatch } from 'react-redux';
 import { setParamTotalPage } from '@/store/slice/topic.slice';
+import { GridCellModes } from '@mui/x-data-grid';
 
 function TopicPage() {
   const dispatch = useDispatch();
@@ -69,9 +70,7 @@ function TopicPage() {
         <Box width={'100%'} my={4}>
           <TableManagamentTopic
             isApprovePermission={true}
-            rows={
-              data?.topics ? data.topics.map((topic: any) => ({ ...topic })) : []
-            }
+            rows={data?.topics ? data.topics.map((topic: any) => ({ ...topic })) : []}
             handleChangeLimit={handleChangeLimit}
             handleChangePage={handleChangePage}
             page={currentPage}

@@ -20,10 +20,10 @@ const useAssign = () => {
         return useMutation((data: { groupLecturerId: string, listGroupStudentId: string[], type: string }) => AssignServices.createAssignByType(data), {
             onSuccess() {
                 enqueueSnackbar("Phân công chấm điểm thành công", { variant: "success" })
-                queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type, termId])
-                queryClient.invalidateQueries([QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId])
-                queryClient.invalidateQueries([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId])
-                queryClient.invalidateQueries([QueryKeysAssign.getExportAssignGroup, termId, type])
+                queryClient.invalidateQueries(QueryKeysAssign.getGroupStudentNoAssignByType)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup)
+                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId] })
+                queryClient.invalidateQueries({ queryKey: [QueryKeysAssign.getExportAssignGroup, termId, type] })
 
             },
             onError(err: any) {
@@ -35,10 +35,10 @@ const useAssign = () => {
         return useMutation((data: { groupLecturerId: string, listGroupStudentId: string[], type: string }) => AssignServices.updateAssignByType(data), {
             onSuccess() {
                 enqueueSnackbar("Cập nhật phân công thành công", { variant: "success" })
-                queryClient.invalidateQueries([QueryKeysAssign.getGroupStudentNoAssignByType, type, termId])
-                queryClient.invalidateQueries([QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId])
-                queryClient.invalidateQueries([QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId])
-                queryClient.invalidateQueries([QueryKeysAssign.getExportAssignGroup, termId, type])
+                queryClient.invalidateQueries({ queryKey: [QueryKeysAssign.getGroupStudentNoAssignByType, type, termId] })
+                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId] })
+                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termId] })
+                queryClient.invalidateQueries({ queryKey: [QueryKeysAssign.getExportAssignGroup, termId, type] })
             },
             onError(err: any) {
                 enqueueSnackbar(err.message, { variant: "error" })

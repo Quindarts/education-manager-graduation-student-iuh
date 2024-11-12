@@ -37,7 +37,7 @@ function AddGroupStudentModal(props: any) {
         <TitleManager mb={10} variant='h4' textTransform={'uppercase'}>
           Tạo Nhóm sinh viên mới
         </TitleManager>
-        {isLoading || isFetching ? (
+        {isLoading? (
           <SekeletonUI />
         ) : (
           <>

@@ -49,7 +49,7 @@ function CardLecturer(props: any) {
                 sx={{ mx: 1, my: 2 }}
                 color='info'
                 size='small'
-                label={checkIndustry(keyword)}
+                label={keyword}
               />
             ))}
           </Box>

@@ -45,4 +45,26 @@ enum EnumIndustryKey {
   OTHER = 'OTHER',
   NETWORK = 'NETWORK',
 }
-export { EnumRole, EnumGender, EnumUser, RoleCheck, EnumIndustryKey };
+
+enum EnumAnalysis {
+  LECTURER = 'lecturers',
+  TOPICS = 'topics',
+}
+enum EnumStatusStudent {
+  OPEN = 'OPEN',
+  FAIL_ADVISOR = 'FAIL_ADVISOR',
+  FAIL_REVIEWER = 'FAIL_REVIEWER',
+  FAIL_REPORT = 'FAIL_REPORT',
+  PASS_ADVISOR = 'PASS_ADVISOR',
+  PASS_REVIEWER = 'PASS_REVIEWER',
+  PASS_REPORT = 'PASS_REPORT',
+}
+export {
+  EnumRole,
+  EnumGender,
+  EnumUser,
+  RoleCheck,
+  EnumIndustryKey,
+  EnumAnalysis,
+  EnumStatusStudent,
+};

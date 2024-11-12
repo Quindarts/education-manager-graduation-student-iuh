@@ -1,6 +1,8 @@
 import { Lecturer, Student } from "@/types/entities";
+import { EventType } from "@/types/entities/event";
 import Major from "@/types/entities/major";
 import { Term } from "@/types/entities/term";
+import { EventContentArg } from "fullcalendar";
 
 
 export function getTimeDifference(startDate: string, endDate: string) {
@@ -144,3 +146,43 @@ export const convertRowEvaluations = (listEvaluations: any) => {
         return newList;
     }
 };
+
+export const convertArticleTable = (listArticles: any) => {
+    if (listArticles !== undefined && listArticles?.length < 1) {
+        return [];
+    } else {
+        return listArticles;
+    }
+}
+export const convertEventTable = (listEvents: any) => {
+    if (listEvents !== undefined && listEvents?.length < 1) {
+        return [];
+    } else {
+        return listEvents?.map((event: EventType) => ({ id: event?.id, eventId: event.id, comment: event.comment, deadline: event.deadline, groupName: event.groupName, groupStudentId: event.groupStudentIds, link: event.link, name: event.name, createdAt: event.createdAt, updatedAt: event.updatedAt }));
+    }
+}
+export const convertEventGrid = (listEvents: any): Partial<EventContentArg[]> => {
+    if (listEvents !== undefined && listEvents?.length < 1) {
+        return [];
+    } else {
+        return listEvents?.map((event: EventType) => {
+            return {
+                timeText: event.deadline, event: {
+                    id: event?.id,
+                    title: event.name,
+                    start: event.deadline,
+                    end: event.deadline,
+                    allDay: true,
+                    extendedProps: {
+                        link: event.link,
+                        comment: event.comment,
+                        groupName: event.groupName,
+                        groupStudentId: event.groupStudentIds,
+                        createdAt: event.createdAt,
+                        updatedAt: event.updatedAt
+                    }
+                }
+            }
+        })
+    }
+}

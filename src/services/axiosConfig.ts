@@ -8,6 +8,8 @@ const axiosConfig = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 60000,
+
   // withCredentials: true,
 });
 
@@ -51,7 +53,7 @@ axiosConfig.interceptors.response.use(
         return Promise.reject(error);
       }
     }
-    return Promise.reject(error.response.data);
+    return Promise.reject(error?.response?.data);
 
   },
 );

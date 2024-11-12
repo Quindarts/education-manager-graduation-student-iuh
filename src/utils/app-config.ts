@@ -64,7 +64,18 @@ export const APP_ROUTES = {
     DETAIL_SCORE_GROUP: '/group-supports/score/group_student_id'
   },
   FILE_UPLOADED: '/files',
-
+  ANALYSIS: {
+    MANAGEMENT: '/analysis',
+    DETAILS: '/analysis/detail/:id',
+  },
+  EVENT: {
+    MANAGEMENT: '/events',
+    DETAILS: '/events/:id',
+  },
+  ARTICLE: {
+    MANAGEMENT: '/articles',
+    DETAILS: '/articles/:id',
+  },
   USER: {
     MANAGEMENT: '/users',
     DETAIL: '/users/:userId',
@@ -127,13 +138,7 @@ export const APP_SIDEBAR = [
     roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
     link: APP_ROUTES.TERM.MANAGEMENT,
     key: '/terms',
-    // children: [
-    //   {
-    //     text: 'Danh sách học kì',
-    //     link: APP_ROUTES.TERM.MANAGEMENT,
-    //     key: APP_ROUTES.TERM.MANAGEMENT,
-    //   },
-    // ],
+
   },
 
   {
@@ -141,13 +146,24 @@ export const APP_SIDEBAR = [
     text: 'Đề tài',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
     link: APP_ROUTES.TOPIC.MANAGEMENT,
-    // children: [
-    //   {
-    //     text: 'Danh sách đề tài',
-    //     link: APP_ROUTES.TOPIC.MANAGEMENT,
-    //     key: APP_ROUTES.TOPIC.MANAGEMENT,
-    //   },
-    // ],
+  },
+  {
+    icon: 'ph:article-ny-times',
+    text: 'Quản lý bài báo',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
+    link: APP_ROUTES.ARTICLE.MANAGEMENT
+  },
+  {
+    icon: 'bi:calendar-event',
+    text: 'Quản lý sự kiện',
+    roles: [RoleCheck.LECTURER],
+    link: APP_ROUTES.EVENT.MANAGEMENT
+  },
+  {
+    icon: 'icon-park-outline:market-analysis',
+    text: 'Phân loại đề tài',
+    link: APP_ROUTES.ANALYSIS.MANAGEMENT,
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
   },
   {
     icon: 'mdi:teach-poll',

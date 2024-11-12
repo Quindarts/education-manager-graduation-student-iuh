@@ -20,10 +20,10 @@ import {
   mergedArrays,
 } from '@/page/GroupLecturer/Context';
 
-function CreateInstructorGroupPage() {
+function CreateInstructorGroupPage({ categories }) {
   const [task, setTask] = React.useState<any[]>();
   //TODO: [TAGS]
-  const [tags, setTags] = useState<String[]>(convertToTagList(INDUSTRIES));
+  const [tags, setTags] = useState<String[]>(convertToTagList(categories));
   const handleAddTags = (tag: string) => {
     setTags((tags) =>
       tags.map((t: any) => {
@@ -35,7 +35,7 @@ function CreateInstructorGroupPage() {
     );
   };
   const handleClearTags = () => {
-    setTags(convertToTagList(INDUSTRIES));
+    setTags(convertToTagList(categories));
   };
 
   const { onCreateGroupLecturer } = useGroupLecturer();
@@ -235,7 +235,7 @@ function CreateInstructorGroupPage() {
                         sx={{ mx: 1, my: 2 }}
                         color='info'
                         size='small'
-                        label={checkIndustry(keyword)}
+                        label={keyword}
                       />
                     ))}
                   </Box>

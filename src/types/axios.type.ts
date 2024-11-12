@@ -18,15 +18,20 @@ export interface ResponseType {
     success?: boolean;
     message: string;
     notificationLecturers?: string;
+    statistic?: { [key: string]: number | null };
     params?: ParamsType,
+    count?: number,
     lecturer: Lecturer,
     status?: number,
     student?: Student,
     topic?: any,
+    keywords?: string[],
     term?: Partial<Term>,
     roles?: string | string[] | any,
     user?: User,
     accessToken?: string;
+    events?: any;
+    articles?: any;
     refreshToken?: string;
     lecturerTerm?: any,
     groupLecturer?: any,

@@ -26,6 +26,7 @@ const useMemberGroupStudent = () => {
                 if (data.success)
                     enqueueSnackbar('Cập nhật trạng thái sinh viên thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysMemberOfGroupStudent.getMemberInGroupStudent, id] })
+                queryClient.invalidateQueries({ queryKey: [QueryKeysGroupStudent.getGroupStudentById, id] })
 
             },
             onError(err: any) {
@@ -44,7 +45,7 @@ const useMemberGroupStudent = () => {
         return useMutation((data: any) => deleteMemberInGroup(id, data), {
             onSuccess() {
                 enqueueSnackbar('Xóa sinh viên khỏi nhóm thành công', { variant: 'success' })
-                queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNoHaveGroup, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, '10', '1', '', '', ''])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getGroupStudentById, id])
@@ -63,7 +64,7 @@ const useMemberGroupStudent = () => {
         return useMutation((data: { studentId: string, termId?: string }) => addMemberInGroup(id, { ...data, termId: termStore.currentTerm.id }), {
             onSuccess() {
                 enqueueSnackbar('Thêm sinh viên vào nhóm thành công', { variant: 'success' })
-                queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNohaveGroup, termStore.currentTerm.id])
+                queryClient.invalidateQueries([QueryKeysGroupStudent.getStudentsNoHaveGroup, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getCountOfGroupStudent, termStore.currentTerm.id])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.managerActionGroupStudent, termStore.currentTerm.id, '10', '1', '', '', ''])
                 queryClient.invalidateQueries([QueryKeysGroupStudent.getGroupStudentById, id])

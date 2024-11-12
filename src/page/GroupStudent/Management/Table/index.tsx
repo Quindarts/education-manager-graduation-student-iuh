@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import DeleteGroupStudentModal from '../Modal/DeleteModal';
 
 function TableManagamentGroupStudent(props: any) {
-  const { rows, totalItems, limit, handleChangeLimit, totalPage, page, handleChangePage } = props;
+  const { rows, totalItems, totalPage } = props;
   const navigate = useNavigate();
   const [openModalDelete, setOpenModalDelete] = useState({
     isOpen: false,
@@ -47,8 +47,8 @@ function TableManagamentGroupStudent(props: any) {
             <Box>
               {params.row.members[0] !== null ? (
                 <>
-                  {params.row.members.map((std, index) => (
-                    <Typography variant='body1' mb={2} color='initial'>
+                  {params.row.members.map((std, index: number) => (
+                    <Typography key={index} variant='body1' mb={2} color='initial'>
                       {std.username} - {std.fullName}
                     </Typography>
                   ))}
@@ -120,9 +120,6 @@ function TableManagamentGroupStudent(props: any) {
   );
   const { onImportGroupStudent } = useGroupStudent();
   const { mutate: importGr } = onImportGroupStudent();
-  const hanldeImport = () => {
-    importGr();
-  };
 
   return (
     <Box>
@@ -133,6 +130,7 @@ function TableManagamentGroupStudent(props: any) {
           width: '100%',
           minHeight: 450,
         }}
+        limit={300}
         rowHeight={75}
         columns={basicColumns}
         totalItems={totalItems}
@@ -149,4 +147,4 @@ function TableManagamentGroupStudent(props: any) {
   );
 }
 
-export default React.memo(TableManagamentGroupStudent);
+export default TableManagamentGroupStudent

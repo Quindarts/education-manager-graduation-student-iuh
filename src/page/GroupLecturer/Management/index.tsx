@@ -12,12 +12,9 @@ function GroupLecturerManagementPage() {
     setCheckType(checkType);
   };
   const { handleGetAllGroupLecturerByTypeGroup } = useGroupLecturer();
-  const { data, isSuccess, isLoading, isFetching, refetch } =
+  const { data,  isLoading, isFetching } =
     handleGetAllGroupLecturerByTypeGroup(checkType);
 
-  useEffect(() => {
-    refetch();
-  }, [checkType]);
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box justifyContent={'space-between'} mb={2} display={'flex'}>

@@ -7,7 +7,7 @@ export function removeVietnameseTones(str: string) {
 }
 export const handleSearch = (
     data: any[],
-    typeSearch: string, //'topicName' | 'fullName'
+    typeSearch: string,
     keywords: string,
 ) => {
 

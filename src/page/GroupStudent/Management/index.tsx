@@ -15,17 +15,16 @@ export function removeVietnameseTones(str: string) {
     .replace(/Đ/g, 'D');
 }
 export const handleSearch = (data: any[], typeSearch: string, keywords: string) => {
-  const dataSort = data?.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const dataSort = data?.slice()?.sort((a, b) => a.name.localeCompare(b.name));
   if (keywords.length === 0 || typeSearch.length === 0) {
     return dataSort;
   }
-
   let query = removeVietnameseTones(keywords?.toLowerCase());
-  const filteredData = data.filter((gr: any) => {
+  const filteredData = data?.filter((gr: any) => {
     let val = removeVietnameseTones(gr[`${typeSearch}`]?.toLowerCase());
-    return val.includes(query);
+    return val?.includes(query);
   });
-  return filteredData.sort((a, b) => a.name.localeCompare(b.name));
+  return filteredData?.sort((a, b) => a.name.localeCompare(b.name));
 };
 function GroupStudentManagement() {
   //[FETCH]
@@ -43,7 +42,7 @@ function GroupStudentManagement() {
         </TitleManager>
         <Box>
           <Typography variant='body1' fontWeight={600} color='#464646'>
-           Tổng số lượng : {data?.groupStudents.length} nhóm
+            Tổng số lượng : {data?.groupStudents.length} nhóm
           </Typography>
           {getQueryField('keywords') && (
             <Typography

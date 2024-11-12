@@ -1,8 +1,4 @@
 import CustomTextField from '@/components/ui/CustomTextField';
-import Modal from '@/components/ui/Modal';
-import TextEditor from '@/components/ui/TextEditor';
-import TitleManager from '@/components/ui/Title';
-import { useAuth } from '@/hooks/api/useAuth';
 import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import { Formik } from 'formik';
@@ -10,11 +6,11 @@ import React, { useEffect } from 'react';
 import { validationTopicSchema } from '../../../../page/Topic/Context';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import SekeletonUI from '@/components/ui/Sekeleton';
-
+import Modal from '@/components/ui/Modal';
+import TitleManager from "@/components/ui/Title";
+import TextEditor from '@/components/ui/TextEditor';
 function EditModal(props: any) {
   const { onClose, open, topicId } = props;
-  const {} = useTopic();
-  const { lecturerStore } = useAuth();
   const { onUpdateTopicById, handleUiRender } = useTopic();
   const { mutate: update, isSuccess: successCreate } = onUpdateTopicById(topicId);
 

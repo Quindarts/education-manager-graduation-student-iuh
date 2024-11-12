@@ -144,8 +144,7 @@ const useUploadExcel = (props: UploadHandler) => {
               variant: 'success',
             });
             queryClient.invalidateQueries(
-              [QueryKeysLecturer.getAllLecturer, majorId,
-                "10", "1", '', '', '']
+              QueryKeysLecturer.getAllLecturer
             );
             handleCloseUpload()
 
@@ -154,15 +153,15 @@ const useUploadExcel = (props: UploadHandler) => {
             enqueueSnackbar('Lưu danh sách tiêu chí từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryEvaluation.getEvaluationByType, termId, typeEvaluation] })
+            queryClient.invalidateQueries(QueryEvaluation.getEvaluationByType)
             handleCloseUpload()
           }
           if (entityUpload === TypeEntityUpload.STUDENT) {
             enqueueSnackbar('Lưu danh sách sinh viên từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getAllStudent, termId, majorId, "10", "1", '', '', ''] })
-            queryClient.invalidateQueries({ queryKey: [QueryStudent.getCountOfStudent] })
+            queryClient.invalidateQueries(QueryStudent.getAllStudent)
+            queryClient.invalidateQueries(QueryStudent.getCountOfStudent)
             handleCloseUpload()
 
           }
@@ -170,9 +169,9 @@ const useUploadExcel = (props: UploadHandler) => {
             enqueueSnackbar('Lưu danh sách Đề tài từ excel file thành công', {
               variant: 'success',
             });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termId, "10", "1", '', '', ''] });
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, me.id, termId] })
-            queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
+            queryClient.invalidateQueries(QueryTopic.getSearchTopic);
+            queryClient.invalidateQueries(QueryTopic.getTopicsByMe)
+            queryClient.invalidateQueries(QueryTopic.getCountOfTopic)
             handleCloseUpload()
           }
         }

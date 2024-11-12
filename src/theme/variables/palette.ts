@@ -85,7 +85,7 @@ const palette: PaletteOptions = {
     light: color.light_blue,
     dark: color.dark_blue,
   },
-  divider: color.gray,
+  divider: color.gray_400,
   background: {
     default: color.gray_light,
     paper: color.white,

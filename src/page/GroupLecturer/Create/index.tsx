@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -7,12 +7,16 @@ import TabPanel from '@mui/lab/TabPanel';
 import CreateInstructorGroupPage from './Reviewer';
 import CreateReportGroupPage from './Report';
 import TitleManager from '@/components/ui/Title';
+import useAnalysis from '@/hooks/api/useQueryAnalysis';
 
 function CreateGroupLecturer() {
   const [value, setValue] = React.useState('1');
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  //[API]
+  const {  handleGetCategories } = useAnalysis();
+  const { data: dataFetch } = handleGetCategories();
 
   return (
     <Paper sx={{ px: 4 }} elevation={0}>
@@ -57,10 +61,10 @@ function CreateGroupLecturer() {
             </TabList>
           </Box>
           <TabPanel value='1'>
-            <CreateInstructorGroupPage />
+            <CreateInstructorGroupPage categories={dataFetch?.keywords} />
           </TabPanel>
           <TabPanel value='2'>
-            <CreateReportGroupPage />
+            <CreateReportGroupPage categories={dataFetch?.keywords} />
           </TabPanel>
         </TabContext>
       </Box>

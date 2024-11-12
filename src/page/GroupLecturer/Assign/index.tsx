@@ -17,6 +17,7 @@ import SearchInput from './SearchInput';
 import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 import { checkIndustry } from '@/utils/validations/lecturer.validation';
 import ChipTag from '@/components/ui/Badge';
+import useAnalysis from '@/hooks/api/useQueryAnalysis';
 
 const convertToTagList = (data: any) => {
   if (!data) return [];
@@ -65,6 +66,9 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
   const { handleGetGroupLecturerById } = useGroupLecturer();
   const { handletGetGroupStudentNoAssignByType, onCreateAssignByType, onUpdateAssignByType } =
     useAssign();
+
+  const { handleGetCategories } = useAnalysis();
+  const { data: categoryFetch } = handleGetCategories();
   const {
     data: fetchGrLecturer,
     isLoading: loadingFetchGrLecturer,
@@ -100,7 +104,6 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
     type: 'NONE',
     value: false,
   });
-  const [showSearch, setShowSearch] = useState(true);
   //TODO [Handle event]
   const { enqueueSnackbar } = useSnackbar();
 

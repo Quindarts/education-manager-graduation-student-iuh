@@ -8,6 +8,9 @@ import * as TopicServices from "@/services/apiTopic"
 import * as GroupStudentServices from "@/services/apiGroupStudent"
 import * as LecturerServices from "@/services/apiLecturerTerm"
 import * as GroupLecturerServices from "@/services/apiGroupLecturer"
+import * as TranscriptServices from "@/services/apiTranscipts"
+import { EnumStatusStudent } from '@/types/enum'
+import { set } from 'lodash'
 
 function useStatistical() {
     //[REDUX]
@@ -21,6 +24,8 @@ function useStatistical() {
     const [lecturerCount, setLecturerCount] = useState(0);
     const [topicCount, setTopicCount] = useState(0);
     const [groupStudentCount, setGroupStudentCount] = useState(0);
+    const [barChartDataOfPoint, setBarChartDataOfPoint] = useState({});
+    const [statusOfStudents, setStatusOfStudents] = useState(0);
     const handleGetCountOfDashboard = async () => {
         const apiStudent = await StudentServices.getCountOfStudent(termId)
         const apiLecturer = await LecturerServices.getCountOfLecturerTerm(termId)
@@ -49,7 +54,6 @@ function useStatistical() {
         const apiTopic = await TopicServices.getCountOfTopicByLecturer(termId) // register, accepted
         const apiGroupLecturer = await GroupLecturerServices.getCountOfGroupLecturerByLecturer(termId)
         const apiGroupStudent = await GroupStudentServices.getCountOfGroupStudentByLecturer(termId)
-
         return Promise.all([apiTopic, apiGroupLecturer, apiGroupStudent])
             .then(([topic, grLecturer, grStudent]) => {
                 setApprovedTopicCountOfLecturer(topic.countApprovedTopics)
@@ -61,12 +65,25 @@ function useStatistical() {
                 // console.error('Error fetching counts:', error);
             });
     }
+    const handleGetBarChartDataOfPoint = async () => {
+        const data = await TranscriptServices.getSatisticPoints(termId)
+        setBarChartDataOfPoint(data?.statistic)
+    }
+    const handleGetSatusOfStudents = async (type: EnumStatusStudent) => {
+        const apiStatusOfStudents = await StudentServices.getStatisticStatusOfStudents(termId, type)
+        setStatusOfStudents(apiStatusOfStudents.count)
+    }
+
+
     return {
         //? [ROLE HEAD_LECTURER + HEAD_COURSE COUNT]
         studentCount,
         lecturerCount,
         groupStudentCount,
         topicCount,
+        statusOfStudents,
+        barChartDataOfPoint,
+
         //? [ROLE LECTURER COUNT]
         grLecturerCountOfgrLecturer,
         registeredTopicCountOfLecturer,
@@ -74,7 +91,9 @@ function useStatistical() {
         groupStudentCountOfLecturer,
         //?  [METHOD]
         handleGetCountOfDashboard,
-        handleGetCountOfDashBoardLecturerRole
+        handleGetCountOfDashBoardLecturerRole,
+        handleGetSatusOfStudents,
+        handleGetBarChartDataOfPoint
     }
 }
 

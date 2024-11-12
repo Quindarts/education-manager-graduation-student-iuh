@@ -25,7 +25,7 @@ import { INDUSTRIES } from '@/utils/constants';
 import ChipTag from '@/components/ui/Badge';
 import { checkIndustry } from '@/utils/validations/lecturer.validation';
 
-function CreateReportGroupPage() {
+function CreateReportGroupPage({ categories }) {
   const [currentGroup, setCurrentGroup] = useState<string>(
     `${ENUM_GROUP_LECTURER_REPORT ? ENUM_GROUP_LECTURER_REPORT[0]?._id : ''}`,
   );
@@ -35,7 +35,7 @@ function CreateReportGroupPage() {
   const { termStore } = useTerm();
 
   //TODO: [TAGS]
-  const [tags, setTags] = useState<String[]>(convertToTagList(INDUSTRIES));
+  const [tags, setTags] = useState<String[]>(convertToTagList(categories));
 
   const handleAddTags = (tag: string) => {
     setTags((tags) =>
@@ -48,7 +48,7 @@ function CreateReportGroupPage() {
     );
   };
   const handleClearTags = () => {
-    setTags(convertToTagList(INDUSTRIES));
+    setTags(convertToTagList(categories));
   };
 
   //TODO: POST DATA

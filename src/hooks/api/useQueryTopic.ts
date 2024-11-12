@@ -64,7 +64,11 @@ export const useTopic = () => {
 
     //[GET BY ID]
     const handleTopicById = (topicId: string) => {
-        return useQuery([QueryTopic.getTopicById, topicId], () => TopicServices.getTopicById(topicId))
+        return useQuery([QueryTopic.getTopicById, topicId], () => TopicServices.getTopicById(topicId), {
+            enabled: !!topicId,
+            staleTime: 1000,
+            cacheTime: 1000,
+        })
     }
     const hanldeGetGroupsByTopic = (topicId: string) => {
         return useQuery([QueryTopic.getGroupByTopic, termStore.currentTerm.id, topicId], () => getGroupByTopic(termStore.currentTerm.id, topicId), {
@@ -146,9 +150,9 @@ export const useTopic = () => {
         return useMutation((newTopic: TopicBodyRequestType) => TopicServices.createTopicByToken(newTopic, termStore.currentTerm.id), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.create, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
+                queryClient.invalidateQueries(QueryTopic.getSearchTopic)
+                queryClient.invalidateQueries(QueryTopic.getTopicsByMe)
+                queryClient.invalidateQueries(QueryTopic.getCountOfTopic)
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
             },
@@ -167,10 +171,10 @@ export const useTopic = () => {
         return useMutation((updateTopic: any) => TopicServices.updateTopicById(topicId, updateTopic), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
+                queryClient.invalidateQueries(QueryTopic.getSearchTopic)
+                queryClient.invalidateQueries(QueryTopic.getTopicsByMe)
+                queryClient.invalidateQueries(QueryTopic.getCountOfTopic)
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
             },
@@ -189,7 +193,8 @@ export const useTopic = () => {
             {
                 onSuccess() {
                     enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                    queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
+                    queryClient.invalidateQueries(QueryTopic.getSearchTopic)
+                    queryClient.invalidateQueries(QueryTopic.getCountOfTopic)
                     queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicById, topicId] });
                 },
                 onError(err: any) {
@@ -205,7 +210,7 @@ export const useTopic = () => {
         return useMutation((quantity: number) => TopicServices.updateAllQuantityGroupMax(termStore.currentTerm.id, quantity), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.update, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
+                queryClient.invalidateQueries(QueryTopic.getSearchTopic)
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
             },
@@ -223,9 +228,9 @@ export const useTopic = () => {
         return useMutation((topicId: string) => TopicServices.deleteTopicById(topicId), {
             onSuccess() {
                 enqueueSnackbar(MESSAGE_STORE_SUCCESS(TypeMess.delete, "Đề tài"), { variant: 'success' })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getSearchTopic, termStore.currentTerm.id, getQueryField('limit'), getQueryField('page'), getQueryField('searchField'), getQueryField('sort'), getQueryField('keywords')] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicsByMe, termStore.currentTerm.id, lecturerStore.me.user.id] })
-                queryClient.invalidateQueries({ queryKey: [QueryTopic.getCountOfTopic] })
+                queryClient.invalidateQueries(QueryTopic.getSearchTopic)
+                queryClient.invalidateQueries(QueryTopic.getTopicsByMe)
+                queryClient.invalidateQueries(QueryTopic.getCountOfTopic)
                 queryClient.invalidateQueries({ queryKey: [QueryTopic.getTopicToExport, termId] })
 
             },

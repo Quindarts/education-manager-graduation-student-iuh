@@ -17,7 +17,7 @@ export const useRoleManager = () => {
         return useQuery([QueryKeysLecturer.getAllRoleLecturer], () => getAllRoleLecturer(), {
             onSuccess(data: Pick<ResponseType, 'success' | 'message' | 'roles'>) {
             },
-            staleTime: 10000,
+            refetchOnMount: true,
         })
     }
 
@@ -25,25 +25,22 @@ export const useRoleManager = () => {
     //[GET BY ID]
     const handleGetRoleDetailByLecturerId = (lecturerId: string) => {
         return useQuery([QueryKeysLecturer.getRoleDetailByLecturerId, lecturerId], () => getRoleDetailByLecturerId(lecturerId), {
-            enabled: !!lecturerId
+            enabled: !!lecturerId,
+            refetchOnMount: true,
+
         })
     }
 
     //[CREATE]
     const onAssignRoleToLecturer = (lecturerId: string) => {
-
         return useMutation((data: RoleBodyRequest) => assignRoleToLecturer(data), {
             onSuccess() {
                 enqueueSnackbar("Phân vai trò thành công", { variant: 'success' })
                 queryClient.invalidateQueries(
-                    {
-                        queryKey: [QueryKeysLecturer.getAllRoleLecturer]
-                    }
+                    QueryKeysLecturer.getAllRoleLecturer
                 );
                 queryClient.invalidateQueries(
-                    {
-                        queryKey: [QueryKeysLecturer.getRoleDetailByLecturerId, lecturerId]
-                    }
+                    QueryKeysLecturer.getRoleDetailByLecturerId
                 );
             },
             onError(err: any) {
@@ -62,14 +59,11 @@ export const useRoleManager = () => {
             onSuccess() {
                 enqueueSnackbar("Hủy phân vai trò thành công", { variant: 'success' })
                 queryClient.invalidateQueries(
-                    {
-                        queryKey: [QueryKeysLecturer.getAllRoleLecturer]
-                    }
+                    QueryKeysLecturer.getAllRoleLecturer
+
                 );
                 queryClient.invalidateQueries(
-                    {
-                        queryKey: [QueryKeysLecturer.getRoleDetailByLecturerId, lecturerId]
-                    }
+                    QueryKeysLecturer.getRoleDetailByLecturerId
                 );
 
             },

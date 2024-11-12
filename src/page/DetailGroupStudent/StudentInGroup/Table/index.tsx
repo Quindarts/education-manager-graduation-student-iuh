@@ -1,7 +1,7 @@
 import SekeletonUI from '@/components/ui/Sekeleton';
 import Table from '@/components/ui/Table/Table';
 import { convertGroupMembersTable } from '@/utils/convertDataTable';
-import { getStatusGroup } from '@/utils/validations/groupStudent.validation';
+import { getStatusGroup, getStatusStudentStyle } from '@/utils/validations/groupStudent.validation';
 import { Icon } from '@iconify/react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import EditStatusStudentTerm from '../Modal/EditStatus';
 import StudentLeaveGroup from '../Modal/LeaveGroup';
-import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import AddStudentModal from '../Modal/AddStudent';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
@@ -149,54 +148,51 @@ function TableStudentInGroup({ members }: any) {
         );
       },
     },
-
     {
       headerName: 'Tình trạng',
       field: 'abc',
       flex: 1,
-      align: 'right',
-      headerAlign: 'right',
+      align: 'center',
+      headerAlign: 'center',
       renderCell: (params: any) => {
         return (
           <Box display={'flex'}>
-            <Typography variant='body1'>{getStatusGroup(params.row.status)}</Typography>
+            <Typography
+              sx={{
+                borderRadius: 2,
+                px: 2,
+                py: 1,
+              }}
+              color={getStatusStudentStyle(params.row.status)}
+              bgcolor={getStatusStudentStyle(params.row.status)}
+              variant='body1'
+            >
+              {getStatusGroup(params.row.status)}
+            </Typography>
           </Box>
         );
       },
     },
-
     {
       headerName: '',
       field: 'name8',
-      flex: currentRole.includes('crud') ? 1.2 : 0,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params: any) => (
         <Box display={'flex'} gap={2}>
-          {currentRole.includes('crud') && (
-            <Tooltip
-              title='Cập nhật trạng thái sinh viên'
-              onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
-            >
-              <IconButton size='small'>
-                <Icon
-                  width={20}
-                  style={{ color: '#1e4990' }}
-                  icon='fluent-mdl2:global-nav-button-active'
-                />
-              </IconButton>
-            </Tooltip>
-          )}
-          {currentRole.includes('crud') && (
-            <Tooltip
-              title='Xóa khỏi nhóm'
-              onClick={() => handleOpenStudentLeaveGroup(params.row.id)}
-            >
-              <IconButton size='small' color='primary'>
-                <Icon icon='pepicons-print:leave-circle' style={{ color: '#1e4990' }} width={20} />
-              </IconButton>
-            </Tooltip>
-          )}
+          <Tooltip
+            title='Cập nhật trạng thái sinh viên'
+            onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
+          >
+            <IconButton size='small'>
+              <Icon width={20} style={{ color: '#1e4990' }} icon='mdi:user-edit' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Xóa khỏi nhóm' onClick={() => handleOpenStudentLeaveGroup(params.row.id)}>
+            <IconButton size='small' color='primary'>
+              <Icon icon='clarity:remove-solid' style={{ color: '#d63b3b' }} width={20} />
+            </IconButton>
+          </Tooltip>
         </Box>
       ),
     },
@@ -205,20 +201,18 @@ function TableStudentInGroup({ members }: any) {
     <>
       <Box>
         <Box>
-          {currentRole.includes('crud') && (
-            <Box display={'flex'} mt={6} mb={4} justifyContent={'end'}>
-              <Button
-                disabled={members.length >= 2}
-                size='small'
-                color='error'
-                variant='contained'
-                onClick={handleOpenModalAddStudent}
-              >
-                <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
-                Thêm Sinh viên
-              </Button>
-            </Box>
-          )}
+          <Box display={'flex'} mt={6} mb={4} justifyContent={'end'}>
+            <Button
+              disabled={members.length >= 2}
+              size='small'
+              color='error'
+              variant='contained'
+              onClick={handleOpenModalAddStudent}
+            >
+              <Icon icon='material-symbols:add' width={16} style={{ marginRight: 4 }} />
+              Thêm Sinh viên
+            </Button>
+          </Box>
           <Table
             rows={convertGroupMembersTable(members)}
             sx={{
@@ -235,26 +229,24 @@ function TableStudentInGroup({ members }: any) {
           />
         </Box>
       </Box>
-      {currentRole.includes('crud') && (
-        <>
-          <EditStatusStudentTerm
-            open={openStatusStudentModal.isOpen}
-            studentId={openStatusStudentModal.studentId}
-            status={openStatusStudentModal.status}
-            onClose={handleCloseModalStatusStudent}
-          />
-          <StudentLeaveGroup
-            studentId={openStudentLeaveGroup.studentId}
-            open={openStudentLeaveGroup.isOpen}
-            onClose={handleCloseStudentLeaveGroup}
-          />
-          <AddStudentModal
-            groupStudentId={grStudentId}
-            onClose={handleCloseModalAddStudent}
-            open={openAddStudentModal}
-          />
-        </>
-      )}{' '}
+      <>
+        <EditStatusStudentTerm
+          open={openStatusStudentModal.isOpen}
+          studentId={openStatusStudentModal.studentId}
+          status={openStatusStudentModal.status}
+          onClose={handleCloseModalStatusStudent}
+        />
+        <StudentLeaveGroup
+          studentId={openStudentLeaveGroup.studentId}
+          open={openStudentLeaveGroup.isOpen}
+          onClose={handleCloseStudentLeaveGroup}
+        />
+        <AddStudentModal
+          groupStudentId={grStudentId}
+          onClose={handleCloseModalAddStudent}
+          open={openAddStudentModal}
+        />
+      </>
     </>
   );
 }

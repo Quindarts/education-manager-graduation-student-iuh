@@ -10,19 +10,37 @@ function StatisticManager() {
   handleGetCountOfDashboard();
   const stats = [
     {
-      title: 'Số nhóm sinh viên',
+      title: 'Nhóm sinh viên tham gia',
       value: groupStudentCount,
       icon: <Group />,
       link: '/group-students',
+      colorIcon: '#e3ffe6',
+      subLabel: 'nhóm',
     },
-    { title: 'Số lượng đề tài', value: topicCount, icon: <Book />, link: '/topics' },
     {
-      title: 'Số lượng giảng viên',
+      title: 'Đề tài đang quản lý',
+      value: topicCount,
+      icon: <Book />,
+      link: '/topics',
+      colorIcon: '#ddffff',
+      subLabel: 'đề tài',
+    },
+    {
+      title: 'Giảng viên tham gia',
       value: lecturerCount,
       icon: <Person />,
       link: '/lecturer-terms',
+      colorIcon: '#fee6ea',
+      subLabel: 'giảng viên',
     },
-    { title: 'Số lượng sinh viên', value: studentCount, icon: <School />, link: '/students/query' },
+    {
+      title: 'Sinh viên làm khóa luận',
+      value: studentCount,
+      icon: <School />,
+      link: '/students/query',
+      colorIcon: '#ffd391',
+      subLabel: 'sinh viên',
+    },
   ];
   return (
     <Box sx={{ maxWidth: '100%', width: '100%' }}>
@@ -35,6 +53,8 @@ function StatisticManager() {
                 value={stat.value}
                 icon={stat.icon}
                 link={stat.link}
+                colorIcon={stat.colorIcon}
+                subLabel={stat.subLabel}
                 sx={{ bgcolor: 'background.paper', boxShadow: 3 }}
               />
             </Box>

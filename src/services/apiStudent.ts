@@ -1,20 +1,26 @@
 import { Student } from "@/types/entities";
 import axiosConfig from "./axiosConfig"
-
+import { EnumStatusStudent } from "@/types/enum";
+import { ResponseType } from "@/types/axios.type";
+const URL = `/api/v1/students`
+// [Get] statistic students(done) pass or fail status
+export const getStatisticStatusOfStudents = async (termId: string, status: EnumStatusStudent): Promise<ResponseType> => {
+    return await axiosConfig.get(`${URL}/counts?termId=${termId}&status=${status}`)
+}
 //[GET] STUDENT
 export const getCountOfStudent: any = (termId: string) => {
-    return axiosConfig.get(`/api/v1/students/count?termId=${termId}`)
+    return axiosConfig.get(`${URL}/count?termId=${termId}`)
 }
 
 //[GET]
 export const getSearchStudentBasic: any = (termId: string, keywords: string, searchField: string) => {
     const searchFieldSender = searchField ? searchField : 'studentName'
     const keywordsSender = keywords ? keywords : ""
-    return axiosConfig.get(`/api/v1/students/search?termId=${termId}&keywords=${keywordsSender}&searchField=${searchFieldSender}`)
+    return axiosConfig.get(`${URL}/search?termId=${termId}&keywords=${keywordsSender}&searchField=${searchFieldSender}`)
 }
 //[GET]
 export const getStudentsToExport: any = (termId: string, majorId: string) => {
-    return axiosConfig.get(`/api/v1/students/export?termId=${termId}&majorId=${majorId}`)
+    return axiosConfig.get(`${URL}/export?termId=${termId}&majorId=${majorId}`)
 }
 
 //[Admin role]
@@ -22,61 +28,61 @@ export const getStudentOfSearch: any = (termId: string, majorId: string, limit: 
     let searchFieldSend = searchField ? searchField : "full_name";
     let keywordSend = keywords ? keywords : ""
     let sortSend = sort ? sort : "ASC"
-    return axiosConfig.get<ResponseType, any>(`/api/v1/students/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}}&sort=${sortSend}`);
+    return axiosConfig.get<ResponseType, any>(`${URL}/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}}&sort=${sortSend}`);
 }
 //[GET]
 export const getStudentsNoHaveGroup: any = (termId: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/students/no-have-group?termId=${termId}`)
+    return axiosConfig.get<ResponseType, any>(`${URL}/no-have-group?termId=${termId}`)
 }
 //[GET]
 export const getAllStudentByMajor = async (termId: string, majorId: string, limit: number, page: number) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/students?limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
+    return axiosConfig.get<ResponseType, any>(`${URL}?limit=${limit}&page=${page}&termId=${termId}&majorId=${majorId}`);
 }
 
 //[GET]
 export const getAllStudent = async (termId: string, limit: number, page: number) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/students?limit=${limit}&page=${page}&termId=${termId}`);
+    return axiosConfig.get<ResponseType, any>(`${URL}?limit=${limit}&page=${page}&termId=${termId}`);
 }
 
 //[GET BY ID]
 export const getStudentById = async (id: string) => {
-    return axiosConfig.get<ResponseType, any>(`/api/v1/students/${id}`)
+    return axiosConfig.get<ResponseType, any>(`${URL}/${id}`)
 }
 
 //[Fix lecturer can updatePass.]
 export const updatePasswordStudent = async (data: { password: string, newPassword: string }) => {
-    return axiosConfig.post<ResponseType, any>("/api/v1/students/update-password", data)
+    return axiosConfig.post<ResponseType, any>(`${URL}/update-password`, data)
 }
 
 
 //[LOCK ACCOUNT]
 export const lockOnlyStudent = async (id: string, status: boolean) => {
     const locker = status ? 'lock' : 'unlock'
-    return axiosConfig.post<ResponseType, any>(`/api/v1/students/${locker}`, { id: id })
+    return axiosConfig.post<ResponseType, any>(`${URL}/${locker}`, { id: id })
 }
 //[LOCK ACCOUNT]
 export const lockAllStudents = async (termId: string) => {
-    return axiosConfig.post<ResponseType, any>(`/api/v1/students/lock`, { termId })
+    return axiosConfig.post<ResponseType, any>(`${URL}/lock`, { termId })
 }
 
 //[CREATE STUNDENT]
 export const createStudent = async (data: Partial<Student>) => {
-    return axiosConfig.post<ResponseType, any>("/api/v1/students", data)
+    return axiosConfig.post<ResponseType, any>(`${URL}`, data)
 }
 
 //[DELETE STUNDENT]
 export const deleteStudent = async (id: string) => {
-    return axiosConfig.delete<ResponseType, any>(`/api/v1/students/${id}`)
+    return axiosConfig.delete<ResponseType, any>(`${URL}/${id}`)
 }
 
 
 //[UPDATE STUDENT]
 export const updateStudent = async (id: string | number, data: Partial<Student>) => {
-    return axiosConfig.put<ResponseType, any>(`/api/v1/students/${id}`, data)
+    return axiosConfig.put<ResponseType, any>(`${URL}/${id}`, data)
 }
 //[UPDATE STUDENT]
 export const updateStatusStudent = async (id: string, data: { status: string, termId: string }) => {
-    return axiosConfig.put<ResponseType, any>(`/api/v1/students/${id}/status`, data)
+    return axiosConfig.put<ResponseType, any>(`${URL}/${id}/status`, data)
 }
 
 
@@ -85,6 +91,6 @@ export const updateStatusStudent = async (id: string, data: { status: string, te
 //[CHANGE ACTIVE STUDENT]
 
 export const resetPasswordStudent: any = async (id: string) => {
-    return axiosConfig.post<ResponseType, any>(`api/v1/students/reset-password`, { id: id })
+    return axiosConfig.post<ResponseType, any>(`${URL}/reset-password`, { id: id })
 }
 

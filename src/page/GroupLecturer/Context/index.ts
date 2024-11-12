@@ -18,7 +18,8 @@ const convertToTagList = (data: any) => {
     return data?.map((d: any) => {
         return {
             id: d,
-            name: checkIndustry(d),
+            // name: checkIndustry(d),
+            name: d,
             selected: false,
         };
     });
