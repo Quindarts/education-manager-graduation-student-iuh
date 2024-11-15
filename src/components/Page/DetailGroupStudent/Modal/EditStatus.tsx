@@ -1,5 +1,6 @@
 import DropDown from '@/components/ui/Dropdown';
 import Modal from '@/components/ui/Modal';
+import { useAuth } from '@/hooks/api/useAuth';
 import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
@@ -11,15 +12,15 @@ import { useLocation } from 'react-router-dom';
 const DROP_STATUS_STUDENT_TERM_VALUE = [
   {
     _id: 'OPEN',
-    name: 'Đang học',
+    name: 'Đang thực hiện',
   },
   {
     _id: 'FAIL_ADVISOR',
-    name: 'Rớt hướng dẫn',
+    name: 'Không được ra phản biện',
   },
   {
     _id: 'FAIL_REVIEWER',
-    name: 'Rớt phản biện',
+    name: 'Được ra phản biện',
   },
   {
     _id: 'FAIL_REPORT',
@@ -27,7 +28,7 @@ const DROP_STATUS_STUDENT_TERM_VALUE = [
   },
   {
     _id: 'PASS_ADVISOR',
-    name: 'Đậu hướng dẫn',
+    name: 'Được ra phản biện',
   },
   {
     _id: 'PASS_REVIEWER',
@@ -39,9 +40,27 @@ const DROP_STATUS_STUDENT_TERM_VALUE = [
   },
 ];
 
+const LECTURER_DROP_STATUS_STUDENT_TERM_VALUE = [
+  {
+    _id: 'OPEN',
+    name: 'Đang thực hiện',
+  },
+  {
+    _id: 'FAIL_ADVISOR',
+    name: 'Không được ra phản biện',
+  },
+  {
+    _id: 'PASS_ADVISOR',
+    name: 'Được ra phản biện',
+  },
+];
+
 function EditStatusStudentTerm(props: any) {
   const { onClose, open, studentId, status } = props;
   const [checked, setChecked] = useState(status);
+  const { lecturerStore } = useAuth();
+  const role = lecturerStore.currentRoleRender;
+
   const { termStore } = useTerm();
   const { pathname } = useLocation();
   const current = pathname.split('/');
@@ -75,7 +94,11 @@ function EditStatusStudentTerm(props: any) {
             }}
             value={checked}
             defaultChecked={status}
-            options={DROP_STATUS_STUDENT_TERM_VALUE}
+            options={
+              role === 'LECTURER'
+                ? LECTURER_DROP_STATUS_STUDENT_TERM_VALUE
+                : DROP_STATUS_STUDENT_TERM_VALUE
+            }
           />
         </Box>
         <Box mt={12} sx={{ display: 'flex', gap: 3 }}>

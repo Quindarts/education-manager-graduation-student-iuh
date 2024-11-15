@@ -6,19 +6,19 @@ export const isPassStatus = (status: string) => {
 export const getStatusGroup = (status: string) => {
     switch (status) {
         case EnumStatusStudent.OPEN:
-            return 'Đang học';
+            return 'Đang thực hiện';
         case EnumStatusStudent.FAIL_ADVISOR:
-            return 'Rớt hướng dẫn';
+            return 'Không ra phản biện';
         case EnumStatusStudent.FAIL_REVIEWER:
-            return 'Rớt phản biện';
+            return 'Không ra hội đồng ';
         case EnumStatusStudent.FAIL_REPORT:
-            return 'Rớt hội đồng';
+            return 'Không hoàn thành';
         case EnumStatusStudent.PASS_ADVISOR:
-            return 'Đậu hướng dẫn';
+            return 'Được ra phản biện';
         case EnumStatusStudent.PASS_REVIEWER:
-            return 'Đậu phản biện';
+            return 'Được ra hội đồng phản biện';
         case EnumStatusStudent.PASS_REPORT:
-            return 'Đậu hội dồng';
+            return 'Hoàn thành';
     }
 };
 
@@ -31,10 +31,6 @@ export const getStatusGroupColor = (status: string) => {
             return 'red';
         case 'FAIL_REVIEWER':
             return 'red';
-        case 'red':
-            return 'Rớt hội đồng';
-        case 'green':
-            return 'Đậu phản biện';
         case 'PASS_REVIEWER':
             return 'green';
         case 'PASS_REPORT':
