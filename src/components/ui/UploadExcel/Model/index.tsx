@@ -25,6 +25,7 @@ const HEADER_TYPE = {
     { header: 'Mô tả', key: 'Mô tả', width: 40 },
     { header: 'Yêu cầu đầu vào', key: 'Yêu cầu đầu vào', width: 40 },
     { header: 'Yêu cầu đầu ra', key: 'Yêu cầu đầu ra', width: 40 },
+    { header: 'Từ khóa', key: 'Từ khoá', width: 30 },
   ],
   students: [
     { header: 'Mã SV', key: 'Mã SV', width: 15 },

@@ -3,24 +3,12 @@ import Table from '@/components/ui/Table/Table';
 import { convertGroupMembersTable } from '@/utils/convertDataTable';
 import { getStatusGroup, getStatusStudentStyle } from '@/utils/validations/groupStudent.validation';
 import { Icon } from '@iconify/react';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
-import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
-import EditStatusStudentTerm from '../Modal/EditStatus';
-import StudentLeaveGroup from '../Modal/LeaveGroup';
-import AddStudentModal from '../Modal/AddStudent';
+import EditStatusStudentTerm from '@/components/Page/DetailGroupStudent/Modal/EditStatus';
 
-function TableDetailGroupSupport() {
-  const { pathname } = useLocation();
-  const current = pathname.split('/');
-  const grStudentId = `${current[current.length - 1]}`;
-  const { handleUiRender } = useGroupStudent();
-  const { handleGetMemberInGroupStudent } = useMemberGroupStudent();
-  const { data, isLoading } = handleGetMemberInGroupStudent(grStudentId);
-
+function TableDetailGroupSupport({ members }) {
   const basicColumns: GridColDef[] = useMemo(
     () => [
       {
@@ -159,29 +147,12 @@ function TableDetailGroupSupport() {
                 <Icon width={20} style={{ color: '#1e4990' }} icon='mdi:user-edit' />
               </IconButton>
             </Tooltip>
-            <Tooltip
-              title='Xóa khỏi nhóm'
-              onClick={() => handleOpenStudentLeaveGroup(params.row.id)}
-            >
-              <IconButton size='small' color='primary'>
-                <Icon icon='clarity:remove-solid' style={{ color: '#d63b3b' }} width={20} />
-              </IconButton>
-            </Tooltip>
           </Box>
         ),
       },
     ],
     [],
   );
-
-  const [openAddStudentModal, setOpenModalAddStudent] = useState(false);
-
-  const handleOpenModalAddStudent = () => {
-    setOpenModalAddStudent(true);
-  };
-  const handleCloseModalAddStudent = () => {
-    setOpenModalAddStudent(false);
-  };
 
   const [openStatusStudentModal, setOpenModalStatusStudent] = useState({
     isOpen: false,
@@ -201,58 +172,29 @@ function TableDetailGroupSupport() {
       isOpen: false,
     }));
   };
-  const [openStudentLeaveGroup, setOpenStudentLeaveGroup] = useState({
-    studentId: '',
-    isOpen: false,
-  });
-
-  const handleCloseStudentLeaveGroup = () => {
-    setOpenStudentLeaveGroup({ ...openStudentLeaveGroup, isOpen: false });
-  };
-  const handleOpenStudentLeaveGroup = (studentId: string) => {
-    setOpenStudentLeaveGroup({ studentId: studentId, isOpen: true });
-  };
 
   return (
     <>
-      <Box>
-        {isLoading ? (
-          <SekeletonUI />
-        ) : (
-          <Box>
-            <Table
-              rows={convertGroupMembersTable(data?.members)}
-              sx={{
-                bgcolor: 'white',
-                height: 350,
-              }}
-              minHeight={350}
-              rowHeight={80}
-              columns={basicColumns}
-              totalItems={data.members.length}
-              totalPages={1}
-              page={1}
-              handleChangePage={() => {}}
-            />
-          </Box>
-        )}
-      </Box>
+      <Table
+        rows={convertGroupMembersTable(members)}
+        sx={{
+          bgcolor: 'white',
+          height: 350,
+        }}
+        minHeight={350}
+        rowHeight={80}
+        columns={basicColumns}
+        totalItems={members?.length}
+        totalPages={1}
+        page={1}
+        handleChangePage={() => {}}
+      />
       <>
         <EditStatusStudentTerm
           open={openStatusStudentModal.isOpen}
           studentId={openStatusStudentModal.studentId}
           status={openStatusStudentModal.status}
           onClose={handleCloseModalStatusStudent}
-        />
-        <StudentLeaveGroup
-          studentId={openStudentLeaveGroup.studentId}
-          open={openStudentLeaveGroup.isOpen}
-          onClose={handleCloseStudentLeaveGroup}
-        />
-        <AddStudentModal
-          groupStudentId={grStudentId}
-          onClose={handleCloseModalAddStudent}
-          open={openAddStudentModal}
         />
       </>
     </>

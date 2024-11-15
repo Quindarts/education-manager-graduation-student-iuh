@@ -21,8 +21,8 @@ function CardGroupLecturer(props: any) {
           cursor: 'pointer',
           border: '1px solid #DAE9FAFF',
         },
-        minHeight: 200,
-        maxHeight: 300,
+        minHeight: 280,
+        maxHeight: 340,
       }}
     >
       <CardMedia

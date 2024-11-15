@@ -49,7 +49,7 @@ function AddMemberGroupLecturerModal(props: any) {
                 onChange={(e: any) => {
                   setlecturer(e.target.value);
                 }}
-                options={lecturersFromDB(data.lecturerTerms)}
+                options={lecturersFromDB(data?.lecturerTerms)}
               />
             </FormControl>
           )}

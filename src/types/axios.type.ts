@@ -31,6 +31,7 @@ export interface ResponseType {
     user?: User,
     accessToken?: string;
     events?: any;
+    event?: any;
     articles?: any;
     refreshToken?: string;
     lecturerTerm?: any,

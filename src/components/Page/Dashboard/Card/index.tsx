@@ -3,12 +3,12 @@ import { Card, CardContent, Typography, CardProps, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface StatisticsCardProps extends CardProps {
-  title: string;
-  value: number;
-  icon: React.ReactNode;
-  link: string;
-  colorIcon: string;
-  subLabel: string;
+  title?: string;
+  value?: number;
+  icon?: React.ReactNode;
+  link?: string;
+  colorIcon?: string;
+  subLabel?: string;
 }
 
 const StatisticsCard: React.FC<StatisticsCardProps> = ({

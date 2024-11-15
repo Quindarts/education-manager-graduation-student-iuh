@@ -11,6 +11,7 @@ import * as GroupLecturerServices from "@/services/apiGroupLecturer"
 import * as TranscriptServices from "@/services/apiTranscipts"
 import { EnumStatusStudent } from '@/types/enum'
 import { set } from 'lodash'
+import { s } from '@fullcalendar/core/internal-common'
 
 function useStatistical() {
     //[REDUX]
@@ -18,6 +19,7 @@ function useStatistical() {
     const { majorStore } = useMajor()
     const termId = termStore.currentTerm.id
     const majorId = majorStore.currentMajor.id
+    const [loadingPie, setLoadingPie] = useState(false)
 
     //TODO: [HEAD_LECTURER_ROLE]
     const [studentCount, setStudentCount] = useState(0);
@@ -25,7 +27,8 @@ function useStatistical() {
     const [topicCount, setTopicCount] = useState(0);
     const [groupStudentCount, setGroupStudentCount] = useState(0);
     const [barChartDataOfPoint, setBarChartDataOfPoint] = useState({});
-    const [statusOfStudents, setStatusOfStudents] = useState(0);
+    const [statusPassOfStudents, setStatusPassOfStudents] = useState(0);
+    const [statusFailOfStudents, setStatusFailOfStudents] = useState(0);
     const handleGetCountOfDashboard = async () => {
         const apiStudent = await StudentServices.getCountOfStudent(termId)
         const apiLecturer = await LecturerServices.getCountOfLecturerTerm(termId)
@@ -69,11 +72,18 @@ function useStatistical() {
         const data = await TranscriptServices.getSatisticPoints(termId)
         setBarChartDataOfPoint(data?.statistic)
     }
-    const handleGetSatusOfStudents = async (type: EnumStatusStudent) => {
-        const apiStatusOfStudents = await StudentServices.getStatisticStatusOfStudents(termId, type)
-        setStatusOfStudents(apiStatusOfStudents.count)
+    const handleGetPassOfStudents = async (type: EnumStatusStudent) => {
+        setLoadingPie(true)
+        const passStudents = await StudentServices.getStatisticStatusOfStudents(termId, type)
+        setStatusPassOfStudents(passStudents.count)
+        setLoadingPie(false)
     }
-
+    const handleGetFailOfStudents = async (type: EnumStatusStudent) => {
+        setLoadingPie(true)
+        const failStudents = await StudentServices.getStatisticStatusOfStudents(termId, type)
+        setStatusFailOfStudents(failStudents.count)
+        setLoadingPie(false)
+    }
 
     return {
         //? [ROLE HEAD_LECTURER + HEAD_COURSE COUNT]
@@ -81,9 +91,11 @@ function useStatistical() {
         lecturerCount,
         groupStudentCount,
         topicCount,
-        statusOfStudents,
+        statusPassOfStudents,
+        statusFailOfStudents,
         barChartDataOfPoint,
-
+        loadingPie
+        ,
         //? [ROLE LECTURER COUNT]
         grLecturerCountOfgrLecturer,
         registeredTopicCountOfLecturer,
@@ -92,7 +104,8 @@ function useStatistical() {
         //?  [METHOD]
         handleGetCountOfDashboard,
         handleGetCountOfDashBoardLecturerRole,
-        handleGetSatusOfStudents,
+        handleGetFailOfStudents,
+        handleGetPassOfStudents,
         handleGetBarChartDataOfPoint
     }
 }

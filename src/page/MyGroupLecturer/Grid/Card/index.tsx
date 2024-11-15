@@ -21,7 +21,7 @@ function CardGroupLecturer(props: any) {
           cursor: 'pointer',
           border: '1px solid #DAE9FAFF',
         },
-        minHeight: 200,
+        minHeight: 240,
         maxHeight: 300,
       }}
     >

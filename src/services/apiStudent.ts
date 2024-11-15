@@ -5,7 +5,7 @@ import { ResponseType } from "@/types/axios.type";
 const URL = `/api/v1/students`
 // [Get] statistic students(done) pass or fail status
 export const getStatisticStatusOfStudents = async (termId: string, status: EnumStatusStudent): Promise<ResponseType> => {
-    return await axiosConfig.get(`${URL}/counts?termId=${termId}&status=${status}`)
+    return await axiosConfig.get(`${URL}/count?termId=${termId}&status=${status}`)
 }
 //[GET] STUDENT
 export const getCountOfStudent: any = (termId: string) => {

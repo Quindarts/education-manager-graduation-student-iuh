@@ -5,7 +5,6 @@ import React from 'react';
 
 function CardLecturer(props: any) {
   const { key, id, draggable, onDragStart, onDragEnd, lecturer, keywords } = props;
-
   return (
     <Paper
       key={key}
@@ -45,12 +44,7 @@ function CardLecturer(props: any) {
           </Typography>
           <Box sx={{ justifyContent: 'end', display: 'flex' }}>
             {keywords.map((keyword: any) => (
-              <ChipTag
-                sx={{ mx: 1, my: 2 }}
-                color='info'
-                size='small'
-                label={keyword}
-              />
+              <ChipTag sx={{ mx: 1, my: 2 }} color='info' size='small' label={keyword} />
             ))}
           </Box>
         </Box>

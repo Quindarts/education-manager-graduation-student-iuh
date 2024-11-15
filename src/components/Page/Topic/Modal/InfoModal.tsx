@@ -3,6 +3,7 @@ import Modal from '@/components/ui/Modal';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import TitleManager from '@/components/ui/Title';
 import { useTopic } from '@/hooks/api/useQueryTopic';
+import { stripHtmlTags } from '@/utils/convertHtmlText';
 import { Icon } from '@iconify/react';
 import { Box, Button } from '@mui/material';
 import React from 'react';
@@ -14,12 +15,7 @@ function InfoModal(props: any) {
   return (
     <Modal maxWidth={'md'} open={open} onClose={onClose}>
       <Box pb={5} px={10}>
-        <TitleManager
-          mb={10}
-          variant='h6'
-          icon='ion:document'
-          textTransform={'uppercase'}
-        >
+        <TitleManager mb={10} variant='h6' icon='ion:document' textTransform={'uppercase'}>
           Thông tin chi tiết Đề tài
         </TitleManager>
         {isLoading ? (
@@ -30,6 +26,12 @@ function InfoModal(props: any) {
               label='Tên đề tài'
               value={data?.topic?.name}
               placeholder='Tên đề tài'
+            />
+            <CustomTextField
+              value={data?.topic?.keywords}
+              label='Từ khóa'
+              name='keywords'
+              placeholder='Từ khóa'
             />
             <Box display={'flex'} width={'100%'} gap={8}>
               <Box flex={1}>
@@ -53,21 +55,21 @@ function InfoModal(props: any) {
             <CustomTextField
               label='Mô tả đề tài'
               multiline
-              value={data?.topic?.description}
+              value={stripHtmlTags(data?.topic?.description)}
               maxRows={8}
               placeholder='Nhập vào Mô tả đề tài'
             />
 
             <CustomTextField
               multiline
-              value={data?.topic?.expectedResult}
+              value={stripHtmlTags(data?.topic?.expectedResult)}
               maxRows={8}
               label='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
               placeholder='Dự kiến sản phẩm nghiên cứu của Đề tài và khả năng ứng dụng'
             />
             <CustomTextField
               multiline
-              value={data?.topic?.target}
+              value={stripHtmlTags(data?.topic?.target)}
               maxRows={8}
               label='Mục tiêu đề tài'
               placeholder='Mục tiêu đề tài'
@@ -76,19 +78,19 @@ function InfoModal(props: any) {
               multiline
               maxRows={8}
               label='Yêu cầu đầu vào'
-              value={data?.topic?.requireInput}
+              value={stripHtmlTags(data?.topic?.requireInput)}
               placeholder='Yêu cầu đầu vào'
             />
             <CustomTextField
               multiline
               maxRows={10}
               label='Chuẩn đầu ra'
-              value={data?.topic?.standardOutput}
+              value={stripHtmlTags(data?.topic?.standardOutput)}
               placeholder='Chuẩn đầu ra'
             />
             <CustomTextField
               multiline
-              value={data?.topic?.note}
+              value={stripHtmlTags(data?.topic?.note)}
               maxRows={8}
               label='Ghi chú đề tài'
               placeholder='Ghi chú đề tài'

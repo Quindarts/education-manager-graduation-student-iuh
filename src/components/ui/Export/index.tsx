@@ -1,6 +1,15 @@
 import useExportExcel from '@/hooks/ui/useExportExcel';
 import { Icon } from '@iconify/react';
-import { Box, Button, Checkbox, FormControlLabel, Paper, Tooltip, Typography } from '@mui/material';
+import {
+  Box,
+  BoxProps,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Paper,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Modal from '../Modal';
 import TitleManager from '../Title';
@@ -35,6 +44,7 @@ const HEADER_TYPE = {
     },
     { header: 'Yêu cầu đầu vào', key: 'Yêu cầu đầu vào', width: 40 },
     { header: 'Yêu cầu đầu ra', key: 'Yêu cầu đầu ra', width: 40 },
+    { header: 'Từ khóa', key: 'Từ khoá', width: 30 },
   ],
   student: [
     { header: 'STT', key: 'STT', width: 6 },
@@ -66,7 +76,7 @@ const HEADER_TYPE = {
     { header: 'GVHD', key: 'GVHD', width: 30 },
   ],
 };
-interface ExportExcelPropsType {
+interface ExportExcelPropsType extends BoxProps {
   label?: string;
   labelTooltip?: string;
   entity: 'topic' | 'lecturer' | 'student' | 'lecturerTerm' | 'groupStudent' | 'assignGroup';
@@ -112,7 +122,7 @@ const entityFileName = (entity: string, termName: string, majorName: string) => 
   return text + ' ' + termName;
 };
 function ExportExcelButton(props: ExportExcelPropsType) {
-  const { label, labelTooltip, entity, data, disabled } = props;
+  const { label, labelTooltip, entity, data, disabled, sx, ...rest } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [fileName, setFileName] = useState<string>(``);
   const [sheetName, setSheetName] = useState<string>('sheet1');
@@ -171,7 +181,7 @@ function ExportExcelButton(props: ExportExcelPropsType) {
     setIsOpen(false);
   };
   return (
-    <Box>
+    <Box {...rest} sx={sx}>
       <Tooltip arrow title={labelTooltip}>
         <Button size='small' onClick={onOpenModal} variant='contained' color='success'>
           <Icon icon='mdi:file-download' width={24} />

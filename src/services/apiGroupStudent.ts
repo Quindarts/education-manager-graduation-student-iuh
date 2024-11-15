@@ -1,17 +1,7 @@
+import { EnumStatusStudent } from "@/types/enum";
 import axiosConfig from "./axiosConfig"
 
-enum TypeReport {
-    POSTER = 'POSTER'
-}
-export enum TypeStatusGroup {
-    OPEN = 'OPEN',
-    FAIL_ADVISOR = 'FAIL_ADVISOR',
-    FAIL_REVIEWER = 'FAIL_REVIEWER',
-    FAIL_SESSION_HOST = 'FAIL_SESSION_HOST',
-    PASS_ADVISOR = 'PASS_ADVISOR',
-    PASS_REVIEWER = 'PASS_REVIEWER',
-    PASS_SESSION_HOST = 'PASS_SESSION_HOST',
-}
+
 const URL = '/api/v1/group-students'
 //[Admin role]
 export const searchGroupStudentAdmin: any = (termId: string) => {
@@ -50,11 +40,11 @@ export const getGroupStudentById: any = (id: string) => {
 }
 
 //[UPDATE]
-export const updateTypeReportGroupStudent: any = (id: string, type_report: TypeReport) => {
+export const updateTypeReportGroupStudent: any = (id: string, type_report: EnumStatusStudent) => {
     return axiosConfig.put(`${URL}/${id}/type-report`, type_report)
 }
 
-export const updateStatusGroupStudent: any = (id: string, statusGroupStudent: TypeStatusGroup) => {
+export const updateStatusGroupStudent: any = (id: string, statusGroupStudent: EnumStatusStudent) => {
     return axiosConfig.put(`${URL}/${id}/status`, statusGroupStudent)
 }
 

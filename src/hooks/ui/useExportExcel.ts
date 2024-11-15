@@ -15,7 +15,6 @@ const useExportExcel = () => {
         }
         switch (entity) {
             case 'topic':
-
                 const TopicExport = new TopicClassExportExcel(
                     fileName,
                     sheetName,

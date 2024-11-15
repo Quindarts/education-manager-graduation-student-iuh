@@ -42,7 +42,8 @@ function AddModal(props: any) {
   const handleSubmit = (values: any) => {
     createEvent({
       name: values.name,
-      deadline: formatDates(values.deadline),
+      startDate: formatDates(new Date().toString()),
+      endDate: values.endDate,
       groupStudentIds: groups.filter((gr) => gr.checked === true).map((gr) => gr.groupStudentId),
     });
   };
@@ -77,7 +78,6 @@ function AddModal(props: any) {
             onSubmit={(values) => handleSubmit(values)}
             initialValues={{
               name: '',
-              deadline: null,
               endDate: null,
             }}
           >
@@ -91,7 +91,7 @@ function AddModal(props: any) {
               handleChange,
             }) => (
               <form onSubmit={handleSubmit}>
-                <Box display={'flex'} gap={4}>
+                <Box display={'flex'} gap={10}>
                   <Box flex={1}>
                     <CustomTextField
                       label='Tên sự kiện'
@@ -106,22 +106,22 @@ function AddModal(props: any) {
                     />
                   </Box>
 
-                  <Box>
+                  <Box width={250}>
                     <DateTimeCalendar
                       onChange={(value) => {
-                        setFieldValue('deadline', value);
+                        setFieldValue('endDate', value);
                       }}
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
                       label='Deadline'
-                      name='deadline'
+                      name='endDate'
                       format='DD/MM/YYYY hh:mm:ss A'
-                      value={values.deadline}
-                      error={touched.deadline && errors.deadline ? true : false}
+                      value={values.endDate}
+                      error={touched.endDate && errors.endDate ? true : false}
                     />
                   </Box>
                 </Box>
 
-                <Box>
+                <Box mt={4}>
                   {isLoading ? (
                     <SekeletonUI />
                   ) : (
@@ -187,7 +187,7 @@ function AddModal(props: any) {
                   )}
                 </Box>
                 <Box justifyContent={'end'} gap={4} display={'flex'}>
-                  <Button type='submit' variant='contained' color='primary' onClick={onClose}>
+                  <Button variant='contained' color='primary' onClick={onClose}>
                     <Icon width={20} icon='mdi:close-outline' />
                     Hủy
                   </Button>

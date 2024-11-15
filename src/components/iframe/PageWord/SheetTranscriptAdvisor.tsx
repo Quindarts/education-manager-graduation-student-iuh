@@ -2,6 +2,7 @@ import { Box, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from './style';
 import { convertRowEvaluations } from '@/utils/convertDataTable';
 import { useGlobalContextReview } from '@/page/ReviewManager/Context';
+import { getStatusGroup } from '@/utils/validations/groupStudent.validation';
 
 function SheetTranscriptAdvisor(props: any) {
   const { evaluations } = props;
@@ -27,17 +28,25 @@ function SheetTranscriptAdvisor(props: any) {
         <Typography my={3} variant='body1' color='initial'>
           3. Team: {groupStudentName}
           <br />
-          <Box>
-            <Typography component={'span'} variant='body1' fontWeight={'500'} color='initial'>
+          <Box color={groupMember[0]?.status === 'FAIL_ADVISOR' ? 'red' : 'black'}>
+            <Typography component={'span'} variant='body1' fontWeight={'500'}>
               First student:{' '}
             </Typography>
-            {groupMember ? groupMember[0]?.student?.fullName : '......................'}
+            {groupMember ? groupMember[0]?.student?.fullName : '......................'}{' '}
+            {groupMember[0]?.status === 'FAIL_ADVISOR'
+              ? `(${getStatusGroup(groupMember[0].status)})`
+              : ''}
             <Box ml={14} display={'inline'}>
               Student code 1:
               {groupMember ? groupMember[0]?.student?.username : '......................'}
             </Box>
           </Box>
-          <Typography component={'span'} variant='body1' fontWeight={'500'} color='initial'>
+          <Typography
+            component={'span'}
+            variant='body1'
+            fontWeight={'500'}
+            color={groupMember[1]?.status === 'FAIL_ADVISOR' ? 'red' : 'black'}
+          >
             Second student:{' '}
           </Typography>
           {groupMember ? groupMember[1]?.student?.fullName : '......................'}

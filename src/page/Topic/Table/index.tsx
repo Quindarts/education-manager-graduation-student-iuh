@@ -1,6 +1,6 @@
 import Table from '@/components/ui/Table/Table';
 import { getCardTopicStatus } from '@/utils/validations/topic.validation';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useMemo, useState } from 'react';
 import { useTopic } from '@/hooks/api/useQueryTopic';
@@ -11,9 +11,6 @@ import InfoModal from '@/components/Page/Topic/Modal/InfoModal';
 import AcceptTopicModal from '@/components/Page/Topic/Modal/AcceptTopicModal';
 import RefuseTopicModal from '@/components/Page/Topic/Modal/RefuseTopicModal';
 import { Icon } from '@iconify/react';
-
-const Tooltip = React.lazy(() => import('@mui/material/Tooltip'));
-const IconButton = React.lazy(() => import('@mui/material/IconButton'));
 
 function TableManagamentTopic(props: any) {
   const {

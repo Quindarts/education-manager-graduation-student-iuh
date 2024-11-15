@@ -42,7 +42,6 @@ const LecturerTermManagementTemplate = lazy(() => import('@/page/LecturerTerm/Ma
 const AnalysisTemplate = lazy(() => import('@/page/Analysis'));
 const ArticleTemplate = lazy(() => import('@/page/Article/Management'));
 const ArticleDetailTemplate = lazy(() => import('@/page/Article/Detail'));
-const EventManagementTemplate = lazy(() => import('@/page/Event/Management'));
 function Routing() {
   return (
     <Routes>
@@ -57,8 +56,6 @@ function Routing() {
         <Route path={APP_ROUTES.ANALYSIS.MANAGEMENT} element={<AnalysisTemplate />} />
         //ROUTE ARTICLE
         <Route path={APP_ROUTES.ARTICLE.MANAGEMENT} element={<ArticleTemplate />} />
-        //ROUTE EVENT
-        <Route path={APP_ROUTES.EVENT.MANAGEMENT} element={<EventManagementTemplate />} />
         //ROUTE LECTURER
         <Route path={APP_ROUTES.LECTURER.MANAGEMENT} element={<LecturerManagementTemplate />} />
         {/* <Route path={APP_ROUTES.LECTURER.DETAILS} element={<DetailsLecturerTemplate />} /> */}

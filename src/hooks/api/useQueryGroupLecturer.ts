@@ -102,7 +102,22 @@ export const useGroupLecturer = () => {
             },
         })
     }
-
+    const onDeleteGroupLecturer = () => {
+        return useMutation((id: string) => GroupLecturerServices.deleteGroupLecturerById(id), {
+            onSuccess: () => {
+                enqueueSnackbar('Xóa nhóm giảng viên thành công', { variant: 'success' })
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup)
+            },
+            onError(err: any) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Xóa nhóm thất bại", { variant: 'warning' })
+            }
+        },)
+    }
 
     return {
         handleGetCountOfGroupLecturer,
@@ -113,6 +128,7 @@ export const useGroupLecturer = () => {
         handleGetGroupLecturerByLecturerId,
         handleUiRender,
         onCreateGroupLecturer,
+        onDeleteGroupLecturer
     }
 
 }

@@ -53,7 +53,7 @@ function AddMemberGroupLecturerModal(props: any) {
                 onChange={(e: any) => {
                   setlecturer(e.target.value);
                 }}
-                options={convertLecturer(data.lecturerTerms)}
+                options={convertLecturer(data?.lecturerTerms)}
               />
             </FormControl>
           )}

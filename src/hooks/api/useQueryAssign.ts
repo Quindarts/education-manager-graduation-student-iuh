@@ -23,8 +23,7 @@ const useAssign = () => {
                 queryClient.invalidateQueries(QueryKeysAssign.getGroupStudentNoAssignByType)
                 queryClient.invalidateQueries(QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup)
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getGroupLecturerById, groupLecturerId] })
-                queryClient.invalidateQueries({ queryKey: [QueryKeysAssign.getExportAssignGroup, termId, type] })
-
+                queryClient.invalidateQueries(QueryKeysAssign.getExportAssignGroup)
             },
             onError(err: any) {
                 enqueueSnackbar(err.message, { variant: "error" })
@@ -47,13 +46,24 @@ const useAssign = () => {
     }
     const handleGetExportAssignGroup = (type: string) => {
         let typeSend = type === 'reviewer' ? type : 'report'
-        return useQuery([QueryKeysAssign.getExportAssignGroup, termId, typeSend], () => AssignServices.getExportAssignGroup(termId, typeSend))
+        return useQuery([QueryKeysAssign.getExportAssignGroup, termId, typeSend], () => AssignServices.getExportAssignGroup(termId, typeSend), {
+            refetchOnMount: true,
+            enabled: !!typeSend
+        })
     }
-
+    // {{url}}/api/v1/assigns/export-me?termId=8fb8fbda-37ed-4861-a3a2-236500e62ee6&type=report
+    const handleExportExcelAssignByLecturerId = (type: string) => {
+        let typeSend = type === 'reviewer' ? type : 'report'
+        return useQuery([QueryKeysAssign.getExportAssignGroup, termId, type], () => AssignServices.getExportAssignGrByLecturerId(termId, typeSend), {
+            refetchOnMount: true,
+            enabled: !!termId
+        })
+    }
     return {
         handletGetGroupStudentNoAssignByType,
         handleGetExportAssignGroup,
         onCreateAssignByType,
+        handleExportExcelAssignByLecturerId,
         onUpdateAssignByType
     }
 }

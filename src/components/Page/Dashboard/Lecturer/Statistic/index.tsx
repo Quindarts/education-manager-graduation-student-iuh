@@ -19,24 +19,32 @@ function StatisticManager() {
       value: groupStudentCountOfLecturer,
       icon: <Group />,
       link: '/group-supports',
+      colorIcon: '#e3ffe6',
+      subLabel: 'nhóm',
     },
     {
       title: 'Tổng số đề tài của tôi',
       value: registeredTopicCountOfLecturer,
       icon: <Book />,
       link: '/topic-lecturers',
+      colorIcon: '#ddffff',
+      subLabel: 'đề tài',
     },
     {
       title: 'Số  đề tài được duyệt',
       value: approvedTopicCountOfLecturer,
       icon: <Book />,
       link: '/topic-lecturers',
+      colorIcon: '#fee6ea',
+      subLabel: 'đề tài',
     },
     {
       title: 'Số nhóm giảng viên của tôi',
       value: grLecturerCountOfgrLecturer,
       icon: <Group />,
       link: '/my-group-lecturers',
+      colorIcon: '#ffd391',
+      subLabel: 'nhóm',
     },
   ];
   return (
@@ -50,6 +58,9 @@ function StatisticManager() {
                 value={stat.value}
                 icon={stat.icon}
                 link={stat.link}
+                colorIcon={stat.colorIcon}
+                subLabel={stat.subLabel}
+                sx={{ bgcolor: 'background.paper', boxShadow: 3 }}
               />
             </Box>
           </Grid>

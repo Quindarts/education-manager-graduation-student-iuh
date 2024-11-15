@@ -3,17 +3,20 @@ import React, { useState } from 'react';
 import GridGroupLecturer from './Grid';
 import TitleManager from '@/components/ui/Title';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
-import { ENUM_GROUP_LECTURER } from '@/utils/validations/groupLecturer.validation';
+import { checktTypeGroupLecturer, ENUM_GROUP_LECTURER } from '@/utils/validations/groupLecturer.validation';
 import DropDown from '@/components/ui/Dropdown';
 import SekeletonUI from '@/components/ui/Sekeleton';
+import ExportExcelButton from '@/components/ui/Export';
+import useAssign from '@/hooks/api/useQueryAssign';
 
 function MyGroupLecturer() {
+  const { handleExportExcelAssignByLecturerId } = useAssign();
   const { handleGetGroupLecturerByLecturerId } = useGroupLecturer();
   const [typeGroupLecturer, setTypeGroupLecturer] = useState<string>(
     `${ENUM_GROUP_LECTURER[0]?._id}`,
   );
   const { data, isLoading, isFetching } = handleGetGroupLecturerByLecturerId(typeGroupLecturer);
-
+  const { data: dataExport } = handleExportExcelAssignByLecturerId(typeGroupLecturer);
   return (
     <Paper sx={{ p: 10, minHeight: 500 }} elevation={0}>
       <Box
@@ -30,6 +33,12 @@ function MyGroupLecturer() {
           }}
           value={typeGroupLecturer}
           options={ENUM_GROUP_LECTURER}
+        />
+        <ExportExcelButton
+          sx={{ ml: 'auto' }}
+          label={`Download ${checktTypeGroupLecturer(typeGroupLecturer)}`}
+          entity={'assignGroup'}
+          data={dataExport?.assigns}
         />
       </Box>
 

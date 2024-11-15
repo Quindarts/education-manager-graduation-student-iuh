@@ -1,7 +1,8 @@
 export type EventType = {
     id?: string;
     name?: string;
-    deadline?: string;
+    startDate?: string;
+    endDate?: string;
     groupName?: string;
     groupStudentIds?: string[];
     link?: string | null;
@@ -10,4 +11,4 @@ export type EventType = {
     updatedAt?: string;
     termId?: string;
 };
-export type EventToRequest = Pick<EventType, 'name' | 'deadline' | 'groupStudentIds' | 'termId'>;
+export type EventToRequest = Pick<EventType, 'name' | 'startDate' | 'endDate' | 'groupStudentIds' | 'termId'>;

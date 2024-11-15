@@ -4,6 +4,7 @@ import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import { Icon } from '@iconify/react';
 import { Box, Button, Typography } from '@mui/material';
+import { stat } from 'fs';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -40,21 +41,20 @@ const DROP_STATUS_STUDENT_TERM_VALUE = [
 
 function EditStatusStudentTerm(props: any) {
   const { onClose, open, studentId, status } = props;
-
   const [checked, setChecked] = useState(status);
   const { termStore } = useTerm();
-
   const { pathname } = useLocation();
-
   const current = pathname.split('/');
-
   const grStudentId = `${current[current.length - 1]}`;
   const { onUpdateStatusStudentMember } = useMemberGroupStudent();
   const { mutate: updateStatus, isSuccess } = onUpdateStatusStudentMember(grStudentId, studentId);
-
   useEffect(() => {
     onClose();
   }, [isSuccess]);
+
+  useEffect(() => {
+    setChecked(status);
+  }, [studentId]);
 
   const handleUpdate = () => {
     updateStatus({

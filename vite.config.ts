@@ -16,6 +16,10 @@ export default defineConfig({
   },
   build: {
     minify: "esbuild",
-    cssCodeSplit: true, 
+    cssCodeSplit: true,
   },
+  esbuild: {
+    drop: ['console', 'debugger']
+  },
+
 });

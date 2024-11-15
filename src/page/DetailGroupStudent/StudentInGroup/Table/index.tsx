@@ -7,10 +7,10 @@ import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import EditStatusStudentTerm from '../Modal/EditStatus';
-import StudentLeaveGroup from '../Modal/LeaveGroup';
-import AddStudentModal from '../Modal/AddStudent';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
+import EditStatusStudentTerm from '@/components/Page/DetailGroupStudent/Modal/EditStatus';
+import StudentLeaveGroup from '@/components/Page/DetailGroupStudent/Modal/LeaveGroup';
+import AddStudentModal from '@/components/Page/DetailGroupStudent/Modal/AddStudent';
 
 function TableStudentInGroup({ members }: any) {
   const { pathname } = useLocation();

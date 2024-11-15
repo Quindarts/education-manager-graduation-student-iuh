@@ -1,20 +1,23 @@
+import { EnumStatusStudent } from "@/types/enum";
 
-
+export const isPassStatus = (status: string) => {
+    return status === EnumStatusStudent.OPEN || status === EnumStatusStudent.PASS_ADVISOR || status === EnumStatusStudent.PASS_REVIEWER || status === EnumStatusStudent.PASS_REPORT;
+}
 export const getStatusGroup = (status: string) => {
     switch (status) {
-        case 'OPEN':
+        case EnumStatusStudent.OPEN:
             return 'Đang học';
-        case 'FAIL_ADVISOR':
+        case EnumStatusStudent.FAIL_ADVISOR:
             return 'Rớt hướng dẫn';
-        case 'FAIL_REVIEWER':
+        case EnumStatusStudent.FAIL_REVIEWER:
             return 'Rớt phản biện';
-        case 'FAIL_SESSION_HOST':
+        case EnumStatusStudent.FAIL_REPORT:
             return 'Rớt hội đồng';
-        case 'PASS_ADVISOR':
+        case EnumStatusStudent.PASS_ADVISOR:
             return 'Đậu hướng dẫn';
-        case 'PASS_REVIEWER':
+        case EnumStatusStudent.PASS_REVIEWER:
             return 'Đậu phản biện';
-        case 'PASS_REPORT':
+        case EnumStatusStudent.PASS_REPORT:
             return 'Đậu hội dồng';
     }
 };

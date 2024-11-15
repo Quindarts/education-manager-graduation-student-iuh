@@ -15,12 +15,10 @@ import SearchInput from './SearchInput';
 
 import {
   getUniqueKeywords,
-  handleTags,
-  convertToTagList,
   convertLecturerGroup,
   handleSearch,
-  mergedArrays,
 } from '@/page/GroupLecturer/Context';
+
 import { INDUSTRIES } from '@/utils/constants';
 import ChipTag from '@/components/ui/Badge';
 import { checkIndustry } from '@/utils/validations/lecturer.validation';
@@ -33,23 +31,6 @@ function CreateReportGroupPage({ categories }) {
   const { onCreateGroupLecturer } = useGroupLecturer();
   const { handleGetListLecturerTerms } = useLecturerTerm();
   const { termStore } = useTerm();
-
-  //TODO: [TAGS]
-  const [tags, setTags] = useState<String[]>(convertToTagList(categories));
-
-  const handleAddTags = (tag: string) => {
-    setTags((tags) =>
-      tags.map((t: any) => {
-        if (t.id === tag) {
-          let newT = { ...t, selected: !t.selected };
-          return newT;
-        } else return t;
-      }),
-    );
-  };
-  const handleClearTags = () => {
-    setTags(convertToTagList(categories));
-  };
 
   //TODO: POST DATA
   const { mutate: create, isSuccess: successCreate } = onCreateGroupLecturer(`${currentGroup}`);
@@ -71,11 +52,7 @@ function CreateReportGroupPage({ categories }) {
   const { data: listLecturersKey } = handleGetListLecturerTerms('keyword');
 
   useEffect(() => {
-    const data_merged = mergedArrays(
-      listLecturersDefault?.lecturerTerms,
-      listLecturersKey?.lecturerTerms,
-    );
-    setTask(convertLecturerGroup(data_merged));
+    setTask(convertLecturerGroup(listLecturersKey?.lecturerTerms));
   }, [successCreate, listLecturersDefault, listLecturersKey]);
 
   const handleOnDrageStart = (evt: any) => {
@@ -151,36 +128,13 @@ function CreateReportGroupPage({ categories }) {
               keywords={keywords}
             />
           </Box>
-          <Box sx={{ mb: 6, mt: 6 }}>
-            <Typography variant='body1' fontWeight={'600'} color={'primary.dark'}>
-              Chọn chuyên môn:{' '}
-            </Typography>
-            {tags?.map((k: any) => (
-              <ChipTag
-                onClick={() => handleAddTags(k.id)}
-                sx={{ mx: 2, my: 2 }}
-                variant={k.selected ? 'filled' : 'outlined'}
-                color={k.selected ? 'primary' : 'default'}
-                label={k.name}
-              />
-            ))}
-            {tags.filter((t: any) => t.selected === true).length !== 0 && (
-              <Button
-                sx={{ mx: 10, my: 2, borderRadius: 12 }}
-                color='error'
-                onClick={() => handleClearTags()}
-              >
-                Hủy lọc
-              </Button>
-            )}
-          </Box>
         </Box>
         <Box sx={{ overflowY: 'auto', px: 20, bgcolor: 'grey.50' }} height={380} px={2}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (
             <Box>
-              {handleTags(tags, handleSearch(keywords, dataLecturerNoGroup))?.map((task: any) => (
+              {handleSearch(keywords, dataLecturerNoGroup)?.map((task: any) => (
                 <CardLecturer
                   key={task.lecturerId}
                   id={task.lecturerId}

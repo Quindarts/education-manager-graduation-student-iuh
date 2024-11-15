@@ -7,9 +7,17 @@ interface ScoreInputPropsType {
   oldScore?: number;
   studentId?: string;
   evaluationId?: string;
+  disabled?: boolean;
 }
 function ScoreInput(props: ScoreInputPropsType) {
-  const { scoreMax, evaluationId, handleChangeScore, studentId, oldScore } = props;
+  const {
+    scoreMax,
+    evaluationId,
+    handleChangeScore,
+    disabled = false,
+    studentId,
+    oldScore,
+  } = props;
   const [errorMess, setErrorMess] = useState('');
   const [score, setScore] = useState(`${oldScore}`);
   useEffect(() => {
@@ -34,15 +42,16 @@ function ScoreInput(props: ScoreInputPropsType) {
     <Box>
       <input
         style={{
-          height: 24,
+          height: 30,
           padding: '2px 4px',
           width: 50,
-          fontSize: 12,
-          color: 'red',
+          fontSize: 14,
+          color: 'green',
         }}
         onChange={(e) => {
           handleSetPoint(e.target.value);
         }}
+        disabled={disabled}
         value={score}
       />
       {errorMess !== '' && (

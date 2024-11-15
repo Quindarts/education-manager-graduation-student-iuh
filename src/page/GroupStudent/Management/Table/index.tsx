@@ -6,6 +6,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeleteGroupStudentModal from '../Modal/DeleteModal';
+import { isPassStatus } from '@/utils/validations/groupStudent.validation';
 
 function TableManagamentGroupStudent(props: any) {
   const { rows, totalItems, totalPage } = props;
@@ -37,26 +38,15 @@ function TableManagamentGroupStudent(props: any) {
         headerAlign: 'center',
       },
       {
-        headerName: 'Thành viên',
-        field: 'field',
-        flex: 1.4,
-        align: 'left',
+        headerName: 'Tên Đề tài',
+        field: 'name6',
+        flex: 3,
         headerAlign: 'left',
         renderCell: (params: any) => {
           return (
-            <Box>
-              {params.row.members[0] !== null ? (
-                <>
-                  {params.row.members.map((std, index: number) => (
-                    <Typography key={index} variant='body1' mb={2} color='initial'>
-                      {std.username} - {std.fullName}
-                    </Typography>
-                  ))}
-                </>
-              ) : (
-                <Typography>Chưa có thành viên</Typography>
-              )}
-            </Box>
+            <Typography>
+              {params.row.topicName ? params.row.topicName : 'Chưa có đề tài'}
+            </Typography>
           );
         },
       },
@@ -74,20 +64,36 @@ function TableManagamentGroupStudent(props: any) {
           );
         },
       },
+
       {
-        headerName: 'Tên Đề tài',
-        field: 'name6',
-        flex: 3,
+        headerName: 'Thành viên',
+        field: 'field',
+        flex: 1.6,
+        align: 'left',
         headerAlign: 'left',
         renderCell: (params: any) => {
           return (
-            <Typography>
-              {params.row.topicName ? params.row.topicName : 'Chưa có đề tài'}
-            </Typography>
+            <Box>
+              {params.row.members[0] !== null ? (
+                <>
+                  {params.row.members.map((std, index: number) => (
+                    <Typography key={index} variant='body1' mb={2} color='initial'>
+                      {std.username} - {std.fullName}
+                      {isPassStatus(std.status) === false && (
+                        <Typography component={'span'} variant='body1' color='error.main'>
+                          {'- (RỚT) -'}
+                        </Typography>
+                      )}{' '}
+                    </Typography>
+                  ))}
+                </>
+              ) : (
+                <Typography>Chưa có thành viên</Typography>
+              )}
+            </Box>
           );
         },
       },
-
       {
         headerName: 'Chức năng',
         field: 'name8',
@@ -147,4 +153,4 @@ function TableManagamentGroupStudent(props: any) {
   );
 }
 
-export default TableManagamentGroupStudent
+export default TableManagamentGroupStudent;

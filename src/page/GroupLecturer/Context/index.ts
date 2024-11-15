@@ -1,6 +1,5 @@
 import { removeVietnameseTones } from "@/utils/search";
 import { ENUM_STATUS_LECTURER } from "@/utils/validations/groupLecturer.validation";
-import { checkIndustry } from "@/utils/validations/lecturer.validation";
 
 const getUniqueKeywords = (lecturers: any[]) => {
     return Array.from(new Set(lecturers?.flatMap((lec: any) => lec?.keywords)));
@@ -18,7 +17,6 @@ const convertToTagList = (data: any) => {
     return data?.map((d: any) => {
         return {
             id: d,
-            // name: checkIndustry(d),
             name: d,
             selected: false,
         };

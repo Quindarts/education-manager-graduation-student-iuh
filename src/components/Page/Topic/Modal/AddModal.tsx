@@ -38,6 +38,7 @@ function AddModal(props: any) {
           onSubmit={(values) => handleSubmit(values)}
           initialValues={{
             name: '',
+            keywords: '',
             quantityGroupMax: 5,
             description: '',
             expectedResult: '',
@@ -83,6 +84,17 @@ function AddModal(props: any) {
                 label='Tên đề tài'
                 name='name'
                 placeholder='Tên đề tài'
+              />
+              <CustomTextField
+                value={values.keywords}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={errors.name && touched.name ? true : false}
+                helperText={`${errors.name && touched.name ? errors.name : ''}`}
+                required
+                label='Từ khóa'
+                name='keywords'
+                placeholder='Từ khóa'
               />
               <Box my={4}>
                 <TextEditor

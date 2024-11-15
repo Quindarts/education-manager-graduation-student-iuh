@@ -18,8 +18,13 @@ function Header() {
   };
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-        <TitleManager icon='quill:list' color={'primary.dark'}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+        <TitleManager
+          variant='h5'
+          icon='fluent-color:calendar-clock-24'
+          fontWeight={'bold'}
+          color={'grey.700'}
+        >
           Quản lý sự kiện -{termStore.currentTerm.name}
         </TitleManager>
         <Tooltip title={'Thêm'}>

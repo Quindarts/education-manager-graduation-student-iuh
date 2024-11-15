@@ -17,5 +17,6 @@ export const getExportAssignGroup: any = async (termId: string, type: string) =>
     return axiosConfig.get(`${URL}/export?termId=${termId}&type=${type}`)
 }
 
-
-
+export const getExportAssignGrByLecturerId: any = async (termId: string, type: string) => {
+    return axiosConfig.get(`${URL}/export-me?termId=${termId}&type=${type}`)
+}

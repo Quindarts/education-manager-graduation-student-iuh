@@ -111,10 +111,11 @@ export interface AppSiderBarType {
   key: string,
   children?: ItemAppSiderbarType[]
 }
+
 export const APP_SIDEBAR = [
   {
     text: 'Bảng điều khiển',
-    icon: 'ic:baseline-home',
+    icon: 'bi:calendar-event',
     link: APP_ROUTES.DASHBOARD,
     roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.LECTURER],
     key: APP_ROUTES.DASHBOARD,
@@ -133,7 +134,7 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'mage:book-fill',
+    icon: 'fluent-mdl2:date-time-12',
     text: 'Học kì',
     roles: [RoleCheck.HEAD_COURSE, RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN],
     link: APP_ROUTES.TERM.MANAGEMENT,
@@ -142,7 +143,7 @@ export const APP_SIDEBAR = [
   },
 
   {
-    icon: 'material-symbols:topic',
+    icon: 'mingcute:paper-line',
     text: 'Đề tài',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
     link: APP_ROUTES.TOPIC.MANAGEMENT,
@@ -154,19 +155,7 @@ export const APP_SIDEBAR = [
     link: APP_ROUTES.ARTICLE.MANAGEMENT
   },
   {
-    icon: 'bi:calendar-event',
-    text: 'Quản lý sự kiện',
-    roles: [RoleCheck.LECTURER],
-    link: APP_ROUTES.EVENT.MANAGEMENT
-  },
-  {
-    icon: 'icon-park-outline:market-analysis',
-    text: 'Phân loại đề tài',
-    link: APP_ROUTES.ANALYSIS.MANAGEMENT,
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
-  },
-  {
-    icon: 'mdi:teach-poll',
+    icon: 'fluent-mdl2:learning-tools',
     text: 'Giảng viên ',
     roles: [RoleCheck.HEAD_LECTURER],
     link: [APP_ROUTES.LECTURER.MANAGEMENT],
@@ -186,13 +175,13 @@ export const APP_SIDEBAR = [
     ],
   },
   {
-    icon: 'mdi:teach-poll',
+    icon: 'fluent-mdl2:learning-tools',
     text: 'Giảng viên Hướng dẫn',
     roles: [RoleCheck.HEAD_COURSE],
     link: APP_ROUTES.LECTURER_TERM.MANAGEMENT,
   },
   {
-    icon: 'mdi:teach-poll',
+    icon: 'fluent-mdl2:learning-tools',
     text: 'Giảng viên Chuyên ngành',
     roles: [RoleCheck.ADMIN],
     link: APP_ROUTES.LECTURER.MANAGEMENT,
@@ -231,13 +220,13 @@ export const APP_SIDEBAR = [
   },
 
   {
-    icon: 'material-symbols:topic',
+    icon: 'mingcute:paper-line',
     text: 'Đề tài của tôi',
     roles: [RoleCheck.LECTURER],
     link: APP_ROUTES.TOPIC.LECTURER,
   },
   {
-    icon: 'fa6-solid:hand-holding-hand',
+    icon: 'lsicon:tree-filled',
     text: 'Nhóm sinh viên hướng dẫn',
     roles: [RoleCheck.LECTURER],
     link: APP_ROUTES.GROUP_SUPPORT.MANAGEMENT,
@@ -249,7 +238,7 @@ export const APP_SIDEBAR = [
     link: APP_ROUTES.GROUP_LECTURER.ME,
   },
   {
-    icon: 'fluent-mdl2:review-solid',
+    icon: 'simple-line-icons:docs',
     text: 'Tiêu chí Đánh giá',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.LECTURER, RoleCheck.HEAD_COURSE],
     link: APP_ROUTES.REVIEW.MANAGEMENT,
@@ -314,7 +303,7 @@ export const APP_SIDEBAR = [
   // },
 
   {
-    icon: 'fluent-mdl2:permissions',
+    icon: 'material-symbols:settings',
     text: 'Phân quyền',
     roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
     link: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,

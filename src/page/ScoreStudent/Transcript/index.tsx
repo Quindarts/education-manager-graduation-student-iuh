@@ -5,8 +5,11 @@ import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
 import { useTerm } from '@/hooks/api/useQueryTerm';
 import useTranscript from '@/hooks/api/useQueryTranscript';
 import { BodyEvaluation } from '@/services/apiTranscipts';
+import { EnumStatusStudent } from '@/types/enum';
+import { getStatusGroup } from '@/utils/validations/groupStudent.validation';
 import { Box, Button, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
+
 export type MemberScore = {
   studentId: string;
   transcriptId?: string;
@@ -32,6 +35,7 @@ export type InitTranscriptType = {
 const convertSCore = (score: string) => {
   return score == '' ? 0 : parseInt(score);
 };
+
 export const handleTotalScores = (transcripts: TranscriptWithEvaluation[]) => {
   let totalScores: { [key: string]: number }[] = [];
   transcripts.map((transcript: TranscriptWithEvaluation) => {
@@ -44,6 +48,12 @@ export const handleTotalScores = (transcripts: TranscriptWithEvaluation[]) => {
 
   return totalScores;
 };
+
+const NO_SCORE_STATUS_LIST = [
+  EnumStatusStudent.FAIL_ADVISOR,
+  EnumStatusStudent.FAIL_REVIEWER,
+  EnumStatusStudent.FAIL_REPORT,
+];
 
 //[Helper merge groupstudent and evaluation ]
 export var convertEvaluations = (evaluations: any, groupStudent: any) => {
@@ -229,6 +239,11 @@ function TranscriptOfGroupStudent(props: any) {
                             align='center'
                           >
                             {st.student.fullName}
+                            <Typography variant='body1' color='error.main'>
+                              {NO_SCORE_STATUS_LIST.some((stt) => stt === st?.status)
+                                ? getStatusGroup(st?.status)
+                                : ''}
+                            </Typography>
                           </StyledTableCell>
                         ))
                       : initTranscripts?.transcripts[0]?.students?.map((st: any) => (
@@ -263,6 +278,11 @@ function TranscriptOfGroupStudent(props: any) {
                                 evaluationId={row.evaluationId}
                                 studentId={st.studentId}
                                 oldScore={st.score}
+                                disabled={
+                                  NO_SCORE_STATUS_LIST?.some((status) => status === `${st.status}`)
+                                    ? true
+                                    : false
+                                }
                                 scoreMax={row.scoreMax}
                               />
                             </StyledTableCell>
@@ -308,6 +328,12 @@ function TranscriptOfGroupStudent(props: any) {
                               evaluationId={row.evaluationId}
                               studentId={st.student.id}
                               oldScore={0}
+                              disabled={
+                                NO_SCORE_STATUS_LIST?.some((status) => status === st?.status.trim())
+                                  ? true
+                                  : false
+                              }
+                              // disabled={true}
                               scoreMax={row.scoreMax}
                             />
                           </StyledTableCell>

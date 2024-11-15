@@ -1,11 +1,12 @@
 import SekeletonUI from '@/components/ui/Sekeleton';
 import TitleManager from '@/components/ui/Title';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import TabPanelUI from './TabPanel';
 import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
+import ChipTag from '@/components/ui/Badge';
 
 function MyDetailGroupLecturer() {
   const { pathname } = useLocation();
@@ -20,9 +21,25 @@ function MyDetailGroupLecturer() {
         <SekeletonUI />
       ) : (
         <>
-          <TitleManager>
-            {checktTypeGroupLecturer(data.groupLecturer.type.toLowerCase())} {data?.groupLecturer?.name}
-          </TitleManager>
+          <Box justifyContent={'space-between'} display={'flex'}>
+            <TitleManager>
+              {checktTypeGroupLecturer(data.groupLecturer.type.toLowerCase())}{' '}
+              {data?.groupLecturer?.name}
+            </TitleManager>
+            <Typography textAlign={'end'} mx={4} variant='body1' color='initial'>
+              <Typography component={'span'} variant='body1' fontWeight={'bold'} color='grey.600'>
+                Loại đề tài nên phân công:{' '}
+              </Typography>
+              <Box mx={4} mt={2}>
+                {data?.groupLecturer?.keywords
+                  .split(',')
+                  .map((key: string) => (
+                    <ChipTag key={key} color='success' sx={{ mx: 2 }} label={key} />
+                  ))}
+              </Box>
+            </Typography>
+          </Box>
+
           <Box>
             <TabPanelUI groupLecturer={data?.groupLecturer} />
           </Box>

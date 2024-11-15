@@ -1,9 +1,11 @@
 import Table from '@/components/ui/Table/Table';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Assign from '../../Assign';
+import { Icon } from '@iconify/react';
+import DeleteGroupModal from '../Modal/DeleteGroupModal';
 
 function TableManagamentGroupLecturer(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, groupType, ...rest } = props;
@@ -21,6 +23,24 @@ function TableManagamentGroupLecturer(props: any) {
   const handleCloseAssignModal = () => {
     setAssignModal((pre: any) => ({ ...pre, isOpen: false }));
   };
+
+  //
+  const [openModalDelete, setOpenModalDelete] = useState({
+    isOpen: false,
+    grLecturerId: '',
+    groupLecturerName: '',
+  });
+
+  const handleOpenModalDelete = (grLecturerId: string, groupLecturerName: string) => {
+    setOpenModalDelete({
+      grLecturerId: grLecturerId,
+      groupLecturerName: groupLecturerName,
+      isOpen: true,
+    });
+  };
+  const handleCloseModalDelete = () => {
+    setOpenModalDelete((pre: any) => ({ ...pre, isOpen: false }));
+  }
   const basicColumns: GridColDef[] = [
     {
       headerName: 'Mã nhóm',
@@ -94,6 +114,14 @@ function TableManagamentGroupLecturer(props: any) {
           >
             Xem/Phân công
           </Button>
+          <Tooltip title='Xóa nhóm'>
+            <IconButton
+              color='primary'
+              onClick={() => handleOpenModalDelete(params.row.id, params.row.name)}
+            >
+              <Icon icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
+            </IconButton>
+          </Tooltip>
         </Box>
       ),
     },
@@ -122,6 +150,12 @@ function TableManagamentGroupLecturer(props: any) {
         onClose={handleCloseAssignModal}
         open={assignModal.isOpen}
         groupType={groupType}
+      />
+      <DeleteGroupModal
+        groupLecturerId={openModalDelete.grLecturerId}
+        groupLecturerName={openModalDelete.groupLecturerName}
+        open={openModalDelete.isOpen}
+        onClose={handleCloseModalDelete}
       />
     </>
   );

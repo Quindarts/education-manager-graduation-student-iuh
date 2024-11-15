@@ -1,11 +1,19 @@
 import Table from '@/components/ui/Table/Table';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import EditModal from '../EditModal';
 
 function TableEventManagement(props: any) {
   const { rows, totalItems, totalPage } = props;
+  const [openEditEvent, setOpenEditEvent] = useState({ isOpen: false, id: '' });
+  const handleOpenEditEvent = (id: string) => {
+    setOpenEditEvent({ isOpen: true, id: id });
+  };
+  const handleCloseEditEventModal = () => {
+    setOpenEditEvent((pre) => ({ ...pre, isOpen: false }));
+  };
   const basicColumns: GridColDef[] = useMemo(
     () => [
       {
@@ -17,8 +25,9 @@ function TableEventManagement(props: any) {
       },
       {
         headerName: 'Deadline',
-        field: 'deadline',
+        field: 'endDate',
         flex: 0.6,
+        type: 'string',
         align: 'right',
         headerAlign: 'right',
         renderCell: (params) => (
@@ -26,30 +35,26 @@ function TableEventManagement(props: any) {
         ),
       },
       {
-        headerName: 'Tên nhóm',
-        field: 'groupName',
+        headerName: 'Chức năng',
+        field: 'field',
         flex: 0.6,
         align: 'right',
         headerAlign: 'right',
-      },
-      {
-        headerName: 'Link',
-        field: 'link',
-        flex: 0.6,
-        align: 'right',
-        headerAlign: 'right',
+        renderCell: (params) => (
+          <Button onClick={() => handleOpenEditEvent(params.row.id)}>Xem chi tiết</Button>
+        ),
       },
     ],
     [],
   );
   return (
-    <div>
+    <>
       <Table
         rows={rows}
         sx={{
           bgcolor: 'white',
           width: '100%',
-          minHeight: 450, 
+          minHeight: 450,
         }}
         limit={300}
         rowHeight={75}
@@ -58,7 +63,12 @@ function TableEventManagement(props: any) {
         totalPages={totalPage}
         disableColumnFilter
       />
-    </div>
+      <EditModal
+        id={openEditEvent.id}
+        onClose={handleCloseEditEventModal}
+        open={openEditEvent.isOpen}
+      />
+    </>
   );
 }
 

@@ -7,7 +7,7 @@ import { validationTopicSchema } from '../../../../page/Topic/Context';
 import { useTopic } from '@/hooks/api/useQueryTopic';
 import SekeletonUI from '@/components/ui/Sekeleton';
 import Modal from '@/components/ui/Modal';
-import TitleManager from "@/components/ui/Title";
+import TitleManager from '@/components/ui/Title';
 import TextEditor from '@/components/ui/TextEditor';
 function EditModal(props: any) {
   const { onClose, open, topicId } = props;
@@ -44,6 +44,7 @@ function EditModal(props: any) {
             onSubmit={(values) => handleSubmit(values)}
             initialValues={{
               name: `${topicFetch?.topic?.name}`,
+              keywords: `${topicFetch?.topic?.keywords}`,
               quantityGroupMax: `${topicFetch?.topic?.quantityGroupMax}`,
               description: `${topicFetch?.topic?.description}`,
               note: `${topicFetch?.topic?.note}`,
@@ -97,6 +98,17 @@ function EditModal(props: any) {
                   label='Tên đề tài'
                   name='name'
                   placeholder='Tên đề tài'
+                />
+                <CustomTextField
+                  value={values.keywords}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.name && touched.name ? true : false}
+                  helperText={`${errors.name && touched.name ? errors.name : ''}`}
+                  required
+                  label='Từ khóa'
+                  name='keywords'
+                  placeholder='Từ khóa'
                 />
                 <Box my={4}>
                   <TextEditor
