@@ -20,11 +20,11 @@ const DROP_STATUS_STUDENT_TERM_VALUE = [
   },
   {
     _id: 'FAIL_REVIEWER',
-    name: 'Được ra phản biện',
+    name: 'Không ra hội đồng phản biện',
   },
   {
     _id: 'FAIL_REPORT',
-    name: 'Rớt hội đồng',
+    name: 'Không hoàn thành',
   },
   {
     _id: 'PASS_ADVISOR',
@@ -32,11 +32,11 @@ const DROP_STATUS_STUDENT_TERM_VALUE = [
   },
   {
     _id: 'PASS_REVIEWER',
-    name: 'Đậu phản biện',
+    name: 'Được ra hội đồng phản biện',
   },
   {
     _id: 'PASS_REPORT',
-    name: 'Đậu hội đồng',
+    name: 'Hoàn thành',
   },
 ];
 

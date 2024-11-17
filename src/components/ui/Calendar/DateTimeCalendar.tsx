@@ -13,13 +13,12 @@ interface CalendarPropsType extends DateTimePickerProps<any> {
   name?: string;
 }
 const ErrorStyled = styled(ErrorMessage)`
-  div {
-    color: '#ca4f36';
-    font-size: '12px';
-    margin-top: '6px';
-    margin-left: '16px';
-  }
+  color: #ca4f36;
+  font-size: 10px;
+  margin-top: 6px;
+  margin-left: 16px;
 `;
+
 function DateTimeCalendar(props: CalendarPropsType) {
   const { className, label, id, name, error, sx, ...rest } = props;
   return (
@@ -46,7 +45,7 @@ function DateTimeCalendar(props: CalendarPropsType) {
             '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' },
           }}
         />
-        {error && <ErrorStyled name={`${name}`} component={'span'} />}
+        {error && <ErrorStyled id={`${name}`} name={`${name}`} component={'div'} />}
       </Box>
     </LocalizationProvider>
   );

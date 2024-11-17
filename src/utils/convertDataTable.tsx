@@ -2,6 +2,7 @@ import { Lecturer, Student } from '@/types/entities';
 import { EventType } from '@/types/entities/event';
 import Major from '@/types/entities/major';
 import { Term } from '@/types/entities/term';
+import dayjs from 'dayjs';
 import { EventContentArg } from 'fullcalendar';
 
 export function getTimeDifference(startDate: string, endDate: string) {
@@ -192,7 +193,7 @@ export const convertEventGrid = (listEvents: any): Partial<EventContentArg[]> =>
     return listEvents?.map((event: EventType) => {
       return {
         id: event?.id,
-        title: event.name,
+        title: event.name + '_' + `${dayjs(event.startDate).format('DD/MM/YYYY hh:mm A')}`,
         start: event.endDate,
         end: event.endDate,
         allDay: true,

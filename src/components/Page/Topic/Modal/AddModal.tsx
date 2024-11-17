@@ -4,7 +4,7 @@ import TextEditor from '@/components/ui/TextEditor';
 import TitleManager from '@/components/ui/Title';
 import { useAuth } from '@/hooks/api/useAuth';
 import { Icon } from '@iconify/react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { validationTopicSchema } from '../../../../page/Topic/Context';
@@ -94,8 +94,15 @@ function AddModal(props: any) {
                 required
                 label='Từ khóa'
                 name='keywords'
-                placeholder='Từ khóa'
+                placeholder='Ví dụ: web, app, AI, security,...'
               />
+              <Typography variant='body1' color='warning.dark'>
+                Lưu ý*: các từ khóa ngăn cách nhau bởi dấu ",". Khuyến khích sử dụng tiếng anh và
+                dùng từ viết tắt{' '}
+              </Typography>
+              <Typography variant='body1' mb={6} color='warning.dark'>
+                Đề tài chỉ nên có khoảng 1 đến 5 từ khóa
+              </Typography>
               <Box my={4}>
                 <TextEditor
                   label='Mục tiêu đề tài'

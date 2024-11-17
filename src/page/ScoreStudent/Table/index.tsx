@@ -30,13 +30,13 @@ function TableStudentScore(props: any) {
             color: 'success.main',
             bgcolor: '#CBF8E0 !important',
           },
+          height: 500,
         }}
         minHeight={300}
+        isPanigation={false}
         rowHeight={50}
         columns={basicColumns}
-        totalItems={1}
-        totalPages={1}
-        page={1}
+        totalItems={rows?.length}
         handleChangePage={() => {}}
         disableColumnMenu
         disableColumnFilter

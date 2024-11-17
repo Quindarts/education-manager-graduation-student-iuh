@@ -188,28 +188,24 @@ function TranscriptOfGroupStudent(props: any) {
           }}
         >
           <Box mx={6}>
-            <Typography
-              my={3}
-              variant='body1'
-              textTransform={'uppercase'}
-              fontWeight={'700'}
-              color='primary.dark'
-            >
-              <Typography
-                component={'span'}
-                variant='h6'
-                fontWeight={600}
-                px={4}
-                py={2}
-                borderRadius={1}
-                marginRight={4}
-                bgcolor={'#F1EFEF'}
-                color={initTranscripts.isExistTranscripts ? 'warning.main' : 'error.dark'}
-              >
-                {initTranscripts.isExistTranscripts ? 'Đã chấm' : 'Chưa chấm'}
-              </Typography>
+            <Typography fontWeight={600} mb={10} variant='h6'>
               Đề tài : {groupStudent?.topicName}{' '}
+              <Typography fontWeight={600} variant='body2' color='grey.700'>
+                Trạng thái:{' '}
+                <Typography
+                  variant='body2'
+                  width={120}
+                  component={'span'}
+                  textAlign={'center'}
+                  marginRight={4}
+                  sx={{ borderRadius: 4 }}
+                  color={initTranscripts.isExistTranscripts ? 'success.main' : 'error.dark'}
+                >
+                  {initTranscripts.isExistTranscripts ? 'Đã chấm' : 'Chưa chấm'}
+                </Typography>
+              </Typography>
             </Typography>
+
             <Box>
               <Box component={'section'}>
                 {/****

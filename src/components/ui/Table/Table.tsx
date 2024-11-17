@@ -16,13 +16,14 @@ import DropDown from '../Dropdown';
 interface Props extends DataGridProps {
   minHeight?: number;
   page?: number;
-  totalPages: number;
+  totalPages?: number;
   totalItems: number;
   limit?: number;
   handleChangePage?: (page: number) => void;
   needReset?: boolean;
   isLimit?: boolean;
   slots?: any;
+  isPanigation?: boolean;
   onReset?: () => void;
   handleChangeLimit?: (limit: number) => void;
   noData?: React.ReactNode;
@@ -35,6 +36,7 @@ export default function Table(props: Props) {
     page,
     totalPages,
     totalItems,
+    isPanigation = true,
     needReset,
     limit,
     isLimit,
@@ -203,16 +205,18 @@ export default function Table(props: Props) {
             ></IconButton>
           )}
         </Box>
-        <Pagination
-          count={totalPages}
-          variant='outlined'
-          color='primary'
-          shape='rounded'
-          onChange={(_, page: number) => {
-            handleChangePage(page);
-          }}
-          page={page}
-        />
+        {isPanigation && (
+          <Pagination
+            count={totalPages}
+            variant='outlined'
+            color='primary'
+            shape='rounded'
+            onChange={(_, page: number) => {
+              handleChangePage(page);
+            }}
+            page={page}
+          />
+        )}
       </Box>
     </Box>
   );

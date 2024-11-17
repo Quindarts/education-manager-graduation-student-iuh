@@ -23,7 +23,7 @@ function ScoreStudentPage() {
     setCurrentRowSelectId(params.id);
   };
   return (
-    <Paper sx={{ py: 10, px: 5 }} elevation={0}>
+    <Paper sx={{ py: 4, px: 5 }} elevation={0}>
       <Box display='flex' gap={5} pb={4}>
         <Box
           sx={{

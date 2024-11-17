@@ -42,7 +42,7 @@ function AddModal(props: any) {
   const handleSubmit = (values: any) => {
     createEvent({
       name: values.name,
-      startDate: formatDates(new Date().toString()),
+      startDate: values.startDate,
       endDate: values.endDate,
       groupStudentIds: groups.filter((gr) => gr.checked === true).map((gr) => gr.groupStudentId),
     });
@@ -79,6 +79,7 @@ function AddModal(props: any) {
             initialValues={{
               name: '',
               endDate: null,
+              startDate: null,
             }}
           >
             {({
@@ -109,10 +110,24 @@ function AddModal(props: any) {
                   <Box width={250}>
                     <DateTimeCalendar
                       onChange={(value) => {
+                        setFieldValue('startDate', value);
+                      }}
+                      sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
+                      label='Ngày bắt đầu'
+                      name='startDate'
+                      format='DD/MM/YYYY hh:mm:ss A'
+                      value={values.startDate}
+                      error={touched.startDate && errors.startDate ? true : false}
+                    />
+                  </Box>
+
+                  <Box width={250}>
+                    <DateTimeCalendar
+                      onChange={(value) => {
                         setFieldValue('endDate', value);
                       }}
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
-                      label='Deadline'
+                      label='Ngày kết thúc'
                       name='endDate'
                       format='DD/MM/YYYY hh:mm:ss A'
                       value={values.endDate}

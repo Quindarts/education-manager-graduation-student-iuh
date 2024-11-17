@@ -158,9 +158,12 @@ export default function EventManagement() {
 
 function renderEventContent(eventInfo) {
   return (
-    <Box sx={{ height: 30, px: 4, py: 2 }}>
+    <Box sx={{ height: 60, px: 4, py: 2 }}>
+      <Typography variant='body2' fontSize={8} mb={2} fontWeight={'bold'} color='grey.200'>
+        Ngày bắt đầu {eventInfo.event.title.split('_')[1]}
+      </Typography>
       <Typography variant='body2' fontSize={10} color='grey.100'>
-        {eventInfo.event.title}
+        {eventInfo.event.title.split('_')[0]}
       </Typography>
     </Box>
   );

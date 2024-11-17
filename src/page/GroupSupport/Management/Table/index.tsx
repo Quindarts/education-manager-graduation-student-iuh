@@ -33,7 +33,7 @@ function TableManagamentGroupStudent(props: any) {
       {
         headerName: 'Thành viên',
         field: 'name4',
-        flex: 1.6,
+        flex: 2,
         align: 'left',
         headerAlign: 'left',
         renderCell: (params: any) => {
@@ -55,6 +55,7 @@ function TableManagamentGroupStudent(props: any) {
                       borderRadius: 2,
                       px: 2,
                       py: 1,
+                      textAlign: 'center',
                     }}
                     color={getStatusStudentStyle(member.status)}
                     bgcolor={getStatusStudentStyle(member.status)}

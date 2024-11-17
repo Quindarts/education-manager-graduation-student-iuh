@@ -4,6 +4,7 @@ import { GridColDef } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 import EditModal from '../EditModal';
+import DeleteModal from '../DeleteModal';
 
 function TableEventManagement(props: any) {
   const { rows, totalItems, totalPage } = props;
@@ -13,6 +14,14 @@ function TableEventManagement(props: any) {
   };
   const handleCloseEditEventModal = () => {
     setOpenEditEvent((pre) => ({ ...pre, isOpen: false }));
+  };
+
+  const [openDeleteEvent, setOpenDeleteEvent] = useState({ isOpen: false, id: '', name: '' });
+  const handleOpenDeleteEvent = (id: string, name: string) => {
+    setOpenDeleteEvent({ isOpen: true, id: id, name: name });
+  };
+  const handleCloseDeleteEventModal = () => {
+    setOpenDeleteEvent((pre) => ({ ...pre, isOpen: false }));
   };
   const basicColumns: GridColDef[] = useMemo(
     () => [
@@ -24,24 +33,43 @@ function TableEventManagement(props: any) {
         headerAlign: 'left',
       },
       {
-        headerName: 'Deadline',
+        headerName: 'Ngày bắt đầu',
+        field: 'startDate',
+        flex: 0.6,
+        type: 'string',
+        align: 'right',
+        headerAlign: 'right',
+        renderCell: (params) => (
+          <Typography>{dayjs(params.value).format(' hh:mm  A DD-MM-YYYY ')}</Typography>
+        ),
+      },
+      {
+        headerName: 'Ngày kết thúc',
         field: 'endDate',
         flex: 0.6,
         type: 'string',
         align: 'right',
         headerAlign: 'right',
         renderCell: (params) => (
-          <Typography>{dayjs(params.value).format(' hh:mm  DD-MM-YYYY ')}</Typography>
+          <Typography>{dayjs(params.value).format(' hh:mm A DD-MM-YYYY ')}</Typography>
         ),
       },
       {
         headerName: 'Chức năng',
         field: 'field',
         flex: 0.6,
-        align: 'right',
-        headerAlign: 'right',
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => (
-          <Button onClick={() => handleOpenEditEvent(params.row.id)}>Xem chi tiết</Button>
+          <>
+            <Button onClick={() => handleOpenEditEvent(params.row.id)}>Xem chi tiết</Button>
+            <Button
+              color='error'
+              onClick={() => handleOpenDeleteEvent(params.row.id, params.row.name)}
+            >
+              Xóa sự kiện
+            </Button>
+          </>
         ),
       },
     ],
@@ -67,6 +95,12 @@ function TableEventManagement(props: any) {
         id={openEditEvent.id}
         onClose={handleCloseEditEventModal}
         open={openEditEvent.isOpen}
+      />
+      <DeleteModal
+        id={openDeleteEvent.id}
+        onClose={handleCloseDeleteEventModal}
+        open={openDeleteEvent.isOpen}
+        name={openDeleteEvent.name}
       />
     </>
   );

@@ -121,6 +121,7 @@ function TableDetailGroupSupport({ members }) {
                   borderRadius: 2,
                   px: 2,
                   py: 1,
+                  textAlign: 'center',
                 }}
                 color={getStatusStudentStyle(params.row.status)}
                 bgcolor={getStatusStudentStyle(params.row.status)}

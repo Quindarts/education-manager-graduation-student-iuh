@@ -42,7 +42,7 @@ function TableEdit(props) {
         headerAlign: 'left',
       },
       {
-        headerName: 'Link bài tập',
+        headerName: 'Minh chứng',
         field: 'link',
         flex: 1.2,
         align: 'left',
