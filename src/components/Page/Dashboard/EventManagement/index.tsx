@@ -11,15 +11,10 @@ import { convertEventGrid } from '@/utils/convertDataTable';
 import SekeletonTable from '@/components/ui/Sekeleton';
 import EditModal from './Modal/EditModal';
 import SwitchDayModal from './Modal/SwitchDayModal';
-import { useNavigate } from 'react-router-dom';
 import AllEventModal from './Modal/AllEventModal';
 
 let eventGuid = 0;
-const todayStr = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD của ngày hiện tại
 
-export function createEventId() {
-  return String(eventGuid++);
-}
 
 export default function EventManagement() {
   const { handleGetEvents } = useEvent();
@@ -60,9 +55,6 @@ export default function EventManagement() {
     setopenSwitchEndDateModal((pre) => ({ ...pre, isOpen: false }));
   };
 
-  function handleWeekendsToggle() {
-    setWeekendsVisible(!weekendsVisible);
-  }
 
   function handleDateSelect(selectInfo) {
     const id = selectInfo.event._def.publicId;

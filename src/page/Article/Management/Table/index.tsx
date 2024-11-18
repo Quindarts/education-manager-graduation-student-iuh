@@ -8,6 +8,7 @@ import React, { useMemo, useState } from 'react';
 import AcceptArticleModal from '../../Modal/AcceptArticleModal';
 import RefuseArticleModal from '../../Modal/RefuseArticleModal';
 import ResetArticleModal from '../../Modal/ResetArticleModal';
+import { env } from '@/utils/env';
 
 interface Props {
   rows: any[];
@@ -97,6 +98,17 @@ function TableArticleManagement(props: Props) {
         flex: 0.4,
         align: 'center',
         headerAlign: 'center',
+        renderCell: (params) => (
+          <Typography
+            component={'a'}
+            href={`${env.API_URL}/${params.value}`}
+            target='_blank'
+            variant='body1'
+            color='initial'
+          >
+            Xem chi tiết
+          </Typography>
+        ),
       },
       {
         headerName: 'Trạng thái',

@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useMemo, useState } from 'react';
 import CommentEventModal from '../../CommentModal';
+import { env } from '@/utils/env';
 
 function TableEdit(props) {
   const { rows, totalItems, totalPage, eventId } = props;
@@ -48,9 +49,23 @@ function TableEdit(props) {
         align: 'left',
         headerAlign: 'left',
         renderCell: (params) => (
-          <Typography variant='body1' color='initial'>
-            {params.row.link ? params.row.link : 'Chưa cập nhật'}
-          </Typography>
+          <>
+            {params.row.link ? (
+              <Typography
+                component={'a'}
+                variant='body1'
+                target='_blank'
+                href={`${env.API_URL}/${params.value}`}
+                color='error'
+              >
+                Xem minh chứng
+              </Typography>
+            ) : (
+              <Typography variant='body1' color='initial'>
+                Chưa cập nhật
+              </Typography>
+            )}
+          </>
         ),
       },
       {
