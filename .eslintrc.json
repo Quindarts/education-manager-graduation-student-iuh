@@ -1,0 +1,98 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier", "mui-path-imports"],
+  "rules": {
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["@mui/material/*/*"]
+      }
+    ],
+    "mui-path-imports/mui-path-imports": "error",
+    "@typescript-eslint/typedef": [
+      "error",
+      {
+        "arrowParameter": true
+      }
+    ],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "react/no-unescaped-entities": "off",
+    "@typescript-eslint/no-array-constructor": "warn",
+    "no-array-constructor": "off",
+    "no-shadow": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "react/react-in-jsx-scope": "off",
+    "camelcase": "off",
+    "quotes": ["error", "single"],
+    "@typescript-eslint/no-explicit-any": ["off"],
+    "no-duplicate-imports": "error",
+    "class-methods-use-this": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".ts", ".tsx"] }],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "no-undef": "off",
+    "@typescript-eslint/no-unused-vars": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".ts", ".tsx"]
+      }
+    }
+  },
+  "overrides": [
+    // Configuration for TypeScript files
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "plugins": ["@typescript-eslint", "unused-imports"],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "prettier/prettier": "error",
+        "no-empty-pattern": "off",
+        "react/destructuring-assignment": "off", // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
+        "jsx-a11y/anchor-is-valid": "off",
+        "react/require-default-props": "off", // Allow non-defined react props as undefined
+        "react-hooks/exhaustive-deps": "off",
+        "@typescript-eslint/comma-dangle": "off", // Avoid conflict rule between Eslint and Prettier
+        "import/prefer-default-export": "off", // Named export is easier to refactor automatically
+        "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "argsIgnorePattern": "^_"
+          }
+        ],
+
+        "no-undef": "off",
+        "no-param-reassign": "off",
+        "import/no-cycle": "off",
+        "@typescript-eslint/no-use-before-define": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [".eslintrc.cjs", "vite.config.ts", "src"]
+}
