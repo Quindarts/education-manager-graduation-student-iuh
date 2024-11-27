@@ -7,6 +7,7 @@ import { ENUM_RENDER_LECTURER } from '@/store/slice/lecturer.slice';
 import { useLecturerTerm } from '@/hooks/api/useQueryLecturerTerm';
 import useSearch from '@/hooks/ui/useParams';
 import SplitButton from '@/components/ui/SplitButton';
+import ExportExcelButton from '@/components/ui/Export';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -28,14 +29,17 @@ function HeaderLecturerTerm() {
   const handleOpenModal = () => {
     setOpenAddModal(true);
   };
-  const { onImportLecturerTerm } = useLecturerTerm();
+  const { onImportLecturerTerm, handleGetExportLecturerTermAssign } = useLecturerTerm();
+
+  const { data: fetchExportAssign, isSuccess: successExportAssign } =
+    handleGetExportLecturerTermAssign();
+
   const { mutate: importLecturer } = onImportLecturerTerm();
   const handleImport = () => {
     importLecturer();
   };
 
-  const { onSearchChange, getQueryField, onTypeSearchChange,  setTypeSort } =
-    useSearch();
+  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort } = useSearch();
   const [sort, setSort] = useState('ASC');
   const optionSort = ['Tăng dần', 'Giảm dần'];
   const handleClick = (index: number) => {
@@ -56,7 +60,7 @@ function HeaderLecturerTerm() {
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={SEARCH_DROP_VALUE}
             />
-            <Box width={122}>
+            <Box width={110}>
               <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
             </Box>
           </Box>
@@ -85,6 +89,13 @@ function HeaderLecturerTerm() {
             <Icon icon='lets-icons:add-round' width={20} />
           </Button>
         </Tooltip>
+        {successExportAssign && (
+          <ExportExcelButton
+            data={fetchExportAssign?.lecturers}
+            entity='assignLecturerTerm'
+            labelTooltip='Tải thông tin giảng viên hướng dẫn'
+          />
+        )}
       </Box>
       <AddLecturerModal open={openAddModal} onClose={handleCloseAddModal} />
     </>

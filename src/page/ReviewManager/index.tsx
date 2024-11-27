@@ -14,13 +14,16 @@ import { Icon } from '@iconify/react';
 import AddEvaluationModal from './Modal/Add';
 import ContextReviewManager from './Context';
 import ExportWordModal from './Modal/ExportWord';
+import useTranscript from '@/hooks/api/useQueryTranscript';
+import ExportExcelButton from '@/components/ui/Export';
 
 function ReviewManagerPage() {
   const [currentTypeReview, setCurrentTypeReview] = useState(TypeEvaluation.ADVISOR);
   const { termStore } = useTerm();
   const { handleGetEvalutationByType, handleUiRender } = useEvaluation();
   const currentRole = handleUiRender();
-
+  const { handleExportTranscripts } = useTranscript();
+  const { data: fetchExport, isSuccess: successExport } = handleExportTranscripts();
   const { data, isLoading, isSuccess } = handleGetEvalutationByType(
     termStore.currentTerm.id,
     currentTypeReview,
@@ -97,6 +100,13 @@ function ReviewManagerPage() {
                     typeEvaluation={currentTypeReview}
                     havedModelExcel={false}
                   />
+                  {successExport && (
+                    <ExportExcelButton
+                      data={fetchExport?.transcripts}
+                      entity='transcript'
+                      labelTooltip='Tải tất cả điểm  sinh viên chuyên ngành'
+                    />
+                  )}
                 </>
               )}
 
@@ -145,12 +155,14 @@ function ReviewManagerPage() {
           </>
           {/* )} */}
           {currentRole.includes('all') && (
-            <AddEvaluationModal
-              open={openModalCreateEvaluation.isOpen}
-              termId={termStore.currentTerm.id}
-              type={currentTypeReview}
-              onClose={handleCloseCreateEvaluationModal}
-            />
+            <>
+              <AddEvaluationModal
+                open={openModalCreateEvaluation.isOpen}
+                termId={termStore.currentTerm.id}
+                type={currentTypeReview}
+                onClose={handleCloseCreateEvaluationModal}
+              />
+            </>
           )}
         </Paper>
       </ContextReviewManager>

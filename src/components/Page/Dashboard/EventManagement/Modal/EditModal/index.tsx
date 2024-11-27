@@ -46,7 +46,7 @@ function EditModal(props: any) {
   return (
     <>
       <Modal maxWidth={'lg'} open={open} onClose={onClose}>
-        <Box pb={6} px={10}>
+        <Box pb={4} px={10}>
           <TitleManager
             mb={4}
             variant='h6'
@@ -135,7 +135,7 @@ function EditModal(props: any) {
                       </Box>
                     )}
                   </Box>
-                  <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
+                  <Box  justifyContent={'end'} gap={4} mb={6} display={'flex'}>
                     <Button variant='contained' color='primary' onClick={onClose}>
                       <Icon width={20} icon='mdi:close-outline' />
                       Hủy
@@ -150,7 +150,7 @@ function EditModal(props: any) {
                       <Icon width={20} icon='solar:trash-bin-trash-bold' />
                       Xóa sự kiện
                     </Button>
-                    <Button sx={{ width: 200 }} variant='contained' color='success' type='submit'>
+                    <Button sx={{ width: 140 }} variant='contained' color='success' type='submit'>
                       <Icon width={20} icon='material-symbols:save-outline' />
                       Cập nhật
                     </Button>

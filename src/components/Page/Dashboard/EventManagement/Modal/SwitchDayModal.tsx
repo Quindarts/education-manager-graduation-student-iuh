@@ -48,14 +48,14 @@ function SwitchDayModal(props: any) {
           <Box borderRadius='50%' padding={10} sx={{ background: 'rgba(164, 166, 165, 0.2)' }}>
             <Icon color='#6cfda882' height={70} width={70} icon='fluent-color:calendar-clock-16' />{' '}
           </Box>
-          <Typography variant='h5' mt={10}>
+          <Typography variant='h6' fontSize={13} mt={10}>
             Bạn có muốn dời ngày kết thúc{' '}
-            <Typography variant='h6'  component={'span'} fontWeight={600}  color='grey.700'>
+            <Typography variant='h6' component={'span'} fontWeight={600} color='grey.700'>
               "Sự kiện {name.split('_')[0]}"{' '}
             </Typography>
             không?
           </Typography>
-          <Typography fontWeight={'600'} variant='body2' mt={4} color='grey.700'>
+          <Typography fontWeight={'500'} variant='body2' mt={4} color='grey.700'>
             Từ ngày {dayjs(oldDate).format('hh:mm A DD-MM-YYYY   ')} {' sang ngày '}
             {dayjs(newDate).format('hh:mm A DD-MM-YYYY  ')}?
           </Typography>

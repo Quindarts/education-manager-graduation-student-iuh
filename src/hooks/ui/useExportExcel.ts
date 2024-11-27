@@ -1,8 +1,11 @@
 import { AssginGroupClassExport } from "@/components/ui/Export/Entity/AssignGroup";
+import { AssignLecturerTermClassExport } from "@/components/ui/Export/Entity/AssignLecturerTerm";
+import { DemoScoreStudentClassExport } from "@/components/ui/Export/Entity/DemoScoreStudentClassExport";
 import { GroupStudentClassExportExcel } from "@/components/ui/Export/Entity/GroupStudent";
 import { LecturerClassExportExcel } from "@/components/ui/Export/Entity/Lecturer";
 import { StudentClassExportExcel } from "@/components/ui/Export/Entity/Student";
 import { TopicClassExportExcel } from "@/components/ui/Export/Entity/Topic";
+import { TranscriptExcel } from "@/components/ui/Export/Entity/Transcript";
 import { useSnackbar } from "notistack";
 
 const useExportExcel = () => {
@@ -50,8 +53,6 @@ const useExportExcel = () => {
                     sheetName,
                     headerColumn,
                 )
-
-
                 GrStudentExport.setData(data)
                 GrStudentExport.customizeSheet()
                 GrStudentExport.onExport()
@@ -67,7 +68,36 @@ const useExportExcel = () => {
                 GrAssignExport.setData(data)
                 GrAssignExport.customizeSheet()
                 GrAssignExport.onExport()
-
+                break;
+            case 'transcript':
+                const TranscriptExport = new TranscriptExcel(
+                    fileName,
+                    sheetName,
+                    headerColumn,
+                )
+                TranscriptExport.setData(data)
+                TranscriptExport.customizeSheet()
+                TranscriptExport.onExport()
+                break;
+            case 'demoScoreStudents':
+                const DemoScoreExport = new DemoScoreStudentClassExport(
+                    fileName,
+                    sheetName,
+                    headerColumn,
+                )
+                DemoScoreExport.setData(data)
+                DemoScoreExport.customizeSheet()
+                DemoScoreExport.onExport()
+                break;
+            case 'assignLecturerTerm':
+                const AssignLecturerTermExport = new AssignLecturerTermClassExport(
+                    fileName,
+                    sheetName,
+                    headerColumn,
+                )
+                AssignLecturerTermExport.setData(data)
+                AssignLecturerTermExport.customizeSheet()
+                AssignLecturerTermExport.onExport()
         }
     }
     return {

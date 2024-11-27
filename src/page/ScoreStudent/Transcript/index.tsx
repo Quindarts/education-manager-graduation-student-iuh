@@ -188,9 +188,9 @@ function TranscriptOfGroupStudent(props: any) {
           }}
         >
           <Box mx={6}>
-            <Typography fontWeight={600} mb={10} variant='h6'>
-              Đề tài : {groupStudent?.topicName}{' '}
-              <Typography fontWeight={600} variant='body2' color='grey.700'>
+            <Typography fontWeight={600} mb={4} variant='h3'>
+              Đề tài  {groupStudent?.topicName}{' '}
+              <Typography fontWeight={400} variant='body2' color='grey.700'>
                 Trạng thái:{' '}
                 <Typography
                   variant='body2'

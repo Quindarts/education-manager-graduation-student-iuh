@@ -10,9 +10,7 @@ function RolePermissionPage() {
   const { data, isLoading, isFetching } = handleGetAllRoleLecturer();
   return (
     <Paper sx={{ p: 10 }} elevation={0}>
-      <TitleManager sx={{ mb: 8 }} icon='heroicons:user-group'>
-        Danh sách Người dùng
-      </TitleManager>
+      <TitleManager sx={{ mb: 8 }}>Danh sách Người dùng</TitleManager>
       {isFetching || isLoading ? (
         <SekeletonUI />
       ) : (

@@ -40,7 +40,7 @@ function TableManagamentGroupStudent(props: any) {
           return (
             <Box>
               {params.row.members?.map((member: any) => (
-                <Box display={'flex'}>
+                <Box mb={2} display={'flex'}>
                   <Typography
                     width={{
                       md: 120,
@@ -106,9 +106,7 @@ function TableManagamentGroupStudent(props: any) {
         rowHeight={90}
         columns={basicColumns}
         totalItems={totalItems}
-        totalPages={1}
-        page={1}
-        handleChangePage={() => {}}
+        isPanigation={false}
       />
     </Box>
   );

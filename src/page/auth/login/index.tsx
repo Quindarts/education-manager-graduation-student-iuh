@@ -46,7 +46,7 @@ export default function Login() {
   return (
     <Grid container spacing={2} pb={8}>
       <Grid item xs={12}>
-        <Card sx={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;' }}>
+        <Card sx={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;', bgcolor:'grey.50' }}>
           <CardContent>
             <Box
               sx={{
@@ -60,7 +60,7 @@ export default function Login() {
             >
               <img width={150} height={60} src='/images/logo-light.webp' alt='logo_app' />
               <Typography
-                mt={10}
+                mt={4}
                 variant='h3'
                 align='center'
                 lineHeight={1.6}
@@ -70,17 +70,18 @@ export default function Login() {
                 TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH
               </Typography>
               <Typography
-                variant='h5'
-                mt={10}
+                variant='h3'
+                mt={2}
                 fontWeight={600}
                 align='center'
                 color={'primary.dark'}
                 mb={6}
+                textTransform={'uppercase'}
               >
-                Đăng nhập vào trang quản lý khóa luận
+                giảng viên đăng nhập
               </Typography>
             </Box>
-            <Box component='form' onSubmit={handleSubmit} mt={8} pb={10} px={4} method='POST'>
+            <Box component='form' onSubmit={handleSubmit} mt={4} pb={10} px={4} method='POST'>
               <CustomTextField
                 label='Tên đăng nhập'
                 error={Boolean(errors.username) && touched.username}
@@ -134,7 +135,14 @@ export default function Login() {
                 </Link>
               </Box>
 
-              <Button variant='contained' sx={{ mt: 10 }} type='submit' size='large' fullWidth color='primary'>
+              <Button
+                variant='contained'
+                sx={{ mt: 10 }}
+                type='submit'
+                size='large'
+                fullWidth
+                color='primary'
+              >
                 Đăng nhập
                 {isLoading && (
                   <CircularProgress

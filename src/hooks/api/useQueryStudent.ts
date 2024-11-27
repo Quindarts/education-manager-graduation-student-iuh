@@ -18,7 +18,8 @@ export enum QueryStudent {
     searchStudentByField = 'searchStudentByField',
     managerActionStudent = 'managerActionStudent',
     getCountOfStudent = "getCountOfStudent",
-    getStudentsToExport = "getStudentsToExport"
+    getStudentsToExport = "getStudentsToExport",
+    getExportDemonstrateStudentScore = "getExportDemonstrateStudentScore",
 }
 export const useStudent = () => {
 
@@ -47,7 +48,13 @@ export const useStudent = () => {
             // cacheTime: 1000
         })
     }
-
+    const handleGetExportDemonstrateStudentScore = () => {
+        return useQuery([QueryStudent.getExportDemonstrateStudentScore, termId], () => StudentServices.getDemonstrateStudentScore(termId), {
+            staleTime: 1000 * (60 * 10),
+            enabled: !!termId,
+            refetchOnMount: true,
+        })
+    }
     //[GET]
     const handleGetAllStudent = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
@@ -266,6 +273,7 @@ export const useStudent = () => {
         handleGetSearchStudentBasic,
         handleGetCountOfStudent,
         handleGetStudentsToExport,
+        handleGetExportDemonstrateStudentScore,
         onDeleteStudent,
         onUpdateStudent,
         onCreateStudent,

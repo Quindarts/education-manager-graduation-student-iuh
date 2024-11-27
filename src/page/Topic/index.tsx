@@ -58,8 +58,10 @@ function TopicPage() {
     <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box justifyContent={'space-between'} display={'flex'} mb={8} mt={2}>
         <TitleManager icon='quill:list'>Danh sách đề tài</TitleManager>
-        <Typography variant='body1' fontWeight={700} mt={4}>
-          Số lượng: {countSuccess && countFetch?.count} đề tài
+        <Typography variant='body1' color={"grey.600"} fontWeight={500} mt={4}>
+          Số lượng
+          <Typography component={'span'} ml={1} mr={1} variant="body1" fontWeight={'bold'} color="grey.700">{countSuccess && countFetch?.count}</Typography>
+           đề tài
         </Typography>
       </Box>
 

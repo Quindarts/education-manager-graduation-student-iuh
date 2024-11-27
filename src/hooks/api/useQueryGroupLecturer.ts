@@ -75,13 +75,17 @@ export const useGroupLecturer = () => {
     const handleGetGroupLecturerByLecturerId = (type?: string, lecturerId?: string) => {
         const termId = termStore.currentTerm.id
         const lecturerIdToSend = lecturerId ? lecturerId : lecturerStore.me.user.id
-        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, termId, lecturerId, type], () => GroupLecturerServices.getGroupLecturerByLecturerId(termId, lecturerIdToSend, type))
+        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, termId, lecturerId, type], () => GroupLecturerServices.getGroupLecturerByLecturerId(termId, lecturerIdToSend, type),{
+            enabled: !!lecturerIdToSend,
+            refetchOnMount: true
+        })
     }
 
     //[GET]
     const handleGetGroupLecturerById = (id: string) => {
         return useQuery([QueryKeysGroupLecturer.getGroupLecturerById, id], () => GroupLecturerServices.getGroupLecturerById(id), {
-            enabled: id !== '1111'
+            enabled: !!id,
+            refetchOnMount: true
         })
     }
 
@@ -92,6 +96,8 @@ export const useGroupLecturer = () => {
                 enqueueSnackbar('Tạo nhóm Giảng viên thành công', { variant: 'success' })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup, type, termStore.currentTerm.id] })
                 queryClient.invalidateQueries({ queryKey: [QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup, type, termStore.currentTerm.id] })
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getGroupLecturerById)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getGroupLecturerByLecturerId)
             },
             onError(err: any) {
                 if (err.status < 500) {
@@ -108,6 +114,9 @@ export const useGroupLecturer = () => {
                 enqueueSnackbar('Xóa nhóm giảng viên thành công', { variant: 'success' })
                 queryClient.invalidateQueries(QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup)
                 queryClient.invalidateQueries(QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getGroupLecturerById)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getGroupLecturerByLecturerId)
+
             },
             onError(err: any) {
                 if (err.status < 500) {

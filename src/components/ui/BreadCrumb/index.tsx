@@ -1,4 +1,4 @@
-import {  Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Typography } from '@mui/material';
 import React from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 const ROUTE_LABELS: { [key: string]: string } = {
@@ -68,7 +68,7 @@ function BreadCrumbRouting() {
       {validPaths.map((path, index) => {
         const breadcrumbName = findBreadcrumbName(path);
         return index === validPaths.length - 1 ? (
-          <Typography color='grey.600' fontWeight={'600'} variant='h6' key={path}>
+          <Typography color='grey.600' fontWeight={'600'} fontSize={12} variant='h6' key={path}>
             {breadcrumbName}
           </Typography>
         ) : (

@@ -6,14 +6,14 @@ interface TittleManagerPropsType extends TypographyProps {
   icon?: string;
 }
 function TitleManager(props: TittleManagerPropsType) {
-  const { icon, children, fontWeight = 600, color = 'primary.main', ...rest } = props;
+  const { icon, children, fontWeight = 600, color = 'grey.700', ...rest } = props;
   return (
-    <Typography fontWeight={fontWeight} variant='h6' color={`${color}`} {...rest}>
+    <Typography fontWeight={fontWeight} fontSize={14} variant='h6' color={`${color}`} {...rest}>
       {icon && (
         <Icon
-          width={24}
-          height={24}
-          style={{ position: 'relative', top: 7, marginRight: 4 }}
+          width={20}
+          height={20}
+          style={{ position: 'relative', top: 5.5, marginRight: 4 }}
           icon={icon}
         />
       )}

@@ -22,8 +22,8 @@ function TabPanelUI(props: any) {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'primary.main' }}>
           <TabList onChange={handleChange} aria-label=''>
-            <Tab label='Danh sách nhóm sinh viên được phân chấm.' value='1' />
-            <Tab label='Danh sách giảng viên' value='2' />
+            <Tab sx={{ fontSize: 12 }} label='Danh sách nhóm sinh viên được phân chấm' value='1' />
+            <Tab sx={{ fontSize: 12 }} label='Danh sách giảng viên' value='2' />
           </TabList>
         </Box>
 

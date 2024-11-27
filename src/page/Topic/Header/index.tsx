@@ -72,7 +72,7 @@ function HeaderTopic() {
                     onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
                     options={SEARCH_DROP_VALUE}
                   />
-                  <Box width={124}>
+                  <Box width={112}>
                     <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
                   </Box>
                 </Box>

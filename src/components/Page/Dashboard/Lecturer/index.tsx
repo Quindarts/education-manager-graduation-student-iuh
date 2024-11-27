@@ -7,8 +7,8 @@ import EventManagement from '../EventManagement';
 export default function DashboardOfLecturer() {
   return (
     <>
-      <Paper sx={{ px: 20, py: 20, mb: 10 }}>
-        <Box display={'flex'} gap={8}>
+      <Paper sx={{ px: 10, py: 20, mb: 10 }}>
+        <Box display={'flex'} gap={4}>
           <StatisticManager />
         </Box>
       </Paper>
