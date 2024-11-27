@@ -11,6 +11,10 @@ export const getStatisticStatusOfStudents = async (termId: string, status: EnumS
 export const getCountOfStudent: any = (termId: string) => {
     return axiosConfig.get(`${URL}/count?termId=${termId}`)
 }
+//[GET] STUDENT
+export const getDemonstrateStudentScore = async (termId: string): Promise<ResponseType> => {
+    return axiosConfig.get(`${URL}/export-test?termId=${termId}`)
+}
 
 //[GET]
 export const getSearchStudentBasic: any = (termId: string, keywords: string, searchField: string) => {

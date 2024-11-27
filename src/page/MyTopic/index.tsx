@@ -54,6 +54,7 @@ function MyTopic() {
                     )
                   : []
               }
+              isPanigation={false}
             />
           </Box>
         )}

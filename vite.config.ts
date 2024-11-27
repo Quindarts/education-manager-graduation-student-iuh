@@ -14,8 +14,12 @@ export default defineConfig({
     port: 5173,
     host: true
   },
+  preview: {
+    port: 5173,
+  },
   build: {
     minify: "esbuild",
+    sourcemap: false,
     cssCodeSplit: true,
   },
   esbuild: {

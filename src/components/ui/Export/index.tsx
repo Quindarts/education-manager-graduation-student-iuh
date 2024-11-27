@@ -75,11 +75,59 @@ const HEADER_TYPE = {
     { header: 'STT', key: 'STT', width: 6 },
     { header: 'GVHD', key: 'GVHD', width: 30 },
   ],
+  transcript: [
+    { header: 'Mã nhóm', key: 'Mã nhóm', width: 10 },
+    { header: 'Mã SV', key: 'Mã SV', width: 12 },
+    { header: 'Họ tên SV', key: 'Họ tên SV', width: 24 },
+    { header: 'Tên đề tài', key: 'Tên đề tài', width: 50 },
+    { header: '#HĐPB', key: '#HĐPB', width: 22 },
+    { header: 'STT', key: 'STT', width: 6 },
+    { header: 'GVHD', key: 'GVHD', width: 30 },
+    { header: 'GVPB1', key: 'GVPB1', width: 30 },
+    { header: 'GVPB2', key: 'GVPB2', width: 30 },
+    { header: 'Tổng(0)(GVHD)', key: 'Tổng(0)(GVHD)', width: 20 },
+    { header: 'Điểm GVHD', key: 'Điểm GVHD', width: 20 },
+    { header: 'Tổng(0)(PB1)', key: 'Tổng(0)(PB1)', width: 20 },
+    { header: 'Điểm PB1', key: 'Điểm PB1', width: 20 },
+    { header: 'Tổng(0)(PB2)', key: 'Tổng(0)(PB2)', width: 20 },
+    { header: 'Điểm PB2', key: 'Điểm PB2', width: 20 },
+    { header: 'Trung bình (HD, PB)', key: 'Trung bình (HD, PB)', width: 20 },
+  ],
+  demoScoreStudents: [
+    { header: 'Mã số', key: 'Mã số', width: 12 },
+    { header: 'Lớp học', key: 'Lớp học', width: 15 },
+    { header: 'STT', key: 'STT', width: 6 },
+    { header: 'Họ đệm', key: 'Họ đệm', width: 24 },
+    { header: 'Tên', key: 'Tên', width: 10 },
+    { header: 'Số tờ', key: 'Số tờ', width: 10 },
+    { header: 'Mã đề', key: 'Mã đề', width: 10 },
+    { header: 'Ký tên', key: 'Ký tên', width: 20 },
+    { header: 'Cuối kỳ', key: 'Cuối kỳ', width: 20 },
+    { header: 'Ghi chú', key: 'Ghi chú', width: 20 },
+  ],
+  assignLecturerTerm: [
+    { header: 'Mã nhân sự', key: 'Mã nhân sự', width: 20 },
+    { header: 'Số đề tài hướng dẫn KLTN', key: 'Số đề tài hướng dẫn KLTN', width: 30 },
+    { header: 'Số đề tài chấm phản biện', key: 'Số đề tài chấm phản biện', width: 30 },
+    { header: 'Số đề tài chấm Hội đồng/poster', key: 'Số đề tài chấm Hội đồng/poster', width: 30 },
+    { header: 'STT', key: 'STT', width: 6 },
+    { header: 'Họ tên', key: 'Họ tên', width: 30 },
+    { header: 'Ghi chú', key: 'Ghi chú', width: 20 },
+  ],
 };
 interface ExportExcelPropsType extends BoxProps {
   label?: string;
   labelTooltip?: string;
-  entity: 'topic' | 'lecturer' | 'student' | 'lecturerTerm' | 'groupStudent' | 'assignGroup';
+  entity:
+    | 'topic'
+    | 'lecturer'
+    | 'student'
+    | 'lecturerTerm'
+    | 'groupStudent'
+    | 'assignGroup'
+    | 'transcript'
+    | 'demoScoreStudents'
+    | 'assignLecturerTerm';
   data: any;
   disabled?: boolean;
 }
@@ -118,6 +166,16 @@ const entityFileName = (entity: string, termName: string, majorName: string) => 
       break;
     case 'assignGroup':
       text = 'Danh sách nhóm giảng viên phân công chấm KLTN';
+      break;
+    case 'transcript':
+      text = 'Bảng điểm sinh viên chuyên ngành ' + majorName + ' KLTN';
+      break;
+    case 'demoScoreStudents':
+      text = 'Mẫu_[4203] - Khóa luận tốt nghiệp';
+      break;
+    case 'assignLecturerTerm':
+      text = 'Chấm công KLTN HK2_2023_2024_SE';
+      break;
   }
   return text + ' ' + termName;
 };
@@ -241,41 +299,45 @@ function ExportExcelButton(props: ExportExcelPropsType) {
                 </Box>
               </Box>
               <Box flex={2}>
-                <CustomTextField
-                  value={fileName}
-                  fullWidth
-                  label='Tên file '
-                  onChange={(e) => setFileName(e.target.value)}
-                  required
-                  helperText=''
-                />
-                <CustomTextField
-                  onChange={(e) => setSheetName(e.target.value)}
-                  label='Tên sheet'
-                  value={sheetName}
-                  required
-                  helperText=''
-                />
-                <CustomTextField label='Định dạng file' disabled value={'.xlsx'} helperText='' />
+                <Box>
+                  <CustomTextField
+                    value={fileName}
+                    fullWidth
+                    label='Tên file '
+                    onChange={(e) => setFileName(e.target.value)}
+                    required
+                    helperText=''
+                  />
+                  <CustomTextField
+                    onChange={(e) => setSheetName(e.target.value)}
+                    label='Tên sheet'
+                    value={sheetName}
+                    required
+                    helperText=''
+                  />
+                  <CustomTextField label='Định dạng file' disabled value={'.xlsx'} helperText='' />
+                </Box>
+
+                <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
+                  <Button
+                    disabled={
+                      mappedCheckbox?.filter((col) => col[Object.keys(col)[0]] === true).length ===
+                      0
+                    }
+                    variant='contained'
+                    onClick={handleSubmit}
+                    color='success'
+                  >
+                    <Icon icon='ri:file-excel-fill' width={20} />
+                    Tải file excel
+                  </Button>
+                  <Button variant='contained' color='primary' onClick={onCloseModal}>
+                    <Icon icon='mdi:close-outline' />
+                    Thoát
+                  </Button>
+                </Box>
               </Box>
             </Box>
-          </Box>
-          <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
-            <Button
-              disabled={
-                mappedCheckbox?.filter((col) => col[Object.keys(col)[0]] === true).length === 0
-              }
-              variant='contained'
-              onClick={handleSubmit}
-              color='success'
-            >
-              <Icon icon='ri:file-excel-fill' width={20} />
-              Tải file excel
-            </Button>
-            <Button variant='contained' color='primary' onClick={onCloseModal}>
-              <Icon icon='mdi:close-outline' />
-              Thoát
-            </Button>
           </Box>
         </Paper>
       </Modal>

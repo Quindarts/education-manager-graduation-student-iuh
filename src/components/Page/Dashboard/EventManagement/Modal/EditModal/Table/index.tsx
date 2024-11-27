@@ -46,8 +46,8 @@ function TableEdit(props) {
         headerName: 'Minh chứng',
         field: 'link',
         flex: 1.2,
-        align: 'left',
-        headerAlign: 'left',
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => (
           <>
             {params.row.link ? (
@@ -56,7 +56,7 @@ function TableEdit(props) {
                 variant='body1'
                 target='_blank'
                 href={`${env.API_URL}/${params.value}`}
-                color='error'
+                color='primary.main'
               >
                 Xem minh chứng
               </Typography>
@@ -114,7 +114,7 @@ function TableEdit(props) {
           bgcolor: 'white',
           width: '100%',
           height: 400,
-          minHeight: 400,
+          minHeight: "300px!important",
         }}
         rowHeight={70}
         columns={basicColumns}

@@ -10,6 +10,11 @@ export const getAllLecturerTermByParams = (termId: string, limit: number | strin
     return axiosConfig.get<ResponseType, any>(`${URL}/query?searchField=${searchFieldSend}&keywords=${keywordSend}&limit=${limit}&page=${page}&termId=${termId}&sort=${sortSend}`);
 }
 
+//[GET]
+export const getExportAssignLecturerTerm = async (termId: string): Promise<ResponseType> => {
+    return axiosConfig.get(`${URL}/export-assign?termId=${termId}`)
+}
+
 //[GET] 
 export const getCountOfLecturerTerm: any = (termId: string) => {
     return axiosConfig.get(`${URL}/count?termId=${termId}`)

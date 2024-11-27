@@ -30,10 +30,10 @@ const theme = createTheme({
       fontSize: 12,
     },
     h5: {
-      fontSize: 12,
+      fontSize: 13,
     },
     h6: {
-      fontSize: 12,
+      fontSize: 12.5,
     },
     body1: {
       fontSize: 12,

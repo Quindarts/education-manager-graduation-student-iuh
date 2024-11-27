@@ -18,6 +18,7 @@ export enum QueryKeysLecturerTerm {
     getCountOfLecturerTerm = "getCountOfLecturerTerm",
     getLecturerTermById = "getLecturerTermById",
     getLecturerTermToExport = "getLecturerTermToExport",
+    getExportAssignLecturerTerm = "getExportAssignLecturerTerm"
 }
 
 export const useLecturerTerm = () => {
@@ -45,7 +46,9 @@ export const useLecturerTerm = () => {
         }
         )
     }
-
+    const handleGetExportLecturerTermAssign = () => {
+        return useQuery([QueryKeysLecturerTerm.getExportAssignLecturerTerm, termId], () => LecturerTermServices.getExportAssignLecturerTerm(termId))
+    }
     // [GET ALL]
     const handleGetAllLecturerTermByParam = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
@@ -182,6 +185,7 @@ export const useLecturerTerm = () => {
         handleGetCountOfLecturerTerm,
         handleGetListLecturerTerms,
         handleLecturerTermsToAdd,
+        handleGetExportLecturerTermAssign,
         onImportLecturerTerm,
         onDeleteLecturerTerm,
         onCreateLecturerTerm,

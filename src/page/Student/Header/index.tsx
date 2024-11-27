@@ -50,20 +50,27 @@ function HeaderStudent() {
   useLayoutEffect(() => {
     if (getQueryField('searchField').length === 0) setDefaultTypeSearch('full_name');
   }, []);
+
   const [sort, setSort] = useState('ASC');
   const optionSort = ['Tăng dần', 'Giảm dần'];
+
   const handleClick = (index: number) => {
     if (index === 0) setSort('ASC');
     else if (index === 1) setSort('DESC');
   };
+
   useEffect(() => {
     setTypeSort(sort);
   }, [sort]);
-  const { handleGetStudentsToExport } = useStudent();
+  const { handleGetStudentsToExport, handleGetExportDemonstrateStudentScore } = useStudent();
   const { data, isSuccess: successStudents, refetch } = handleGetStudentsToExport();
+  const { data: fetchDemoScore, isSuccess: successDemoScore } =
+    handleGetExportDemonstrateStudentScore();
+
   useEffect(() => {
     refetch();
   }, []);
+
   return (
     <>
       <Box mb={4} display={'flex'} flexWrap={'wrap'} gap={2}>
@@ -74,7 +81,7 @@ function HeaderStudent() {
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={SEARCH_DROP_VALUE}
             />
-            <Box width={122}>
+            <Box width={110}>
               <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
             </Box>
           </Box>
@@ -92,7 +99,6 @@ function HeaderStudent() {
             <Icon icon='lets-icons:add-round' width={20} />
           </Button>
         </Tooltip>
-
         <ModalUpload
           label=''
           labelToolTip='Thêm sinh viên bằng file excel'
@@ -107,6 +113,13 @@ function HeaderStudent() {
             data={data.students}
             entity='student'
             labelTooltip='Tải danh sách sinh viên'
+          />
+        )}
+        {successDemoScore && (
+          <ExportExcelButton
+            data={fetchDemoScore?.students}
+            entity='demoScoreStudents'
+            labelTooltip='Xuất mẫu điểm sinh viên'
           />
         )}
         <Tooltip onClick={handleOpenLockModal} title='Khóa tài khoản toàn bộ sinh viên'>
