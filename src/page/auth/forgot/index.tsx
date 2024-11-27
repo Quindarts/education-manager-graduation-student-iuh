@@ -32,14 +32,13 @@ function ForgotPassword() {
     },
   });
 
-  
   const { values, handleChange, handleBlur, errors, touched, handleSubmit } = formik;
   const navigate = useNavigate();
 
   return (
     <Grid container spacing={2} pb={8}>
       <Grid item xs={12}>
-        <Card>
+        <Card sx={{bgcolor:'grey.50'}}>
           <CardContent>
             <Box
               sx={{
@@ -61,18 +60,18 @@ function ForgotPassword() {
                 TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP TP.HỒ CHÍ MINH
               </Typography>
               <Typography
-                variant='h5'
+                variant='h3'
                 mt={4}
                 fontWeight={600}
                 align='center'
-                color={'primary.main'}
+                color={'grey.700'}
                 mb={2}
                 textTransform={'uppercase'}
               >
                 Quên Mật Khẩu
               </Typography>
             </Box>
-            <Box component='form' onSubmit={handleSubmit} mt={8} p={4} method='POST'>
+            <Box component='form' onSubmit={handleSubmit} mt={4} p={4} method='POST'>
               <CustomTextField
                 label='Nhập vào mã giảng viên'
                 error={Boolean(errors.username) && touched.username}
@@ -84,7 +83,7 @@ function ForgotPassword() {
                 id='username'
                 name='username'
               />
-              <Button variant='contained' type='submit' fullWidth color='primary'>
+              <Button sx={{ mt: 6 }} variant='contained' type='submit' fullWidth color='primary'>
                 Quên mật khẩu
                 {isLoading && (
                   <CircularProgress
@@ -104,11 +103,13 @@ function ForgotPassword() {
                     color: 'primary.dark',
                     cursor: 'pointer',
                   },
+                  fontWeight: 'bold',
                 }}
-                color='initial'
+                color='primary'
+                textTransform={'uppercase'}
                 textAlign={'center'}
               >
-                Quay lại Đăng Nhập
+                Đăng Nhập
               </Typography>
             </Box>
           </CardContent>

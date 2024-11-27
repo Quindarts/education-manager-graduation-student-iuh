@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import React from 'react';
 import TableStudentInGroup from './Table';
 import TitleManager from '@/components/ui/Title';
@@ -13,14 +13,17 @@ function DetailGroupSupportPage() {
   const { data, isLoading } = handleGetGroupStudentById(grStudentId);
 
   return (
-    <Paper sx={{ py: 20, px: 10 }}>
+    <Paper sx={{ py: 10, px: 10 }}>
       {isLoading ? (
         <SekeletonTable />
       ) : (
         <>
           <TitleManager mb={2}>Nhóm sinh viên {data?.groupStudent?.info?.name}</TitleManager>
-          <TitleManager fontWeight={500} color={'grey.800'} mb={10}>
-            Đề tài: {data?.groupStudent?.info?.topicName}
+          <TitleManager fontWeight={500} color={'grey.600'} mb={10}>
+            Đề tài: {" "}
+            <Typography component={'span'} variant='body1' fontWeight={'bold'} color='grey.700'>
+              {data?.groupStudent?.info?.topicName}
+            </Typography>
           </TitleManager>
           <TableStudentInGroup members={data?.groupStudent?.members} />
         </>

@@ -102,19 +102,19 @@ function TableManagamentGroupStudent(props: any) {
         headerAlign: 'center',
         renderCell: (params: any) => (
           <Box display={'flex'} gap={6}>
-            <Tooltip title='Chi tiết'>
-              <IconButton
-                color='primary'
-                onClick={() => navigate(`/group-students/detail/${params.row.id}`)}
-              >
+            <Tooltip
+              onClick={() => navigate(`/group-students/detail/${params.row.id}`)}
+              title='Chi tiết'
+            >
+              <IconButton color='primary'>
                 <Icon icon='clarity:file-group-line' style={{ color: '#0288d1' }} />
               </IconButton>
             </Tooltip>
-            <Tooltip title='Xóa nhóm'>
-              <IconButton
-                color='primary'
-                onClick={() => handleOpenModalDelete(params.row.id, params.row.name)}
-              >
+            <Tooltip
+              onClick={() => handleOpenModalDelete(params.row.id, params.row.name)}
+              title='Xóa nhóm'
+            >
+              <IconButton color='primary'>
                 <Icon icon='carbon:close-filled' style={{ color: ' #f2365b' }} />
               </IconButton>
             </Tooltip>
@@ -136,11 +136,11 @@ function TableManagamentGroupStudent(props: any) {
           width: '100%',
           minHeight: 450,
         }}
-        limit={300}
+        limit={150}
         rowHeight={75}
         columns={basicColumns}
         totalItems={totalItems}
-        totalPages={totalPage}
+        isPanigation={false}
         disableColumnFilter
       />
       <DeleteGroupStudentModal

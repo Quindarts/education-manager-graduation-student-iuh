@@ -11,7 +11,7 @@ export default function CustomTextField(props: CustomTextFieldProps) {
   return (
     <Box mb={8} component='fieldset'>
       {label && (
-        <InputLabel htmlFor={id} sx={{ mb: 4, color: 'grey.900', fontSize: 14, fontWeight: 600 }}>
+        <InputLabel htmlFor={id} sx={{ mb: 4, color: 'grey.700', fontSize: 13, fontWeight: 600 }}>
           {label}{' '}
           {required && (
             <Typography variant='h4' component={'span'} color='error'>

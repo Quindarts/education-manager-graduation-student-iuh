@@ -75,9 +75,9 @@ function TableEdit(props) {
         headerAlign: 'left',
         renderCell: (params) => (
           <>
-            {params.row.comment ? (
-              <Box width={'100%'}>
-                <Typography variant='body1' color='initial'>
+            {params.value ? (
+              <Box px={2} py={4} width={'100%'}>
+                <Typography variant='body1' component={'i'} color='initial'>
                   {params.row.comment}
                 </Typography>
                 <Button
@@ -92,6 +92,7 @@ function TableEdit(props) {
               </Box>
             ) : (
               <Button
+                sx={{ fontStyle: 'italic' }}
                 onClick={() =>
                   handleOpenComment(eventId, params.row.id, params.row.name, params.row.comment)
                 }
@@ -112,14 +113,19 @@ function TableEdit(props) {
         sx={{
           bgcolor: 'white',
           width: '100%',
-          minHeight: 450,
+          height: 400,
+          minHeight: 400,
         }}
-        limit={300}
-        rowHeight={75}
+        rowHeight={70}
         columns={basicColumns}
         totalItems={totalItems}
         totalPages={totalPage}
         disableColumnFilter
+        isPanigation={false}
+        disableDensitySelector
+        disableColumnMenu
+        disableVirtualization
+        disableColumnSelector
       />
       <CommentEventModal
         onClose={handleCloseComment}

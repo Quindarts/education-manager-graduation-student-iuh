@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import useSidebar from '@/hooks/ui/useSidebar';
 
 function Navbar() {
-
   //TODO HOOK STORE
   const { handleToggleSidebar, isOpen } = useSidebar();
 
@@ -76,12 +75,13 @@ function Navbar() {
             <Icon width={30} icon={isOpen ? 'grommet-icons:previous' : 'ep:menu'} />
           </Box>
           <img width={100} src='/images/logo-light.webp' />
-          <Box>
+          <Box mt={10} mx={4}>
             <Typography
               fontWeight={'bold'}
               textTransform={'uppercase'}
               variant='body1'
-              color='primary'
+              color='primary.dark'
+              lineHeight={1}
             >
               Đại học công nghiệp Tp.HCM
             </Typography>
@@ -89,13 +89,13 @@ function Navbar() {
               fontWeight={'bold'}
               textTransform={'uppercase'}
               variant='body2'
-              color='primary'
+              color='primary.dark'
             >
               Khoa Công nghệ thông tin
             </Typography>
           </Box>
         </Box>
-            
+
         <Box display='flex' alignItems='center' gap={6}>
           <Notification />
           <ProfileMenu />

@@ -19,7 +19,7 @@ export default defineConfig({
     cssCodeSplit: true,
   },
   esbuild: {
-    drop: ['console', 'debugger']
+    // drop: ['console', 'debugger']
   },
 
 });

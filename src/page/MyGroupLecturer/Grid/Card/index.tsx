@@ -28,19 +28,25 @@ function CardGroupLecturer(props: any) {
       <CardMedia
         component='img'
         alt='green iguana'
-        height={50}
-        width={50}
+        height={100}
+        width={100}
         sx={{
           objectFit: 'contain',
         }}
         image='/images/group_student_3.webp'
       />
       <CardContent>
-        <Typography gutterBottom variant='h5' color='primary.dark' fontWeight={600} component='div'>
-          {checktTypeGroupLecturer(group.type.toLowerCase())} - {group.name}
+        <Typography
+          gutterBottom
+          fontSize={14}
+          color='primary.dark'
+          fontWeight={600}
+          variant='h6'
+        >
+          {checktTypeGroupLecturer(group.type.toLowerCase())} {group.name}
         </Typography>
 
-        <Typography variant='h6' fontWeight={500} color='primary.dark'>
+        <Typography fontWeight={500} color='primary.dark'>
           Thành viên :
         </Typography>
         <Box>

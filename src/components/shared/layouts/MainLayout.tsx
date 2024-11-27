@@ -57,7 +57,7 @@ function MainLayout() {
                 >
                   <Navbar />
 
-                  <Box my={4}>
+                  <Box mt={8} mb={4}>
                     <BreadCrumbRouting />
                   </Box>
                   <React.Suspense fallback={<GlobalLoading />}>

@@ -7,7 +7,7 @@ const theme = createTheme({
     values: {
       xs: 0,
       sm: 600,
-      md: 960,
+      md: 1024,
       lg: 1200,
       xl: 1400,
     },
@@ -15,34 +15,33 @@ const theme = createTheme({
 
   palette,
   typography: {
-    fontFamily: ['Poppins', 'sans-serif'].join(','),
+    fontFamily: ['Roboto', 'sans-serif'].join(','),
     fontSize: 12,
     h1: {
-      fontSize: 24,
-    },
-    h2: {
-      fontSize: 22,
-    },
-    h3: {
       fontSize: 20,
     },
-    h4: {
+    h2: {
       fontSize: 18,
     },
-    h5: {
-      fontSize: 16,
-    },
-    h6: {
+    h3: {
       fontSize: 14,
     },
+    h4: {
+      fontSize: 12,
+    },
+    h5: {
+      fontSize: 12,
+    },
+    h6: {
+      fontSize: 12,
+    },
     body1: {
-      fontSize: 13,
+      fontSize: 12,
     },
     body2: {
       fontSize: 12,
     },
   },
-
   spacing: 2,
   shape: {
     borderRadius: 4,

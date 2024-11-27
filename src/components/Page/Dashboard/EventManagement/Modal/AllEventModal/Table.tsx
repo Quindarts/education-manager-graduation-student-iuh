@@ -82,14 +82,19 @@ function TableEventManagement(props: any) {
         sx={{
           bgcolor: 'white',
           width: '100%',
-          minHeight: 450,
+          minHeight: 400,
+          height:400
         }}
         limit={300}
+        isPanigation={false}
         rowHeight={75}
         columns={basicColumns}
         totalItems={totalItems}
         totalPages={totalPage}
         disableColumnFilter
+        disableColumnMenu
+        disableDensitySelector
+        disableColumnSelector
       />
       <EditModal
         id={openEditEvent.id}

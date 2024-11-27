@@ -13,9 +13,9 @@ export const validateSchemaStudent = Yup.object().shape({
     phone: Yup.string()
         .matches(/^0\d{9}$/, 'Số điện thoại phải bắt đầu bằng số 0 và gồm 10 chữ số'),
     // .required('Số điện thoại không được để trống'),
-    email: Yup.string().email('Email phải hợp lệ')
-        .required('Email không được để trống'),
-    dateOfBirth: Yup.date().required(),
+    // email: Yup.string().email('Email phải hợp lệ')
+    //     .required('Email không được để trống'),
+    // dateOfBirth: Yup.date().required(),
 
 });
 

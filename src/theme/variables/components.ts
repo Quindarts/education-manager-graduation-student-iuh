@@ -11,24 +11,22 @@ const components: Components = {
       }),
 
       sizeSmall: ({ theme }: any) => ({
-        fontSize: theme.typography.h5,
+        fontSize: 12,
         height: 35,
       }),
       sizeMedium: ({ theme }: any) => ({
-        fontSize: theme.typography.h5,
+        fontSize: 12,
       }),
       sizeLarge: ({ theme }: any) => ({
-        fontSize: theme.typography.h3,
+        fontSize: 12,
       })
     }
   },
-  
+
   MuiInputBase: {
     styleOverrides: {
       root: ({ theme }: any) => ({
-        // backgroundColor: theme.palette.common.white,
         borderRadius: 8,
-        // minHeight: textFieldHeight,
         outline: 'none',
         border: 'none',
         overflow: 'hidden',

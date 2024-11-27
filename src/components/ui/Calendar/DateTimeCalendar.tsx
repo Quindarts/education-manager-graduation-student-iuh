@@ -27,7 +27,7 @@ function DateTimeCalendar(props: CalendarPropsType) {
         {label && (
           <InputLabel
             htmlFor={id}
-            sx={{ mb: 4, color: 'grey.900', fontWeight: '500', fontSize: '13px' }}
+            sx={{ mb: 3, color: 'grey.700', fontWeight: '500', fontSize: 13 }}
           >
             {label}
           </InputLabel>

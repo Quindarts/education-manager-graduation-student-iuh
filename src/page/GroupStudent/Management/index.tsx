@@ -15,16 +15,15 @@ export function removeVietnameseTones(str: string) {
     .replace(/Đ/g, 'D');
 }
 export const handleSearch = (data: any[], typeSearch: string, keywords: string) => {
-  const dataSort = data?.slice()?.sort((a, b) => a.name.localeCompare(b.name));
   if (keywords.length === 0 || typeSearch.length === 0) {
-    return dataSort;
+    return data;
   }
   let query = removeVietnameseTones(keywords?.toLowerCase());
   const filteredData = data?.filter((gr: any) => {
     let val = removeVietnameseTones(gr[`${typeSearch}`]?.toLowerCase());
     return val?.includes(query);
   });
-  return filteredData?.sort((a, b) => a.name.localeCompare(b.name));
+  return filteredData;
 };
 function GroupStudentManagement() {
   //[FETCH]
@@ -72,7 +71,6 @@ function GroupStudentManagement() {
         <SekeletonUI />
       ) : (
         <TableManagamentGroupStudent
-          totalPage={1}
           totalItems={
             data
               ? handleSearch(

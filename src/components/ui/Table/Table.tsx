@@ -70,8 +70,8 @@ export default function Table(props: Props) {
         }}
         localeText={{
           ...viVN.components.MuiDataGrid.defaultProps.localeText,
-          toolbarColumns: 'Điều chỉnh Cột hiển thị',
-          toolbarDensity: 'Thay đổi độ cao của dòng',
+          toolbarColumns: 'Chọn trường thông tin',
+          toolbarDensity: 'Độ rộng nội dung',
         }}
         slots={{
           ...slots,
@@ -111,9 +111,10 @@ export default function Table(props: Props) {
         }}
         sx={{
           fontSize: {
-            xs: 12,
-            md: 12,
-            xl: 14,
+            xs: 9,
+            md: 10,
+            lg: 11,
+            xl: 12.5,
           },
           color: 'black',
           '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
@@ -163,15 +164,22 @@ export default function Table(props: Props) {
             ' ::-webkit-scrollbar-thumb:hover': {
               background: 'secondary.main',
             },
+
+            '& .MuiDataGrid-row:nth-of-type(odd)': {
+              bgcolor: 'grey.50', // Màu dòng lẻ
+            },
+            '& .MuiDataGrid-row:nth-of-type(even)': {
+              bgcolor: 'white', // Màu dòng chẵn
+            },
           },
           ...sx,
         }}
         {...rest}
       />
-      <Box display='flex' alignItems='center' justifyContent='space-between' mr={2} mt={4}>
+      <Box display='flex' alignItems='center' justifyContent='space-between' mr={4} mt={4}>
         <Box display='flex' alignItems='center'>
           {isLimit && (
-            <Box width={190}>
+            <Box width={150}>
               <DropDown
                 onChange={(e: any) => {
                   handleChangeLimit(e.target.value);
@@ -189,9 +197,9 @@ export default function Table(props: Props) {
               />
             </Box>
           )}
-          <Typography variant='body1' sx={{ mx: 2 }} display='flex'>
+          <Typography variant='body1' ml={4} sx={{ mx: 2 }} color={'grey.600'} display='flex'>
             Tổng số dòng:{'  '}
-            <Typography variant='body1' fontWeight={600}>
+            <Typography variant='body1' sx={{ ml: 1 }} color={'grey.600'} fontWeight={600}>
               {totalItems}
             </Typography>
           </Typography>
