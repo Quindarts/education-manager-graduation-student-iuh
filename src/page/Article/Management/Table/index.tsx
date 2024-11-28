@@ -12,13 +12,11 @@ import { env } from '@/utils/env';
 
 interface Props {
   rows: any[];
-  totalItems: number;
-  totalPage: number;
   page: number;
 }
 
 function TableArticleManagement(props: Props) {
-  const { rows, totalItems, totalPage, page } = props;
+  const { rows } = props;
   //handle
   const [openAcceptModal, setOpenEditAcceptModal] = useState({
     articleId: '',
@@ -63,7 +61,7 @@ function TableArticleManagement(props: Props) {
       {
         headerName: 'Mã nhóm',
         field: 'groupName',
-        flex: 0.4,
+        flex: 0.3,
         align: 'center',
         headerAlign: 'center',
       },
@@ -81,16 +79,16 @@ function TableArticleManagement(props: Props) {
         headerName: 'Ngày đăng bài',
         field: 'publicDate',
         flex: 0.4,
-        headerAlign: 'left',
-        align: 'left',
+        headerAlign: 'right',
+        align: 'right',
         renderCell: (params) => <Typography>{dayjs(params.value).format('DD/MM/YYYY')}</Typography>,
       },
       {
         headerName: 'Điểm cộng',
         field: 'bonusScore',
         flex: 0.3,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'right',
+        headerAlign: 'right',
       },
       {
         headerName: 'Link',
@@ -104,7 +102,7 @@ function TableArticleManagement(props: Props) {
             href={`${env.API_URL}/${params.value}`}
             target='_blank'
             variant='body1'
-            color='initial'
+            color='primary'
           >
             Xem chi tiết
           </Typography>
@@ -173,11 +171,10 @@ function TableArticleManagement(props: Props) {
           }}
           rowHeight={100}
           columns={basicColumns}
-          totalItems={totalItems}
-          totalPages={totalPage}
-          page={page}
+          totalItems={rows ? rows.length : 0}
           disableColumnFilter
-          minHeight={400}
+          minHeight={350}
+          isPanigation={false}
         />
       </Box>
       <AcceptArticleModal

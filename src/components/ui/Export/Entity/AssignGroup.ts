@@ -48,7 +48,7 @@ export class AssginGroupClassExport extends EntityExportExcel {
         let groups: { [key: string]: string[] } = {};
         this.getSheet().eachRow((row: Row, index: number) => {
 
-            if (index >=3) {
+            if (index >= 2) {
                 row.eachCell((cell, colNumber) => {
                     cell.border = {
                         top: { style: 'thin' },
@@ -69,7 +69,7 @@ export class AssginGroupClassExport extends EntityExportExcel {
                             fgColor: { argb: 'FFFFFFFF' },
                         };
                         cell.font = {
-                            color: { argb: 'FF1F2EBE' }, // #1f2ebe
+                            color: { argb: 'FF1F2EBE' }, 
                             bold: true
                         };
                         cell.alignment = {
@@ -106,7 +106,7 @@ export class AssginGroupClassExport extends EntityExportExcel {
                 this.getSheet().mergeCells(`${startAlpha}${startAddress.substring(1)}:${startAlpha}${endInt}`);
                 // STT	 STT Nhóm	Mã SV	Họ tên SV	GVHD	#HĐPB	fullName	Ghi chú
                 // A       B           C       D           E       F       G           H
-              // Mã nhóm  Mã SV	  Họ tên SV	  #HĐPB	   Ghi chú	 HD TV	 STT	     GVHD
+                // Mã nhóm  Mã SV	  Họ tên SV	  #HĐPB	   Ghi chú	 HD TV	 STT	     GVHD
 
                 this.getSheet().mergeCells(`${'E'}${startAddress.substring(1)}:${'E'}${endInt}`);
                 this.getSheet().mergeCells(`${'F'}${startAddress.substring(1)}:${'D'}${endInt}`);
@@ -115,27 +115,13 @@ export class AssginGroupClassExport extends EntityExportExcel {
             }
         }
     }
-   
+
     protected customizeColumns = () => {
         this.getSheet().getColumn(1).alignment = {
             vertical: "middle",
         }
     }
-
-    private addTitleAndLogo = () => {
-        let mainTitle = this.sheet.insertRow(1, [this.mainTitle])
-        mainTitle.font = { name: "Times New Roman", size: 20, bold: true };
-        mainTitle.alignment = { horizontal: 'center' };
-        mainTitle.alignment.vertical = "middle";
-        mainTitle.alignment.textRotation = 'vertical'
-        this.getSheet().mergeCells('A1:H1');
-        let subTitle = this.getSheet().insertRow(2, [this.subTitle]);
-        subTitle.font = { size: 14, bold: true };
-        subTitle.alignment = { horizontal: 'center' };
-        this.getSheet().mergeCells('A2:H2');
-    };
     public customizeSheet(): void {
-        this.addTitleAndLogo()
         this.customizeHeaderColumn();
         this.customizeCells()
         this.customizeColumns()

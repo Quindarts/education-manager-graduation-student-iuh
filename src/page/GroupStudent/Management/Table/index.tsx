@@ -1,7 +1,6 @@
 import Table from '@/components/ui/Table/Table';
-import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import { Icon } from '@iconify/react';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +8,7 @@ import DeleteGroupStudentModal from '../Modal/DeleteModal';
 import { isPassStatus } from '@/utils/validations/groupStudent.validation';
 
 function TableManagamentGroupStudent(props: any) {
-  const { rows, totalItems, totalPage } = props;
+  const { rows, totalItems } = props;
   const navigate = useNavigate();
   const [openModalDelete, setOpenModalDelete] = useState({
     isOpen: false,
@@ -39,35 +38,27 @@ function TableManagamentGroupStudent(props: any) {
       },
       {
         headerName: 'Tên Đề tài',
-        field: 'name6',
+        field: 'topicName',
         flex: 3,
         headerAlign: 'left',
         renderCell: (params: any) => {
-          return (
-            <Typography>
-              {params.row.topicName ? params.row.topicName : 'Chưa có đề tài'}
-            </Typography>
-          );
+          return <Typography>{params.value ? params.value : 'Chưa có đề tài'}</Typography>;
         },
       },
       {
         headerName: 'GV hướng dẫn',
-        field: 'name3',
+        field: 'lecturerName',
         flex: 1.2,
         align: 'left',
         headerAlign: 'left',
         renderCell: (params: any) => {
-          return (
-            <Typography>
-              {params.row.lecturerName ? params.row.lecturerName : 'Chưa có giảng viên HD'}
-            </Typography>
-          );
+          return <Typography>{params.value ? params.value : 'Chưa có giảng viên HD'}</Typography>;
         },
       },
 
       {
         headerName: 'Thành viên',
-        field: 'field',
+        field: 'members',
         flex: 1.6,
         align: 'left',
         headerAlign: 'left',
@@ -124,9 +115,6 @@ function TableManagamentGroupStudent(props: any) {
     ],
     [],
   );
-  const { onImportGroupStudent } = useGroupStudent();
-  const { mutate: importGr } = onImportGroupStudent();
-
   return (
     <Box>
       <Table

@@ -133,6 +133,22 @@ function TableStudentInGroup({ members }: any) {
       },
     },
     {
+      headerName: 'Điểm cộng',
+      field: 'bonusScore',
+      flex: 1,
+      align: 'right',
+      headerAlign: 'right',
+      renderCell: (params: any) => {
+        return (
+          <Typography variant='body1'>
+            {params.row.value
+              ? `${params.row.value}`
+              : 'Chưa có'}
+          </Typography>
+        );
+      },
+    },
+    {
       headerName: 'Điểm Trung bình',
       field: 'tb',
       flex: 1,

@@ -62,8 +62,6 @@ const useExportExcel = () => {
                     fileName,
                     sheetName,
                     headerColumn,
-                    'Học kì 1 2024 - 2025',
-                    'Đại học công nghiệp thành phố hồ chí minh'
                 )
                 GrAssignExport.setData(data)
                 GrAssignExport.customizeSheet()

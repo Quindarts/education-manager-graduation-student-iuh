@@ -19,11 +19,10 @@ export const handleSearch = (data: any[], typeSearch: string, keywords: string) 
     return data;
   }
   let query = removeVietnameseTones(keywords?.toLowerCase());
-  const filteredData = data?.filter((gr: any) => {
+  return data?.filter((gr: any) => {
     let val = removeVietnameseTones(gr[`${typeSearch}`]?.toLowerCase());
     return val?.includes(query);
   });
-  return filteredData;
 };
 function GroupStudentManagement() {
   //[FETCH]

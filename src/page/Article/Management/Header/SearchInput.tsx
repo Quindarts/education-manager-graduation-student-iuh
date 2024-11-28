@@ -6,14 +6,10 @@ import {
   MenuItem,
   Select,
   FormControl,
-  InputLabel,
   BoxProps,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import useParams from '@/hooks/ui/useParams';
-const SEARCH_FIELD = {
-  name: 'tên bài báo',
-};
 
 function SearchInput({ sx }: BoxProps) {
   const [sort, setSort] = useState('ASC');
@@ -46,11 +42,11 @@ function SearchInput({ sx }: BoxProps) {
         fullWidth
         defaultValue={getQueryField('keywords')}
         size='small'
-        onChange={onSearchChange} 
+        onChange={onSearchChange}
         placeholder='Nhập tên bài báo'
         InputProps={{
           startAdornment: (
-            <InputAdornment  position='start'>
+            <InputAdornment position='start'>
               <SearchIcon sx={{ color: 'primary.dark' }} />
             </InputAdornment>
           ),
