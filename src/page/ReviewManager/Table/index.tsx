@@ -120,6 +120,7 @@ function TableManagerReviewScore(props: any) {
         page={1}
         handleChangePage={() => {}}
         disableColumnFilter
+        isPanigation={false}
       />
       <EditEvaluationModal
         termId={termId}

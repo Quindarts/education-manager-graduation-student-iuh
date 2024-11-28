@@ -10,7 +10,7 @@ import EditModal from '@/components/Page/Topic/Modal/EditModal';
 import InfoModal from '@/components/Page/Topic/Modal/InfoModal';
 
 function TableTopicLecturer(props: any) {
-  const { rows, totalItems, limit, totalPage, page, ...rest } = props;
+  const { rows, totalItems, limit, totalPage, isPanigation, page, ...rest } = props;
   //handle
   const [openInfoModal, setOpenEditInfoModal] = useState({ topicId: '', isOpen: false });
   const handleCloseInfoModal = () => {
@@ -131,6 +131,7 @@ function TableTopicLecturer(props: any) {
           minHeight: 500,
         }}
         rowHeight={75}
+        isPanigation={isPanigation}
         columns={LecturerColumn}
         totalItems={rows.length}
         totalPages={totalPage}

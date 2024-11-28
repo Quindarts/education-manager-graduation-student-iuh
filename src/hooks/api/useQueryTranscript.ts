@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "react-query"
 import { useTerm } from "./useQueryTerm"
-import { BodyEvaluation, createTranscripts, getEvaluationsForScoring, getTranscriptByGroupStudent, getTranscriptOfStudentInGroup, getTranscriptsByTypeEvaluation, getUnTranscriptGroupStudentsByType, updateTranscript } from "@/services/apiTranscipts"
+import { BodyEvaluation, createTranscripts, getEvaluationsForScoring, getTranscriptByGroupStudent, getTranscriptOfStudentInGroup, getTranscriptsByTypeEvaluation, getTranscriptsToExport, getUnTranscriptGroupStudentsByType, updateTranscript } from "@/services/apiTranscipts"
 import { useSnackbar } from "notistack"
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 export enum QueryKeysScoreStudent {
@@ -8,7 +8,8 @@ export enum QueryKeysScoreStudent {
     getUnTranscriptGroupStudentsByType = 'getUnTranscriptGroupStudentsByType',
     getTranscriptsByTypeEvaluation = 'getTranscriptsByTypeEvaluation',
     getTranscriptsByGroupStudent = "getTranscriptsByGroupStudent",
-    getTranscriptOfStudentInGroup = "getTranscriptOfStudentInGroup"
+    getTranscriptOfStudentInGroup = "getTranscriptOfStudentInGroup",
+    getTranscriptExport = "getTranscriptExport"
 }
 
 const useTranscript = () => {
@@ -56,11 +57,18 @@ const useTranscript = () => {
             }
         })
     }
+    const handleExportTranscripts = () => {
+        return useQuery([QueryKeysScoreStudent.getTranscriptExport, termStore.currentTerm.id], () => getTranscriptsToExport(termStore.currentTerm.id), {
+            refetchOnMount: true,
+        })
+    }
     return {
         handleGetTranscriptsByGroupStudent,
         handleGetTranscriptsByTypeEvaluation,
         hanleGetEvalutaionsForScoring,
         handleGetTranscriptOfStudentInGroup,
+        handleExportTranscripts,
+        
         onCreateTranscripts,
         onUpdateTranscripts,
         handleGetUnTranscriptGroupStudentsByType

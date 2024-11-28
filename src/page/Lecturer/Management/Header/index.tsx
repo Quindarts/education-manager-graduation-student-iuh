@@ -36,8 +36,7 @@ const SEARCH_DROP_VALUE = [
 function HeaderLecturer() {
   const [openAddModal, setOpenAddModal] = useState(false);
 
-  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort } =
-    useSearch();
+  const { onSearchChange, getQueryField, onTypeSearchChange, setTypeSort } = useSearch();
 
   const handleCloseAddModal = () => {
     setOpenAddModal(false);
@@ -72,7 +71,7 @@ function HeaderLecturer() {
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={SEARCH_DROP_VALUE}
             />
-            <Box width={120}>
+            <Box width={110}>
               <SplitButton icon='bx:sort' options={optionSort} handleClick={handleClick} />
             </Box>
           </Box>

@@ -14,7 +14,7 @@ function TableDetailGroupSupport({ members }) {
       {
         headerName: 'Thông tin sinh viên',
         field: 'name',
-        flex: 1.7,
+        flex: 1.6,
         headerAlign: 'left',
         renderCell: (params: any) => {
           return (
@@ -92,6 +92,22 @@ function TableDetailGroupSupport({ members }) {
         },
       },
       {
+        headerName: 'Điểm cộng',
+        field: 'bonusScore',
+        flex: 1,
+        align: 'right',
+        headerAlign: 'right',
+        renderCell: (params: any) => {
+          return (
+            <Typography variant='body1'>
+              {params.row.value
+                ? `${params.row.value}`
+                : 'Chưa có'}
+            </Typography>
+          );
+        },
+      },
+      {
         headerName: 'Điểm Trung bình',
         field: 'tb',
         flex: 1,
@@ -109,8 +125,8 @@ function TableDetailGroupSupport({ members }) {
       },
       {
         headerName: 'Tình trạng',
-        field: 'abc',
-        flex: 1,
+        field: 'status',
+        flex: 1.2,
         align: 'center',
         headerAlign: 'center',
         renderCell: (params: any) => {
@@ -123,18 +139,18 @@ function TableDetailGroupSupport({ members }) {
                   py: 1,
                   textAlign: 'center',
                 }}
-                color={getStatusStudentStyle(params.row.status)}
-                bgcolor={getStatusStudentStyle(params.row.status)}
+                color={getStatusStudentStyle(params.value)}
+                bgcolor={getStatusStudentStyle(params.value)}
                 variant='body1'
               >
-                {getStatusGroup(params.row.status)}
+                {getStatusGroup(params.value)}
               </Typography>
             </Box>
           );
         },
       },
       {
-        headerName: '',
+        headerName: 'Chức năng',
         field: 'name8',
         align: 'center',
         headerAlign: 'center',

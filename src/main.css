@@ -50,12 +50,19 @@ fieldset {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #022d84; /* Màu của thumb scrollbar */
+  background: #e0e6f1; /* Màu của thumb scrollbar */
   border-radius: 20px; /* Độ cong của thumb scrollbar */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #132e65; /* Màu của thumb scrollbar khi hover */
+  background: hsl(221, 62%, 50%); /* Màu của thumb scrollbar khi hover */
 }
 
-/* Áp dụng cho tất cả các scrollbars */
+@media screen and (min-width: 1024px) {
+  html,
+  p,
+  div,
+  span {
+    font-size: 13px !important;
+  }
+}

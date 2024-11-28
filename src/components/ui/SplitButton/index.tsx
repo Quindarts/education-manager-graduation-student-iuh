@@ -59,7 +59,7 @@ export default function SplitButton(props: any) {
             bgcolor: 'white',
             boxShadow: '0px!important',
             border: '1px solid #E0E0E0',
-            height: 37,
+            height: 36,
             fontSize: 14,
           }}
           size='small'

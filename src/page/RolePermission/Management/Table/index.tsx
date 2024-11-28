@@ -34,7 +34,7 @@ function TableManagementRole(props: any) {
       align: 'center',
       renderCell(params) {
         return (
-          <Typography variant='body1' fontWeight={600} color='primary'>
+          <Typography variant='body1' fontWeight={500}>
             {params.row.username}
           </Typography>
         );
@@ -103,8 +103,7 @@ function TableManagementRole(props: any) {
                   bgcolor={checkRoleLecturerColor(role)}
                   variant='body1'
                   color='initial'
-                >
-                </Typography>
+                ></Typography>
                 {checkRoleLecturer(role)}
               </Typography>
             ))}
@@ -163,6 +162,7 @@ function TableManagementRole(props: any) {
           disableColumnMenu
           disableColumnFilter
           disableColumnSelector
+          disableDensitySelector
           minHeight={400}
         />
       </Box>

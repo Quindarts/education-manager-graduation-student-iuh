@@ -29,9 +29,7 @@ function MyTopic() {
   return (
     <Box>
       <Paper sx={{ py: 10, px: 10 }} elevation={0}>
-        <TitleManager icon='quill:list' mb={8}>
-          Danh sách đề tài
-        </TitleManager>
+        <TitleManager mb={8}>Danh sách đề tài</TitleManager>
         <HeaderTopic />
         {isLoading || isFetching ? (
           <SekeletonUI />
@@ -56,6 +54,7 @@ function MyTopic() {
                     )
                   : []
               }
+              isPanigation={false}
             />
           </Box>
         )}

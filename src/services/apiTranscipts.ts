@@ -12,6 +12,9 @@ const URL = `/api/v1/transcripts`
 export const getSatisticPoints = async (termId: string): Promise<ResponseType> => {
     return await axiosConfig.get(`${URL}/statistic?termId=${termId}`)
 }
+export const getTranscriptsToExport = async (termId: string): Promise<ResponseType> => {
+    return await axiosConfig.get(`${URL}/export?termId=${termId}`)
+}
 //[GET] EVALUATION
 export const getEvaluationsForScoring: any = (termId: string, type: string) => {
     return axiosConfig.get(`/api/v1/evaluations/scores?termId=${termId}&type=${type}`)

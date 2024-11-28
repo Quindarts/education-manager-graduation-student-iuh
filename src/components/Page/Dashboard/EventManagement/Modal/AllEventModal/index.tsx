@@ -12,9 +12,8 @@ function AllEventModal(props) {
   const { handleGetEvents } = useEvent();
   const { data: fetchEvents, isLoading: loadEvent } = handleGetEvents();
   return (
-    
     <Modal maxWidth='lg' onClose={onClose} open={open}>
-      <Box sx={{ px: 10 }}>
+      <Box sx={{ px: 10, py: 10 }}>
         <TitleManager mb={10} textTransform={'uppercase'} icon='fluent-color:calendar-clock-24'>
           Danh sách tất cả sự kiện
         </TitleManager>

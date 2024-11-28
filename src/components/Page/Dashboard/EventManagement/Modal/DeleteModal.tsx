@@ -32,7 +32,7 @@ function DeleteModal(props: any) {
         <Box borderRadius='50%' padding={3} sx={{ background: 'rgba(255,49,111,0.2)' }}>
           <Icon color='#b31d1d82' height={70} width={70} icon='fa-solid:trash-restore' />{' '}
         </Box>
-        <Typography variant='h6' mt={10} mb={14}>
+        <Typography variant='h6' textAlign={'center'} mt={10} mb={14}>
           Bạn có chắc chắn muốn xóa sự kiện{' '}
           <Typography variant='body1' component={'span'} color='error'>
             {name}

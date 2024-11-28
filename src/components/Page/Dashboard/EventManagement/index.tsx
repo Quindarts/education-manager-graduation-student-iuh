@@ -85,9 +85,9 @@ export default function EventManagement() {
     <>
       <Paper sx={{ px: 10, py: 10, fontSize: '16px', color: '#03437f' }}>
         <Header />
-        <Typography textAlign={'left'} mb={6} variant='body1' color='initial'>
+        <Typography textAlign={'left'} mb={6} variant='body1' color='grey.600'>
           Tất cả sự kiện đã tạo:{' '}
-          <Typography variant='body1' color='grey.600' fontWeight={'bold'} component='span'>
+          <Typography variant='body1' color='grey.700' fontWeight={'bold'} component='span'>
             {fetchEvents?.events?.length} sự kiện{' '}
           </Typography>
           <Typography

@@ -146,7 +146,7 @@ const useGroupStudent = () => {
                     enqueueSnackbar(err.message, { variant: 'error' })
                 }
                 else
-                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+                    enqueueSnackbar("Cập nhật thất bại", { variant: 'error' })
             },
         })
     }
@@ -162,7 +162,7 @@ const useGroupStudent = () => {
                     enqueueSnackbar(err.message, { variant: 'error' })
                 }
                 else
-                    enqueueSnackbar("Cập nhật mật khẩu giảng vien thất bại", { variant: 'error' })
+                    enqueueSnackbar("Cập nhật thất bại", { variant: 'error' })
             },
         })
     }

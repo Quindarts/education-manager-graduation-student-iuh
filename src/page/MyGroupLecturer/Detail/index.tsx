@@ -33,6 +33,7 @@ function MyDetailGroupLecturer() {
               <Box mx={4} mt={2}>
                 {data?.groupLecturer?.keywords
                   .split(',')
+                  .filter((k) => k !== '')
                   .map((key: string) => (
                     <ChipTag key={key} color='success' sx={{ mx: 2 }} label={key} />
                   ))}

@@ -32,8 +32,14 @@ function ScoreStudentPage() {
           }}
           width={370}
         >
-          <Box mb={4} display={'flex'} justifyContent={'space-between'} gap={10}>
-            <TitleManager icon='quill:list'>Nhóm sinh viên </TitleManager>
+          <Box
+            mb={4}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+            gap={10}
+          >
+            <TitleManager>Nhóm sinh viên </TitleManager>
             <Box width={170}>
               <DropDown
                 onChange={(e: any) => {
@@ -60,7 +66,7 @@ function ScoreStudentPage() {
             )}
           </Box>
         </Box>
-        <Box sx={{ width: 'calc(100% - 320px)', minHeight: 570 }}>
+        <Box sx={{ width: 'calc(100% - 150px)', minHeight: 570 }}>
           {!currentDataRow ? (
             <Box display={'flex'} flexDirection={'column'} height={570}>
               <Box

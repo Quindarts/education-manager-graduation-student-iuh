@@ -21,7 +21,7 @@ function Calendar(props: CalendarPropsType) {
         {label && (
           <InputLabel
             htmlFor={id}
-            sx={{ mb: 4, color: 'grey.900', fontWeight: 'bold', fontSize: '13px' }}
+            sx={{ mb: 3, color: 'grey.700', fontWeight: 600, fontSize: 13 }}
           >
             {label}
           </InputLabel>

@@ -406,8 +406,7 @@ function TableManagamentTerm(props: any) {
         minHeight={350}
         columns={basicColumns}
         totalItems={rows.length}
-        totalPages={1}
-        page={1}
+        isPanigation={false}
         handleChangePage={() => {}}
         disableColumnFilter
       />

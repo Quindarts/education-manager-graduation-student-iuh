@@ -22,7 +22,7 @@ const DropDown: React.FC<SelectPropsType> = (props: SelectPropsType) => {
       {label && (
         <InputLabel
           htmlFor={id}
-          sx={{ mb: 4, color: 'grey.900', fontWeight: 600, fontSize: '13px' }}
+          sx={{ mb: 3, color: 'grey.700', fontWeight: 600, fontSize: 12 }}
         >
           {label}
         </InputLabel>
@@ -36,7 +36,7 @@ const DropDown: React.FC<SelectPropsType> = (props: SelectPropsType) => {
         sx={{
           transition: 'all 0.5s ease-in-out',
           background: 'white',
-          height: 38,
+          height: 36,
         }}
       >
         {placeholder && (

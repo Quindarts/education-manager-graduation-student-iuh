@@ -45,7 +45,7 @@ function SearchInput({
   return (
     <Box sx={{ ...sx, display: 'flex', gap: 3, marginTop: 4, mx: 4 }}>
       <FormControl sx={{ width: 200, padding: 0 }}>
-        <InputLabel size='small' id='search-type-label'>
+        <InputLabel size='small' sx={{ fontSize: 14 }} id='search-type-label'>
           Tìm kiếm theo
         </InputLabel>
         <Select

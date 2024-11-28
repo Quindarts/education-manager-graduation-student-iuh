@@ -32,14 +32,9 @@ function SearchInput({ sx }: BoxProps) {
   return (
     <Box sx={{ ...sx, display: 'flex', gap: 3, width: '100%' }}>
       <FormControl sx={{ width: 180, padding: 0 }}>
-        <InputLabel size='small' id='search-type-label'>
-          Cột tìm kiếm
-        </InputLabel>
         <Select
           size='small'
           label='Cột tìm kiếm'
-          labelId='search-type-label'
-          id='search-type'
           value={typeSearch}
           defaultValue='topicName'
           onChange={(e) => setTypeSearch(e.target.value)}
@@ -51,9 +46,9 @@ function SearchInput({ sx }: BoxProps) {
       </FormControl>
 
       <TextField
-        label={`Tìm kiếm theo ${SEARCH_FIELD[typeSearch]}`}
         variant='outlined'
         fullWidth
+        placeholder={`Tìm kiếm theo ${SEARCH_FIELD[typeSearch]}`}
         defaultValue={getQueryField('keywords')}
         size='small'
         onChange={onSearchChange}

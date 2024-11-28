@@ -15,7 +15,7 @@ function CreateGroupLecturer() {
     setValue(newValue);
   };
   //[API]
-  const {  handleGetCategories } = useAnalysis();
+  const { handleGetCategories } = useAnalysis();
   const { data: dataFetch } = handleGetCategories();
 
   return (
