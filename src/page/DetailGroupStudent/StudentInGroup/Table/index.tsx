@@ -86,51 +86,24 @@ function TableStudentInGroup({ members }: any) {
 
     {
       headerName: 'Điểm Hướng dẫn',
-      field: 'hd',
+      field: 'advisorScore',
       flex: 1,
       align: 'right',
       headerAlign: 'right',
-      renderCell: (params: any) => {
-        return (
-          <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[0]
-              ? `${(parseFloat(params.row.transcripts[0]?.sumScore) / 10).toFixed(2)}`
-              : 'Chưa có'}
-          </Typography>
-        );
-      },
     },
     {
       headerName: 'Điểm Phản biện',
-      field: 'pb',
+      field: 'reviewerScore',
       flex: 1,
       align: 'right',
       headerAlign: 'right',
-      renderCell: (params: any) => {
-        return (
-          <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[1]
-              ? `${(parseFloat(params.row.transcripts[1]?.sumScore) / 10).toFixed(2)}`
-              : 'Chưa có'}
-          </Typography>
-        );
-      },
     },
     {
       headerName: 'Điểm Báo cáo',
-      field: 'bc',
+      field: 'reportScore',
       flex: 1,
       align: 'right',
       headerAlign: 'right',
-      renderCell: (params: any) => {
-        return (
-          <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[2]
-              ? `${(parseFloat(params.row.transcripts[2]?.sumScore) / 10).toFixed(2)}`
-              : 'Chưa có'}
-          </Typography>
-        );
-      },
     },
     {
       headerName: 'Điểm cộng',
@@ -138,31 +111,13 @@ function TableStudentInGroup({ members }: any) {
       flex: 1,
       align: 'right',
       headerAlign: 'right',
-      renderCell: (params: any) => {
-        return (
-          <Typography variant='body1'>
-            {params.row.value
-              ? `${params.row.value}`
-              : 'Chưa có'}
-          </Typography>
-        );
-      },
     },
     {
       headerName: 'Điểm Trung bình',
-      field: 'tb',
+      field: 'totalAvgScore',
       flex: 1,
       align: 'right',
       headerAlign: 'right',
-      renderCell: (params: any) => {
-        return (
-          <Typography variant='body1'>
-            {params.row.transcripts.length > 0 && params.row.transcripts[3]
-              ? `${(parseFloat(params.row.transcripts[3]?.sumScore) / 10).toFixed(2)}`
-              : 'Chưa có'}
-          </Typography>
-        );
-      },
     },
     {
       headerName: 'Tình trạng',
@@ -199,13 +154,16 @@ function TableStudentInGroup({ members }: any) {
         <Box display={'flex'} gap={2}>
           <Tooltip
             title='Cập nhật trạng thái sinh viên'
-            onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
+            onClick={() => handleOpenModalStatusStudent(params.row.studentId, params.row.status)}
           >
             <IconButton size='small'>
               <Icon width={20} style={{ color: '#1e4990' }} icon='mdi:user-edit' />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Xóa khỏi nhóm' onClick={() => handleOpenStudentLeaveGroup(params.row.id)}>
+          <Tooltip
+            title='Xóa khỏi nhóm'
+            onClick={() => handleOpenStudentLeaveGroup(params.row.studentId)}
+          >
             <IconButton size='small' color='primary'>
               <Icon icon='clarity:remove-solid' style={{ color: '#d63b3b' }} width={20} />
             </IconButton>

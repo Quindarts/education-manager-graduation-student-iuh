@@ -19,7 +19,7 @@ function TermPage() {
       <Paper sx={{ py: 10, px: 10 }} elevation={0}>
         <Box justifyContent={'space-between'} display={'flex'}>
           <TitleManager icon='quill:list' mb={0}>
-            Danh sách học kì {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
+            Quản lý học kì của ngành {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
           </TitleManager>
           <HeaderTerm />
         </Box>

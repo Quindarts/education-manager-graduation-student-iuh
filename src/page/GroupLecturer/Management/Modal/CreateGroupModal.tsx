@@ -4,7 +4,7 @@ import CreateGroupLecturer from '../../Create';
 
 function CreateGroupModal({ open, onClose }) {
   return (
-    <Modal maxWidth='xl' open={open} onClose={onClose}>
+    <Modal fullScreen open={open} onClose={onClose}>
       <CreateGroupLecturer />
     </Modal>
   );

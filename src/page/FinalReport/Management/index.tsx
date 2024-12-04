@@ -1,13 +1,13 @@
 import { Box, Paper } from '@mui/material';
 import React from 'react';
 import HeaderArticle from './Header';
-import TableArticleManagement from './Table';
-import useArticle from '@/hooks/api/useQueryArticle';
+import TableFinalReportManagement from './Table';
 import SekeletonTable from '@/components/ui/Sekeleton';
 import { convertArticleTable } from '@/utils/convertDataTable';
 import TitleManager from '@/components/ui/Title';
 import { removeVietnameseTones } from '@/utils/search';
 import useParams from '@/hooks/ui/useParams';
+import useFinalReport from '@/hooks/api/useQueryFinalReport';
 import { useMajor } from '@/hooks/api/useQueryMajor';
 const SEARCH_FIELD = {
   name: 'tên bài báo',
@@ -23,29 +23,27 @@ const handleSearch = (data: any[], typeSearch: string, keywords: string) => {
   });
 };
 
-function ArticleManagement() {
+function FinalReportManagement() {
   const { getQueryField } = useParams();
-  const { majorStore } = useMajor();
-  const { handleGetAllArticle } = useArticle();
-  const { data: fetchArticle, isLoading } = handleGetAllArticle();
+  const { handlegetAllFinalReport } = useFinalReport();
+  const { data: fetchFinalReport, isLoading } = handlegetAllFinalReport();
   return (
     <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box justifyContent={'space-between'} display={'flex'} mb={8} mt={2}>
         <TitleManager icon='quill:list'>
-          Quản lý các bài báo khoa học của ngành{' '}
-          {majorStore?.currentMajor ? majorStore.currentMajor.name : ''}
+          Nộp file báo cáo cuối kỳ
         </TitleManager>
       </Box>
       <HeaderArticle />
       {isLoading ? (
         <SekeletonTable />
       ) : (
-        <TableArticleManagement
+        <TableFinalReportManagement
           page={1}
           rows={
-            fetchArticle?.articles
+            fetchFinalReport?.finalReports
               ? handleSearch(
-                  convertArticleTable(fetchArticle?.articles),
+                  convertArticleTable(fetchFinalReport?.finalReports),
                   getQueryField('searchField'),
                   getQueryField('keywords'),
                 )
@@ -57,4 +55,4 @@ function ArticleManagement() {
   );
 }
 
-export default ArticleManagement;
+export default FinalReportManagement;

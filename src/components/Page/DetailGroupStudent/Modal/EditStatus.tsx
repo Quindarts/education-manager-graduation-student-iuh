@@ -26,14 +26,14 @@ const DROP_STATUS_STUDENT_TERM_VALUE = [
     _id: 'FAIL_REPORT',
     name: 'Không hoàn thành',
   },
-  {
-    _id: 'PASS_ADVISOR',
-    name: 'Được ra phản biện',
-  },
-  {
-    _id: 'PASS_REVIEWER',
-    name: 'Được ra hội đồng phản biện',
-  },
+  // {
+  //   _id: 'PASS_ADVISOR',
+  //   name: 'Được ra phản biện',
+  // },
+  // {
+  //   _id: 'PASS_REVIEWER',
+  //   name: 'Được ra hội đồng phản biện',
+  // },
   {
     _id: 'PASS_REPORT',
     name: 'Hoàn thành',
@@ -49,10 +49,10 @@ const LECTURER_DROP_STATUS_STUDENT_TERM_VALUE = [
     _id: 'FAIL_ADVISOR',
     name: 'Không được ra phản biện',
   },
-  {
-    _id: 'PASS_ADVISOR',
-    name: 'Được ra phản biện',
-  },
+  // {
+  //   _id: 'PASS_ADVISOR',
+  //   name: 'Được ra phản biện',
+  // },
 ];
 
 function EditStatusStudentTerm(props: any) {

@@ -13,12 +13,11 @@ function CardLecturer(props: any) {
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       sx={{
-        my: 10,
+        my: 2,
         py: 4,
         px: 2,
         display: 'flex',
         cursor: 'pointer',
-        gap: 20,
         justifyContent: 'space-around',
         borderRadius: 1,
         boxSizing: 'border-box',
@@ -33,20 +32,25 @@ function CardLecturer(props: any) {
     >
       <Box flex={1}>
         <Box px={10}>
-          <Typography variant='h6' color='grey.600'>
+          <Typography variant='body1' color='grey.600'>
             Giảng viên
             <Typography mx={4} fontSize={14} color={'grey.900'} component='span'>
               {lecturer.fullName} - {lecturer.username}
+              <Typography variant='body1' mt={0} color={'grey.800'}>
+                Ngành: <Typography component='span'>{lecturer.majorName}</Typography>
+              </Typography>
             </Typography>
+            <Box sx={{ justifyContent: 'end', display: 'flex' }}>
+              {keywords.map((keyword: any) => (
+                <ChipTag sx={{ mx: 1 }} color='info' size='small' label={keyword} />
+              ))}
+              {keywords.length === 0 && (
+                <Typography variant='body1' color='grey.600'>
+                  Chưa có từ khóa
+                </Typography>
+              )}
+            </Box>
           </Typography>
-          <Typography variant='body1' mt={2} color={'grey.800'}>
-            Ngành: <Typography component='span'>{lecturer.majorName}</Typography>
-          </Typography>
-          <Box sx={{ justifyContent: 'end', display: 'flex' }}>
-            {keywords.map((keyword: any) => (
-              <ChipTag sx={{ mx: 1, my: 2 }} color='info' size='small' label={keyword} />
-            ))}
-          </Box>
         </Box>
       </Box>
     </Paper>

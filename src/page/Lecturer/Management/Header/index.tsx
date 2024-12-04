@@ -101,7 +101,7 @@ function HeaderLecturer() {
 
         <ModalUpload
           label=''
-          labelToolTip='Thêm đề tài bằng file excel'
+          labelToolTip='Thêm giảng viên bằng file excel'
           entityUpload={TypeEntityUpload.LECTURER}
           termId={currentTerm.id}
           fileNameModel='Mẫu file excel danh sách giảng viên KLTN'

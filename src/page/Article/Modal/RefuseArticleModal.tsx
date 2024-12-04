@@ -14,7 +14,7 @@ function RefuseArticleModal(props: ModalStatusArticleProps) {
   const { mutate: updateReject } = onUpdateStatusArticle(articleId as string);
 
   const handleSubmit = () => {
-    updateReject({ status: 'REJECTED', comment: comment });
+    updateReject({ status: 'REJECTED', comment: comment, bonusScore: 1 });
     onClose();
   };
   return (

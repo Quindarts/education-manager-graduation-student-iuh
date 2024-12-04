@@ -20,10 +20,6 @@ const SEARCH_DROP_VALUE = [
     _id: 'username',
     name: 'Mã Sinh viên',
   },
-  {
-    _id: 'email',
-    name: 'Email',
-  },
 ];
 function HeaderStudent() {
   const { majorStore } = useMajor();

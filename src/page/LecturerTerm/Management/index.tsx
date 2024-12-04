@@ -65,7 +65,7 @@ function LecturerTermManagement() {
     <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box justifyContent={'space-between'} display={'flex'} mb={8} mt={2}>
         <TitleManager icon='quill:list'>
-          Danh sách giảng viên {majorStore?.currentMajor ? majorStore.currentMajor.name : ''} -{' '}
+          Danh sách giảng viên tham gia hướng dẫn - chấm đề tài chuyên ngành {majorStore?.currentMajor ? majorStore.currentMajor.name : ''} {' '}
           {termStore.currentTerm.name}
         </TitleManager>
         <Typography variant='body1' fontWeight={600} mt={4} color='grey.800'>

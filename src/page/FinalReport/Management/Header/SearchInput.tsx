@@ -6,22 +6,14 @@ import {
   MenuItem,
   Select,
   FormControl,
-  InputLabel,
   BoxProps,
-  Button,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import useParams from '@/hooks/ui/useParams';
-const SEARCH_FIELD = {
-  topicName: 'tên đề tài',
-  lecturerName: 'giản viêng hướng dẫn',
-  name: 'mã nhóm',
-  studentName: 'Họ tên sinh viên',
-};
 
 function SearchInput({ sx }: BoxProps) {
   const [sort, setSort] = useState('ASC');
-  const [typeSearch, setTypeSearch] = useState('lecturerName');
+  const [typeSearch, setTypeSearch] = useState('name');
 
   useEffect(() => {
     setTypeSort(sort);
@@ -35,25 +27,25 @@ function SearchInput({ sx }: BoxProps) {
       <FormControl sx={{ width: 180, padding: 0 }}>
         <Select
           size='small'
-          label='Cột tìm kiếm'
+          labelId='search-type-label'
+          id='search-type'
           value={typeSearch}
-          defaultValue='topicName'
+          defaultValue='name'
           onChange={(e) => setTypeSearch(e.target.value)}
         >
           <MenuItem value='topicName'>Tên đề tài</MenuItem>
-          <MenuItem value='lecturerName'>Giảng viên HD</MenuItem>
           <MenuItem value='name'>Mã nhóm</MenuItem>
-          <MenuItem value='studentName'>Họ tên sinh viên</MenuItem>
+          <MenuItem value='lecturerName'>Họ tên giảng viên</MenuItem>
         </Select>
       </FormControl>
 
       <TextField
         variant='outlined'
         fullWidth
-        placeholder={`Tìm kiếm theo ${SEARCH_FIELD[typeSearch]}`}
         defaultValue={getQueryField('keywords')}
         size='small'
         onChange={onSearchChange}
+        placeholder='Nhập tên bài báo'
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>

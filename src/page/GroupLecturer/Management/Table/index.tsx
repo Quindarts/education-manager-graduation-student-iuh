@@ -136,10 +136,8 @@ function TableManagamentGroupLecturer(props: any) {
           }}
           rowHeight={100}
           columns={basicColumns}
-          totalItems={1}
-          totalPages={1}
-          page={1}
-          handleChangePage={() => {}}
+          totalItems={rows?.length}
+          isPanigation={false}
           disableColumnFilter
         />
       </Box>
@@ -156,6 +154,7 @@ function TableManagamentGroupLecturer(props: any) {
         groupLecturerName={openModalDelete.groupLecturerName}
         open={openModalDelete.isOpen}
         onClose={handleCloseModalDelete}
+        
       />
     </>
   );

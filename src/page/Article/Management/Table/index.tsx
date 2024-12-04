@@ -21,13 +21,14 @@ function TableArticleManagement(props: Props) {
   const [openAcceptModal, setOpenEditAcceptModal] = useState({
     articleId: '',
     name: '',
+    bonnusScore: 1,
     isOpen: false,
   });
   const handleCloseAcceptModal = () => {
     setOpenEditAcceptModal({ ...openAcceptModal, isOpen: false });
   };
-  const handleOpenAcceptModal = (articleId: string, name: string) => {
-    setOpenEditAcceptModal({ articleId, name, isOpen: true });
+  const handleOpenAcceptModal = (articleId: string, name: string, bonnusScore: number) => {
+    setOpenEditAcceptModal({ articleId, name, bonnusScore, isOpen: true });
   };
 
   //handle
@@ -56,15 +57,19 @@ function TableArticleManagement(props: Props) {
   const handleOpenResetArticleModal = (articleId: string, name: string) => {
     setOpenResetArticleModal({ articleId, name, isOpen: true });
   };
+  const [openDetailArticleModal, setOpenDetailArticleModal] = useState({
+    articleId: '',
+    isOpen: false,
+  });
+  const handleCloseDetailArticleModal = () => {
+    setOpenDetailArticleModal({ ...openDetailArticleModal, isOpen: false });
+  };
+  const handleOpenDetailArticleModal = (articleId: string) => {
+    setOpenDetailArticleModal({ articleId, isOpen: true });
+  };
+
   const basicColumns: GridColDef[] = useMemo(
     () => [
-      {
-        headerName: 'Mã nhóm',
-        field: 'groupName',
-        flex: 0.3,
-        align: 'center',
-        headerAlign: 'center',
-      },
       {
         headerName: 'Tên bài báo',
         field: 'name',
@@ -72,9 +77,22 @@ function TableArticleManagement(props: Props) {
       },
       {
         headerName: 'Tác giả',
-        field: 'author',
-        flex: 0.7,
+        field: 'fullName',
+        flex: 0.6,
+        align: 'left',
+        headerAlign: 'left',
       },
+      {
+        headerName: 'MSSV',
+        field: 'username',
+        flex: 0.5,
+      },
+      {
+        headerName: 'Mã nhóm',
+        field: 'groupName',
+        flex: 0.3,
+      },
+
       {
         headerName: 'Ngày đăng bài',
         field: 'publicDate',
@@ -91,7 +109,7 @@ function TableArticleManagement(props: Props) {
         headerAlign: 'right',
       },
       {
-        headerName: 'Link',
+        headerName: 'Link file',
         field: 'link',
         flex: 0.4,
         align: 'center',
@@ -120,7 +138,9 @@ function TableArticleManagement(props: Props) {
               <Box display={'flex'} gap={2}>
                 <Button
                   size='small'
-                  onClick={() => handleOpenAcceptModal(params.row.id, params.row.name)}
+                  onClick={() =>
+                    handleOpenAcceptModal(params.row.id, params.row.name, params.row.bonusScore)
+                  }
                   color='success'
                   sx={{
                     fontSize: {
@@ -180,6 +200,7 @@ function TableArticleManagement(props: Props) {
       <AcceptArticleModal
         open={openAcceptModal.isOpen}
         articleId={openAcceptModal.articleId}
+        bonnusScore={openAcceptModal.bonnusScore}
         name={openAcceptModal.name}
         onClose={handleCloseAcceptModal}
       />
@@ -194,6 +215,11 @@ function TableArticleManagement(props: Props) {
         articleId={openResetArticleModal.articleId}
         name={openResetArticleModal.name}
         onClose={handleCloseArticleModal}
+      />
+      <AcceptArticleModal
+        open={openDetailArticleModal.isOpen}
+        onClose={handleCloseDetailArticleModal}
+        articleId={openDetailArticleModal.articleId}
       />
     </>
   );

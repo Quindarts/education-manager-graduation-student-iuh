@@ -10,6 +10,7 @@ import SplitButton from '@/components/ui/SplitButton';
 import ExportExcelButton from '@/components/ui/Export';
 import AddModal from '../../../components/Page/Topic/Modal/AddModal';
 import UpdateQuantityTopicModal from '../../../components/Page/Topic/Modal/UpdateQuantityTopic';
+import AddTopicRoleHeadModal from '@/components/Page/Topic/Modal/AddTopicRoleHeadModal';
 
 const SEARCH_DROP_VALUE = [
   {
@@ -19,6 +20,10 @@ const SEARCH_DROP_VALUE = [
   {
     name: 'Tên Giảng viên HD',
     _id: 'lecturerName',
+  },
+  {
+    name: 'Mã đề tài',
+    _id: 'key',
   },
 ];
 function HeaderTopic() {
@@ -140,7 +145,12 @@ function HeaderTopic() {
           </Box>
         )}
       </Box>
-      <AddModal open={openAddModal} onClose={handleCloseAddModal} />
+      {!currentRole.includes('all') ? (
+        <AddModal open={openAddModal} onClose={handleCloseAddModal} />
+      ) : (
+        <AddTopicRoleHeadModal open={openAddModal} onClose={handleCloseAddModal} />
+      )}
+
       <UpdateQuantityTopicModal
         open={openChangeQuantityModal}
         onClose={handleCloseChangeQuantityModal}

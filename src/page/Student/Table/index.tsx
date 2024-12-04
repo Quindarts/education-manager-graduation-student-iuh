@@ -92,9 +92,9 @@ function TableManagamentStudent(props: any) {
       {
         headerName: 'MSSV',
         field: 'username',
-        flex: 0.4,
-        headerAlign: 'right',
-        align: 'right',
+        flex: 0.35,
+        headerAlign: 'center',
+        align: 'center',
         renderCell(params) {
           return (
             <Typography variant='body1' fontWeight={400}>
@@ -106,7 +106,7 @@ function TableManagamentStudent(props: any) {
       {
         headerName: 'Họ & Tên đệm',
         field: 'firstName',
-        flex: 0.9,
+        flex: 0.7,
         headerAlign: 'left',
         align: 'left',
         renderCell(params) {
@@ -133,41 +133,37 @@ function TableManagamentStudent(props: any) {
       },
 
       {
-        headerName: 'Email',
-        field: 'email',
-        flex: 1.5,
+        headerName: 'Tên đề tài',
+        field: 'topicName',
+        flex: 1.6,
         align: 'left',
         headerAlign: 'left',
         renderCell(params) {
           return (
             <Typography variant='body1' color='grey.900'>
-              {params.row.email ? params.row.email : 'Chưa có thông tin'}
+              {params.value ? params.value : 'Chưa có thông tin'}
             </Typography>
           );
         },
       },
       {
-        headerName: 'Giới tính',
-        field: 'gender',
-        flex: 0.5,
+        headerName: 'GVHD',
+        field: 'lecturerName',
+        flex: 0.8,
         align: 'left',
         headerAlign: 'left',
-        renderCell: (params: any) => {
-          return <Typography variant='body1'>{checkGender(params.row.gender)}</Typography>;
+        renderCell(params) {
+          return (
+            <Typography variant='body1' color='grey.900'>
+              {params.value ? params.value : 'Chưa có thông tin'}
+            </Typography>
+          );
         },
-      },
-      {
-        headerName: 'Lớp danh nghĩa',
-        field: 'clazzName',
-        flex: 0.7,
-        align: 'left',
-
-        headerAlign: 'left',
       },
       {
         headerName: 'Chức năng',
         field: 'name8',
-        flex: 1,
+        flex: 0.8,
         align: 'center',
         headerAlign: 'center',
         renderCell: (params: any) => (
@@ -186,7 +182,7 @@ function TableManagamentStudent(props: any) {
                 <Icon
                   width={20}
                   style={{ color: '#034eb1' }}
-                  icon={params.row.isActive ? 'bi:unlock' : 'material-symbols:lock-outline'}
+                  icon={params.row.isActive ? 'uil:unlock' : 'material-symbols:lock-outline'}
                 />
               </IconButton>
             </Tooltip>
@@ -211,7 +207,7 @@ function TableManagamentStudent(props: any) {
               title='Cấp lại mật khẩu'
             >
               <IconButton color='primary' size='small'>
-                <Icon icon='carbon:password' width={20} style={{ color: '#0288d1' }} />
+                <Icon icon='material-symbols-light:key' width={24} style={{ color: '#0288d1' }} />
               </IconButton>
             </Tooltip>
             <Tooltip
@@ -250,6 +246,7 @@ function TableManagamentStudent(props: any) {
           sx={{
             bgcolor: 'white',
           }}
+          rowHeight={80}
           isLimit={true}
           columns={basicColumns}
           totalItems={totalItems}

@@ -19,7 +19,7 @@ function CreateGroupLecturer() {
   const { data: dataFetch } = handleGetCategories();
 
   return (
-    <Paper sx={{ px: 4 }} elevation={0}>
+    <Paper sx={{ px: 10 }} elevation={0}>
       <Box sx={{ width: '100%', typography: 'body1', mt: 4 }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -61,10 +61,10 @@ function CreateGroupLecturer() {
             </TabList>
           </Box>
           <TabPanel value='1'>
-            <CreateInstructorGroupPage categories={dataFetch?.keywords} />
+            <CreateInstructorGroupPage />
           </TabPanel>
           <TabPanel value='2'>
-            <CreateReportGroupPage categories={dataFetch?.keywords} />
+            <CreateReportGroupPage />
           </TabPanel>
         </TabContext>
       </Box>

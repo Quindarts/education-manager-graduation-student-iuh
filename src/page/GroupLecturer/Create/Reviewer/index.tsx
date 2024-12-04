@@ -15,7 +15,7 @@ import {
   handleSearch,
 } from '@/page/GroupLecturer/Context';
 
-function CreateInstructorGroupPage({ categories }) {
+function CreateInstructorGroupPage() {
   const [task, setTask] = React.useState<any[]>();
   const { onCreateGroupLecturer } = useGroupLecturer();
   const { handleGetListLecturerTerms } = useLecturerTerm();
@@ -109,7 +109,7 @@ function CreateInstructorGroupPage({ categories }) {
         sx={{
           flex: 1,
         }}
-        elevation={1}
+        elevation={0}
       >
         <Box px={4} bgcolor={'grey.100'} pt={2} pb={4} mb={3}>
           <Box mt={10}>
@@ -123,7 +123,7 @@ function CreateInstructorGroupPage({ categories }) {
           </Box>
         </Box>
 
-        <Box sx={{ overflowY: 'auto', px: 20, bgcolor: 'grey.50' }} height={380} px={2}>
+        <Box sx={{ overflowY: 'auto', px: 20, bgcolor: 'grey.50' }} height={500} px={2}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (

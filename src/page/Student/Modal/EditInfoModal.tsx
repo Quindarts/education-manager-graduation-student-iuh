@@ -71,7 +71,7 @@ function EditInfoModal(props: ModalProps & EditModalType) {
               dateOfBirth: data?.student?.dateOfBirth ? dayjs(data?.student?.dateOfBirth) : null,
               clazzName: `${data?.student?.clazzName ? data?.student?.clazzName : 'DH'}`,
               gender: `${data?.student?.gender}`,
-              majorId: `${data?.student?.majorId}`,
+              majorName: `${data?.student?.majorName}`,
               typeTraining: `${data?.student?.typeTraining}`,
             }}
             onSubmit={(values: any) => handleSubmitStudent(values)}
@@ -171,25 +171,9 @@ function EditInfoModal(props: ModalProps & EditModalType) {
                   helperText={`${errors.phone && touched.phone ? errors.phone : ''}`}
                 />
                 <Box sx={{ mb: 8 }}>
-                  <DropDown
-                    label='Chuyên ngành'
-                    value={values.majorId}
-                    disabled
-                    onChange={(e) => {
-                      setFieldValue('majorId', e.target.value);
-                    }}
-                    options={convertMajorDropDown(majorStore.allMajor)}
-                    placeholder='Chuyên ngành'
-                  />
+                  <CustomTextField value={values.majorName} label='Chuyên ngành' disabled />
                 </Box>
-                {/* <DropDown
-                  label='Loại đào tạo'
-                  value={`${values.typeTraining}`}
-                  onChange={(e) => {
-                    setFieldValue('typeTraning', e.target.value);
-                  }}
-                  options={TRAINING_DROP_VALUE}
-                /> */}
+
                 <Box mt={10} justifyContent={'end'} gap={4} display={'flex'}>
                   <Button variant='contained' color='primary' onClick={onClose}>
                     <Icon icon='mdi:close-outline' />

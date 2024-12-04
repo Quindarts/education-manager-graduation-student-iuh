@@ -1,3 +1,4 @@
+import { getKeywords } from './../../services/apiTopic';
 import { queryClient } from "@/providers/ReactQueryClientProvider"
 import { MESSAGE_STORE_SUCCESS, TypeMess } from "@/utils/messages/SuccessMess"
 import { useSnackbar } from "notistack"
@@ -25,6 +26,7 @@ export enum QueryTopic {
     getTopicToExport = "getTopicToExport",
     getTopicLecturerToExport = "getTopicLecturerToExport",
     getTopicsByLecturerTermId = "getTopicsByLecturerTermId",
+    getKeywordsOfTopic = "getKeywordsOfTopic",
     //LECTURER
     getTopicsByMe = 'getTopicsByMe',
     getTopicsByGroupLecturerAssigned = "getTopicsByGroupLecturerAssigned"
@@ -61,20 +63,22 @@ export const useTopic = () => {
         permissions.push('crud')
         return permissions
     }
-
+    //[GET KEYWORDS]
+    const handleGetKeywordsOfTopics = () => {
+        return useQuery([QueryTopic.getKeywordsOfTopic, termId], () => TopicServices.getKeywords(termId), {
+            enabled: !!termId,
+        })
+    }
     //[GET BY ID]
     const handleTopicById = (topicId: string) => {
         return useQuery([QueryTopic.getTopicById, topicId], () => TopicServices.getTopicById(topicId), {
             enabled: !!topicId,
-            staleTime: 1000,
-            cacheTime: 1000,
         })
     }
     const hanldeGetGroupsByTopic = (topicId: string) => {
         return useQuery([QueryTopic.getGroupByTopic, termStore.currentTerm.id, topicId], () => getGroupByTopic(termStore.currentTerm.id, topicId), {
             enabled: !!topicId
         })
-
     }
     const handleSearchTopic = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
@@ -249,6 +253,7 @@ export const useTopic = () => {
         handleTopicsByTermByMajor,
         handleGetTopicToExport,
         handleTopicsByLecturerByTerm,
+        handleGetKeywordsOfTopics,
         handleGetTopicsByGroupLecturerAssigned,
         handleGetTopicLecturerToExport,
         handleTopicsByMe,

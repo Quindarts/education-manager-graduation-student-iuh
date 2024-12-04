@@ -92,12 +92,11 @@ export const convertGroupMembersTable = (groupMember: any[]) => {
     let newArr: any[] = [];
     groupMember.map((mem: any) => {
       newArr.push({
-        id: mem.student.id,
-        studentId: mem.student.id,
+        id: mem.studentId,
+        studentId: mem.studentId,
         isAdmin: mem.isAdmin,
         status: mem.status,
-        transcripts: mem.transcripts,
-        ...mem.student,
+        ...mem,
       });
     });
     return newArr;

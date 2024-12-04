@@ -23,7 +23,7 @@ import { INDUSTRIES } from '@/utils/constants';
 import ChipTag from '@/components/ui/Badge';
 import { checkIndustry } from '@/utils/validations/lecturer.validation';
 
-function CreateReportGroupPage({ categories }) {
+function CreateReportGroupPage() {
   const [currentGroup, setCurrentGroup] = useState<string>(
     `${ENUM_GROUP_LECTURER_REPORT ? ENUM_GROUP_LECTURER_REPORT[0]?._id : ''}`,
   );
@@ -118,6 +118,7 @@ function CreateReportGroupPage({ categories }) {
         sx={{
           flex: 1,
         }}
+        elevation={0}
       >
         {' '}
         <Box px={4} bgcolor={'grey.100'} py={2} mb={4}>
@@ -129,7 +130,7 @@ function CreateReportGroupPage({ categories }) {
             />
           </Box>
         </Box>
-        <Box sx={{ overflowY: 'auto', px: 20, bgcolor: 'grey.50' }} height={380} px={2}>
+        <Box sx={{ overflowY: 'auto', px: 20, bgcolor: 'grey.50' }} height={500} px={2}>
           {isLoading || !isFetched ? (
             <SekeletonUI />
           ) : (

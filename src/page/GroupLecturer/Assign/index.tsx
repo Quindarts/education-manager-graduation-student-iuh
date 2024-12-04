@@ -16,6 +16,7 @@ import SearchInput from './SearchInput';
 
 import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 import ChipTag from '@/components/ui/Badge';
+import { useTopic } from '@/hooks/api/useQueryTopic';
 
 const convertToTagList = (data: any) => {
   if (!data) return [];
@@ -70,6 +71,8 @@ const handleTags = (tags: any[], topicsOfGroup: any[]) => {
 function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: any) {
   //TODO: [Api hooks]
   const { handleGetGroupLecturerById } = useGroupLecturer();
+  const { handleGetKeywordsOfTopics } = useTopic();
+  const { data: getKeys, isSuccess: successKeys } = handleGetKeywordsOfTopics();
   const { handletGetGroupStudentNoAssignByType, onCreateAssignByType, onUpdateAssignByType } =
     useAssign();
   const {
@@ -107,6 +110,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
     type: 'NONE',
     value: false,
   });
+
   //TODO [Handle event]
   const { enqueueSnackbar } = useSnackbar();
 
@@ -230,12 +234,14 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
     handleClearTags();
   };
   useEffect(() => {
-    if (successGetGrLecturer && successGetGrStd) {
+    if (successGetGrLecturer && successGetGrStd && successKeys) {
       setInfoGroupLecturer((pre) => ({
         ...pre,
         members: fetchGrLecturer?.groupLecturer?.members,
       }));
-      setTags(convertToTagList(fetchGrLecturer?.groupLecturer?.keywords?.split(',')));
+      // setTags(convertToTagList(fetchGrLecturer?.groupLecturer?.keywords?.split(',')));
+      setTags(convertToTagList(getKeys?.keywords));
+
       // [Assigned]
       const dataConvert = stylingGrHaveAssigned(fetchGrLecturer?.groupLecturer);
       const initGrHavedAssign = startInitGrHaveAssigned(dataConvert);
@@ -268,7 +274,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
   }, []);
 
   return (
-    <Modal open={open} onClose={onClose} maxWidth='xl' fullWidth>
+    <Modal open={open} onClose={onClose} fullScreen>
       {loadingFetchGrLecturer || loadingFetchGrStudent ? (
         <Box
           width={'100%'}
@@ -281,21 +287,21 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
         </Box>
       ) : (
         <Box>
-          <DialogTitle>
-            <TitleManager
-              sx={{
-                textTransform: 'uppercase',
-              }}
-              variant='h6'
-              icon='pajamas:pencil-square'
-            >
-              Xem/Phân công chấm điểm cho nhóm sinh viên
-            </TitleManager>
-          </DialogTitle>
+          <TitleManager
+            sx={{
+              textTransform: 'uppercase',
+              px: 10,
+              mb: 4,
+            }}
+            variant='h6'
+            icon='pajamas:pencil-square'
+          >
+            Xem/Phân công chấm điểm cho nhóm sinh viên
+          </TitleManager>
 
           <Box sx={{ bgcolor: 'white', px: 6, borderRadius: 4 }}>
-            <Box className='container' width={'full'} display={'flex'} gap={12}>
-              <Paper sx={{ flex: 1 }} elevation={1}>
+            <Box className='container' width={'full'} display={'flex'} gap={10}>
+              <Paper sx={{ flex: 1.4 }} elevation={0}>
                 <Box sx={{ bgcolor: 'grey.100', pt: 2, px: 2, pb: 6, borderRadius: 1 }}>
                   <Box alignItems={'center'} gap={4} mx={4} mb={2} display={'flex'}></Box>
                   <SearchInput
@@ -310,7 +316,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                       sx={{ mx: 4, mb: 2, mt: 6 }}
                       variant='body1'
                       fontWeight={600}
-                      color='primary.dark'
+                      color='grey.700'
                     >
                       Gợi ý từ khóa:
                     </Typography>
@@ -350,11 +356,11 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                     '&::-webkit-scrollbar-thumb': {
                       borderRadius: 10,
                       width: 20,
-                      bgcolor: 'grey.400',
-                      color: 'grey.400',
+                      bgcolor: 'primary.dark',
+                      color: 'primary.dark',
                     },
                   }}
-                  height={360}
+                  height={380}
                 >
                   <Box>
                     {grNeedAssign.length === 0 ? (
@@ -370,12 +376,21 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                         </Typography>
                       </Box>
                     ) : (
-                      <Box sx={{ px: 15, py: 10, bgcolor: 'grey.50' }}>
+                      <Box sx={{ px: 15, py: 4, bgcolor: 'grey.50' }}>
                         {handleTags(tags, handleSearch(grNeedAssign, searchType, searchTerm))
                           .length === 0 ? (
-                          <Typography variant='body1' color='initial'>
-                            Không tìm thấy kết quả...
-                          </Typography>
+                          <Box
+                            display={'flex'}
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                            height={350}
+                            flexDirection={'column'}
+                          >
+                            <img height={140} width={140} src='/images/nodata.webp' />
+                            <Typography variant='body1' color='grey.600'>
+                              Không tìm thấy kết quả phù hợp
+                            </Typography>
+                          </Box>
                         ) : (
                           handleTags(tags, handleSearch(grNeedAssign, searchType, searchTerm))?.map(
                             (group: any) => (
@@ -386,9 +401,9 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                                   bgcolor: 'white',
                                   borderRadius: 2,
                                   px: 10,
-                                  py: 4,
+                                  py: 2,
                                   color: 'white',
-                                  my: 5, // Điều chỉnh khoảng cách
+                                  my: 2, // Điều chỉnh khoảng cách
                                   cursor: 'pointer',
                                   border: '2px solid #E1E0E0FF',
                                   '&:hover': {
@@ -404,23 +419,20 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                                 onDragEnd={(e) => handleOnDrageStart(e, 'LECTURER')}
                               >
                                 <Box>
-                                  <Typography
-                                    variant='body1'
-                                    color={'primary.dark'}
-                                    fontWeight={'500'}
-                                  >
-                                    Nhóm sinh viên {group?.name}
+                                  <Typography variant='body1' color={'grey.700'} fontWeight={'800'}>
+                                    Nhóm {group?.name}
+                                    <Typography
+                                      component='span'
+                                      color={'grey.800'}
+                                      fontWeight={'400'}
+                                    >
+                                      <span>{' - '}</span>
+                                      {group?.topicName}
+                                    </Typography>
                                   </Typography>
-                                  <Typography
-                                    variant='body1'
-                                    color={'primary.dark'}
-                                    fontWeight={'400'}
-                                  >
-                                    <span>Tên Đề tài : {'  '}</span>
-                                    {group?.topicName}
-                                  </Typography>
-                                  <Typography variant='body1' color={'grey.700'} fontWeight={'500'}>
-                                    <span>Giảng viên hướng dẫn : {'  '}</span>
+
+                                  <Typography variant='body1' color={'grey.700'}>
+                                    <span>GVHD : {'  '}</span>
                                     {group?.lecturerName}
                                   </Typography>
                                 </Box>
@@ -474,7 +486,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                       color: 'grey.400',
                     },
                   }}
-                  height={400}
+                  height={380}
                   flex={1}
                   onDragLeave={(e: any) => handleOnDragLeave(e)}
                   onDragEnter={(e) => handleOnDragEnter(e)}
@@ -482,9 +494,26 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                   onDragOver={(e) => handleOnDragOver(e)}
                   onDrop={(e) => handleOnDrop(e, 'NEED')}
                 >
-                  <Typography variant='h5' fontWeight={500} color='grey.700'>
-                    Nhóm sinh viên đã phân công
-                  </Typography>
+                  <Box display={'flex'} justifyContent={'space-between'}>
+                    <Typography variant='h5' fontWeight={500} color='grey.700'>
+                      Nhóm sinh viên đã phân công
+                    </Typography>
+                    <Box>
+                      {fetchGrLecturer?.groupLecturer?.keywords?.split(',').filter((k) => k !== '')
+                        ?.length === 0 ? (
+                        <Typography component={'span'} variant='body2' color='grey.600'>
+                          Chưa có từ khóa.
+                        </Typography>
+                      ) : (
+                        <Box sx={{ mx: 6 }}>
+                          {fetchGrLecturer?.groupLecturer?.keywords
+                            ?.split(',')
+                            ?.map((k: any) => <ChipTag label={k} sx={{ mx: 2 }} />)}
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+
                   <Box>
                     <Box>
                       {grHaveAssigned.length === 0 ? (
@@ -535,18 +564,10 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                               display='flex'
                             >
                               <Box>
-                                <Typography
-                                  variant='body1'
-                                  color={'primary.dark'}
-                                  fontWeight={'500'}
-                                >
+                                <Typography variant='body1' color={'grey.700'} fontWeight={'500'}>
                                   Nhóm sinh viên {group?.name}
                                 </Typography>
-                                <Typography
-                                  variant='body1'
-                                  color={'primary.dark'}
-                                  fontWeight={'500'}
-                                >
+                                <Typography variant='body1' color={'grey.700'} fontWeight={'500'}>
                                   <span>Tên Đề tài : {'  '}</span>
                                   {group?.topicName}
                                 </Typography>

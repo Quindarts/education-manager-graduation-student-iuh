@@ -75,7 +75,7 @@ function HeaderLecturerTerm() {
         </Box>
         <Tooltip title={'Thêm tất cả GV chuyên ngành tham gia HD'}>
           <Button size='small' color='primary' variant='contained' onClick={handleImport}>
-            <Icon width={16} icon='fe:import' />
+            <Icon width={24} icon='proicons:arrow-import' />
           </Button>
         </Tooltip>
         <Tooltip title={'Thêm giảng viên HD'}>

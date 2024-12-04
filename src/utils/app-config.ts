@@ -76,6 +76,10 @@ export const APP_ROUTES = {
     MANAGEMENT: '/articles',
     DETAILS: '/articles/:id',
   },
+  FINAL_REPORT: {
+    MANAGEMENT: '/final-reports',
+    DETAILS: '/final-reports/:id',
+  },
   USER: {
     MANAGEMENT: '/users',
     DETAIL: '/users/:userId',
@@ -151,8 +155,14 @@ export const APP_SIDEBAR = [
   {
     icon: 'ph:article-ny-times',
     text: 'Quản lý bài báo',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE],
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE,RoleCheck.LECTURER],
     link: APP_ROUTES.ARTICLE.MANAGEMENT
+  },
+  {
+    icon: 'file-icons:readthedocs',
+    text: 'Quản lý file báo cáo cuối kỳ',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.LECTURER],
+    link: APP_ROUTES.FINAL_REPORT.MANAGEMENT
   },
   {
     icon: 'fluent-mdl2:learning-tools',

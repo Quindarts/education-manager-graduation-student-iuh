@@ -75,8 +75,8 @@ function StudentPage() {
         <Box width={'100%'} my={4}>
           <TableManagamentStudent
             totalPage={paramTotalPage}
-            totalItems={data.students.length}
-            rows={convertStudentTable(data.students)}
+            totalItems={data?.students.length}
+            rows={convertStudentTable(data?.students)}
             handleChangePage={handleChangePage}
             handleChangeLimit={handleChangeLimit}
             page={currentPage}

@@ -26,7 +26,7 @@ function TabPanelUI({ lecturerId }) {
           <TabList onChange={handleChange} aria-label=''>
             <Tab label='Nhóm hướng dẫn' value='1' />
             <Tab label='Danh sách đề tài' value='2' />
-            <Tab label='Nhóm giảng viên của tôi' value='3' />
+            <Tab label='Nhóm giảng viên đã tham gia' value='3' />
             <Tab label='Lịch làm việc' value='4' />
           </TabList>
         </Box>

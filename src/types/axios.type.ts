@@ -21,6 +21,7 @@ export interface ResponseType {
     statistic?: { [key: string]: number | null };
     params?: ParamsType,
     count?: number,
+    reports?: any[],
     lecturer: Lecturer,
     status?: number,
     student?: Student,
@@ -33,6 +34,7 @@ export interface ResponseType {
     events?: any;
     event?: any;
     articles?: any;
+    finalReports?: any;
     refreshToken?: string;
     lecturerTerm?: any,
     groupLecturer?: any,

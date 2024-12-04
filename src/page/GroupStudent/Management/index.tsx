@@ -12,13 +12,20 @@ export function removeVietnameseTones(str: string) {
     ?.normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D');
+    .replace(/Đ/g, 'D')
+    .toLowerCase();
 }
 export const handleSearch = (data: any[], typeSearch: string, keywords: string) => {
   if (keywords.length === 0 || typeSearch.length === 0) {
     return data;
   }
-  let query = removeVietnameseTones(keywords?.toLowerCase());
+  let query = removeVietnameseTones(keywords);
+  if (typeSearch === 'studentName') {
+    return data?.filter((gr: any) => {
+      let val = removeVietnameseTones(gr?.members?.map((st: any) => st?.fullName).join(' '));
+      return val?.includes(query);
+    });
+  }
   return data?.filter((gr: any) => {
     let val = removeVietnameseTones(gr[`${typeSearch}`]?.toLowerCase());
     return val?.includes(query);

@@ -3,6 +3,13 @@ import axiosConfig from "./axiosConfig";
 import { ResponseType } from "@/types/axios.type";
 
 const URL = "/api/v1/topics"
+
+//[GET] GET KEYSWORDS
+export const getKeywords: any = (termId: string) => {
+    return axiosConfig.get(`${URL}/keywords?termId=${termId}`)
+}
+
+
 //[GET] COUNT HEAD_LECTURER
 export const getCountOfTopic: any = (termId: string) => {
     return axiosConfig.get(`${URL}/count?termId=${termId}`)
