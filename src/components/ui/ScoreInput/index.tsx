@@ -50,7 +50,10 @@ function ScoreInput(props: ScoreInputPropsType) {
           borderRadius: 2,
           textAlign: 'center',
           outline: 'none',
-          border: '1px solid #e1dcdc',
+          borderBottom: '1px solid #a3a3a3',
+          borderTop: 'none',
+          borderLeft: 'none',
+          borderRight: 'none',
         }}
         onChange={(e) => {
           handleSetPoint(e.target.value);

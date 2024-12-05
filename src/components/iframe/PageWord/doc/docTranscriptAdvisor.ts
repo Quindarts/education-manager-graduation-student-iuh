@@ -269,7 +269,7 @@ export default function docTranscriptAdvisor(evaluations: any, topic: any, lectu
                         children: [
                           new Paragraph({
                             alignment: 'center',
-                            children: [new TextRun({ text: (index + 1).toString(), size: 23 })],
+                            children: [new TextRun({ text: (row?.key).toString(), size: 23 })],
                           }),
                         ],
                       }),

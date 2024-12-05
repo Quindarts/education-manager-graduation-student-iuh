@@ -136,10 +136,11 @@ export const convertRowEvaluations = (listEvaluations: any) => {
     return [];
   } else {
     const newList = listEvaluations?.map(
-      (evaluation: { id: string; name: string; scoreMax: number }) => ({
+      (evaluation: { id: string; name: string; key: string; scoreMax: number }) => ({
         id: evaluation.id,
         name: evaluation.name,
         scoreMax: evaluation.scoreMax,
+        key: evaluation.key,
       }),
     );
     return newList;

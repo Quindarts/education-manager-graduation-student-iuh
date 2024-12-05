@@ -20,6 +20,7 @@ export type MemberScore = {
 export type TranscriptWithEvaluation = {
   evaluationId?: string;
   evaluationName?: string;
+  evaluationKey?: string;
   scoreMax?: number;
   score?: number;
   students?: MemberScore[];
@@ -63,6 +64,7 @@ export var convertEvaluations = (evaluations: any, groupStudent: any) => {
       transcripts.push({
         evaluationId: evl.id,
         evaluationName: evl.name,
+        evaluationKey: evl.key,
         scoreMax: evl.scoreMax,
         students: groupStudent?.map((mem: any) => ({ studentId: mem.student.id, score: '' })),
       });
@@ -189,7 +191,7 @@ function TranscriptOfGroupStudent(props: any) {
         >
           <Box mx={6}>
             <Typography fontWeight={600} mb={4} variant='h3'>
-              Đề tài  {groupStudent?.topicName}{' '}
+              Đề tài {groupStudent?.topicName}{' '}
               <Typography fontWeight={400} variant='body2' color='grey.700'>
                 Trạng thái:{' '}
                 <Typography
@@ -260,7 +262,7 @@ function TranscriptOfGroupStudent(props: any) {
                     {initTranscripts?.transcripts.map((row: any, index: number) => (
                       <>
                         <StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                          <StyledTableCell align='center'>{index + 1}</StyledTableCell>
+                          <StyledTableCell align='center'>{row.evaluationKey}</StyledTableCell>
                           <StyledTableCell component='th' sx={{ fontSize: 14 }} scope='row'>
                             {row.evaluationName}
                           </StyledTableCell>
@@ -310,7 +312,7 @@ function TranscriptOfGroupStudent(props: any) {
                      */}
                     {initTranscripts.transcripts.map((row: any, index: number) => (
                       <StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <StyledTableCell align='center'>{index + 1}</StyledTableCell>
+                        <StyledTableCell align='center'>{row.evaluationKey}</StyledTableCell>
                         <StyledTableCell component='th' sx={{ fontSize: 14 }} scope='row'>
                           {row.evaluationName}
                         </StyledTableCell>

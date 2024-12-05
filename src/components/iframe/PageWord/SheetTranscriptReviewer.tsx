@@ -12,8 +12,7 @@ function SheetTranscriptReviewer({
 }: any) {
   return (
     <Paper sx={{ px: 4, overflowY: 'auto', height: 'auto' }} elevation={0}>
-      <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}>
-      </Box>
+      <Box display={'flex'} mx={10} justifyContent={'center'} gap={10}></Box>
       <Box>
         <Typography textAlign={'center'} my={3} variant='body1' fontWeight={800} color='initial'>
           CAPSTONE PROJECT EVALUATION FORM
@@ -65,12 +64,15 @@ function SheetTranscriptReviewer({
             </TableHead>
             <TableBody>
               {convertRowEvaluations(evaluations)?.map(
-                (row: { id: string; name: string; scoreMax: number }, index: number) => (
+                (
+                  row: { id: string; key: string; name: string; scoreMax: number },
+                  index: number,
+                ) => (
                   <StyledTableRow
                     key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <StyledTableCell align='center'>{index + 1}</StyledTableCell>
+                    <StyledTableCell align='center'>{row?.key}</StyledTableCell>
                     <StyledTableCell component='th' scope='row'>
                       {row.name}
                     </StyledTableCell>

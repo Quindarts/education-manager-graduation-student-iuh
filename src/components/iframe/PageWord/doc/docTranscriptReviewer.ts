@@ -244,7 +244,7 @@ export default function docTranscriptReviewer({
                                         rule: HeightRule.EXACT,
                                     },
                                     children: [
-                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: (index + 1).toString(), size: 23 })] })] }),
+                                        new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: (row?.key).toString(), size: 23 })] })] }),
                                         new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ children: [new TextRun({ text: row.name, size: 23 })] })] }),
                                         new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: row.scoreMax.toString(), size: 23 })] })] }),
                                         new TableCell({ verticalAlign: VerticalAlign.CENTER, children: [new Paragraph({ alignment: 'center', children: [new TextRun({ text: '', size: 23 })] })] }),

@@ -75,8 +75,8 @@ export const deleteGroupStudent: any = (id: string) => {
 
 
 //[GET MEMBER]
-export const getMemberInGroupStudent: any = (id: string) => {
-    return axiosConfig.get(`${URL}/${id}/members`)
+export const getMemberInGroupStudent: any = async (id: string) => {
+    return await axiosConfig.get(`${URL}/${id}/members`)
 }
 
 

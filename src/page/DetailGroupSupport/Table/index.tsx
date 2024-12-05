@@ -106,7 +106,7 @@ function TableDetailGroupSupport({ members }) {
           <Box display={'flex'} gap={2}>
             <Tooltip
               title='Cập nhật trạng thái sinh viên'
-              onClick={() => handleOpenModalStatusStudent(params.row.id, params.row.status)}
+              onClick={() => handleOpenModalStatusStudent(params.row.studentId, params.row.status)}
             >
               <IconButton size='small'>
                 <Icon width={20} style={{ color: '#1e4990' }} icon='mdi:user-edit' />

@@ -22,18 +22,25 @@ const useTranscript = () => {
         })
     }
     const handleGetTranscriptsByGroupStudent = (groupStudentId: string) => {
-        return useQuery([QueryKeysScoreStudent.getTranscriptsByGroupStudent, groupStudentId], () => getTranscriptByGroupStudent(termStore.currentTerm.id, groupStudentId))
+        return useQuery([QueryKeysScoreStudent.getTranscriptsByGroupStudent, groupStudentId], () => getTranscriptByGroupStudent(termStore.currentTerm.id, groupStudentId), {
+            refetchOnMount: true,
+        })
     }
     const handleGetTranscriptOfStudentInGroup = (type: string, groupStudentId: string) => {
-        return useQuery([QueryKeysScoreStudent.getTranscriptOfStudentInGroup, termStore.currentTerm.id, type, groupStudentId], () => getTranscriptOfStudentInGroup(termStore.currentTerm.id, type, groupStudentId))
+        return useQuery([QueryKeysScoreStudent.getTranscriptOfStudentInGroup, termStore.currentTerm.id, type, groupStudentId], () => getTranscriptOfStudentInGroup(termStore.currentTerm.id, type, groupStudentId), {
+            refetchOnMount: true,
+        })
     }
     const handleGetTranscriptsByTypeEvaluation = (type: string, studentId: string) => {
-        return useQuery([QueryKeysScoreStudent.getTranscriptsByTypeEvaluation, termStore.currentTerm.id, type, studentId], () => getTranscriptsByTypeEvaluation(termStore.currentTerm.id, type, studentId))
+        return useQuery([QueryKeysScoreStudent.getTranscriptsByTypeEvaluation, termStore.currentTerm.id, type, studentId], () => getTranscriptsByTypeEvaluation(termStore.currentTerm.id, type, studentId),{
+            refetchOnMount: true,
+        })
     }
 
     const handleGetUnTranscriptGroupStudentsByType = (type: string) => {
         return useQuery([QueryKeysScoreStudent.getUnTranscriptGroupStudentsByType, termStore.currentTerm.id, type], () => getUnTranscriptGroupStudentsByType(termStore.currentTerm.id, type), {
             staleTime: 1000,
+            refetchOnMount: true,
         })
     }
 
@@ -49,11 +56,26 @@ const useTranscript = () => {
             }
         })
     }
+    const onCreateTranscriptTypeExcelUI = () => {
+        return useMutation((transcripts: BodyEvaluation[]) => createTranscripts(transcripts), {
+            onSuccess(data) {
+                enqueueSnackbar("Lưu điểm thành công", { variant: "success" })
+                queryClient.invalidateQueries(QueryKeysScoreStudent.getTranscriptsByGroupStudent)
+            },
+            onError(error) {
+                enqueueSnackbar("Thất bại, vui lòng thử lại", { variant: "error" })
+
+            }
+        })
+    }
     const onUpdateTranscripts = () => {
         return useMutation((transcripts: BodyEvaluation[]) => updateTranscript(transcripts), {
             onSuccess: () => {
                 enqueueSnackbar('Cập nhật điểm thành công', { variant: "success" })
-                queryClient.invalidateQueries([QueryKeysScoreStudent.getTranscriptsByTypeEvaluation, termStore.currentTerm.id])
+                queryClient.invalidateQueries(QueryKeysScoreStudent.getTranscriptsByGroupStudent)
+                queryClient.invalidateQueries(QueryKeysScoreStudent.getTranscriptsByTypeEvaluation)
+                queryClient.invalidateQueries(QueryKeysScoreStudent.getTranscriptOfStudentInGroup)
+                queryClient.invalidateQueries(QueryKeysScoreStudent.getTranscriptExport)
             }
         })
     }
@@ -68,7 +90,7 @@ const useTranscript = () => {
         hanleGetEvalutaionsForScoring,
         handleGetTranscriptOfStudentInGroup,
         handleExportTranscripts,
-        
+        onCreateTranscriptTypeExcelUI,
         onCreateTranscripts,
         onUpdateTranscripts,
         handleGetUnTranscriptGroupStudentsByType

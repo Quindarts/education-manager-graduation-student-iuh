@@ -35,6 +35,7 @@ function AddEvaluationModal(props: any) {
             name: ``,
             scoreMax: ``,
             description: ``,
+            key: ``,
           }}
           // validationSchema={{}}
         >
@@ -45,6 +46,14 @@ function AddEvaluationModal(props: any) {
                 label='Loại đánh giá'
                 disabled
                 value={getTypeEvaluation(values.type)}
+              />
+              <CustomTextField
+                name='key'
+                label='CLO ID'
+                placeholder='ID của CLO, VD: LO1, LO2,...'
+                value={values.key}
+                onBlur={handleBlur}
+                onChange={handleChange}
               />
               <CustomTextField
                 name='name'

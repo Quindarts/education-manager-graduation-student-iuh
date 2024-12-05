@@ -35,8 +35,8 @@ function TableManagerReviewScore(props: any) {
 
   const allRoleColumns: GridColDef[] = [
     {
-      headerName: 'STT',
-      field: 'stt',
+      headerName: 'CLO',
+      field: 'key',
       flex: 0.5,
       align: 'right',
       headerAlign: 'right',

@@ -32,7 +32,8 @@ export const APP_ROUTES = {
     CREATE: "/notifications/create",
   },
   SCORE_STUDENT: {
-    MANAGEMENT: "/scores"
+    MANAGEMENT: "/scores",
+    MANAGEMENT_EXCEL: "/scores-excel",
   },
   STUDENT: {
     MANAGEMENT: '/students/query',
@@ -261,7 +262,6 @@ export const APP_SIDEBAR = [
     roles: [RoleCheck.LECTURER],
     link: APP_ROUTES.SCORE_STUDENT.MANAGEMENT,
   },
-
   {
     icon: 'material-symbols:settings',
     text: 'Phân quyền',

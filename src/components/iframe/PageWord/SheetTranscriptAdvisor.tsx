@@ -84,12 +84,15 @@ function SheetTranscriptAdvisor(props: any) {
             </TableHead>
             <TableBody>
               {convertRowEvaluations(evaluations)?.map(
-                (row: { id: string; name: string; scoreMax: number }, index: number) => (
+                (
+                  row: { id: string; key: string; name: string; scoreMax: number },
+                  index: number,
+                ) => (
                   <StyledTableRow
                     key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <StyledTableCell align='center'>{index + 1}</StyledTableCell>
+                    <StyledTableCell align='center'>{row.key}</StyledTableCell>
                     <StyledTableCell component='th' scope='row'>
                       {row.name}
                     </StyledTableCell>

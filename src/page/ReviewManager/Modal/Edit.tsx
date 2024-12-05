@@ -40,6 +40,7 @@ function EditEvaluationModal(props: any) {
               name: `${data.evaluation.name}`,
               scoreMax: `${data.evaluation.scoreMax}`,
               description: `${data.evaluation.description}`,
+              key: `${data.evaluation.key}`,
             }}
             // validationSchema={{}}
           >
@@ -53,7 +54,12 @@ function EditEvaluationModal(props: any) {
               errors,
             }) => (
               <form onSubmit={handleSubmit}>
-                <CustomTextField name='type' label='Loại đánh giá' disabled value={getTypeEvaluation(values.type)} />
+                <CustomTextField
+                  name='type'
+                  label='Loại đánh giá'
+                  disabled
+                  value={getTypeEvaluation(values.type)}
+                />
                 <CustomTextField
                   name='name'
                   onBlur={handleBlur}
@@ -63,6 +69,14 @@ function EditEvaluationModal(props: any) {
                   label='Tên tiêu chí'
                   placeholder='Tên tiêu chí đánh giá'
                   value={values.name}
+                />
+                <CustomTextField
+                  name='key'
+                  label='CLO ID'
+                  placeholder='ID của CLO, VD: LO1, LO2,...'
+                  value={values.key}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                 />
                 <CustomTextField
                   name='scoreMax'

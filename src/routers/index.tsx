@@ -42,7 +42,8 @@ const LecturerTermManagementTemplate = lazy(() => import('@/page/LecturerTerm/Ma
 const AnalysisTemplate = lazy(() => import('@/page/Analysis'));
 const ArticleTemplate = lazy(() => import('@/page/Article/Management'));
 const FinalReportTemplate = lazy(() => import('@/page/FinalReport/Management'));
-
+const ScoreManagementExcel = lazy(() => import('@/page/ScoreManagementExcel'));
+const MyScoringPage = lazy(() => import('@/page/MyScoring'));
 function Routing() {
   return (
     <Routes>
@@ -120,7 +121,11 @@ function Routing() {
         <Route path={APP_ROUTES.NOTIFICATION.CREATE} element={<CreateNotificationPage />} />
         <Route path={APP_ROUTES.NOTIFICATION.DETAILS} element={<DetailNotificationPage />} />
         //ROUTE SCORE_STUDENT
-        <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<ScoreStudentTemplate />} />
+        <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<MyScoringPage />} />
+        {/* <Route
+          path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT_EXCEL}
+          element={<ScoreManagementExcel />}
+        /> */}
       </Route>
 
       <Route path='/auth' element={<AuthLayout />}>
