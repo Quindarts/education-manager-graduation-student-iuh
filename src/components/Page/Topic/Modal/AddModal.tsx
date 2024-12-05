@@ -40,11 +40,11 @@ function AddModal(props: any) {
             name: '',
             keywords: '',
             quantityGroupMax: 5,
-            description: '',
-            expectedResult: '',
+            description: 'Cập nhật mô tả đề tài',
+            expectedResult: 'Cập nhật kết quả dự kiến',
             target: '',
-            standardOutput: '',
-            requireInput: '',
+            standardOutput: 'Cập nhật yêu cầu đầu ra',
+            requireInput: 'Cập nhật yêu cầu đầu vào',
           }}
         >
           {({ handleSubmit, values, errors, touched, handleBlur, handleChange, setFieldValue }) => (

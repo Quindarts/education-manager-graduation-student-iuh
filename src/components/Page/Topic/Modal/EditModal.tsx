@@ -98,7 +98,6 @@ function EditModal(props: any) {
                   label='Tên đề tài'
                   name='name'
                   placeholder='Tên đề tài'
-                  
                 />
                 <CustomTextField
                   value={values.keywords}
@@ -112,7 +111,8 @@ function EditModal(props: any) {
                   placeholder='Ví dụ: web, app, AI, security,...'
                 />
                 <Typography variant='body1' color='warning.dark'>
-                Lưu ý*: các từ khóa ngăn cách nhau bởi dấu ",". Khuyến khích sử dụng tiếng anh và dùng từ viết tắt{' '}
+                  Lưu ý*: các từ khóa ngăn cách nhau bởi dấu ",". Khuyến khích sử dụng tiếng anh và
+                  dùng từ viết tắt{' '}
                 </Typography>
                 <Typography variant='body1' mb={6} color='warning.dark'>
                   Đề tài chỉ nên có khoảng 1 đến 5 từ khóa
