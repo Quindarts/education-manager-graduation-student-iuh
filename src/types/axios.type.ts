@@ -34,6 +34,7 @@ export interface ResponseType {
     events?: any;
     event?: any;
     articles?: any;
+    article?: any;
     finalReports?: any;
     refreshToken?: string;
     lecturerTerm?: any,

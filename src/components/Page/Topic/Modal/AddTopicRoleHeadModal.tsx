@@ -30,13 +30,13 @@ function AddTopicRoleHeadModal(props: any) {
   const { onCreateTopicByToken, handleUiRender } = useTopic();
   const { mutate: createTopic, isSuccess: successCreate } = onCreateTopicByToken();
   const { handleGetListLecturerTerms } = useLecturerTerm();
-
   const { data, isLoading, isFetching } = handleGetListLecturerTerms('default');
 
-  const handleSubmit = (values: any) => {
-    createTopic(values);
-  };
   const [lecturer, setlecturer] = useState<string>('');
+
+  const handleSubmit = (values: any) => {
+    createTopic({ ...values, lecturerId: lecturer });
+  };
   useEffect(() => {
     onClose();
   }, [successCreate]);
@@ -66,23 +66,18 @@ function AddTopicRoleHeadModal(props: any) {
           {({ handleSubmit, values, errors, touched, handleBlur, handleChange, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
               <Box></Box>
-              {/* <CustomTextField
-                value={`${lecturerStore.me.user.fullName}`}
-                required
-                disabled
-                label='Giảng viên hướng dẫn'
-                placeholder='Tên giảng viên'
-              /> */}
               <Box my={10}>
-                <FormControl sx={{ width: '100%' }}>
+                <Box sx={{ width: '100%' }}>
                   <DropDown
+                    required
+                    label='Chọn giảng viên hướng dẫn'
                     placeholder='Danh sách giảng viên hướng dẫn '
                     onChange={(e: any) => {
                       setlecturer(e.target.value);
                     }}
                     options={convertLecturer(data?.lecturerTerms)}
                   />
-                </FormControl>
+                </Box>
               </Box>
               {currentRole.includes('all') && (
                 <CustomTextField

@@ -18,6 +18,7 @@ function useArticle() {
     const termId = termStore.currentTerm.id
 
     const { enqueueSnackbar } = useSnackbar()
+
     const handleGetAllArticle = () => {
         if (currentRoleRender === EnumRole.LECTURER) {
             return useQuery(QueryKeysArticle.GET_BY_LECTURER, () => ArticleService.getArticlesByLecturer(termId), {
@@ -31,7 +32,7 @@ function useArticle() {
         })
     }
     const handleGetArticleById = (id: string) => {
-        return useQuery(QueryKeysArticle.GET_BY_ID, () => ArticleService.getArticleById(id), {
+        return useQuery([QueryKeysArticle.GET_BY_ID, id], () => ArticleService.getArticleById(id), {
             refetchOnMount: true,
             enabled: !!id
         })
@@ -41,6 +42,7 @@ function useArticle() {
             onSuccess: (data) => {
                 queryClient.invalidateQueries(QueryKeysArticle.GET_ALL)
                 queryClient.invalidateQueries(QueryKeysArticle.GET_BY_LECTURER)
+                queryClient.invalidateQueries(QueryKeysArticle.GET_BY_ID)
                 queryClient.invalidateQueries(QueryKeysGroupStudent.getGroupStudentById)
                 if (data.success === true) {
                     enqueueSnackbar('Cập nhật trạng thái bài báo thành công', { variant: 'success' })

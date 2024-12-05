@@ -31,7 +31,7 @@ function FinalReportManagement() {
     <Paper sx={{ py: 10, px: 10 }} elevation={0}>
       <Box justifyContent={'space-between'} display={'flex'} mb={8} mt={2}>
         <TitleManager icon='quill:list'>
-          Nộp file báo cáo cuối kỳ
+          Nộp báo cáo cuối kỳ
         </TitleManager>
       </Box>
       <HeaderArticle />

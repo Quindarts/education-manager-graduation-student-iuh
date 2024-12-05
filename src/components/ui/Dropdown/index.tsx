@@ -1,4 +1,12 @@
-import { BaseSelectProps, Box, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  BaseSelectProps,
+  Box,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 
 interface SelectOption {
@@ -20,11 +28,13 @@ const DropDown: React.FC<SelectPropsType> = (props: SelectPropsType) => {
   return (
     <Box>
       {label && (
-        <InputLabel
-          htmlFor={id}
-          sx={{ mb: 3, color: 'grey.700', fontWeight: 600, fontSize: 12 }}
-        >
-          {label}
+        <InputLabel htmlFor={id} sx={{ mb: 3, color: 'grey.700', fontWeight: 600, fontSize: 12 }}>
+          {label}{' '}
+          {required && (
+            <Typography component={'span'} sx={{ color: 'error.dark' }}>
+              *
+            </Typography>
+          )}
         </InputLabel>
       )}
       <Select

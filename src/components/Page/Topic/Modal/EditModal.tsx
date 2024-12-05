@@ -98,6 +98,7 @@ function EditModal(props: any) {
                   label='Tên đề tài'
                   name='name'
                   placeholder='Tên đề tài'
+                  
                 />
                 <CustomTextField
                   value={values.keywords}

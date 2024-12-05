@@ -16,7 +16,6 @@ const SEARCH_FIELD = {
   topicName: 'tên đề tài',
   lecturerName: 'giản viêng hướng dẫn',
   name: 'mã nhóm',
-  studentName: 'Họ tên sinh viên',
 };
 
 function SearchInput({ sx }: BoxProps) {
@@ -43,7 +42,6 @@ function SearchInput({ sx }: BoxProps) {
           <MenuItem value='topicName'>Tên đề tài</MenuItem>
           <MenuItem value='lecturerName'>Giảng viên HD</MenuItem>
           <MenuItem value='name'>Mã nhóm</MenuItem>
-          <MenuItem value='studentName'>Họ tên sinh viên</MenuItem>
         </Select>
       </FormControl>
 

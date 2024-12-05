@@ -37,59 +37,25 @@ function TableDetailGroupSupport({ members }) {
         },
       },
       {
-        headerName: 'Lớp chuyên ngành',
-        field: 'clazzName',
-        flex: 1,
-        align: 'left',
-        headerAlign: 'left',
-      },
-      {
         headerName: 'Điểm Hướng dẫn',
-        field: 'hd',
+        field: 'advisorScore',
         flex: 1,
         align: 'right',
         headerAlign: 'right',
-        renderCell: (params: any) => {
-          return (
-            <Typography variant='body1'>
-              {params.row.transcripts?.length > 0 && params.row.transcripts[0]
-                ? `${(parseFloat(params.row.transcripts[0]?.sumScore) / 10).toFixed(2)}`
-                : 'Chưa có'}
-            </Typography>
-          );
-        },
       },
       {
         headerName: 'Điểm Phản biện',
-        field: 'pb',
+        field: 'reviewerScore',
         flex: 1,
         align: 'right',
         headerAlign: 'right',
-        renderCell: (params: any) => {
-          return (
-            <Typography variant='body1'>
-              {params.row.transcripts?.length > 0 && params.row.transcripts[1]
-                ? `${(parseFloat(params.row.transcripts[1]?.sumScore) / 10).toFixed(2)}`
-                : 'Chưa có'}
-            </Typography>
-          );
-        },
       },
       {
         headerName: 'Điểm Báo cáo',
-        field: 'bc',
+        field: 'reportScore',
         flex: 1,
         align: 'right',
         headerAlign: 'right',
-        renderCell: (params: any) => {
-          return (
-            <Typography variant='body1'>
-              {params.row.transcripts?.length > 0 && params.row.transcripts[2]
-                ? `${(parseFloat(params.row.transcripts[2]?.sumScore) / 10).toFixed(2)}`
-                : 'Chưa có'}
-            </Typography>
-          );
-        },
       },
       {
         headerName: 'Điểm cộng',
@@ -97,31 +63,13 @@ function TableDetailGroupSupport({ members }) {
         flex: 1,
         align: 'right',
         headerAlign: 'right',
-        renderCell: (params: any) => {
-          return (
-            <Typography variant='body1'>
-              {params.row.value
-                ? `${params.row.value}`
-                : 'Chưa có'}
-            </Typography>
-          );
-        },
       },
       {
         headerName: 'Điểm Trung bình',
-        field: 'tb',
+        field: 'totalAvgScore',
         flex: 1,
         align: 'right',
         headerAlign: 'right',
-        renderCell: (params: any) => {
-          return (
-            <Typography variant='body1'>
-              {params.row.transcripts?.length > 0 && params.row.transcripts[3]
-                ? `${(parseFloat(params.row.transcripts[3]?.sumScore) / 10).toFixed(2)}`
-                : 'Chưa có'}
-            </Typography>
-          );
-        },
       },
       {
         headerName: 'Tình trạng',
@@ -202,9 +150,7 @@ function TableDetailGroupSupport({ members }) {
         rowHeight={80}
         columns={basicColumns}
         totalItems={members?.length}
-        totalPages={1}
-        page={1}
-        handleChangePage={() => {}}
+        isPanigation={false}
       />
       <>
         <EditStatusStudentTerm

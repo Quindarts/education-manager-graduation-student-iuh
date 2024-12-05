@@ -41,7 +41,8 @@ function AcceptArticleModal(props: any) {
             placeholder='1'
             value={bonusScore}
             type='number'
-            onChange={(e) => setBonusScore(parseInt(e.target.value))}
+            inputProps={{ step: '0.1' }}
+            onChange={(e) => setBonusScore(e.target.value)}
             label='Điểm cộng'
           />
           <Typography variant='body1' textAlign={'start'} mb={2} color='grey.700'>

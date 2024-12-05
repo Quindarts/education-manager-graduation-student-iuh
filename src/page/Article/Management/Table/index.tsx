@@ -9,6 +9,7 @@ import AcceptArticleModal from '../../Modal/AcceptArticleModal';
 import RefuseArticleModal from '../../Modal/RefuseArticleModal';
 import ResetArticleModal from '../../Modal/ResetArticleModal';
 import { env } from '@/utils/env';
+import DetailArticleModal from '../../Modal/DetailArticleModal';
 
 interface Props {
   rows: any[];
@@ -71,35 +72,24 @@ function TableArticleManagement(props: Props) {
   const basicColumns: GridColDef[] = useMemo(
     () => [
       {
-        headerName: 'Tên bài báo',
-        field: 'name',
-        flex: 1,
-      },
-      {
-        headerName: 'Tác giả',
+        headerName: 'Thông tin sinh viên nộp báo',
         field: 'fullName',
-        flex: 0.6,
+        flex: 0.7,
         align: 'left',
         headerAlign: 'left',
+        renderCell: (params) => (
+          <Typography variant='body1' color='initial'>
+            <Typography component={'div'} variant='body1' color='initial'>
+              MSSV: {params.row.username}
+            </Typography>
+            Họ tên: {params.row.fullName}
+          </Typography>
+        ),
       },
       {
-        headerName: 'MSSV',
-        field: 'username',
-        flex: 0.5,
-      },
-      {
-        headerName: 'Mã nhóm',
-        field: 'groupName',
-        flex: 0.3,
-      },
-
-      {
-        headerName: 'Ngày đăng bài',
-        field: 'publicDate',
-        flex: 0.4,
-        headerAlign: 'right',
-        align: 'right',
-        renderCell: (params) => <Typography>{dayjs(params.value).format('DD/MM/YYYY')}</Typography>,
+        headerName: 'Tên bài báo',
+        field: 'name',
+        flex: 1.5,
       },
       {
         headerName: 'Điểm cộng',
@@ -109,21 +99,17 @@ function TableArticleManagement(props: Props) {
         headerAlign: 'right',
       },
       {
-        headerName: 'Link file',
-        field: 'link',
+        headerName: 'Chức năng',
+        field: 'publicDate',
         flex: 0.4,
         align: 'center',
         headerAlign: 'center',
         renderCell: (params) => (
-          <Typography
-            component={'a'}
-            href={`${env.API_URL}/${params.value}`}
-            target='_blank'
-            variant='body1'
-            color='primary'
-          >
-            Xem chi tiết
-          </Typography>
+          <Box>
+            <Button onClick={() => handleOpenDetailArticleModal(params.row.id)}>
+              Xem chi tiết
+            </Button>
+          </Box>
         ),
       },
       {
@@ -216,7 +202,7 @@ function TableArticleManagement(props: Props) {
         name={openResetArticleModal.name}
         onClose={handleCloseArticleModal}
       />
-      <AcceptArticleModal
+      <DetailArticleModal
         open={openDetailArticleModal.isOpen}
         onClose={handleCloseDetailArticleModal}
         articleId={openDetailArticleModal.articleId}

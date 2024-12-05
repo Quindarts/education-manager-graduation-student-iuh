@@ -31,7 +31,7 @@ interface Props extends DataGridProps {
 
 export default function Table(props: Props) {
   const {
-    minHeight = 350,
+    minHeight = 450,
     sx,
     page,
     totalPages,

@@ -24,7 +24,7 @@ const useEvaluation = () => {
     //? [UI]
     const handleUiRender = (): string[] => {
         var permissions: string[] = []
-        if (currentRole === RoleCheck.HEAD_COURSE || currentRole === RoleCheck.HEAD_LECTURER) {
+        if (currentRole === RoleCheck.HEAD_COURSE || currentRole === RoleCheck.HEAD_LECTURER || currentRole === RoleCheck.ADMIN) {
             permissions.push('all')
         }
         else {

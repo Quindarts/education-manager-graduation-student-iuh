@@ -57,7 +57,7 @@ function InfoGroupSupportFile() {
           <DropDown
             placeholder='Chọn nhóm sinh viên'
             label='Nhóm sinh viên đang hướng dẫn'
-            options={convertGroups(groupFetch.groupStudents)}
+            options={convertGroups(groupFetch?.groupStudents)}
             onChange={(e: any) => {
               setCurrentGroup(e.target.value);
               handleSetGroupStudentId(e.target.value);

@@ -20,12 +20,6 @@ export const handleSearch = (data: any[], typeSearch: string, keywords: string) 
     return data;
   }
   let query = removeVietnameseTones(keywords);
-  if (typeSearch === 'studentName') {
-    return data?.filter((gr: any) => {
-      let val = removeVietnameseTones(gr?.members?.map((st: any) => st?.fullName).join(' '));
-      return val?.includes(query);
-    });
-  }
   return data?.filter((gr: any) => {
     let val = removeVietnameseTones(gr[`${typeSearch}`]?.toLowerCase());
     return val?.includes(query);

@@ -55,7 +55,7 @@ export const useTopic = () => {
     const handleUiRender = (): string[] => {
         const currentRole = lecturerStore.currentRoleRender;
         var permissions: string[] = []
-        if (currentRole === RoleCheck.HEAD_LECTURER || currentRole === RoleCheck.HEAD_COURSE) {
+        if (currentRole === RoleCheck.HEAD_LECTURER || currentRole === RoleCheck.HEAD_COURSE || currentRole === RoleCheck.ADMIN) {
             permissions.push('all')
             permissions.push('crud')
         }
