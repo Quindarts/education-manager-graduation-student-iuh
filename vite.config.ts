@@ -29,13 +29,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    // port: 8080,
     host: true,
-    hmr: {
-      protocol: 'ws',
-      host: 'localhost',
-      port: 5173,
-    },
   },
   preview: {
     port: 5173,

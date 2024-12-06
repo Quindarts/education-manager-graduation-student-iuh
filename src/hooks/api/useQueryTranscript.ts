@@ -23,24 +23,24 @@ const useTranscript = () => {
     }
     const handleGetTranscriptsByGroupStudent = (groupStudentId: string) => {
         return useQuery([QueryKeysScoreStudent.getTranscriptsByGroupStudent, groupStudentId], () => getTranscriptByGroupStudent(termStore.currentTerm.id, groupStudentId), {
-            refetchOnMount: true,
+            // refetchOnMount: true,
         })
     }
     const handleGetTranscriptOfStudentInGroup = (type: string, groupStudentId: string) => {
         return useQuery([QueryKeysScoreStudent.getTranscriptOfStudentInGroup, termStore.currentTerm.id, type, groupStudentId], () => getTranscriptOfStudentInGroup(termStore.currentTerm.id, type, groupStudentId), {
-            refetchOnMount: true,
+            // refetchOnMount: true,
         })
     }
     const handleGetTranscriptsByTypeEvaluation = (type: string, studentId: string) => {
-        return useQuery([QueryKeysScoreStudent.getTranscriptsByTypeEvaluation, termStore.currentTerm.id, type, studentId], () => getTranscriptsByTypeEvaluation(termStore.currentTerm.id, type, studentId),{
-            refetchOnMount: true,
+        return useQuery([QueryKeysScoreStudent.getTranscriptsByTypeEvaluation, termStore.currentTerm.id, type, studentId], () => getTranscriptsByTypeEvaluation(termStore.currentTerm.id, type, studentId), {
+            // refetchOnMount: true,
         })
     }
 
     const handleGetUnTranscriptGroupStudentsByType = (type: string) => {
         return useQuery([QueryKeysScoreStudent.getUnTranscriptGroupStudentsByType, termStore.currentTerm.id, type], () => getUnTranscriptGroupStudentsByType(termStore.currentTerm.id, type), {
             staleTime: 1000,
-            refetchOnMount: true,
+            // refetchOnMount: true,
         })
     }
 
@@ -81,7 +81,7 @@ const useTranscript = () => {
     }
     const handleExportTranscripts = () => {
         return useQuery([QueryKeysScoreStudent.getTranscriptExport, termStore.currentTerm.id], () => getTranscriptsToExport(termStore.currentTerm.id), {
-            refetchOnMount: true,
+            // refetchOnMount: true,
         })
     }
     return {

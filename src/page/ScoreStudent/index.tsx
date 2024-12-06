@@ -18,6 +18,7 @@ function ScoreStudentPage() {
   const { data, isSuccess } = hanleGetEvalutaionsForScoring(checkTypeEvaluation(typeScoreStudent));
   const { data: groups, isLoading: loadingGrStudent } =
     handleGetUnTranscriptGroupStudentsByType(typeScoreStudent);
+    
   const handleRowClick = (params: any) => {
     setCurrentDataRow(params.row);
     setCurrentRowSelectId(params.id);
