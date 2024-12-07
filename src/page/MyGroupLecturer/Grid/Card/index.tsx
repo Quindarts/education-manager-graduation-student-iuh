@@ -67,7 +67,7 @@ function CardGroupLecturer(props: any) {
           {group.endDate ? dayjs(group.endDate).format('DD/MM/YYYY hh:mm:ss A') : 'Chưa cập nhật'}
         </Typography>
         <Typography fontWeight={'bold'}>
-          {group.location ? group.location : 'Chưa cập nhật'}
+          Địa điểm {group.location ? group.location : 'Chưa cập nhật'}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>
