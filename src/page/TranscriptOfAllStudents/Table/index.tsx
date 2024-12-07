@@ -17,6 +17,7 @@ import ExportExcelButton from '@/components/ui/Export';
  * ? bây giờ groupStudent sẽ số dòng
  * ? còn số cột sẽ là CLO evaluation
  */
+
 function randomColor(index: number) {
   return index % 2 ? '#f9fcff' : '#ffffff';
 }
@@ -34,19 +35,7 @@ const convertRowStudents = (groupStudents: any[]) => {
     };
   });
 };
-const convertTotalOfEvaluationsByStd = (groupStudents: any[]) => {
-  if (groupStudents?.length === 0) return [];
-  return groupStudents?.map((student: any, index: number) => {
-    return {
-      id: student.id,
-      evaluations: student.evaluations.map((evaluation: any) => ({
-        id: evaluation.id,
-        score: evaluation.score,
-      })),
-      totalScores: totalScores(student?.evaluations.map((std: any) => std.score)),
-    };
-  });
-};
+
 const columnsExcelTranscripts = (evaluations, type) => {
   const init = [
     { header: 'Mã nhóm', key: 'groupName', width: 10 },
@@ -102,7 +91,7 @@ function TableScoreManagement({ typeScoreStudent }: any) {
   const { handleExportTranscripts, hanleGetEvalutaionsForScoring } = useTranscript();
 
   const { data: evaluationFetch } = hanleGetEvalutaionsForScoring(
-    checkTypeEvaluation(typeScoreStudent),
+    typeScoreStudent,
   );
   //![Get group student need score]
   const { data: groupTranscripts, isLoading } = handleExportTranscripts(typeScoreStudent);
