@@ -92,7 +92,9 @@ const useTranscript = () => {
     }
     const handleExportTranscripts = (type: string) => {
         return useQuery([QueryKeysScoreStudent.getTranscriptExport, termStore.currentTerm.id, type], () => getTranscriptsToExport(termStore.currentTerm.id, type), {
-            refetchOnMount: true,
+            refetchOnMount: false,
+            enabled: !!termStore.currentTerm.id || !!type,
+
         })
     }
     return {

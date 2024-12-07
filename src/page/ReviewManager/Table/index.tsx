@@ -37,7 +37,7 @@ function TableManagerReviewScore(props: any) {
     {
       headerName: 'CLO',
       field: 'key',
-      flex: 0.5,
+      flex: 0.6,
       align: 'right',
       headerAlign: 'right',
     },
@@ -95,7 +95,7 @@ function TableManagerReviewScore(props: any) {
     {
       headerName: 'CLO',
       field: 'key',
-      flex: 0.25,
+      flex: 0.7,
       align: 'right',
       headerAlign: 'right',
     },

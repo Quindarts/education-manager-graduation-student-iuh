@@ -11,7 +11,7 @@ export const ENUM_SCORE_STUDENT = [
     _id: 'REVIEWER',
   },
   {
-    name: 'Chấm Hội đồng',
+    name: 'Chấm báo cáo',
     _id: 'REPORT_COUNCIL',
   },
   {

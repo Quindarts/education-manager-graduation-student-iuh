@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 interface ScoreInputPropsType {
   scoreMax?: number;
-  handleChangeScore: (studenId?: string, score?: string, evaluationId?: string) => void;
+  handleChangeScore?: (studenId?: string, score?: string, evaluationId?: string) => void;
   oldScore?: number;
   studentId?: string;
   evaluationId?: string;

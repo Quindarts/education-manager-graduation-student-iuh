@@ -1,15 +1,29 @@
 import { Box, Paper } from '@mui/material';
 import React, { useState } from 'react';
 import TableScoreManagement from './Table';
-import { ENUM_SCORE_STUDENT } from '@/utils/validations/transcript.validation';
 import TitleManager from '@/components/ui/Title';
 import DropDown from '@/components/ui/Dropdown';
-
+const ENUM_SCORE_STUDENT = [
+  {
+    name: 'Chấm Hướng dẫn',
+    _id: 'ADVISOR',
+  },
+  {
+    name: 'Chấm Phản biện',
+    _id: 'REVIEWER',
+  },
+  {
+    name: 'Chấm Hội đồng / Poster',
+    _id: 'REPORT',
+  },
+];
 function TranscriptOfAllStudents() {
   const [typeScoreStudent, setTypeScoreStudent] = useState<string>(`${ENUM_SCORE_STUDENT[0]?._id}`);
 
   const handleChangeTypeScoreStudent = (typeScoreStudent: string) => {
-    setTypeScoreStudent(typeScoreStudent);
+    if (typeScoreStudent === 'REPORT_COUNCIL' || typeScoreStudent === 'REPORT_POSTER') {
+      setTypeScoreStudent('REPORT');
+    } else setTypeScoreStudent(typeScoreStudent);
   };
 
   return (
