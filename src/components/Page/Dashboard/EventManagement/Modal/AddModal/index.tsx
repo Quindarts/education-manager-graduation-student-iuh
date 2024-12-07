@@ -195,7 +195,7 @@ function AddModal(props: any) {
                           </Button>
                         )}
                         <Typography mt={2} mb={2} variant='body1'>
-                          Đã chọn : {groups?.filter((gr) => gr.checked).length} nhom
+                          Đã chọn : {groups?.filter((gr) => gr.checked).length} nhóm
                         </Typography>
                       </Box>
                     </Box>
