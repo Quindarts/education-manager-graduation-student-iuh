@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -8,7 +8,7 @@ import TitleManager from '@/components/ui/Title';
 import CreateStudentNotifyForm from '../NotifyStudent';
 import CreateLecturerNotifyForm from '../NotifyLecturer';
 import CreateGroupStudentNotifyForm from '../NotifyGroupStudent';
-import CreateGroupLecturerNotifyForm from '../NotifyGroupLecturer';
+// import CreateGroupLecturerNotifyForm from '../NotifyGroupLecturer';
 function TabPanelCreateNotify() {
   const [value, setValue] = React.useState('1');
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -70,7 +70,7 @@ function TabPanelCreateNotify() {
               }
               value='3'
             />
-            <Tab
+            {/* <Tab
               sx={{
                 '&.MuiButtonBase-root .MuiTab-root': {},
                 '&.Mui-selected': {
@@ -87,7 +87,7 @@ function TabPanelCreateNotify() {
                 </TitleManager>
               }
               value='4'
-            />
+            /> */}
           </TabList>
         </Box>
         <TabPanel value='1'>
@@ -99,9 +99,9 @@ function TabPanelCreateNotify() {
         <TabPanel value='3'>
           <CreateGroupStudentNotifyForm />
         </TabPanel>
-        <TabPanel value='4'>
+        {/* <TabPanel value='4'>
           <CreateGroupLecturerNotifyForm />
-        </TabPanel>
+        </TabPanel> */}
       </TabContext>
     </div>
   );
