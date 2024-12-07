@@ -7,7 +7,7 @@ const URL = "/api/v1/notifications"
 
 //[GET] [ADMIN, HEAD_LECTURER, HEAD_COURSE] Get Notification 
 export const getNotificationsOfFilter = (limit: number | string, page: number | string, searchField: string, keywords: string) => {
-    const searchFieldSender = searchField ? searchField : "senderName"
+    const searchFieldSender = searchField ? searchField : "title"
     const keywordsSender = keywords ? keywords : ""
     return axiosConfig.get<ResponseType, any>(`${URL}?limit=${limit}&page=${page}&searchField=${searchFieldSender}&keywords=${keywordsSender}`)
 }

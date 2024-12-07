@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import TabPanelUI from './TabPanel';
 import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 import ChipTag from '@/components/ui/Badge';
+import dayjs from 'dayjs';
 
 function MyDetailGroupLecturer() {
   const { pathname } = useLocation();
@@ -40,6 +41,22 @@ function MyDetailGroupLecturer() {
               </Box>
             </Typography>
           </Box>
+          <Typography mt={2}>
+            Bắt đầu:{' '}
+            {data?.groupLecturer?.startDate
+              ? dayjs(data.groupLecturer?.startDate).format('DD/MM/YYYY hh:mm:ss A')
+              : 'Chưa cập nhật'}{' '}
+            {' -- '}
+            <Typography component={'span'} mb={2}>
+              Kết thúc:
+              {data?.groupLecturer?.endDate
+                ? dayjs(data.groupLecturer?.endDate).format('DD/MM/YYYY hh:mm:ss A')
+                : 'Chưa cập nhật'}
+            </Typography>
+          </Typography>
+          <Typography>
+            {data?.groupLecturer?.location ? data.groupLecturer?.location : 'Chưa cập nhật'}
+          </Typography>
 
           <Box>
             <TabPanelUI groupLecturer={data?.groupLecturer} />

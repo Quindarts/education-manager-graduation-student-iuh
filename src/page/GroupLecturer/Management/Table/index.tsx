@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import Assign from '../../Assign';
 import { Icon } from '@iconify/react';
 import DeleteGroupModal from '../Modal/DeleteGroupModal';
+import dayjs from 'dayjs';
+import EditInfoGroupModal from '../Modal/EditInfoGroupModal';
 
 function TableManagamentGroupLecturer(props: any) {
   const { rows, totalItems, totalPages, page, handelChangePage, groupType, ...rest } = props;
@@ -23,7 +25,6 @@ function TableManagamentGroupLecturer(props: any) {
   const handleCloseAssignModal = () => {
     setAssignModal((pre: any) => ({ ...pre, isOpen: false }));
   };
-
   //
   const [openModalDelete, setOpenModalDelete] = useState({
     isOpen: false,
@@ -40,7 +41,24 @@ function TableManagamentGroupLecturer(props: any) {
   };
   const handleCloseModalDelete = () => {
     setOpenModalDelete((pre: any) => ({ ...pre, isOpen: false }));
-  }
+  };
+
+  const [openModalEditInfo, setOpenModalEditInfo] = useState({
+    isOpen: false,
+    grLecturerId: '',
+    groupLecturerName: '',
+  });
+
+  const handleOpenModalEditInfo = (grLecturerId: string, groupLecturerName: string) => {
+    setOpenModalEditInfo({
+      grLecturerId: grLecturerId,
+      groupLecturerName: groupLecturerName,
+      isOpen: true,
+    });
+  };
+  const handleCloseModalEditInfo = () => {
+    setOpenModalEditInfo((pre: any) => ({ ...pre, isOpen: false }));
+  };
   const basicColumns: GridColDef[] = [
     {
       headerName: 'Mã nhóm',
@@ -62,7 +80,8 @@ function TableManagamentGroupLecturer(props: any) {
       headerName: 'Thông tin thành viên ',
       field: 'name3',
       headerAlign: 'left',
-      flex: 1,
+      align: 'left',
+      flex: 0.8,
       renderCell: (params: any) => {
         return (
           <Box>
@@ -81,12 +100,58 @@ function TableManagamentGroupLecturer(props: any) {
         );
       },
     },
+
     {
-      headerName: 'Số nhóm sinh viên phân công',
+      headerName: 'Thông tin phản biện',
+      field: 'time',
+      headerAlign: 'left',
+      align: 'left',
+      flex: 1,
+      renderCell(params) {
+        return (
+          <Box sx={{ width: '100%' }}>
+            {params.row.startDate && params.row.endDate && params.row.location ? (
+              <>
+                <Typography component={'span'}>
+                  Bắt đầu: {dayjs(params.row.startDate).format('DD/MM/YYYY hh :mm :ss A')}
+                </Typography>
+
+                <Typography>
+                  Kết thúc: {dayjs(params.row.endDate).format('DD/MM/YYYY hh :mm :ss A')}
+                </Typography>
+                <Typography variant='body1' color='initial'>
+                  Địa điểm: {params.row.location}
+                </Typography>
+                <Button
+                  sx={{ fontSize: 11, ml: 8 }}
+                  onClick={() => handleOpenModalEditInfo(params.row.id, params.row.name)}
+                  startIcon={<Icon icon='mingcute:edit-4-line' />}
+                >
+                  Sửa{' '}
+                </Button>
+              </>
+            ) : (
+              <Typography variant='body1' color='initial'>
+                Chưa cập nhật
+                <Button
+                  sx={{ fontSize: 11, ml: 8 }}
+                  onClick={() => handleOpenModalEditInfo(params.row.id, params.row.name)}
+                  startIcon={<Icon icon='mingcute:edit-4-line' />}
+                >
+                  Sửa{' '}
+                </Button>
+              </Typography>
+            )}
+          </Box>
+        );
+      },
+    },
+    {
+      headerName: 'Số nhóm SV',
       field: 'totalAssigns',
       headerAlign: 'center',
       align: 'center',
-      flex: 0.7,
+      flex: 0.4,
     },
     {
       headerName: 'Chức năng',
@@ -134,7 +199,7 @@ function TableManagamentGroupLecturer(props: any) {
           sx={{
             bgcolor: 'white',
           }}
-          rowHeight={100}
+          rowHeight={120}
           columns={basicColumns}
           totalItems={rows?.length}
           isPanigation={false}
@@ -154,7 +219,12 @@ function TableManagamentGroupLecturer(props: any) {
         groupLecturerName={openModalDelete.groupLecturerName}
         open={openModalDelete.isOpen}
         onClose={handleCloseModalDelete}
-        
+      />
+      <EditInfoGroupModal
+        groupLecturerId={openModalEditInfo.grLecturerId}
+        groupLecturerName={openModalEditInfo.groupLecturerName}
+        open={openModalEditInfo.isOpen}
+        onClose={handleCloseModalEditInfo}
       />
     </>
   );

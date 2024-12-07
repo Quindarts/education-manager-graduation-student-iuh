@@ -108,6 +108,7 @@ function CreateInstructorGroupPage() {
         onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.NO_GROUP)}
         sx={{
           flex: 1,
+          minWidth: 500,
         }}
         elevation={0}
       >

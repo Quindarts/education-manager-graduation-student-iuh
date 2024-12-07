@@ -1,5 +1,6 @@
 import { checktTypeGroupLecturer } from '@/utils/validations/groupLecturer.validation';
 import { Card, CardContent, CardMedia, Typography, CardActions, Box } from '@mui/material';
+import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 
 function CardGroupLecturer(props: any) {
@@ -36,13 +37,7 @@ function CardGroupLecturer(props: any) {
         image='/images/group_student_3.webp'
       />
       <CardContent>
-        <Typography
-          gutterBottom
-          fontSize={14}
-          color='primary.dark'
-          fontWeight={600}
-          variant='h6'
-        >
+        <Typography gutterBottom fontSize={14} color='primary.dark' fontWeight={600} variant='h6'>
           {checktTypeGroupLecturer(group.type.toLowerCase())} {group.name}
         </Typography>
 
@@ -57,6 +52,23 @@ function CardGroupLecturer(props: any) {
             </Typography>
           ))}
         </Box>
+
+        <Typography mt={4} fontWeight={500} color='primary.dark'>
+          Thông tin chi tiết:
+        </Typography>
+        <Typography mt={2}>
+          Bắt đầu:{' '}
+          {group.startDate
+            ? dayjs(group.startDate).format('DD/MM/YYYY hh:mm:ss A')
+            : 'Chưa cập nhật'}
+        </Typography>
+        <Typography mb={2}>
+          Kết thúc:
+          {group.endDate ? dayjs(group.endDate).format('DD/MM/YYYY hh:mm:ss A') : 'Chưa cập nhật'}
+        </Typography>
+        <Typography fontWeight={'bold'}>
+          {group.location ? group.location : 'Chưa cập nhật'}
+        </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>
         <Box></Box>

@@ -36,14 +36,16 @@ function CardLecturer(props: any) {
             Giảng viên
             <Typography mx={4} fontSize={14} color={'grey.900'} component='span'>
               {lecturer.fullName} - {lecturer.username}
-              <Typography variant='body1' mt={0} color={'grey.800'}>
-                Ngành: <Typography component='span'>{lecturer.majorName}</Typography>
+              <Typography mx={4} component={'span'} variant='body1' mt={0} color={'grey.800'}>
+                - <Typography component='span'>{lecturer.majorName}</Typography>
               </Typography>
             </Typography>
-            <Box sx={{ justifyContent: 'end', display: 'flex' }}>
-              {keywords.map((keyword: any) => (
-                <ChipTag sx={{ mx: 1 }} color='info' size='small' label={keyword} />
-              ))}
+            <Box sx={{ justifyContent: 'start', display: 'flex', flexWrap: 'wrap', mt: 2 }}>
+              {keywords
+                .filter((k) => k !== '')
+                .map((keyword: any) => (
+                  <ChipTag sx={{ mx: 1 }} color='info' size='small' label={keyword} />
+                ))}
               {keywords.length === 0 && (
                 <Typography variant='body1' color='grey.600'>
                   Chưa có từ khóa

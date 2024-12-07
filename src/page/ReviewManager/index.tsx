@@ -23,7 +23,6 @@ function ReviewManagerPage() {
   const { handleGetEvalutationByType, handleUiRender } = useEvaluation();
   const currentRole = handleUiRender();
   const { handleExportTranscripts } = useTranscript();
-  const { data: fetchExport, isSuccess: successExport } = handleExportTranscripts();
   const { data, isLoading, isSuccess } = handleGetEvalutationByType(
     termStore.currentTerm.id,
     currentTypeReview,
@@ -100,13 +99,6 @@ function ReviewManagerPage() {
                     typeEvaluation={currentTypeReview}
                     havedModelExcel={false}
                   />
-                  {successExport && (
-                    <ExportExcelButton
-                      data={fetchExport?.transcripts}
-                      entity='transcript'
-                      labelTooltip='Tải tất cả điểm  sinh viên chuyên ngành'
-                    />
-                  )}
                 </>
               )}
 

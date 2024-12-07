@@ -1,6 +1,6 @@
 import Table from '@/components/ui/Table/Table';
 import { useGroupLecturer } from '@/hooks/api/useQueryGroupLecturer';
-import { Box, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 const LecturerColumns: GridColDef[] = [
@@ -10,19 +10,6 @@ const LecturerColumns: GridColDef[] = [
     flex: 0.7,
     headerAlign: 'center',
     align: 'center',
-  },
-  {
-    headerName: 'Giảng viên hướng dẫn',
-    field: 'lecturerName',
-    flex: 1.5,
-    headerAlign: 'left',
-  },
-  {
-    headerName: 'Tên đề tài',
-    field: 'topicName',
-    flex: 4,
-    align: 'left',
-    headerAlign: 'left',
   },
   {
     headerName: 'Thành viên',
@@ -39,6 +26,33 @@ const LecturerColumns: GridColDef[] = [
             </Typography>
           ))}
         </Box>
+      );
+    },
+  },
+  {
+    headerName: 'Giảng viên hướng dẫn',
+    field: 'lecturerName',
+    flex: 1.5,
+    headerAlign: 'left',
+  },
+  {
+    headerName: 'Tên đề tài',
+    field: 'topicName',
+    flex: 4,
+    align: 'left',
+    headerAlign: 'left',
+  },
+  {
+    headerName: 'Link tài liệu',
+    field: 'link',
+    flex: 1,
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: (params: any) => {
+      return (
+        <Link sx={{ cursor: 'pointer' }} href={params?.value}>
+          {params?.value ? params.value : 'Chưa cập nhật'}
+        </Link>
       );
     },
   },
@@ -65,7 +79,20 @@ const HeadLecturerColumns: GridColDef[] = [
     headerAlign: 'left',
     align: 'left',
   },
-
+  {
+    headerName: 'Link tài liệu',
+    field: 'link',
+    flex: 1,
+    headerAlign: 'center',
+    align: 'center',
+    renderCell: (params: any) => {
+      return (
+        <Link sx={{ cursor: 'pointer' }} href={params?.value}>
+          {params?.value ? params.value : 'Chưa cập nhật'}
+        </Link>
+      );
+    },
+  },
   {
     headerName: 'Thành viên',
     field: 'degree',
@@ -100,10 +127,8 @@ function TableManagementGroupAssign(props: any) {
         minHeight={400}
         rowHeight={70}
         columns={currentRole.includes('all') ? HeadLecturerColumns : LecturerColumns}
-        totalItems={1}
-        totalPages={1}
-        page={1}
-        handleChangePage={() => {}}
+        totalItems={rows?.length}
+        isPanigation={false}
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector

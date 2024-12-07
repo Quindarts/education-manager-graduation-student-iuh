@@ -103,20 +103,6 @@ function TableManagementNotification(props: any) {
       },
     },
     {
-      headerName: 'Người gửi',
-      field: 'senderName',
-      flex: 1.5,
-      headerAlign: 'center',
-      align: 'left',
-      renderCell: (params) => {
-        return (
-          <>
-            <Typography color={'grey.900'}>{params.value}</Typography>
-          </>
-        );
-      },
-    },
-    {
       headerName: 'Người nhận',
       field: 'type',
       flex: 1,

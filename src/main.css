@@ -50,7 +50,7 @@ fieldset {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e0e6f1; /* Màu của thumb scrollbar */
+  background: #93b0e5; /* Màu của thumb scrollbar */
   border-radius: 20px; /* Độ cong của thumb scrollbar */
 }
 

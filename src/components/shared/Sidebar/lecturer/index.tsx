@@ -263,7 +263,7 @@ export default function SidebarLecturer() {
             onClose={handleToggleSidebar}
             sx={{
               flexShrink: 0,
-              height: 'calc(100% - 200px)',
+              height: 'calc(100% - 240px)',
               ['& .MuiDrawer-paper']: {
                 width: '100%',
                 border: 'none',

@@ -1,6 +1,6 @@
 import Table from '@/components/ui/Table/Table';
 import { Icon } from '@iconify/react';
-import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -45,6 +45,7 @@ function TableManagamentGroupStudent(props: any) {
           return <Typography>{params.value ? params.value : 'Chưa có đề tài'}</Typography>;
         },
       },
+
       {
         headerName: 'GV hướng dẫn',
         field: 'lecturerName',

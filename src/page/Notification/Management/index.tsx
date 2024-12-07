@@ -8,6 +8,7 @@ import HeaderNotification from './Header';
 import useParams from '@/hooks/ui/useParams';
 import { useDispatch } from 'react-redux';
 import { setParamTotalPage } from '@/store/slice/notification.slice';
+import { useLecturer } from '@/hooks/api/useQueryLecturer';
 
 function NotificationManagementPage() {
   const [currentLimit, setCurrentLimit] = useState(10);
@@ -15,7 +16,6 @@ function NotificationManagementPage() {
   const { handleGetNotificationOfFilter, paramTotalPage } = useNotification();
   const { data, isFetching, isLoading, refetch } = handleGetNotificationOfFilter();
   const dispatch = useDispatch();
-
   //[]
   const { getQueryField, setPage, setLimit, setTotalPage } = useParams();
 

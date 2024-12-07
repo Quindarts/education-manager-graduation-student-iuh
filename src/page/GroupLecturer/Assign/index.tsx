@@ -325,14 +325,25 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                         Chưa có từ khóa.
                       </Typography>
                     ) : (
-                      <Box sx={{ mx: 6 }}>
+                      <Box
+                        sx={{
+                          mx: 6,
+                          height: 100,
+                          borderRadius:2,
+                          maxHeight: 100,
+                          bgcolor: 'grey.50',
+                          px: 10,
+                          py: 6,
+                          overflowY: 'auto',
+                        }}
+                      >
                         {tags?.map((k: any) => (
                           <ChipTag
                             onClick={() => handleAddTags(k.id)}
                             variant={k.selected ? 'filled' : 'outlined'}
                             color={k.selected ? 'primary' : 'default'}
                             label={k.id}
-                            sx={{ mx: 2 }}
+                            sx={{ mx: 1, my: 1, fontSize: 10 }}
                           />
                         ))}
                       </Box>
@@ -360,7 +371,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                       color: 'primary.dark',
                     },
                   }}
-                  height={380}
+                  height={300}
                 >
                   <Box>
                     {grNeedAssign.length === 0 ? (
@@ -486,7 +497,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                       color: 'grey.400',
                     },
                   }}
-                  height={380}
+                  height={340}
                   flex={1}
                   onDragLeave={(e: any) => handleOnDragLeave(e)}
                   onDragEnter={(e) => handleOnDragEnter(e)}
@@ -584,7 +595,7 @@ function Assign({ open, onClose, groupId, groupName, groupType, totalAssigns }: 
                   </Box>
                 </Box>
                 <Box
-                  mb={6}
+                  mb={2}
                   mt={14}
                   pt={10}
                   width={'full'}

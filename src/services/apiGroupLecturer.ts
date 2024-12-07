@@ -45,6 +45,11 @@ export const getGroupLecturerById: any = (id: string) => {
     return axiosConfig.get(`${URL}/${id}`)
 }
 
+//[UPDATE]
+export const updateGroupLecturerTimeAndLocation: any = (id: string | number, data: { startDate: string, endDate: string, location: string }) => {
+    return axiosConfig.put(`${URL}/${id}`, data)
+}
+
 //[DELETE]
 export const deleteGroupLecturerById: any = (id: string | number) => {
     return axiosConfig.delete(`${URL}/${id}`)

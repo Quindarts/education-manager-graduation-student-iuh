@@ -196,7 +196,7 @@ function ExportExcelButton(props: ExportExcelPropsType) {
   const [mappedCheckbox, setMappedCheckbox] = useState<any>();
 
   useEffect(() => {
-    if (headerSetup.length) {
+    if (headerSetup?.length) {
       HEADER_TYPE[`${entity + ''}`] = headerSetup;
     }
     if (entity) {

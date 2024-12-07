@@ -109,7 +109,6 @@ const grScoresToExportExcel = (tranScripts) => {
     })
     .flat();
 };
-
 function TableScoreManagement({ typeScoreStudent }: any) {
   const { termStore } = useTerm();
   const termId = termStore.currentTerm.id;
@@ -117,7 +116,7 @@ function TableScoreManagement({ typeScoreStudent }: any) {
   const {
     onCreateTranscriptTypeExcelUI,
     onUpdateTranscripts,
-    handleGetTranscriptByTypeAssign,
+    handleExportTranscripts,
     hanleGetEvalutaionsForScoring,
   } = useTranscript();
   const { mutate: createTranscripts, isSuccess: successCreate } = onCreateTranscriptTypeExcelUI();
@@ -132,7 +131,7 @@ function TableScoreManagement({ typeScoreStudent }: any) {
     isLoading,
     isSuccess,
     refetch: refetchTranscript,
-  } = handleGetTranscriptByTypeAssign(typeScoreStudent);
+  } = handleExportTranscripts(typeScoreStudent);
 
   const [scoreStds, setScoreStds] = React.useState<any[]>([]);
   const [totalList, setTotalList] = React.useState<any[]>([]);
@@ -226,9 +225,6 @@ function TableScoreManagement({ typeScoreStudent }: any) {
             <StyledTableCell sx={{ color: 'grey.300', width: '3%', fontSize: 14 }}>
               Tổng điểm
             </StyledTableCell>
-            <StyledTableCell sx={{ color: 'grey.300', width: '1%', fontSize: 14 }}>
-              Chức năng
-            </StyledTableCell>
           </TableHead>
           {/* Table body -> rows loading groupStudents */}{' '}
           {convertRowStudents(groupTranscripts?.transcripts)?.length > 0 ? (
@@ -302,27 +298,6 @@ function TableScoreManagement({ typeScoreStudent }: any) {
                           totalList
                             ?.find((std) => std.id === rows?.id)
                             ?.evaluations.map((e) => e.score),
-                        )}
-                      </StyledTableCell>
-                      <StyledTableCell sx={{ color: 'grey.700', width: '1%', fontSize: 14 }}>
-                        {rows?.isScored ? (
-                          <Button
-                            onClick={() => handleSubmitUpdateTranscipts(rows?.id)}
-                            color='warning'
-                            disabled={NO_SCORE_STATUS_LIST?.some(
-                              (status) => status === `${rows?.studentStatus}`,
-                            )}
-                            startIcon={<Icon icon={'emojione-monotone:writing-hand'} />}
-                          >
-                            Cập nhật
-                          </Button>
-                        ) : (
-                          <Button
-                            onClick={() => handleSubmitCreateTranscipts(rows?.id)}
-                            startIcon={<Icon icon={'emojione-monotone:writing-hand'} />}
-                          >
-                            Chấm
-                          </Button>
                         )}
                       </StyledTableCell>
                     </StyledTableRow>

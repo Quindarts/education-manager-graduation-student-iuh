@@ -115,7 +115,7 @@ export default function SidebarManager() {
   //TODO re-fetch when re-render or render component
   useEffect(() => {
     fetchingCurrentTerm();
-    
+
     if (
       lecturerStore.currentRoleRender !== RoleCheck.HEAD_COURSE &&
       lecturerStore.currentRoleRender !== RoleCheck.HEAD_LECTURER

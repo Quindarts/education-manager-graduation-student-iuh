@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, InputLabel } from '@mui/material';
+import { Box, InputLabel, Typography } from '@mui/material';
 import { DateTimePicker, DateTimePickerProps, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ErrorMessage } from 'formik';
@@ -11,6 +11,7 @@ interface CalendarPropsType extends DateTimePickerProps<any> {
   label?: string;
   error?: boolean;
   name?: string;
+  required?: boolean;
 }
 const ErrorStyled = styled(ErrorMessage)`
   color: #ca4f36;
@@ -20,16 +21,21 @@ const ErrorStyled = styled(ErrorMessage)`
 `;
 
 function DateTimeCalendar(props: CalendarPropsType) {
-  const { className, label, id, name, error, sx, ...rest } = props;
+  const { className, label, id, name, error, required, sx, ...rest } = props;
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box display={'flex'} className={`${className}`} sx={sx} flexDirection='column'>
         {label && (
           <InputLabel
             htmlFor={id}
-            sx={{ mb: 3, color: 'grey.700', fontWeight: '500', fontSize: 13 }}
+            sx={{ mb: 3, color: 'grey.700', fontWeight: '600', fontSize: 13 }}
           >
-            {label}
+            {label}{' '}
+            {required && (
+              <Typography component={'span'} sx={{ color: 'error.main' }}>
+                *
+              </Typography>
+            )}
           </InputLabel>
         )}
         <DateTimePicker

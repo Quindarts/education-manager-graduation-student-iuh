@@ -7,7 +7,15 @@ interface ChipTagPropTypes extends React.ComponentProps<typeof Chip> {
 }
 
 const ChipTag: React.FC<ChipTagPropTypes> = ({ sx, variant = 'outlined', ...rest }) => {
-  return <Chip {...rest} sx={{ ...sx, cursor: 'pointer' }} variant={variant} clickable />;
+  return (
+    <Chip
+      {...rest}
+      size='small'
+      sx={{ ...sx, cursor: 'pointer', my: 1 }}
+      variant={variant}
+      clickable
+    />
+  );
 };
 
 export default ChipTag;

@@ -5,27 +5,23 @@ import DropDown from '@/components/ui/Dropdown';
 import useParams from '@/hooks/ui/useParams';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
+import { useLecturer } from '@/hooks/api/useQueryLecturer';
+import { RoleCheck } from '@/types/enum';
 const DROP_SEARCH_VALUE = [
-  {
-    _id: 'senderName',
-    name: 'Họ tên người gửi',
-  },
   {
     _id: 'title',
     name: 'Tiêu đề thông báo',
   },
 ];
 function HeaderNotification() {
+  const { currentRoleRender } = useLecturer();
+
   const onDefaultSearchDrop = () => {
-    getQueryField('searchField')
-      ? getQueryField('searchField')
-      : setDefaultTypeSearch('senderName');
+    getQueryField('searchField') ? getQueryField('searchField') : setDefaultTypeSearch('title');
     return;
   };
   useEffect(() => {
-    getQueryField('searchField')
-      ? getQueryField('searchField')
-      : setDefaultTypeSearch('senderName');
+    getQueryField('searchField') ? getQueryField('searchField') : setDefaultTypeSearch('title');
   }, []);
   const navigate = useNavigate();
   const { onSearchChange, getQueryField, setDefaultTypeSearch, onTypeSearchChange } = useParams();
@@ -36,7 +32,7 @@ function HeaderNotification() {
           <Box width={200}>
             <DropDown
               placeholder='Tìm kiếm thông báo theo'
-              value={getQueryField('searchField') ? getQueryField('searchField') : 'senderName'}
+              value={getQueryField('searchField') ? getQueryField('searchField') : 'title'}
               onChange={(e: any) => onTypeSearchChange(`${e.target.value}`)}
               options={DROP_SEARCH_VALUE}
             />
@@ -51,7 +47,11 @@ function HeaderNotification() {
         </Box>
         <Tooltip title='Tạo thông báo'>
           <Button
-            onClick={() => navigate('/notifications/create')}
+            onClick={() => {
+              currentRoleRender === RoleCheck.LECTURER
+                ? navigate('/notifications-lecturer/create')
+                : navigate('/notifications/create');
+            }}
             color='error'
             variant='contained'
             size='small'

@@ -11,6 +11,7 @@ import NotFoundPage from '@/page/404';
 import ForgotPassword from '@/page/auth/forgot';
 import GuidePage from '@/page/Guide';
 import Toolconvert from '@/page/tool';
+import TranscriptOfAllStudents from '@/page/TranscriptOfAllStudents';
 const DetailGroupSupportPage = lazy(() => import('@/page/DetailGroupSupport'));
 const DashboardTemplate = lazy(() => import('@/page/Dashboard'));
 const TermTemplate = lazy(() => import('@/page/Term'));
@@ -28,6 +29,7 @@ const GroupSupportManagementTemplate = lazy(() => import('@/page/GroupSupport/Ma
 const CreateGroupLecturerTemplate = lazy(() => import('@/page/GroupLecturer/Create'));
 const UpdatePassPage = lazy(() => import('@/page/auth/updatePassword'));
 const CreateNotificationPage = lazy(() => import('@/page/Notification/Create'));
+const CreateNotifyByLecturer = lazy(() => import('@/page/Notification/CreateNotifyByLecturer'));
 const ProfileTemplate = lazy(() => import('@/page/auth/profile'));
 const MyTopicTemplate = lazy(() => import('@/page/MyTopic'));
 const MyGroupLecturerTemplate = lazy(() => import('@/page/MyGroupLecturer'));
@@ -119,9 +121,20 @@ function Routing() {
           element={<NotificationManagementTemplate />}
         />
         <Route path={APP_ROUTES.NOTIFICATION.CREATE} element={<CreateNotificationPage />} />
+        //Notification by lecturer
+        <Route
+          path={APP_ROUTES.NOTIFICATION.MANAGEMENT_LECTURER}
+          element={<NotificationManagementTemplate />}
+        />
+        <Route
+          path={APP_ROUTES.NOTIFICATION.CREATE_BY_LECTURER}
+          element={<CreateNotifyByLecturer />}
+        />
         <Route path={APP_ROUTES.NOTIFICATION.DETAILS} element={<DetailNotificationPage />} />
         //ROUTE SCORE_STUDENT
         <Route path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT} element={<MyScoringPage />} />
+        //ROUTE SCORE MANAGEMENT ALL STUDENTS
+        <Route path={APP_ROUTES.ALL_TRANSCRIPTS.MANAGEMENT} element={<TranscriptOfAllStudents />} />
         {/* <Route
           path={APP_ROUTES.SCORE_STUDENT.MANAGEMENT_EXCEL}
           element={<ScoreManagementExcel />}

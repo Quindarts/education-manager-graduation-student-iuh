@@ -1,4 +1,5 @@
 import { RoleCheck } from "@/types/enum";
+import { roRO } from "@mui/material/locale";
 
 export const APP_ROUTES = {
   DASHBOARD: '/',
@@ -26,10 +27,15 @@ export const APP_ROUTES = {
     MANAGEMENT: "/lecturer-terms",
     DETAILS: "/lecturer-terms/detail/:id"
   },
+  ALL_TRANSCRIPTS: {
+    MANAGEMENT: '/all-transcripts',
+  },
   NOTIFICATION: {
     MANAGEMENT: "/notifications",
+    MANAGEMENT_LECTURER: '/notifications-lecturer',
     DETAILS: "/notifications/:id",
     CREATE: "/notifications/create",
+    CREATE_BY_LECTURER: '/notifications-lecturer/create'
   },
   SCORE_STUDENT: {
     MANAGEMENT: "/scores",
@@ -159,12 +165,7 @@ export const APP_SIDEBAR = [
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.LECTURER, RoleCheck.ADMIN],
     link: APP_ROUTES.ARTICLE.MANAGEMENT
   },
-  {
-    icon: 'file-icons:readthedocs',
-    text: 'Quản lý báo cáo cuối kỳ',
-    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.LECTURER, RoleCheck.ADMIN],
-    link: APP_ROUTES.FINAL_REPORT.MANAGEMENT
-  },
+
   {
     icon: 'fluent-mdl2:learning-tools',
     text: 'Giảng viên ',
@@ -239,6 +240,13 @@ export const APP_SIDEBAR = [
     key: APP_ROUTES.REVIEW.MANAGEMENT,
   },
   {
+    icon: 'ph:exam-light',
+    text: 'Bảng điểm tất cả sinh viên',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.ADMIN],
+    link: APP_ROUTES.ALL_TRANSCRIPTS.MANAGEMENT,
+    key: APP_ROUTES.ALL_TRANSCRIPTS.MANAGEMENT,
+  },
+  {
     icon: 'icon-park-outline:message',
     text: 'Thông báo',
     roles: [RoleCheck.HEAD_LECTURER, RoleCheck.ADMIN, RoleCheck.HEAD_COURSE],
@@ -267,6 +275,30 @@ export const APP_SIDEBAR = [
     text: 'Phân quyền',
     roles: [RoleCheck.ADMIN, RoleCheck.HEAD_LECTURER],
     link: APP_ROUTES.USER_AUTHORIZATION.MANAGEMENT,
+  },
+  {
+    icon: 'icon-park-outline:message',
+    text: 'Thông báo',
+    roles: [RoleCheck.LECTURER],
+    link: [APP_ROUTES.NOTIFICATION.MANAGEMENT_LECTURER],
+    children: [
+      {
+        text: 'Danh sách Thông báo',
+        link: APP_ROUTES.NOTIFICATION.MANAGEMENT_LECTURER,
+        key: APP_ROUTES.NOTIFICATION.MANAGEMENT_LECTURER,
+      },
+      {
+        text: 'Tạo Thông báo',
+        link: APP_ROUTES.NOTIFICATION.CREATE_BY_LECTURER,
+        key: APP_ROUTES.NOTIFICATION.CREATE_BY_LECTURER,
+      }
+    ],
+  },
+  {
+    icon: 'file-icons:readthedocs',
+    text: 'Quản lý báo cáo cuối kỳ',
+    roles: [RoleCheck.HEAD_LECTURER, RoleCheck.HEAD_COURSE, RoleCheck.LECTURER, RoleCheck.ADMIN],
+    link: APP_ROUTES.FINAL_REPORT.MANAGEMENT
   },
 ];
 

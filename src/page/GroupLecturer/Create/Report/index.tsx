@@ -117,6 +117,7 @@ function CreateReportGroupPage() {
         onDrop={(e) => handleOnDrop(e, false, ENUM_STATUS_LECTURER.NO_GROUP)}
         sx={{
           flex: 1,
+          minWidth: 500,
         }}
         elevation={0}
       >
@@ -175,12 +176,14 @@ function CreateReportGroupPage() {
         <Box>
           <Box sx={{ justifyContent: 'end', display: 'flex' }}>
             {getUniqueKeywords(dataLecturerGradingAssembly).map((keyword: any) => (
-              <ChipTag
-                sx={{ mx: 1, my: 2 }}
-                color='info'
-                size='small'
-                label={checkIndustry(keyword)}
-              />
+              <>
+                <ChipTag
+                  sx={{ mx: 1, my: 2, fontSize: 10 }}
+                  color='info'
+                  size='small'
+                  label={keyword}
+                />
+              </>
             ))}
           </Box>
         </Box>

@@ -82,7 +82,7 @@ export const convertEvalutationTable = (evalutation: any[]) => {
         ...Evalutation,
       });
     });
-    return newEvalutations;
+    return newEvalutations.sort((a, b) => a.key.localeCompare(b.key));
   }
 };
 
@@ -143,7 +143,7 @@ export const convertRowEvaluations = (listEvaluations: any) => {
         key: evaluation.key,
       }),
     );
-    return newList;
+    return newList.sort((a, b) => a.key.localeCompare(b.key));
   }
 };
 

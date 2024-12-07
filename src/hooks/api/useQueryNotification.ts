@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setParamTotalPage } from '@/store/slice/notification.slice';
 import { QueryKeysNotificationLecturer } from './useQueryNotificationLecturer';
+import { useLecturer } from './useQueryLecturer';
+import { RoleCheck } from '@/types/enum';
 
 export enum QueryKeysNotification {
     getNotificationsOfFilter = "getNotificationsOfFilter",
@@ -18,6 +20,7 @@ export const useNotification = () => {
     //[REDUX]
     const { termStore } = useTerm()
     const termId = termStore.currentTerm.id
+    const { currentRoleRender } = useLecturer()
     const notificationStore = useSelector((state: any) => state.notificationSlice)
     const { paramTotalPage } = notificationStore
     const dispatch = useDispatch()
@@ -27,6 +30,17 @@ export const useNotification = () => {
 
     //[OTHER]
     const { enqueueSnackbar } = useSnackbar()
+
+    const getRolePermission = () => {
+        let permissions: string[] = []
+        if (currentRoleRender === RoleCheck.LECTURER) {
+            permissions.push('basic')
+        }
+        if (currentRoleRender === RoleCheck.ADMIN || currentRoleRender === RoleCheck.HEAD_COURSE || currentRoleRender === RoleCheck.HEAD_LECTURER) {
+            permissions.push('admin')
+        }
+        return permissions
+    }
 
     const handleGetNotificationOfFilter = () => {
         getQueryField('limit') ? getQueryField('limit') : setLimit(10)
@@ -60,7 +74,8 @@ export const useNotification = () => {
     const handleGetNotificationById = (id: string) => {
         return useQuery([QueryKeysNotification.getNotificationById, id], () => NotificationServices.getNotificationById(id), {
             staleTime: 1000 * (20 * 60), // 10 min,
-            enabled: !!id
+            enabled: !!id,
+            refetchOnMount: true,
         })
     }
 
@@ -70,16 +85,10 @@ export const useNotification = () => {
             onSuccess: (data: any) => {
                 if (data.success) {
                     enqueueSnackbar('Thêm thông báo thành công', { variant: 'success' });
-                    queryClient.invalidateQueries({
-                        queryKey:
-                            [QueryKeysNotification.getNotificationsOfFilter,
-                                "10",
-                                "1",
-                                "",
-                                ""
-                            ]
-                    });
-                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
+                    queryClient.invalidateQueries(
+                        QueryKeysNotification.getNotificationsOfFilter
+                    );
+                    queryClient.invalidateQueries(QueryKeysNotificationLecturer.getMyNotification)
 
                 }
             },
@@ -98,16 +107,10 @@ export const useNotification = () => {
             onSuccess: (data: any) => {
                 if (data.success) {
                     enqueueSnackbar('Cập nhật thông báo thành công', { variant: 'success' });
-                    queryClient.invalidateQueries({
-                        queryKey:
-                            [QueryKeysNotification.getNotificationsOfFilter,
-                                "10",
-                                "1",
-                                "",
-                                ""
-                            ]
-                    });
-                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
+                    queryClient.invalidateQueries(
+                        QueryKeysNotification.getNotificationsOfFilter
+                    );
+                    queryClient.invalidateQueries(QueryKeysNotificationLecturer.getMyNotification)
 
                 }
             },
@@ -126,16 +129,10 @@ export const useNotification = () => {
             onSuccess: (data: any) => {
                 if (data.success) {
                     enqueueSnackbar('Xóa thông báo thành công', { variant: 'success' });
-                    queryClient.invalidateQueries({
-                        queryKey:
-                            [QueryKeysNotification.getNotificationsOfFilter,
-                            getQueryField('limit'),
-                            getQueryField('page'),
-                                "",
-                                ""
-                            ]
-                    });
-                    queryClient.invalidateQueries([QueryKeysNotificationLecturer.getMyNotification])
+                    queryClient.invalidateQueries(
+                        QueryKeysNotification.getNotificationsOfFilter
+                    );
+                    queryClient.invalidateQueries(QueryKeysNotificationLecturer.getMyNotification)
                 }
             },
             onError(err: any) {
@@ -153,6 +150,7 @@ export const useNotification = () => {
         handleGetNotificationById,
         onCreateManyNotifications,
         onUpdateNotification,
+        getRolePermission,
         onDeleteNotificationById
     };
 }

@@ -11,7 +11,7 @@ export enum QuertKeysGroupSupport {
 
 function useGroupSupport() {
     const { termStore } = useTerm()
-    const handleGetMyGroupSupport = (termId?: string) => {
+    const handleGetMyGroupSupport = () => {
         return useQuery([QuertKeysGroupSupport.getMyGroupSupport, termStore.currentTerm.id], () => getMyGroupSupport(termStore.currentTerm.id))
 
     }

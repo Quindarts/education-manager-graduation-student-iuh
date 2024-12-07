@@ -200,7 +200,7 @@ function TranscriptOfGroupStudent(props: any) {
                 {groupStudent?.link ? (
                   <Link
                     href={`${groupStudent?.link}`}
-                    sx={{ fontStyle: 'italic', fontWeight: 500, cursor: 'pointer' }}
+                    sx={{ fontStyle: 'italic', fontWeight: 400, cursor: 'pointer' }}
                     mx={2}
                   >
                     Xem tài liệu{' '}

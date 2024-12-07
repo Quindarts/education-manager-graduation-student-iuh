@@ -75,7 +75,7 @@ export const useGroupLecturer = () => {
     const handleGetGroupLecturerByLecturerId = (type?: string, lecturerId?: string) => {
         const termId = termStore.currentTerm.id
         const lecturerIdToSend = lecturerId ? lecturerId : lecturerStore.me.user.id
-        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, termId, lecturerId, type], () => GroupLecturerServices.getGroupLecturerByLecturerId(termId, lecturerIdToSend, type),{
+        return useQuery([QueryKeysGroupLecturer.getGroupLecturerByLecturerId, termId, lecturerId, type], () => GroupLecturerServices.getGroupLecturerByLecturerId(termId, lecturerIdToSend, type), {
             enabled: !!lecturerIdToSend,
             refetchOnMount: true
         })
@@ -108,6 +108,30 @@ export const useGroupLecturer = () => {
             },
         })
     }
+
+    const onUpdateTimeAndLocation = () => {
+        return useMutation((data: {
+            id: string,
+            startDate: string,
+            endDate: string,
+            location: string
+        }) => GroupLecturerServices.updateGroupLecturerTimeAndLocation(data.id, data), {
+            onSuccess: () => {
+                enqueueSnackbar('Cập nhật thời gian và địa điểm thành công', { variant: 'success' })
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getAllGroupLecturerByTypeGroup)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getLecturerNoGroupByTypeGroup)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getGroupLecturerById)
+                queryClient.invalidateQueries(QueryKeysGroupLecturer.getGroupLecturerByLecturerId)
+            },
+            onError(err: any) {
+                if (err.status < 500) {
+                    enqueueSnackbar(err.message, { variant: 'error' })
+                }
+                else
+                    enqueueSnackbar("Cập nhật thời gian và địa điểm thất bại", { variant: 'warning' })
+            },
+        })
+    }
     const onDeleteGroupLecturer = () => {
         return useMutation((id: string) => GroupLecturerServices.deleteGroupLecturerById(id), {
             onSuccess: () => {
@@ -136,6 +160,7 @@ export const useGroupLecturer = () => {
         handleGetGroupLecturerById,
         handleGetGroupLecturerByLecturerId,
         handleUiRender,
+        onUpdateTimeAndLocation,
         onCreateGroupLecturer,
         onDeleteGroupLecturer
     }
