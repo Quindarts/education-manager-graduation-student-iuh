@@ -25,6 +25,12 @@ export const checkTypeEvaluation = (typeScore: string) => {
   } else if (typeScore === 'ADVISOR') return 'ADVISOR';
   else return 'REVIEWER';
 };
+export const checkVietNamTypeEvaluation = (typeScore: string) => {
+  if (typeScore === 'REPORT_COUNCIL' || typeScore === 'REPORT_POSTER') {
+    return 'Phản biện';
+  } else if (typeScore === 'ADVISOR') return 'Hướng dẫn';
+  else return 'Hội đồng';
+};
 
 export const getNameStatus = (value: string) => {
   if (value === 'REJECTED') return 'Đang chờ';

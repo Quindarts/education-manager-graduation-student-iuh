@@ -6,13 +6,13 @@ import { LecturerClassExportExcel } from "@/components/ui/Export/Entity/Lecturer
 import { StudentClassExportExcel } from "@/components/ui/Export/Entity/Student";
 import { TopicClassExportExcel } from "@/components/ui/Export/Entity/Topic";
 import { TranscriptExcel } from "@/components/ui/Export/Entity/Transcript";
+import { TranscriptOfLecturerScoring } from "@/components/ui/Export/Entity/TranscriptsOfLecturerScoring";
 import { useSnackbar } from "notistack";
 
 const useExportExcel = () => {
     const { enqueueSnackbar } = useSnackbar()
     const onExport = (entity: string, fileName: string, sheetName: string, initData: any, headerColumn: any) => {
         const data = initData?.map((v: any) => v === null ? '' : v)
-
         if (!data) {
             return enqueueSnackbar('Không có dữ liệu tải xuống,thử lại', { variant: 'warning' })
         }
@@ -96,6 +96,16 @@ const useExportExcel = () => {
                 AssignLecturerTermExport.setData(data)
                 AssignLecturerTermExport.customizeSheet()
                 AssignLecturerTermExport.onExport()
+                break;
+            case 'transcriptsOfLecturerScoring':
+                const TranscriptOfLecturerScoringExport = new TranscriptOfLecturerScoring(
+                    fileName,
+                    sheetName,
+                    headerColumn,
+                )
+                TranscriptOfLecturerScoringExport.setData(data)
+                TranscriptOfLecturerScoringExport.customizeSheet()
+                TranscriptOfLecturerScoringExport.onExport()
         }
     }
     return {

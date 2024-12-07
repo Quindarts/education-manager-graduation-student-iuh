@@ -8,6 +8,10 @@ import DropDown from '@/components/ui/Dropdown';
 function ScoreManagementExcel() {
   const [typeScoreStudent, setTypeScoreStudent] = useState<string>(`${ENUM_SCORE_STUDENT[0]?._id}`);
 
+  const handleChangeTypeScoreStudent = (typeScoreStudent: string) => {
+    setTypeScoreStudent(typeScoreStudent);
+  };
+
   return (
     <Paper elevation={0} sx={{ px: 2, py: 4 }}>
       <Box mb={4} display={'flex'} alignItems={'center'} gap={2}>
@@ -15,7 +19,7 @@ function ScoreManagementExcel() {
         <Box width={170}>
           <DropDown
             onChange={(e: any) => {
-              setTypeScoreStudent(e.target.value);
+              handleChangeTypeScoreStudent(e.target.value);
             }}
             value={typeScoreStudent}
             options={ENUM_SCORE_STUDENT}

@@ -1,163 +1,157 @@
-import { checkTypeEvaluation } from '@/utils/validations/transcript.validation';
-import { Box, Button, TableBody, TableHead, Typography } from '@mui/material';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import useQueryTranscript from '@/hooks/api/useQueryTranscript';
-import useMemberGroupStudent from '@/hooks/api/useQueryMemberGroupStudent';
+import {
+  checkTypeEvaluation,
+  checkVietNamTypeEvaluation,
+} from '@/utils/validations/transcript.validation';
+import { Box, Button, Link, TableBody, TableHead, Tooltip, Typography } from '@mui/material';
+import React, {
+  HTMLAttributes,
+  HtmlHTMLAttributes,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import useTranscript from '@/hooks/api/useQueryTranscript';
 import { StyledTableCell, StyledTableRow } from '@/components/iframe/PageWord/style';
-import Table from '@/components/ui/Table/Table';
-import { getMemberInGroupStudent } from '@/services/apiGroupStudent';
 import ScoreInput from '@/components/ui/ScoreInput';
 import { Icon } from '@iconify/react';
 import { EnumStatusStudent } from '@/types/enum';
 import { useTerm } from '@/hooks/api/useQueryTerm';
-import { getTranscriptOfStudentInGroup } from '@/services/apiTranscipts';
 import SekeletonTable from '@/components/ui/Sekeleton';
-function randomColor() {
-  const r = Math.floor(Math.random() * 76) + 180;
-  const g = Math.floor(Math.random() * 76) + 180;
-  const b = Math.floor(Math.random() * 76) + 180;
-  return `rgb(${r}, ${g}, ${b},0.3)`;
-}
+import ExportExcelButton from '@/components/ui/Export';
+
 const NO_SCORE_STATUS_LIST = [
   EnumStatusStudent.FAIL_ADVISOR,
   EnumStatusStudent.FAIL_REVIEWER,
   EnumStatusStudent.FAIL_REPORT,
 ];
-const checkScored = (transcripts: any[]) => {
-  return transcripts && transcripts.length > 0 ? true : false;
+/**
+ * ? bây giờ groupStudent sẽ số dòng
+ * ? còn số cột sẽ là CLO evaluation
+ */
+function randomColor(index: number) {
+  return index % 2 ? '#f9fcff' : '#ffffff';
+}
+const totalScores = (scores: any[]) => {
+  if (!scores) return 0;
+  return scores.reduce((score1, score2) => score1 + score2, 0);
 };
+const convertRowStudents = (groupStudents: any[]) => {
+  if (groupStudents?.length === 0) return [];
+  return groupStudents?.map((student: any, index: number) => {
+    return {
+      ...student,
+      isScored: student?.evaluations.some((std: any) => std.score > 0),
+      colorRow: randomColor(index),
+      totalScores: totalScores(student?.evaluations.map((std: any) => std.score)),
+    };
+  });
+};
+const convertTotalOfEvaluationsByStd = (groupStudents: any[]) => {
+  if (groupStudents?.length === 0) return [];
+  return groupStudents?.map((student: any, index: number) => {
+    return {
+      id: student.id,
+      evaluations: student.evaluations.map((evaluation: any) => ({
+        id: evaluation.id,
+        score: evaluation.score,
+      })),
+      totalScores: totalScores(student?.evaluations.map((std: any) => std.score)),
+    };
+  });
+};
+const columnsExcelTranscripts = (evaluations, type) => {
+  const init = [
+    { header: 'Mã nhóm', key: 'groupName', width: 10 },
+    { header: 'Mã sinh viên', key: 'username', width: 12 },
+    { header: 'Họ và tên', key: 'studentName', width: 30 },
+  ];
+  if (!evaluations) return [...init];
+  const evalColumns = evaluations
+    ?.map((evaluation) => {
+      return {
+        header: `${evaluation.key} (${evaluation.scoreMax})`,
+        key: evaluation.key,
+        width: 10,
+      };
+    })
+    .sort((a, b) => a.key.localeCompare(b.key));
+  const totalScores = {
+    header: `Tổng điểm (${checkVietNamTypeEvaluation(type)})`,
+    key: 'totalScores',
+    width: 14,
+  };
+  return [...init, ...evalColumns, totalScores];
+};
+
+const grScoresToExportExcel = (tranScripts) => {
+  return tranScripts
+    ?.map((transcript) => {
+      let student = {
+        username: transcript.username,
+        studentName: transcript.fullName,
+        groupName: transcript.groupName,
+        topicName: transcript.topicName,
+      };
+      transcript?.evaluations
+        .sort((a, b) => a.key.localeCompare(b.key))
+        .map((evaluation) => {
+          student = {
+            ...student,
+            [evaluation.key]: evaluation.score,
+          };
+        });
+      return {
+        ...student,
+        totalScores: totalScores(transcript?.evaluations.map((std: any) => std.score)),
+      };
+    })
+    .flat();
+};
+
 function TableScoreManagement({ typeScoreStudent }: any) {
   const { termStore } = useTerm();
   const termId = termStore.currentTerm.id;
-  const [loading, setLoading] = useState(false);
-
   //[Handler update/ create transcript of group student]
-  const { onCreateTranscriptTypeExcelUI, onUpdateTranscripts } = useTranscript();
+  const {
+    onCreateTranscriptTypeExcelUI,
+    onUpdateTranscripts,
+    handleGetTranscriptByTypeAssign,
+    hanleGetEvalutaionsForScoring,
+  } = useTranscript();
   const { mutate: createTranscripts, isSuccess: successCreate } = onCreateTranscriptTypeExcelUI();
   const { mutate: updateTranscripts, isSuccess: successUpdate } = onUpdateTranscripts();
 
-  //![Get evaluations for scoring]
-  const { hanleGetEvalutaionsForScoring, handleGetUnTranscriptGroupStudentsByType } =
-    useQueryTranscript();
-  const { data: evaluationFetch, isSuccess: fetchEvaluationSuccess } =
-    hanleGetEvalutaionsForScoring(checkTypeEvaluation(typeScoreStudent));
+  const { data: evaluationFetch } = hanleGetEvalutaionsForScoring(
+    checkTypeEvaluation(typeScoreStudent),
+  );
   //![Get group student need score]
-  const { data: grStudentsFetch } = handleGetUnTranscriptGroupStudentsByType(typeScoreStudent);
-  const [rowGrStudents, setRowGrStudents] = React.useState([]);
-  const initRowGrStudents = async () => {
-    const grStudentPromises = grStudentsFetch.groupStudents.map((groupStudent: any) => {
-      return {
-        groupStudent: { ...groupStudent },
-        grMemberFetch: getMemberInGroupStudent(groupStudent.id),
-        colorRow: randomColor(),
-      };
-    });
-    //Return list student of group student
-    const data = grStudentPromises.map(async (grPromises: any) => {
-      setLoading(true);
-      const groupStudent = grPromises.groupStudent;
-      //Get transcript of student in group
-      const fetchTranscriptGroups = await getTranscriptOfStudentInGroup(
-        termId,
-        typeScoreStudent,
-        groupStudent.id,
-      );
-      const transcripts_of_grStudent = await fetchTranscriptGroups.transcripts;
-      // console.log(
-      //   'transcripts_of_grStudent',
-      //   transcripts_of_grStudent.map((v) => v.students).flat().some(s=>s.studentId === data.student.id),
-      // );
+  const {
+    data: groupTranscripts,
+    isLoading,
+    isSuccess,
+    refetch: refetchTranscript,
+  } = handleGetTranscriptByTypeAssign(typeScoreStudent);
 
-      const grMemberFetchResult = grPromises.grMemberFetch;
-      const dataGetGrStudentAxios = await grMemberFetchResult;
-
-      //?Check if student don't have scored
-      if (!checkScored(transcripts_of_grStudent)) {
-        return await dataGetGrStudentAxios.members.map((data: any, index: number) => ({
-          studentId: data.student.id,
-          groupName: groupStudent.name,
-          studentStatus: data.status,
-          groupStudentId: groupStudent.id,
-          studentName: data.student.fullName,
-          topicName: groupStudent?.topicName,
-          colorRow: grPromises.colorRow,
-          isScored: transcripts_of_grStudent
-            .map((v) => v.students)
-            .flat()
-            .some((s) => s.studentId === data.student.id),
-          evaluations: evaluationFetch?.evaluations?.map((evaluation: any) => ({
-            evaluationId: evaluation.id,
-            scoreMax: evaluation.scoreMax,
-            score: 0,
-          })),
-        }));
-      }
-      //--------------------------------------->>>
-      //?Check if student have scored
-      return await dataGetGrStudentAxios.members.map((data: any, index: number) => ({
-        studentId: data.student.id,
-        groupName: groupStudent.name,
-        studentStatus: data.status,
-        groupStudentId: groupStudent.id,
-        studentName: data.student.fullName,
-        topicName: groupStudent?.topicName,
-        colorRow: grPromises.colorRow,
-        isScored: transcripts_of_grStudent
-          .map((v) => v.students)
-          .flat()
-          .some((s) => s.studentId === data.student.id),
-        evaluations: evaluationFetch?.evaluations?.map((evaluation: any) => ({
-          evaluationId: evaluation.id,
-          scoreMax: evaluation.scoreMax,
-          score:
-            transcripts_of_grStudent
-              .map((t: any) => {
-                if (
-                  t.evaluationId === evaluation.id &&
-                  t.students.some((s: any) => s.studentId === data.student.id)
-                ) {
-                  setScoreStds((prev) => [
-                    ...prev,
-                    {
-                      studentId: data.student.id,
-                      evaluationId: evaluation.id,
-                      score: t.students.find((s: any) => s.studentId === data.student.id)?.score,
-                      termId: termId,
-                    },
-                  ]);
-                  return t.students.find((s: any) => s.studentId === data.student.id)?.score;
-                } else return -1;
-              })
-              .filter((sc: number) => sc > -1)[0] || 0,
-        })),
-      }));
-    });
-    const rowGrStudents = await Promise.all(data);
-    setRowGrStudents(rowGrStudents.flat());
-    // }
-  };
-  useEffect(() => {
-    setRowGrStudents([]);
-    setScoreStds([]);
-    initRowGrStudents();
-    setLoading(false);
-  }, [typeScoreStudent, successCreate, successUpdate]);
-  /**
-   * ? bây giờ groupStudent sẽ số dòng
-   * ? còn số cột sẽ là CLO evaluation
-   */
   const [scoreStds, setScoreStds] = React.useState<any[]>([]);
+  const [totalList, setTotalList] = React.useState<any[]>([]);
 
-  const handleChangeScore = (studentId: string, score: string, evaluationId: string) => {
+  useEffect(() => {
+    if (isSuccess && groupTranscripts?.transcripts) {
+      setTotalList(convertTotalOfEvaluationsByStd(groupTranscripts?.transcripts));
+    }
+  }, [groupTranscripts]);
+
+  const handleChangeScore = (id: string, score: string, evaluationId: string) => {
     const scoreStudent = {
-      studentId: studentId,
+      studentId: id,
       evaluationId: evaluationId,
       score: score,
       termId: termId,
     };
     const index = scoreStds.findIndex(
-      (scoreStd) => scoreStd.studentId === studentId && scoreStd.evaluationId === evaluationId,
+      (scoreStd) => scoreStd.studentId === id && scoreStd.evaluationId === evaluationId,
     );
     if (index === -1) {
       setScoreStds([...scoreStds, scoreStudent]);
@@ -166,20 +160,46 @@ function TableScoreManagement({ typeScoreStudent }: any) {
       newScoreStds[index] = scoreStudent;
       setScoreStds(newScoreStds);
     }
+    setTotalList((totalList) =>
+      totalList.map((std) => {
+        if (std.id === id) {
+          std.evaluations.map((evaluation) => {
+            if (evaluation.id === evaluationId) {
+              evaluation.score = parseInt(score);
+            }
+          });
+        }
+        return std;
+      }),
+    );
   };
 
   //!Handle submit
-  const handleSubmitCreateTranscipts = (studentId: string) => {
-    const transcript = scoreStds.filter((scoreStd) => scoreStd.studentId === studentId);
+  const handleSubmitCreateTranscipts = (id: string) => {
+    const transcript = scoreStds.filter((scoreStd) => scoreStd.studentId === id);
     createTranscripts(transcript);
   };
-  const handleSubmitUpdateTranscipts = (studentId: string) => {
-    const transcript = scoreStds.filter((scoreStd) => scoreStd.studentId === studentId);
+  const handleSubmitUpdateTranscipts = (id: string) => {
+    const transcript = scoreStds.filter((scoreStd) => scoreStd.studentId === id);
     updateTranscripts(transcript);
   };
+  useEffect(() => {
+    if (successCreate || successUpdate) {
+      refetchTranscript();
+    }
+  }, [successCreate, successUpdate]);
+  const columnsExcel = columnsExcelTranscripts(evaluationFetch?.evaluations, typeScoreStudent);
   return (
-    <>
-      {loading ? (
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'end', mb: 4 }}>
+        <ExportExcelButton
+          headerSetup={columnsExcel}
+          data={grScoresToExportExcel(groupTranscripts?.transcripts)}
+          entity='transcriptsOfLecturerScoring'
+          label='Xuất bảng điểm'
+        />
+      </Box>
+      {isLoading ? (
         <SekeletonTable />
       ) : (
         <Box>
@@ -192,14 +212,16 @@ function TableScoreManagement({ typeScoreStudent }: any) {
               Họ tên sinh viên
             </StyledTableCell>
             <>
-              {evaluationFetch?.evaluations?.map((evaluation: any) => (
-                <StyledTableCell
-                  key={evaluation._id}
-                  sx={{ color: 'grey.300', width: '1%', fontSize: 14 }}
-                >
-                  {evaluation?.key} ({evaluation?.scoreMax})
-                </StyledTableCell>
-              ))}
+              {evaluationFetch?.evaluations
+                ?.sort((a, b) => a.key.localeCompare(b.key))
+                .map((evaluation: any) => (
+                  <StyledTableCell
+                    key={evaluation._id}
+                    sx={{ color: 'grey.300', width: '1%', fontSize: 14 }}
+                  >
+                    {evaluation?.key} ({evaluation?.scoreMax})
+                  </StyledTableCell>
+                ))}
             </>
             <StyledTableCell sx={{ color: 'grey.300', width: '3%', fontSize: 14 }}>
               Tổng điểm
@@ -208,98 +230,116 @@ function TableScoreManagement({ typeScoreStudent }: any) {
               Chức năng
             </StyledTableCell>
           </TableHead>
-          {/* Table body -> rows loading groupStudents */}
-          <TableBody>
-            {rowGrStudents?.map((rows: any, index: number) => {
-              return (
-                <StyledTableRow>
-                  <StyledTableCell
-                    sx={{
-                      color: 'grey.700',
-                      backgroundColor: rows?.colorRow,
-                      width: '28%',
-                      padding: 2,
-                    }}
-                  >
-                    <Typography color='grey.700' mb={1} fontWeight={'bold'}>
-                      {' '}
-                      Nhóm {rows?.groupName}
-                    </Typography>
-                    <Typography color='grey.700'> {rows?.topicName}</Typography>
-                  </StyledTableCell>
-                  <StyledTableCell sx={{ color: 'grey.600', width: '10%', fontSize: 14 }}>
-                    {rows?.studentName}
-                  </StyledTableCell>
-                  <>
-                    {rows?.evaluations.map((evaluation: any, index: number) => (
-                      <StyledTableCell sx={{ color: 'grey.700', width: '1%', p: 0 }}>
-                        <ScoreInput
-                          handleChangeScore={handleChangeScore}
-                          evaluationId={evaluation.evaluationId}
-                          studentId={rows?.studentId}
-                          oldScore={evaluation.score}
-                          disabled={NO_SCORE_STATUS_LIST?.some(
-                            (status) => status === `${rows?.studentStatus}`,
-                          )}
-                          scoreMax={evaluation.scoreMax}
-                        />
-                      </StyledTableCell>
-                    ))}
-                  </>
-                  <StyledTableCell sx={{ color: 'success.dark', width: '1%' }}>
-                    {scoreStds
-                      .filter((scoreStd) => scoreStd.studentId === rows?.studentId)
-                      .map((scd) => parseInt(scd.score))
-                      .reduce((sc1, sc2) => sc1 + sc2, 0)}
-                    (
-                    {(
-                      scoreStds
-                        .filter((scoreStd) => scoreStd.studentId === rows?.studentId)
-                        .map((scd) => parseInt(scd.score))
-                        .reduce((sc1, sc2) => sc1 + sc2, 0) / 10
-                    ).toFixed(2)}
-                    )
-                    <>
-                      {NO_SCORE_STATUS_LIST?.some(
-                        (status) => status === `${rows?.studentStatus}`,
-                      ) && (
-                        <Typography color='error.dark' fontSize={12} fontWeight={500}>
-                          - Không chấm -
+          {/* Table body -> rows loading groupStudents */}{' '}
+          {convertRowStudents(groupTranscripts?.transcripts)?.length > 0 ? (
+            <TableBody>
+              {convertRowStudents(groupTranscripts?.transcripts)?.map(
+                (rows: any, index: number) => {
+                  return (
+                    <StyledTableRow>
+                      <StyledTableCell
+                        sx={{
+                          color: 'grey.700',
+                          backgroundColor: rows?.colorRow,
+                          width: '28%',
+                          padding: 2,
+                        }}
+                      >
+                        <Typography color='grey.700' mb={1} fontWeight={'bold'}>
+                          {' '}
+                          Nhóm {rows?.groupName}
                         </Typography>
-                      )}
-                    </>
-                  </StyledTableCell>
-                  <StyledTableCell sx={{ color: 'grey.700', width: '1%', fontSize: 14 }}>
-                    {rows?.isScored ? (
-                      <Button
-                        onClick={() => handleSubmitUpdateTranscipts(rows?.studentId)}
-                        color='warning'
-                        disabled={NO_SCORE_STATUS_LIST?.some(
-                          (status) => status === `${rows?.studentStatus}`,
+                        <Typography color='grey.700'>
+                          {' '}
+                          {rows?.topicName}
+                          <Link sx={{ fontStyle: 'italic', cursor: 'pointer' }} mx={2}>
+                            Xem tài liệu{' '}
+                          </Link>
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ color: 'grey.600', width: '10%', fontSize: 14 }}>
+                        {rows?.fullName}
+                      </StyledTableCell>
+                      <>
+                        {rows?.evaluations.map((evaluation: any, index: number) => (
+                          <Tooltip title={`${evaluation.key}: ${evaluation.name}`}>
+                            <StyledTableCell
+                              sx={{
+                                color: 'grey.700',
+                                width: '1%',
+                                p: 0,
+                                ':hover': {
+                                  background: 'rgb(234, 240, 245)',
+                                  transition: 'all 0.3s ease 0s',
+                                },
+                              }}
+                            >
+                              <ScoreInput
+                                handleChangeScore={handleChangeScore}
+                                evaluationId={evaluation.id}
+                                studentId={rows?.id}
+                                oldScore={evaluation.score}
+                                scoreMax={evaluation.scoreMax}
+                              />
+                            </StyledTableCell>
+                          </Tooltip>
+                        ))}
+                      </>
+                      <StyledTableCell sx={{ color: 'success.dark', width: '1%' }}>
+                        {totalScores(
+                          totalList
+                            ?.find((std) => std.id === rows?.id)
+                            ?.evaluations.map((e) => e.score),
                         )}
-                        startIcon={<Icon icon={'emojione-monotone:writing-hand'} />}
-                      >
-                        Cập nhật
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() => handleSubmitCreateTranscipts(rows?.studentId)}
-                        disabled={NO_SCORE_STATUS_LIST?.some(
-                          (status) => status === `${rows?.studentStatus}`,
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ color: 'grey.700', width: '1%', fontSize: 14 }}>
+                        {rows?.isScored ? (
+                          <Button
+                            onClick={() => handleSubmitUpdateTranscipts(rows?.id)}
+                            color='warning'
+                            disabled={NO_SCORE_STATUS_LIST?.some(
+                              (status) => status === `${rows?.studentStatus}`,
+                            )}
+                            startIcon={<Icon icon={'emojione-monotone:writing-hand'} />}
+                          >
+                            Cập nhật
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => handleSubmitCreateTranscipts(rows?.id)}
+                            startIcon={<Icon icon={'emojione-monotone:writing-hand'} />}
+                          >
+                            Chấm
+                          </Button>
                         )}
-                        startIcon={<Icon icon={'emojione-monotone:writing-hand'} />}
-                      >
-                        Chấm
-                      </Button>
-                    )}
-                  </StyledTableCell>
-                </StyledTableRow>
-              );
-            })}
-          </TableBody>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  );
+                },
+              )}
+            </TableBody>
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                py: 20,
+              }}
+            >
+              <Box>
+                <img src='/images/nodata.webp' width={200} height={200} alt='' />
+                <Typography variant='body1' textAlign={'center'} color='grey.600'>
+                  Bảng điểm trống
+                </Typography>
+              </Box>
+            </Box>
+          )}
         </Box>
       )}
-    </>
+    </Box>
   );
 }
 

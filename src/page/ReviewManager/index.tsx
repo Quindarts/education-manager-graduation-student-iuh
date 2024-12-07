@@ -63,15 +63,15 @@ function ReviewManagerPage() {
                 }}
                 options={[
                   {
-                    name: 'Tiêu chí Hướng dẫn',
+                    name: 'Tiêu chí dành cho GV Hướng dẫn',
                     _id: 'ADVISOR',
                   },
                   {
-                    name: 'Tiêu chí Phản biện',
+                    name: 'Tiêu chí  dành cho GV Phản biện',
                     _id: 'REVIEWER',
                   },
                   {
-                    name: 'Tiêu chí Báo cáo',
+                    name: 'Tiêu chí  dành cho GV Hội đồng',
                     _id: 'REPORT',
                   },
                 ]}

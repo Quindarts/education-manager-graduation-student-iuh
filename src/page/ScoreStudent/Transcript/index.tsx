@@ -7,7 +7,7 @@ import useTranscript from '@/hooks/api/useQueryTranscript';
 import { BodyEvaluation } from '@/services/apiTranscipts';
 import { EnumStatusStudent } from '@/types/enum';
 import { getStatusGroup } from '@/utils/validations/groupStudent.validation';
-import { Box, Button, Paper, TableBody, TableHead, Typography } from '@mui/material';
+import { Box, Button, Link, Paper, TableBody, TableHead, Typography } from '@mui/material';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 export type MemberScore = {
@@ -137,11 +137,15 @@ function TranscriptOfGroupStudent(props: any) {
     if (successTranscript && successMember) {
       setInitTranscripts((pre) => ({
         ...pre,
+        isExistTranscripts: transcriptFetch.transcripts.length > 0,
         transcripts:
           transcriptFetch.transcripts.length > 0
-            ? transcriptFetch.transcripts
-            : convertEvaluations(evaluations, memberFetch?.members),
-        isExistTranscripts: transcriptFetch.transcripts.length > 0,
+            ? transcriptFetch.transcripts.sort((a, b) =>
+                a.evaluationKey.localeCompare(b.evaluationKey),
+              )
+            : convertEvaluations(evaluations, memberFetch?.members).sort((a, b) =>
+                a.evaluationKey.localeCompare(b.evaluationKey),
+              ),
       }));
       setScoreStudent(handleTotalScores(transcriptFetch?.transcripts));
     }
@@ -192,6 +196,21 @@ function TranscriptOfGroupStudent(props: any) {
           <Box mx={6}>
             <Typography fontWeight={600} mb={4} variant='h3'>
               Đề tài {groupStudent?.topicName}{' '}
+              <>
+                {groupStudent?.link ? (
+                  <Link
+                    href={`${groupStudent?.link}`}
+                    sx={{ fontStyle: 'italic', fontWeight: 500, cursor: 'pointer' }}
+                    mx={2}
+                  >
+                    Xem tài liệu{' '}
+                  </Link>
+                ) : (
+                  <Typography mx={2} component={'span'} variant='body1' color='initial'>
+                    (Chưa nộp tài liệu)
+                  </Typography>
+                )}
+              </>
               <Typography fontWeight={400} variant='body2' color='grey.700'>
                 Trạng thái:{' '}
                 <Typography
@@ -276,11 +295,6 @@ function TranscriptOfGroupStudent(props: any) {
                                 evaluationId={row.evaluationId}
                                 studentId={st.studentId}
                                 oldScore={st.score}
-                                disabled={
-                                  NO_SCORE_STATUS_LIST?.some((status) => status === `${st.status}`)
-                                    ? true
-                                    : false
-                                }
                                 scoreMax={row.scoreMax}
                               />
                             </StyledTableCell>
@@ -326,12 +340,6 @@ function TranscriptOfGroupStudent(props: any) {
                               evaluationId={row.evaluationId}
                               studentId={st.student.id}
                               oldScore={0}
-                              disabled={
-                                NO_SCORE_STATUS_LIST?.some((status) => status === st?.status.trim())
-                                  ? true
-                                  : false
-                              }
-                              // disabled={true}
                               scoreMax={row.scoreMax}
                             />
                           </StyledTableCell>

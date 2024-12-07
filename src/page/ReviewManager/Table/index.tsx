@@ -44,15 +44,23 @@ function TableManagerReviewScore(props: any) {
     {
       headerName: 'Tên tiêu chí',
       field: 'name',
-      flex: 6,
+      flex: 2,
+      align: 'left',
       headerAlign: 'left',
     },
     {
       headerName: 'Điểm tối đa',
       field: 'scoreMax',
       flex: 1,
-      headerAlign: 'right',
-      align: 'right',
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
+      headerName: 'Mô tả',
+      field: 'description',
+      flex: 6,
+      align: 'left',
+      headerAlign: 'left',
     },
     {
       headerName: 'Chức năng',
@@ -85,8 +93,8 @@ function TableManagerReviewScore(props: any) {
   ];
   const basicColumns: GridColDef[] = [
     {
-      headerName: 'STT',
-      field: 'stt',
+      headerName: 'CLO',
+      field: 'key',
       flex: 0.25,
       align: 'right',
       headerAlign: 'right',
@@ -94,7 +102,7 @@ function TableManagerReviewScore(props: any) {
     {
       headerName: 'Tên tiêu chí',
       field: 'name',
-      flex: 6,
+      flex: 2,
       align: 'left',
       headerAlign: 'left',
     },
@@ -102,8 +110,15 @@ function TableManagerReviewScore(props: any) {
       headerName: 'Điểm tối đa',
       field: 'scoreMax',
       flex: 1,
-      headerAlign: 'right',
-      align: 'right',
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
+      headerName: 'Mô tả',
+      field: 'description',
+      flex: 6,
+      align: 'left',
+      headerAlign: 'left',
     },
   ];
   return (
@@ -113,6 +128,7 @@ function TableManagerReviewScore(props: any) {
         sx={{
           bgcolor: 'white',
         }}
+        rowHeight={200}
         minHeight={350}
         columns={currentRole.includes('all') ? allRoleColumns : basicColumns}
         totalItems={rows.length}

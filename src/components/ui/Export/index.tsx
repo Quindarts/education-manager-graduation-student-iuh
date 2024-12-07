@@ -93,6 +93,7 @@ const HEADER_TYPE = {
     { header: 'Điểm PB2', key: 'Điểm PB2', width: 20 },
     { header: 'Trung bình (HD, PB)', key: 'Trung bình (HD, PB)', width: 20 },
   ],
+
   demoScoreStudents: [
     { header: 'Mã số', key: 'Mã số', width: 12 },
     { header: 'Lớp học', key: 'Lớp học', width: 15 },
@@ -118,7 +119,7 @@ const HEADER_TYPE = {
 interface ExportExcelPropsType extends BoxProps {
   label?: string;
   labelTooltip?: string;
-  entity:
+  entity?:
     | 'topic'
     | 'lecturer'
     | 'student'
@@ -127,8 +128,10 @@ interface ExportExcelPropsType extends BoxProps {
     | 'assignGroup'
     | 'transcript'
     | 'demoScoreStudents'
-    | 'assignLecturerTerm';
+    | 'assignLecturerTerm'
+    | 'transcriptsOfLecturerScoring';
   data: any;
+  headerSetup?: any[];
   disabled?: boolean;
 }
 
@@ -176,11 +179,14 @@ const entityFileName = (entity: string, termName: string, majorName: string) => 
     case 'assignLecturerTerm':
       text = 'Chấm công KLTN HK2_2023_2024_SE';
       break;
+    case 'transcriptsOfLecturerScoring':
+      text = 'Bảng điểm chấm KLTN';
+      break;
   }
   return text + ' ' + termName;
 };
 function ExportExcelButton(props: ExportExcelPropsType) {
-  const { label, labelTooltip, entity, data, disabled, sx, ...rest } = props;
+  const { label, labelTooltip, entity, headerSetup, data, disabled, sx, ...rest } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [fileName, setFileName] = useState<string>(``);
   const [sheetName, setSheetName] = useState<string>('sheet1');
@@ -190,6 +196,9 @@ function ExportExcelButton(props: ExportExcelPropsType) {
   const [mappedCheckbox, setMappedCheckbox] = useState<any>();
 
   useEffect(() => {
+    if (headerSetup.length) {
+      HEADER_TYPE[`${entity + ''}`] = headerSetup;
+    }
     if (entity) {
       const convert = HEADER_TYPE[`${entity + ''}`].map((v: any) => {
         let obj = {};
@@ -199,7 +208,7 @@ function ExportExcelButton(props: ExportExcelPropsType) {
       setMappedCheckbox(convert);
     }
     setFileName(`${entityFileName(entity, termStore.currentTerm.name, '')}`);
-  }, [isOpen, entity]);
+  }, [isOpen, entity, headerSetup]);
 
   const toggleCheckBox = (key: string) => {
     let toggle_arr = mappedCheckbox.map((col: { string: boolean }) => {
@@ -292,7 +301,7 @@ function ExportExcelButton(props: ExportExcelPropsType) {
                               onChange={() => toggleCheckBox(Object.keys(column)[0])}
                             />
                           }
-                          label={Object.keys(column)[0]}
+                          label={HEADER_TYPE[`${entity}`][index].header}
                         />
                       </Typography>
                     ))}

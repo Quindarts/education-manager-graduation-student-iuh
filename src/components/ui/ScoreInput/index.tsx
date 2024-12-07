@@ -27,11 +27,11 @@ function ScoreInput(props: ScoreInputPropsType) {
   const handleSetPoint = (scoreInput: string) => {
     const regex = /^\d+$/;
     if (scoreInput === '') {
-      setErrorMess('Điểm không được bỏ trống');
+      setErrorMess('Không bỏ trống');
     } else if (!regex.test(scoreInput)) {
       setErrorMess('Điểm phải là số nguyên dương');
     } else if (parseInt(scoreInput, 10) > scoreMax) {
-      setErrorMess(`Điểm phải < ${scoreMax + 1}`);
+      setErrorMess(`Điểm  <= ${scoreMax}`);
     } else {
       setErrorMess('');
       handleChangeScore(studentId, scoreInput, evaluationId);
@@ -62,7 +62,7 @@ function ScoreInput(props: ScoreInputPropsType) {
         value={score}
       />
       {errorMess !== '' && (
-        <Typography variant='body1' fontSize={10} color='error.main'>
+        <Typography variant='body1' textAlign={'center'} fontSize={10} color='error.main'>
           {errorMess}
         </Typography>
       )}{' '}
