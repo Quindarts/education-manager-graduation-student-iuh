@@ -258,6 +258,7 @@ function TableScoreManagement({ typeScoreStudent }: any) {
                                 href={`${rows?.link}`}
                                 sx={{ fontStyle: 'italic', fontWeight: 500, cursor: 'pointer' }}
                                 mx={2}
+                                target='_blank'
                               >
                                 Xem tài liệu{' '}
                               </Link>

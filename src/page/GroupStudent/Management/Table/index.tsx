@@ -56,7 +56,33 @@ function TableManagamentGroupStudent(props: any) {
           return <Typography>{params.value ? params.value : 'Chưa có giảng viên HD'}</Typography>;
         },
       },
-
+      {
+        headerName: 'Link tài liệu',
+        field: 'link',
+        flex: 1,
+        align: 'center',
+        headerAlign: 'center',
+        renderCell: (params: any) => {
+          return (
+            <>
+              {params.value ? (
+                <Link
+                  href={`${params.value}`}
+                  sx={{ fontStyle: 'italic', fontWeight: 500, cursor: 'pointer' }}
+                  mx={2}
+                  target='_blank'
+                >
+                  Xem tài liệu{' '}
+                </Link>
+              ) : (
+                <Typography mx={2} component={'span'} variant='body1' color='initial'>
+                  Chưa nộp
+                </Typography>
+              )}
+            </>
+          );
+        },
+      },
       {
         headerName: 'Thành viên',
         field: 'members',

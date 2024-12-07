@@ -202,6 +202,7 @@ function TranscriptOfGroupStudent(props: any) {
                     href={`${groupStudent?.link}`}
                     sx={{ fontStyle: 'italic', fontWeight: 400, cursor: 'pointer' }}
                     mx={2}
+                    target='_blank'
                   >
                     Xem tài liệu{' '}
                   </Link>
