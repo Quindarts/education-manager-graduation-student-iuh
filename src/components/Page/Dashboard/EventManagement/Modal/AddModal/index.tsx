@@ -115,6 +115,7 @@ function AddModal(props: any) {
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
                       label='Ngày bắt đầu'
                       name='startDate'
+                      required
                       format='DD/MM/YYYY hh:mm:ss A'
                       value={values.startDate}
                       error={touched.startDate && errors.startDate ? true : false}
@@ -129,6 +130,7 @@ function AddModal(props: any) {
                       sx={{ '& .Mui-disabled': { '-webkit-text-fill-color': '#0052b1' } }}
                       label='Ngày kết thúc'
                       name='endDate'
+                      required
                       format='DD/MM/YYYY hh:mm:ss A'
                       value={values.endDate}
                       error={touched.endDate && errors.endDate ? true : false}
