@@ -1,10 +1,11 @@
 import Table from '@/components/ui/Table/Table';
 import { Icon } from '@iconify/react';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import EditEvaluationModal from '../Modal/Edit';
 import DeleteEvaluationModal from '../Modal/Delete';
+import { stripHtmlTags } from '@/utils/convertHtmlText';
 
 function TableManagerReviewScore(props: any) {
   const { rows, termId, type, currentRole } = props;
@@ -61,6 +62,13 @@ function TableManagerReviewScore(props: any) {
       flex: 6,
       align: 'left',
       headerAlign: 'left',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {stripHtmlTags(params?.value)}
+          </Typography>
+        );
+      },
     },
     {
       headerName: 'Chức năng',
@@ -119,6 +127,13 @@ function TableManagerReviewScore(props: any) {
       flex: 6,
       align: 'left',
       headerAlign: 'left',
+      renderCell(params) {
+        return (
+          <Typography variant='body1' color='initial'>
+            {stripHtmlTags(params?.value)}
+          </Typography>
+        );
+      },
     },
   ];
   return (

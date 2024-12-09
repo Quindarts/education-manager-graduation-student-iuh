@@ -73,7 +73,7 @@ function EditEvaluationModal(props: any) {
                 <CustomTextField
                   name='key'
                   label='CLO ID'
-                  placeholder='ID của CLO, VD: LO1, LO2,...'
+                  placeholder='ID của CLO, VD: LO01, LO02, LO10...'
                   value={values.key}
                   onBlur={handleBlur}
                   onChange={handleChange}

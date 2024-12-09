@@ -35,6 +35,15 @@ const HEADER_TYPE = {
     { header: 'Ngày sinh', key: 'Ngày sinh', width: 30 },
     { header: 'Lớp học', key: 'Lớp học', width: 15 },
   ],
+  evaluations: [
+    { header: 'STT', key: 'STT', width: 15 },
+    { header: 'CLO', key: 'CLO', width: 20 },
+    { header: 'Failed', key: 'Failed', width: 20 },
+    { header: 'Fair', key: 'Fair', width: 10 },
+    { header: 'Accepted', key: 'Accepted', width: 30 },
+    { header: 'Excellent', key: 'Excellent', width: 15 },
+    { header: 'Max', key: 'Max', width: 15 },
+  ],
 };
 
 interface ExportExcelModelButtonPropsType extends BoxProps {
