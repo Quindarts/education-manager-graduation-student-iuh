@@ -12,7 +12,6 @@ function CardGroupLecturer(props: any) {
       sx={{
         border: '1px solid white',
         '&:hover': {
-          // bgcolor: '#E1EDFCFF',
           background: ' linear-gradient(135deg, #0d5db6, #33aae0)',
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
           transition: 'all 0.3s ease-in',
@@ -23,7 +22,6 @@ function CardGroupLecturer(props: any) {
           border: '1px solid #DAE9FAFF',
         },
         minHeight: 240,
-        maxHeight: 300,
       }}
     >
       <CardMedia
@@ -36,7 +34,7 @@ function CardGroupLecturer(props: any) {
         }}
         image='/images/group_student_3.webp'
       />
-      <CardContent>
+      <CardContent sx={{ px: 6, py: 4 }}>
         <Typography gutterBottom fontSize={14} color='primary.dark' fontWeight={600} variant='h6'>
           {checktTypeGroupLecturer(group.type.toLowerCase())} {group.name}
         </Typography>
@@ -57,17 +55,24 @@ function CardGroupLecturer(props: any) {
           Thông tin chi tiết:
         </Typography>
         <Typography mt={2}>
-          Bắt đầu:{' '}
+          <Typography variant='body1' component={'span'} fontWeight={'bold'} color='grey.600'>
+            Bắt đầu:{' '}
+          </Typography>
           {group.startDate
             ? dayjs(group.startDate).format('DD/MM/YYYY hh:mm:ss A')
             : 'Chưa cập nhật'}
         </Typography>
         <Typography mb={2}>
-          Kết thúc:
+          <Typography variant='body1' component={'span'} fontWeight={'bold'} color='grey.600'>
+            Kết thúc:{' '}
+          </Typography>
           {group.endDate ? dayjs(group.endDate).format('DD/MM/YYYY hh:mm:ss A') : 'Chưa cập nhật'}
         </Typography>
         <Typography fontWeight={'bold'}>
-          Địa điểm {group.location ? group.location : 'Chưa cập nhật'}
+          <Typography variant='body1' component={'span'} fontWeight={'bold'} color='grey.600'>
+            Địa điểm:{' '}
+          </Typography>
+          {group.location ? group.location : 'Chưa cập nhật'}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>

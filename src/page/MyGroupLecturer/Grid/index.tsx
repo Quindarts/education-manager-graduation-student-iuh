@@ -18,7 +18,8 @@ function GridGroupLecturer(props: any) {
             width: {
               xs: '100%',
               md: '50%',
-              lg: 'calc(25% - 10px)',
+              lg: 'calc(30% - 10px)',
+              xl: 'calc(25% - 10px)',
             },
           }}
         >

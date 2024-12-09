@@ -89,7 +89,6 @@ function TableScoreManagement({ typeScoreStudent }: any) {
   const termId = termStore.currentTerm.id;
   //[Handler update/ create transcript of group student]
   const { handleExportTranscripts, hanleGetEvalutaionsForScoring } = useTranscript();
-
   const { data: evaluationFetch } = hanleGetEvalutaionsForScoring(
     typeScoreStudent,
   );

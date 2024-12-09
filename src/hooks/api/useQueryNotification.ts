@@ -30,7 +30,6 @@ export const useNotification = () => {
 
     //[OTHER]
     const { enqueueSnackbar } = useSnackbar()
-
     const getRolePermission = () => {
         let permissions: string[] = []
         if (currentRoleRender === RoleCheck.LECTURER) {

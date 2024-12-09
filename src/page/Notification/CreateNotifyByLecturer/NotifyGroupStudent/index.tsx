@@ -18,6 +18,8 @@ import { useNotificationStudent } from '@/hooks/api/useQueryNotificationStudent'
 import { useStudent } from '@/hooks/api/useQueryStudent';
 import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 import useGroupSupport from '@/hooks/api/useQueryGroupSupport';
+import useTranscript from '@/hooks/api/useQueryTranscript';
+import { ENUM_NOTIFY_OF_LECTURER } from '@/utils/validations/notification.validation';
 
 const convertToDropValue = (data: any[]) => {
   if (!data) {
@@ -26,19 +28,22 @@ const convertToDropValue = (data: any[]) => {
     let newArray = [];
     newArray = data;
     return newArray.map((v: any) => ({
-      label: 'Nhóm' + v.groupStudentName + ' - ' + v.topicName,
-      id: v.groupStudentId,
+      label: 'Nhóm' + v.name + ' - ' + v.topicName,
+      id: v.id,
     }));
   }
 };
 function CreateGroupStudentNotifyForm() {
   const { lecturerStore } = useAuth();
+  const [typeGroup, setTypeGroup] = useState(ENUM_NOTIFY_OF_LECTURER[0]._id);
   const { handleGetMyGroupSupport } = useGroupSupport();
+  const { handleGetUnTranscriptGroupStudentsByType } = useTranscript();
   const {
     data: fetchGroupStudents,
     isLoading: loadingGroupStudents,
     isFetching: fetchingGroupStudents,
-  } = handleGetMyGroupSupport();
+  } = handleGetUnTranscriptGroupStudentsByType(typeGroup);
+
   //[GroupStudent Handler]
   const { onCreateNotificationOfGroupStudentIds } = useNotificationStudent();
 
@@ -121,7 +126,7 @@ function CreateGroupStudentNotifyForm() {
             {/* Detail user */}
             <Box sx={{ mb: 20 }}>
               <Box sx={{ display: 'flex', gap: 10, py: 4 }}>
-                <Paper sx={{ width: 'calc(60% - 10px)', gap: 4 }}>
+                <Paper sx={{ width: 'calc(70% - 10px)', gap: 4 }}>
                   {/* Title */}
                   <Box mt={4} px={4} display={'flex'} justifyContent={'space-between'}>
                     <TitleManager mt={4} variant='h5' color={'primary.dark'} mb={6}>
@@ -144,6 +149,15 @@ function CreateGroupStudentNotifyForm() {
                   <Box sx={{ display: 'flex', px: 4, flex: 1, gap: 4 }}>
                     {values.typeQuantitySended !== 'many' && (
                       <Box mt={4} sx={{ display: 'flex', flex: 1, gap: 4 }}>
+                        <Box width={170}>
+                          <DropDown
+                            onChange={(e: any) => {
+                              setTypeGroup(e.target.value);
+                            }}
+                            value={typeGroup}
+                            options={ENUM_NOTIFY_OF_LECTURER}
+                          />
+                        </Box>
                         <Box flex={1}>
                           <Autocomplete
                             disablePortal
@@ -260,9 +274,8 @@ function CreateGroupStudentNotifyForm() {
                     )}{' '}
                   </>
                 </Paper>
-
                 {/* Info send */}
-                <Paper sx={{ width: '60%', px: 4, py: 4 }}>
+                <Paper sx={{ width: '50%', px: 4, py: 4 }}>
                   <Box display={'flex'} mb={4} gap={4}>
                     <Box display={'flex'} gap={3} width={400}>
                       <Typography variant='h6' fontWeight={'bold'} color='primary.dark'>

@@ -29,7 +29,7 @@ function TabPanelCreateNotify() {
               }}
               label={
                 <TitleManager color={'grey.700'} variant='body1'>
-                  Gửi thông báo đến sinh viên
+                  Gửi thông báo đến sinh viên đang hướng dẫn
                 </TitleManager>
               }
               value='1'

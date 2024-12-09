@@ -12,27 +12,31 @@ import { useStudent } from '@/hooks/api/useQueryStudent';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { checkRoleLecturer } from '@/utils/validations/lecturer.validation';
+import useGroupSupport from '@/hooks/api/useQueryGroupSupport';
+import useGroupStudent from '@/hooks/api/useQueryGroupStudent';
 
 const convertToDropValue = (data: any[]) => {
   if (!data) {
     return [];
   } else {
     let newArray = [];
-    newArray = data;
+    newArray = data.map((group) => group.members).flat();
+
     return newArray.map((v: any) => ({
-      label: v.studentName + ' - ' + v.username,
-      id: v.studentId,
+      label: v.fullName + ' - ' + v.username,
+      id: v.id,
     }));
   }
 };
 function CreateStudentNotifyForm() {
   const { lecturerStore } = useAuth();
   const { handleGetSearchStudentBasic } = useStudent();
+  const { handleGetGroupStudentByLecturerByTerm } = useGroupStudent();
   const {
     data: fetchStudents,
     isLoading: loadingStudents,
     isFetching: fetchingStudents,
-  } = handleGetSearchStudentBasic('', 'studentName');
+  } = handleGetGroupStudentByLecturerByTerm(lecturerStore?.me?.user?.id);
   //[Student Handler]
   const { onCreateAllNotificationStudentTerms, onCreateNotificationOfStudentIds } =
     useNotificationStudent();
@@ -60,7 +64,11 @@ function CreateStudentNotifyForm() {
       content: values.content,
     };
     if (values.typeQuantitySended === 'many') {
-      createManyStudents(dataSend);
+      let data = {
+        ...dataSend,
+        studentIds: convertToDropValue(fetchStudents.groupStudents).map((l) => l.id),
+      };
+      createFewStudent(data);
     } else if (values.typeQuantitySended === 'few') {
       if (listStudent.length === 0) {
         enqueueSnackbar('Chưa có thông tin sinh viên nhận thông báo.', { variant: 'error' });
@@ -146,7 +154,7 @@ function CreateStudentNotifyForm() {
                           <Autocomplete
                             disablePortal
                             id='student-terms-list'
-                            options={convertToDropValue(fetchStudents?.students)}
+                            options={convertToDropValue(fetchStudents?.groupStudents)}
                             onChange={(_, newValue: any) => {
                               setCurrentStudent(newValue);
                             }}
